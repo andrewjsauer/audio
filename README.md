@@ -13,12 +13,10 @@ If you are using `nvm`, then skip `brew install node`. If installing via M1 chip
 - https://stackoverflow.com/questions/64901180/how-to-run-cocoapods-on-apple-silicon-m1
 - https://stackoverflow.com/questions/67443265/error-regarding-undefined-method-map-for-nilnilclass-for-flutter-app-cocoap
 
-## Step 1: Rename
+## Step 1: Install
 
-Download `react-native-rename` and run
-
-```bash
-npx react-native-rename@latest "NewAppName"
+```
+yarn install
 ```
 
 ## Step 2: Start the Metro Server

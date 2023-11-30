@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface ReactNativeBoilerplateSetupTests : XCTestCase
+@interface audioAppTests : XCTestCase
 
 @end
 
-@implementation ReactNativeBoilerplateSetupTests
+@implementation audioAppTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {
