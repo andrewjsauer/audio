@@ -1,0 +1,23 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.lintTask.enable": true,
+  "eslint.enable": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.lightbulb.enabled": false,
+  "editor.formatOnSave": true,
+  "i18n-ally.localesPaths": [
+    "src/locales",
+    "ios/Pods/Flipper-Folly/folly/lang",
+    "ios/Pods/Flipper-Boost-iOSX/boost/locale",
+    "ios/Pods/RCT-Folly/folly/lang",
+    "ios/Pods/boost/boost/locale",
+    "ios/Pods/Flipper-Boost-iOSX/boost/predef/language",
+    "ios/Pods/boost/boost/predef/language",
+    "ios/Pods/Headers/Private/Flipper-Folly/folly/lang",
+    "ios/Pods/Headers/Private/RCT-Folly/folly/lang",
+    "ios/Pods/Headers/Public/Flipper-Folly/folly/lang",
+    "ios/Pods/Headers/Public/RCT-Folly/folly/lang"
+  ]
+}
