@@ -57,7 +57,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'audioApp' do
+target 'audio' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -77,7 +77,7 @@ target 'audioApp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'audioAppTests' do
+  target 'audioTests' do
     inherit! :complete
     # Pods for testing
   end

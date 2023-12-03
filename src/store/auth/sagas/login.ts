@@ -5,7 +5,7 @@ import API from '@services/API';
 
 import { LOGIN, login } from '../actions';
 
-const debug = Debug('reactNativeBoilerplateSetup:store:auth:sagas:login');
+const debug = Debug('audio:store:auth:sagas:login');
 
 export function* loginSaga({ payload }: any) {
   debug('Saga called', payload);

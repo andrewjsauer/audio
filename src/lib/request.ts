@@ -2,7 +2,7 @@ import Debug from 'debug';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
-const debug = Debug('reactNativeBoilerplateSetup:lib:request');
+const debug = Debug('audio:lib:request');
 const LINEAR_RETRY_DELAY_MS = 1000;
 
 const createInstance = (baseConfig = {}) => {

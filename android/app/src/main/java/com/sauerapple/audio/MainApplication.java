@@ -1,4 +1,4 @@
-package com.reactnativeboilerplatesetup;
+package com.sauerapple.audio;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
