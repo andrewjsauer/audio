@@ -46,3 +46,22 @@ yarn ios
 If everything is set up _correctly_, you should see the app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+
+## Packages
+
+Push notifications (`react-native-notifications`)
+
+- https://wix.github.io/react-native-notifications/docs/getting-started
+
+Internationalization (`react-i18next`)
+
+- https://react.i18next.com/
+
+Home Screen
+
+- https://www.npmjs.com/package/react-native-bootsplash OR
+- https://www.npmjs.com/package/react-native-splash-screen
+
+Permissions (`react-native-permissions`)
+
+- https://github.com/zoontek/react-native-permissions
