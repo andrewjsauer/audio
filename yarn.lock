@@ -1809,6 +1809,11 @@
     prompts "^2.4.0"
     semver "^7.5.2"
 
+"@react-native-firebase/app-check@^18.7.1":
+  version "18.7.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-check/-/app-check-18.7.1.tgz#612c0a7a1cb8da1ab19fad9ddd7194c986a81702"
+  integrity sha512-SXebLQ1Xksnc29HklMLeAH99eP9aAsGSPvWkG8GOCkc0pEFuXFZDf6NZ+GrxdeYV0EuaOC+DCApj1me4kNup2Q==
+
 "@react-native-firebase/app@^18.7.1":
   version "18.7.1"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-18.7.1.tgz#89fea18713a0fec9e2a0190a4be6b6c54208a73e"

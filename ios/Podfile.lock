@@ -1,4 +1,7 @@
 PODS:
+  - AppCheckCore (10.18.0):
+    - GoogleUtilities/Environment (~> 7.11)
+    - PromisesObjC (~> 2.3)
   - boost (1.76.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.72.7)
@@ -9,8 +12,18 @@ PODS:
     - React-Core (= 0.72.7)
     - React-jsi (= 0.72.7)
     - ReactCommon/turbomodule/core (= 0.72.7)
+  - Firebase/AppCheck (10.18.0):
+    - Firebase/CoreOnly
+    - FirebaseAppCheck (~> 10.18.0)
   - Firebase/CoreOnly (10.18.0):
     - FirebaseCore (= 10.18.0)
+  - FirebaseAppCheck (10.18.0):
+    - AppCheckCore (~> 10.18)
+    - FirebaseAppCheckInterop (~> 10.17)
+    - FirebaseCore (~> 10.0)
+    - GoogleUtilities/Environment (~> 7.8)
+    - PromisesObjC (~> 2.1)
+  - FirebaseAppCheckInterop (10.18.0)
   - FirebaseCore (10.18.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.12)
@@ -450,6 +463,10 @@ PODS:
   - RNFBApp (18.7.1):
     - Firebase/CoreOnly (= 10.18.0)
     - React-Core
+  - RNFBAppCheck (18.7.1):
+    - Firebase/AppCheck (= 10.18.0)
+    - React-Core
+    - RNFBApp
   - RNPermissions (3.10.1):
     - React-Core
   - SocketRocket (0.6.1)
@@ -500,12 +517,16 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
+  - "RNFBAppCheck (from `../node_modules/@react-native-firebase/app-check`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
+    - AppCheckCore
     - Firebase
+    - FirebaseAppCheck
+    - FirebaseAppCheckInterop
     - FirebaseCore
     - FirebaseCoreInternal
     - fmt
@@ -600,17 +621,22 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
+  RNFBAppCheck:
+    :path: "../node_modules/@react-native-firebase/app-check"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppCheckCore: 4687c03428947d5b26a6bf9bb5566b39f5473bf1
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 5fbbff1d7734827299274638deb8ba3024f6c597
   FBReactNativeSpec: 638095fe8a01506634d77b260ef8a322019ac671
   Firebase: 414ad272f8d02dfbf12662a9d43f4bba9bec2a06
+  FirebaseAppCheck: f34226df40cf6057dc54916ab5a5d461bb51ee68
+  FirebaseAppCheckInterop: 3cd914842ba46f4304050874cd284de82f154ffd
   FirebaseCore: 2322423314d92f946219c8791674d2f3345b598f
   FirebaseCoreInternal: 8eb002e564b533bdcf1ba011f33f2b5c10e2ed4a
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
@@ -655,6 +681,7 @@ SPEC CHECKSUMS:
   ReactCommon: 4ef37cb61335f2c7a29225d754c06857b4cc6361
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
   RNFBApp: 3d518e0ea7f945ae546facc0e6034806d9ddfde7
+  RNFBAppCheck: 0a5756c8738df71aded931865426f916d55ab910
   RNPermissions: b4ccb7f1a3cece23cbcf4339c662c940a9098163
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 4c3aa327e4a6a23eeacd71f61c81df1bcdf677d5

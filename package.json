@@ -15,6 +15,7 @@
   "dependencies": {
     "@os-team/i18next-react-native-language-detector": "^1.0.30",
     "@react-native-firebase/app": "^18.7.1",
+    "@react-native-firebase/app-check": "^18.7.1",
     "@reduxjs/toolkit": "^1.9.7",
     "debug": "^4.3.4",
     "i18next": "^23.7.7",

@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
-#import <Firebase.h>
+#import "RNFBAppCheckModule.h" // Firebase app check
+#import <Firebase.h> // Firebase setup
 
 #import <React/RCTBundleURLProvider.h>
 
@@ -7,6 +8,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [RNFBAppCheckModule sharedInstance];
   [FIRApp configure];
   self.moduleName = @"audio";
   // You can add your custom initial props in the dictionary below.

@@ -3,6 +3,8 @@ import Config from 'react-native-config';
 import { Provider } from 'react-redux';
 
 import './locales/index';
+import './services/firebase/index';
+
 import setupStore from './store';
 import App from './components/App';
 
