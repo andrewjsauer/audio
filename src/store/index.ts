@@ -1,22 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import createSagaMiddleware from 'redux-saga';
+import rootReducer, { RootState } from './rootReducer';
 
-import rootReducer from './rootReducer';
-import rootSaga from './rootSaga';
-
-const sagaMiddleware = createSagaMiddleware();
-
-const setupStore = (preloadedState?: any) => {
+const setupStore = (preloadedState?: Partial<RootState>) => {
   const store = configureStore({
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        serializableCheck: false,
-      }).concat([sagaMiddleware]),
-    preloadedState,
     reducer: rootReducer,
+    preloadedState,
   });
-
-  sagaMiddleware.run(rootSaga);
 
   return store;
 };

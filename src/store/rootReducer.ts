@@ -1,14 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
+import authReducer from './auth/slice';
 
-import auth from './auth/reducer';
-
-export const appReducer = combineReducers({
-  auth,
+const rootReducer = combineReducers({
+  auth: authReducer,
 });
 
-const rootReducer = (state: any, action: any) => {
-  let updatedState = state;
-  return appReducer(updatedState, action);
-};
+export type RootState = ReturnType<typeof rootReducer>;
 
 export default rootReducer;
