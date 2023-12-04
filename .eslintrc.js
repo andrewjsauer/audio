@@ -20,6 +20,7 @@ module.exports = {
     'jest/globals': true,
   },
   rules: {
+    'import/no-unresolved': 'off',
     'prettier/prettier': 'error',
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.ts'] }],
     'react/react-in-jsx-scope': 'off',
