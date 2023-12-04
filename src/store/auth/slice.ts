@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from 'firebase/auth';
+// import { User } from 'firebase/auth';
 import { login, logout } from './thunks';
 
 interface AuthState {
@@ -23,7 +23,7 @@ const authSlice = createSlice({
       .addCase(login.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
+      .addCase(login.fulfilled, (state, action: any) => {
         state.isLoading = false;
         state.user = action.payload;
       })

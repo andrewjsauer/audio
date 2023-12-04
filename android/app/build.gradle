@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services' // Firebase setup
 apply plugin: "com.facebook.react"
 
 /**

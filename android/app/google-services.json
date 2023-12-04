@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "684700674962",
+    "project_id": "audio-20f30",
+    "storage_bucket": "audio-20f30.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684700674962:android:c526fe68ea64d3a2b92f4b",
+        "android_client_info": {
+          "package_name": "com.sauerapple.audio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQZkeifGAvSqOroC1OLVlRuT4yRMoz8oU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
