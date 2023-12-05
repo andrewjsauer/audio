@@ -11,6 +11,7 @@ module.exports = {
           '@services': './src/services',
           '@locales': './src/locales',
           '@store': './src/store',
+          '@styles': './src/styles',
         },
       },
     ],

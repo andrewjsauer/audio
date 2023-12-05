@@ -20,6 +20,7 @@
     "@react-native-firebase/app-check": "^18.7.1",
     "@react-native-firebase/auth": "^18.7.1",
     "@react-native-firebase/crashlytics": "^18.7.1",
+    "@react-navigation/native": "^6.1.9",
     "@reduxjs/toolkit": "^1.9.7",
     "debug": "^4.3.4",
     "i18next": "^23.7.7",

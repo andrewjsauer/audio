@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { View, Text, Button, useColorScheme } from 'react-native';
 
 import { logout } from '@store/auth/thunks';
 import {
@@ -13,7 +12,7 @@ import {
 
 import useAuthSubscription from '@lib/customHooks/useAuthSubscription';
 
-import { StyledSafeAreaView } from './style';
+import { StyledView, StyledText, StyledButton } from './style';
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -33,43 +32,39 @@ function App(): JSX.Element {
     dispatch(logout());
   };
 
-  const isDarkMode = useColorScheme() === 'dark';
   let content;
-
   if (isLoading) {
     content = (
-      <View>
-        <Text>Loading...</Text>
-      </View>
+      <StyledView>
+        <StyledText>Loading...</StyledText>
+      </StyledView>
     );
   }
 
   if (error) {
     content = (
-      <View>
-        <Text>Error: {error}</Text>
-      </View>
+      <StyledView>
+        <StyledText>Error: {error}</StyledText>
+      </StyledView>
     );
   }
 
   if (isUserLoggedIn) {
     content = (
-      <View>
-        <Text>Please log in.</Text>
-      </View>
+      <StyledView>
+        <StyledText>Please log in.</StyledText>
+      </StyledView>
     );
   }
 
   content = (
-    <View>
-      <Text>Welcome {user?.email ?? 'TEST EMAIL'}</Text>
-      <Button title="Logout" onPress={handleLogout} />
-    </View>
+    <StyledView>
+      <StyledText>Welcome</StyledText>
+      <StyledButton title="Logout" onPress={handleLogout} />
+    </StyledView>
   );
 
-  return (
-    <StyledSafeAreaView theme={{ isDarkMode }}>{content}</StyledSafeAreaView>
-  );
+  return <StyledView>{content}</StyledView>;
 }
 
 export default App;
