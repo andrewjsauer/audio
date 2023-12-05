@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { View, Text, Button, useColorScheme } from 'react-native';
 
 import { logout } from '@store/auth/thunks';
 import {
-  selectIsLoading,
   selectError,
-  selectUser,
+  selectIsLoading,
+  selectIsUserLoggedIn,
 } from '@store/auth/selectors';
 
 import useAuthSubscription from '@lib/customHooks/useAuthSubscription';
@@ -18,11 +19,15 @@ function App(): JSX.Element {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
-  const user = useSelector(selectUser);
+  useEffect(() => {
+    crashlytics().log('App mounted.');
+  }, []);
 
   useAuthSubscription();
+
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+  const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -47,7 +52,7 @@ function App(): JSX.Element {
     );
   }
 
-  if (!user) {
+  if (isUserLoggedIn) {
     content = (
       <View>
         <Text>Please log in.</Text>
@@ -57,7 +62,7 @@ function App(): JSX.Element {
 
   content = (
     <View>
-      <Text>Welcome {user.email}</Text>
+      <Text>Welcome {user?.email ?? 'TEST EMAIL'}</Text>
       <Button title="Logout" onPress={handleLogout} />
     </View>
   );

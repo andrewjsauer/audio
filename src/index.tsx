@@ -4,9 +4,12 @@ import { Provider } from 'react-redux';
 
 import './locales/index';
 import './services/firebase/index';
+import './lib/ignoreLogs';
 
 import setupStore from './store';
 import App from './components/App';
+import AppSafeAreaProvider from './components/shared/safeAreaProvider';
+import MainErrorBoundary from './components/shared/error/mainErrorBoundary';
 
 import StorybookUIRoot from '../.storybook/Storybook';
 
@@ -16,9 +19,13 @@ function AppContainer(): JSX.Element {
   if (Config.showStorybook === 'true') return <StorybookUIRoot />;
 
   return (
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <AppSafeAreaProvider>
+      <MainErrorBoundary>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </MainErrorBoundary>
+    </AppSafeAreaProvider>
   );
 }
 

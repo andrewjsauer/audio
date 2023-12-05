@@ -1,20 +1,29 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+
 import auth from '@react-native-firebase/auth';
+import crashlytics from '@react-native-firebase/crashlytics';
+
 import { setUser } from '@store/auth/slice';
 
-const useAuthSubscription = () => {
+function useAuthStateListener() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged((user) => {
+  function onAuthStateChanged(user: any) {
+    if (user) {
+      crashlytics().setUserId(user.uid);
+      crashlytics().setAttributes({
+        name: user.displayName || '',
+      });
+
       dispatch(setUser(user));
-    });
+    }
+  }
 
-    return () => {
-      unsubscribe();
-    };
-  }, [dispatch]);
-};
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+}
 
-export default useAuthSubscription;
+export default useAuthStateListener;
