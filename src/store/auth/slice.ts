@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { User } from 'firebase/auth';
-import { login, logout } from './thunks';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { logout } from './thunks';
 
 interface AuthState {
-  user: object | null;
+  user: FirebaseAuthTypes.User | null;
   isLoading: boolean;
   error: string | undefined | null;
 }
@@ -17,24 +17,25 @@ const initialState: AuthState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action: PayloadAction<FirebaseAuthTypes.User | null>) => {
+      state.user = action.payload;
+    },
+  },
   extraReducers: (builder) => {
-    builder
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(login.fulfilled, (state, action: any) => {
-        state.isLoading = false;
-        state.user = action.payload;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
-      })
-      .addCase(logout.fulfilled, (state) => {
-        state.user = null;
-      });
+    builder.addCase(logout.fulfilled, (state) => {
+      state.user = null;
+      state.isLoading = false;
+    });
+    builder.addCase(logout.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(logout.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message;
+    });
   },
 });
 
+export const { setUser } = authSlice.actions;
 export default authSlice.reducer;

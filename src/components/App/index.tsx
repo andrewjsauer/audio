@@ -1,79 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import type { PropsWithChildren } from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
-import { Header } from 'react-native/Libraries/NewAppScreen';
-import { useTranslation, Trans } from 'react-i18next';
-import DropDownPicker from 'react-native-dropdown-picker';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { View, Text, Button, useColorScheme } from 'react-native';
 
+import { logout } from '@store/auth/thunks';
 import {
-  SectionContainer,
-  SectionTitle,
-  SectionDescription,
-  Highlight,
-  StyledSafeAreaView,
-  StyledScrollView,
-  ContentContainer,
-} from './style';
+  selectIsLoading,
+  selectError,
+  selectUser,
+} from '@store/auth/selectors';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import useAuthSubscription from '@lib/customHooks/useAuthSubscription';
 
-function Section({ children, title }: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <SectionContainer>
-      <SectionTitle theme={{ isDarkMode }}>{title}</SectionTitle>
-      <SectionDescription theme={{ isDarkMode }}>{children}</SectionDescription>
-    </SectionContainer>
-  );
-}
+import { StyledSafeAreaView } from './style';
 
 function App(): JSX.Element {
-  const { t, i18n } = useTranslation();
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
-  const [open, setOpen] = useState(false);
-  const [language, setLanguage] = useState('en');
-  const [items, setItems] = useState([
-    { label: 'English', value: 'en' },
-    { label: 'Spanish', value: 'es' },
-  ]);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+  const user = useSelector(selectUser);
 
-  useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language]);
+  useAuthSubscription();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   const isDarkMode = useColorScheme() === 'dark';
+  let content;
+
+  if (isLoading) {
+    content = (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    content = (
+      <View>
+        <Text>Error: {error}</Text>
+      </View>
+    );
+  }
+
+  if (!user) {
+    content = (
+      <View>
+        <Text>Please log in.</Text>
+      </View>
+    );
+  }
+
+  content = (
+    <View>
+      <Text>Welcome {user.email}</Text>
+      <Button title="Logout" onPress={handleLogout} />
+    </View>
+  );
 
   return (
-    <StyledSafeAreaView theme={{ isDarkMode }}>
-      <DropDownPicker
-        open={open}
-        value={language}
-        items={items}
-        setOpen={setOpen}
-        setValue={setLanguage}
-        setItems={setItems}
-      />
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={isDarkMode ? '#1C1C1E' : '#F3F3F3'}
-      />
-      <StyledScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        theme={{ isDarkMode }}>
-        <Header />
-        <ContentContainer theme={{ isDarkMode }}>
-          <Section title="Step One">
-            <Trans i18nKey="home.example">
-              Edit <Highlight>App.tsx</Highlight> to change this screen and then
-              come back to see your edits.
-            </Trans>
-          </Section>
-          <Section title="Learn More">{t('home.text')}</Section>
-        </ContentContainer>
-      </StyledScrollView>
-    </StyledSafeAreaView>
+    <StyledSafeAreaView theme={{ isDarkMode }}>{content}</StyledSafeAreaView>
   );
 }
 

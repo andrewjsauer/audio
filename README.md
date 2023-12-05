@@ -65,3 +65,7 @@ Home Screen
 Permissions (`react-native-permissions`)
 
 - https://github.com/zoontek/react-native-permissions
+
+Firebase Phone Number Authentication
+
+- List of countries that are supported: https://firebase.google.com/support/faq/#phone-auth-countries
