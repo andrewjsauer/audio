@@ -29,6 +29,7 @@ module.exports = {
         ],
       },
     ],
+    'global-require': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'import/prefer-default-export': 'off',
     'import/no-unresolved': 'off',

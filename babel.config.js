@@ -12,6 +12,7 @@ module.exports = {
           '@locales': './src/locales',
           '@store': './src/store',
           '@styles': './src/styles',
+          '@assets': './src/assets',
         },
       },
     ],

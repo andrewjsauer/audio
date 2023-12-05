@@ -1,5 +1,6 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
+  "include": ["src", "typings", "custom.d.ts"],
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
@@ -8,7 +9,8 @@
       "@services/*": ["./src/services/*"],
       "@locales/*": ["./src/locales/*"],
       "@store/*": ["./src/store/*"],
-      "@styles/*": ["./src/styles/*"]
+      "@styles/*": ["./src/styles/*"],
+      "@assets/*": ["./src/assets/*"]
     }
   }
 }

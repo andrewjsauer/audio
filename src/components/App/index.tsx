@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import { logout } from '@store/auth/thunks';
+import { signOut } from '@store/auth/thunks';
 import {
   selectError,
   selectIsLoading,
@@ -12,7 +12,8 @@ import {
 
 import useAuthSubscription from '@lib/customHooks/useAuthSubscription';
 
-import { StyledView, StyledText, StyledButton } from './style';
+import { StyledView, StyledText } from './style';
+import SignInScreen from '../SignIn';
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ function App(): JSX.Element {
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(signOut());
   };
 
   let content;
@@ -57,14 +58,8 @@ function App(): JSX.Element {
     );
   }
 
-  content = (
-    <StyledView>
-      <StyledText>Welcome</StyledText>
-      <StyledButton title="Logout" onPress={handleLogout} />
-    </StyledView>
-  );
-
-  return <StyledView>{content}</StyledView>;
+  content = <SignInScreen />;
+  return content;
 }
 
 export default App;

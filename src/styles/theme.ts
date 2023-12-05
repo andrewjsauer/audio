@@ -1,10 +1,9 @@
 const theme = {
   colors: {
-    primary: '#507DBC',
-    secondary: '#F2B138',
-    background: '#FFFFFF',
-    text: '#333333',
-    error: '#D32F2F',
+    black: '#000000',
+    gray: '#404040',
+    red: '#D32F2F',
+    white: '#FFFFFF',
   },
   fonts: {
     regular: 'Nunito-Regular',

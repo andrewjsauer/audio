@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { logout } from './thunks';
+import { signOut } from './thunks';
 
 interface AuthState {
   user: FirebaseAuthTypes.User | null;
@@ -23,14 +23,14 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(logout.fulfilled, (state) => {
+    builder.addCase(signOut.fulfilled, (state) => {
       state.user = null;
       state.isLoading = false;
     });
-    builder.addCase(logout.pending, (state) => {
+    builder.addCase(signOut.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(logout.rejected, (state, action) => {
+    builder.addCase(signOut.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error.message;
     });
