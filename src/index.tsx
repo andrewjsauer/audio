@@ -1,6 +1,7 @@
 import React from 'react';
 import Config from 'react-native-config';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import './locales/index';
 import './services/firebase/index';
@@ -13,7 +14,7 @@ import MainErrorBoundary from './components/shared/error/mainErrorBoundary';
 
 import StorybookUIRoot from '../.storybook/Storybook';
 
-const store = setupStore();
+const { store, persistor } = setupStore();
 
 function AppContainer(): JSX.Element {
   if (Config.showStorybook === 'true') return <StorybookUIRoot />;
@@ -22,7 +23,9 @@ function AppContainer(): JSX.Element {
     <AppSafeAreaProvider>
       <MainErrorBoundary>
         <Provider store={store}>
-          <App />
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
         </Provider>
       </MainErrorBoundary>
     </AppSafeAreaProvider>
