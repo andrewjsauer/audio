@@ -1,10 +1,31 @@
 {
-  "home": {
-    "example": "Edit <0>App.tsx</0> to change this screen and then come back to see your edits.",
-    "text": "Here is some text to demonstrate this!"
-  },
+  "next": "Next",
   "errors": {
     "tryAgain": "Try Again",
     "whoops": "Whoops! Looks like there was an error"
+  },
+  "auth": {
+    "signInScreen": {
+      "title": "You First",
+      "subtitle": "Couples Edition",
+      "description": "Reveal each others’ answers\nto daily questions"
+    },
+    "signIn": "Sign In",
+    "enterPhone": "Enter your phone number",
+    "getCode": "Get Code",
+    "enterCode": "Enter the code",
+    "verify": "Verify",
+    "enterName": "Enter your full name",
+    "chooseColor": "Choose your favorite color",
+    "enterBirthday": "Enter your birthday",
+    "partnerPhone": "Your partner's phone number",
+    "sendInvite": "Send Invite",
+    "single": "Single",
+    "inARelationship": "In a Relationship",
+    "engaged": "Engaged",
+    "married": "Married",
+    "domesticPartnership": "Domestic Partnership",
+    "polyamorous": "Polyamorous (Coming Soon!)",
+    "relationshipStatus": "What's your relationship status?"
   }
 }

@@ -24,9 +24,10 @@ const theme = {
     semiBoldItalic: 'Nunito-SemiBoldItalic',
   },
   fontSizes: {
-    small: '12px',
     regular: '14px',
-    large: '18px',
+    medium: '18px',
+    large: '20px',
+    logo: '44px',
   },
 };
 

@@ -20,6 +20,7 @@ module.exports = {
     'jest/globals': true,
   },
   rules: {
+    'react/require-default-props': 'off',
     'no-param-reassign': [
       'error',
       {

@@ -3,6 +3,7 @@ import Config from 'react-native-config';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider } from 'styled-components';
+import { NavigationContainer } from '@react-navigation/native';
 
 import './locales/index';
 import './services/firebase/index';
@@ -27,7 +28,9 @@ function AppContainer(): JSX.Element {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <ThemeProvider theme={theme}>
-              <App />
+              <NavigationContainer>
+                <App />
+              </NavigationContainer>
             </ThemeProvider>
           </PersistGate>
         </Provider>

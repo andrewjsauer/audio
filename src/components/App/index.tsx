@@ -13,7 +13,7 @@ import {
 import useAuthSubscription from '@lib/customHooks/useAuthSubscription';
 
 import { StyledView, StyledText } from './style';
-import SignInScreen from '../SignIn';
+import SignInScreen from '../SignInScreen';
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
