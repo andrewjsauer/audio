@@ -1,29 +1,20 @@
 import styled from 'styled-components/native';
 
 export const Layout = styled.SafeAreaView`
-  height: 100%;
+  flex: 1;
 `;
 
 export const Container = styled.View`
-  display: flex;
+  flex: 1;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  height: 100%;
-  position: relative;
 `;
 
 export const Message = styled.Text`
+  font-family: Nunito-Bold;
   font-size: 20px;
-  font-weight: 600;
-  color: #000;
-  margin-bottom: 24px;
+  color: #000000;
   padding: 0 48px;
   text-align: center;
-`;
-
-export const Button = styled.Button`
-  background-color: #6699cc;
-  padding: 8px 12px;
-  color: #fff;
 `;

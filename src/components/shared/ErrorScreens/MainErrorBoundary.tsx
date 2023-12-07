@@ -1,7 +1,7 @@
 import * as React from 'react';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import FallbackScreen from './fallbackScreen';
+import FallbackScreen from './FallbackScreen';
 
 interface Props {
   children: React.ReactNode;

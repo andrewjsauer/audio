@@ -3,8 +3,8 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   flex: 1;
   flex-direction: column;
-  align-items: center;
   justify-content: space-around;
+  align-items: center;
   background-color: ${(p) => p.theme.colors.white};
 `;
 
@@ -12,7 +12,6 @@ export const Title = styled.Text`
   font-family: ${(p) => p.theme.fonts.extraBold};
   font-size: ${(p) => p.theme.fontSizes.logo};
   color: ${(p) => p.theme.colors.black};
-  margin-bottom: 10px;
   text-align: center;
 `;
 

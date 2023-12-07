@@ -15,7 +15,7 @@ export interface StyledButtonProps
 function StyledButton({
   isDisabled = false,
   isLoading = false,
-  mode = 'light',
+  mode = 'dark',
   text,
   ...props
 }: StyledButtonProps) {

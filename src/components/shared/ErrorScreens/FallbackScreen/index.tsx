@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Layout, Message, Container } from './styles';
+import Button from '@components/shared/Button';
+import { Layout, Message, Container } from './styles';
 
 interface Props {
   resetState: () => void;
@@ -14,7 +15,7 @@ function FallbackScreen({ resetState }: Props) {
     <Layout>
       <Container>
         <Message>{t('errors.whoops')}</Message>
-        <Button title={t('errors.tryAgain')} onPress={resetState} />
+        <Button mode="dark" onPress={resetState} text={t('errors.tryAgain')} />
       </Container>
     </Layout>
   );

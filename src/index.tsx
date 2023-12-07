@@ -11,8 +11,9 @@ import './lib/ignoreLogs';
 
 import setupStore from './store';
 import App from './components/App';
-import AppSafeAreaProvider from './components/shared/safeAreaProvider';
-import MainErrorBoundary from './components/shared/error/mainErrorBoundary';
+import AppSafeAreaProvider from './components/shared/SafeAreaProvider';
+import Notifications from './components/shared/Notification';
+import MainErrorBoundary from './components/shared/ErrorScreens/MainErrorBoundary';
 import theme from './styles/theme';
 
 import StorybookUIRoot from '../.storybook/Storybook';
@@ -23,19 +24,20 @@ function AppContainer(): JSX.Element {
   if (Config.showStorybook === 'true') return <StorybookUIRoot />;
 
   return (
-    <AppSafeAreaProvider>
-      <MainErrorBoundary>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <AppSafeAreaProvider>
+        <MainErrorBoundary>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
               <NavigationContainer>
+                <Notifications />
                 <App />
               </NavigationContainer>
-            </ThemeProvider>
-          </PersistGate>
-        </Provider>
-      </MainErrorBoundary>
-    </AppSafeAreaProvider>
+            </PersistGate>
+          </Provider>
+        </MainErrorBoundary>
+      </AppSafeAreaProvider>
+    </ThemeProvider>
   );
 }
 

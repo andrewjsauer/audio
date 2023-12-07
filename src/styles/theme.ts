@@ -2,8 +2,11 @@ const theme = {
   colors: {
     black: '#000000',
     gray: '#404040',
+    lightGray: '#909090',
     red: '#D32F2F',
     white: '#FFFFFF',
+    error: '#DD5C42',
+    success: '#4CAF50',
   },
   fonts: {
     regular: 'Nunito-Regular',
@@ -24,7 +27,8 @@ const theme = {
     semiBoldItalic: 'Nunito-SemiBoldItalic',
   },
   fontSizes: {
-    regular: '14px',
+    small: '14px',
+    regular: '16px',
     medium: '18px',
     large: '20px',
     logo: '44px',

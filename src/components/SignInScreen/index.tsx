@@ -1,13 +1,14 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-// import EnterPhoneNumberScreen from '@components/shared/auth/EnterPhoneNumberScreen';
-// import EnterCodeScreen from '@components/shared/auth/EnterCodeScreen';
-// import UserDetailsScreen from '@components/shared/auth/UserDetailsScreen';
-// import BirthdayScreen from '@components/shared/auth/BirthdayScreen';
-// import InvitePartnerScreen from '@components/shared/auth/InvitePartnerScreen';
-// import RelationshipStatusScreen from '@components/shared/auth/RelationshipStatusScreen';
+import PhoneNumberScreen from '@components/shared/AuthScreens/PhoneNumberScreen';
+import EnterCodeScreen from '@components/shared/AuthScreens/EnterCodeScreen';
+import UserDetailsScreen from '@components/shared/AuthScreens/UserDetailsScreen';
+import BirthdayScreen from '@components/shared/AuthScreens/BirthdayScreen';
+import InvitePartnerScreen from '@components/shared/AuthScreens/InvitePartnerScreen';
+import RelationshipStatusScreen from '@components/shared/AuthScreens/RelationshipStatusScreen';
 
+import { AuthFlowProvider } from './AuthFlowContext';
 import SignInScreen from './SignInScreen';
 
 export type RootStackParamList = {
@@ -24,29 +25,46 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function SignInScreenContainer() {
   return (
-    <Stack.Navigator initialRouteName="SignIn">
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="SignIn"
-        component={SignInScreen}
-      />
-    </Stack.Navigator>
+    <AuthFlowProvider>
+      <Stack.Navigator initialRouteName="SignIn">
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="SignIn"
+          component={SignInScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="EnterPhoneNumber"
+          component={PhoneNumberScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="EnterCode"
+          component={EnterCodeScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="UserDetails"
+          component={UserDetailsScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Birthday"
+          component={BirthdayScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="InvitePartner"
+          component={InvitePartnerScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="RelationshipStatus"
+          component={RelationshipStatusScreen}
+        />
+      </Stack.Navigator>
+    </AuthFlowProvider>
   );
 }
 
 export default SignInScreenContainer;
-
-{
-  /* <Stack.Screen
-name="EnterPhoneNumber"
-component={EnterPhoneNumberScreen}
-/>
-<Stack.Screen name="EnterCode" component={EnterCodeScreen} />
-<Stack.Screen name="UserDetails" component={UserDetailsScreen} />
-<Stack.Screen name="Birthday" component={BirthdayScreen} />
-<Stack.Screen name="InvitePartner" component={InvitePartnerScreen} />
-<Stack.Screen
-name="RelationshipStatus"
-component={RelationshipStatusScreen}
-/> */
-}
