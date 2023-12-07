@@ -4,10 +4,11 @@ import React, {
   useState,
   useCallback,
   useMemo,
-  useEffect,
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { trackEvent, trackScreen } from '@lib/analytics';
+
+import { SignInFlowStepTypes as Steps } from '@lib/types';
+import { trackEvent } from '@lib/analytics';
 
 interface AuthFlowContextProps {
   currentStep: number;
@@ -19,26 +20,20 @@ interface AuthFlowContextProps {
 const AuthFlowContext = createContext<AuthFlowContextProps>({
   currentStep: 1,
   totalSteps: 5,
-  goToNextStep: () => {},
   goToPreviousStep: () => {},
+  goToNextStep: () => {},
 });
+
+const steps = [
+  Steps.SignInStep,
+  Steps.PhoneNumberStep,
+  Steps.UserDetailsStep,
+  Steps.PartnerDetailsStep,
+];
 
 export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
   const navigation = useNavigation();
   const [currentStep, setCurrentStep] = useState(1);
-
-  useEffect(() => {
-    trackScreen('SignInScreen');
-  }, []);
-
-  const steps = [
-    'SignIn',
-    'EnterPhoneNumber',
-    'UserDetails',
-    'Birthday',
-    'InvitePartner',
-    'RelationshipStatus',
-  ];
 
   const totalSteps = steps.length;
 
@@ -49,16 +44,29 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  const goToNextStep = useCallback(() => {
-    if (currentStep < totalSteps) {
-      const nextScreen = steps[currentStep];
+  const goToNextStep = useCallback(
+    (nextStepName?: string) => {
+      let nextScreen = nextStepName;
 
-      setCurrentStep((prevStep) => prevStep + 1);
-      navigation.navigate(nextScreen);
+      if (!nextScreen) {
+        if (currentStep < totalSteps) {
+          nextScreen = steps[currentStep];
+          setCurrentStep((prevStep) => prevStep + 1);
+        }
+      } else {
+        const stepIndex = steps.indexOf(nextStepName);
+        if (stepIndex >= 0) {
+          setCurrentStep(stepIndex + 1);
+        }
+      }
 
-      trackEvent(`step_to_next_screen_${pascalToSnakeCase(nextScreen)}`);
-    }
-  }, [currentStep, navigation, steps, totalSteps]);
+      if (nextScreen) {
+        navigation.navigate(nextScreen);
+        trackEvent(`step_to_next_screen_${pascalToSnakeCase(nextScreen)}`);
+      }
+    },
+    [currentStep, navigation, steps, totalSteps],
+  );
 
   const goToPreviousStep = useCallback(() => {
     if (currentStep > 1) {

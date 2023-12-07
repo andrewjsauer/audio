@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+
+import { trackScreen } from '@lib/analytics';
 
 import Button from '@components/shared/Button';
 import Layout from '@components/shared/AuthScreens/Layout';
@@ -18,6 +20,10 @@ import {
 function SignInScreen() {
   const { t } = useTranslation();
   const { goToNextStep, currentStep } = useAuthFlow();
+
+  useEffect(() => {
+    trackScreen('SignInScreen');
+  }, []);
 
   return (
     <Layout step={currentStep}>

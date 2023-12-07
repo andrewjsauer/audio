@@ -1,5 +1,6 @@
 {
   "next": "Next",
+  "success": "Success!",
   "errors": {
     "tryAgain": "Try Again",
     "pleaseTryAgain": "Please Try Again",
@@ -29,7 +30,8 @@
       "descriptionP1": "Didn't receive your code? ",
       "descriptionP2": "Tap here ",
       "descriptionP3": "to resend in ",
-      "buttonText": "Verify"
+      "buttonText": "Verify",
+      "partnerFound": "We found your partner! Let's finish your registration"
     },
     "signIn": "Sign In",
     "enterPhone": "Enter your phone number",

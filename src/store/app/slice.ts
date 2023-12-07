@@ -3,15 +3,17 @@ import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { signOut } from './thunks';
 
 interface AppState {
+  error: string | undefined | null;
+  isLoading: boolean;
+  partnersData: object | null;
   user: FirebaseAuthTypes.User | null;
   userData: object | null;
-  isLoading: boolean;
-  error: string | undefined | null;
 }
 
 const initialState: AppState = {
   error: null,
   isLoading: false,
+  partnersData: null,
   user: null,
   userData: null,
 };
@@ -25,6 +27,9 @@ const appSlice = createSlice({
     },
     setUserData: (state, action: PayloadAction<object | null>) => {
       state.userData = action.payload;
+    },
+    setPartnersData: (state, action: PayloadAction<object | null>) => {
+      state.partnersData = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -42,5 +47,5 @@ const appSlice = createSlice({
   },
 });
 
-export const { setUser, setUserData } = appSlice.actions;
+export const { setUser, setUserData, setPartnersData } = appSlice.actions;
 export default appSlice.reducer;

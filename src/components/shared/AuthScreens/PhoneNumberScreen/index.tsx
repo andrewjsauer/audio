@@ -1,21 +1,17 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PhoneInput from 'react-native-phone-number-input';
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import { trackEvent } from '@lib/analytics';
+import { trackEvent, trackScreen } from '@lib/analytics';
+import { SignInFlowStepTypes as Steps } from '@lib/types';
 
 import { showNotification } from '@store/ui/slice';
-import { setUser, setUserData } from '@store/app/slice';
-
-import {
-  selectIsUserLoggedIn,
-  selectIsUserRegistered,
-} from '@store/app/selectors';
+import { setUser, setUserData, setPartnersData } from '@store/app/slice';
 
 import { useAuthFlow } from '@components/SignInScreen/AuthFlowContext';
 
@@ -29,14 +25,15 @@ function PhoneNumberScreenContainer() {
   const phoneInputRef = useRef<PhoneInput>(null);
   const { currentStep, goToNextStep, goToPreviousStep } = useAuthFlow();
 
-  const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
-  const isUserAlreadyRegistered = useSelector(selectIsUserRegistered);
-
   const [phoneNumber, setPhoneNumber] = useState('');
   const [code, setCode] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
   const [confirm, setConfirm] = useState(null);
+
+  useEffect(() => {
+    trackScreen('PhoneNumberScreen');
+  }, []);
 
   const showError = (errorKey: string, trackingKey: string) => {
     dispatch(
@@ -92,6 +89,21 @@ function PhoneNumberScreenContainer() {
         .get();
 
       const hasPartner = !partnerQuery.empty;
+      let partnerData = null;
+
+      if (hasPartner) {
+        partnerData = partnerQuery.docs[0].data();
+        setPartnersData(partnerData);
+
+        dispatch(
+          showNotification({
+            title: t('success'),
+            description: t('auth.verificationCodeScreen.partnerFound'),
+            type: 'success',
+          }),
+        );
+      }
+
       return { isRegistered: false, hasPartner };
     } catch (error) {
       crashlytics().recordError(error);
@@ -135,10 +147,10 @@ function PhoneNumberScreenContainer() {
 
       if (!isRegistered) {
         if (!hasPartner) {
-          goToNextStep(); // User not registered and no partner associated: P1 scenario
+          goToNextStep(Steps.PartnerDetailsStep);
           trackEvent('user_not_registered_no_partner');
         } else {
-          goToNextStep(); // User not registered but has a partner: P2 scenario
+          goToNextStep(Steps.UserDetailsStep);
           trackEvent('user_not_registered_has_partner');
         }
       }

@@ -3,20 +3,18 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import PhoneNumberScreen from '@components/shared/AuthScreens/PhoneNumberScreen';
 import UserDetailsScreen from '@components/shared/AuthScreens/UserDetailsScreen';
-import BirthdayScreen from '@components/shared/AuthScreens/BirthdayScreen';
-import InvitePartnerScreen from '@components/shared/AuthScreens/InvitePartnerScreen';
-import RelationshipStatusScreen from '@components/shared/AuthScreens/RelationshipStatusScreen';
+import PartnerDetailsScreen from '@components/shared/AuthScreens/PartnerDetailsScreen';
+
+import { SignInFlowStepTypes as Steps } from '@lib/types';
 
 import { AuthFlowProvider } from './AuthFlowContext';
 import SignInScreen from './SignInScreen';
 
 export type RootStackParamList = {
-  SignIn: undefined;
-  EnterPhoneNumber: undefined;
-  UserDetails: undefined;
-  Birthday: undefined;
-  InvitePartner: undefined;
-  RelationshipStatus: undefined;
+  [Steps.SignInStep]: undefined;
+  [Steps.PhoneNumberStep]: undefined;
+  [Steps.UserDetailsStep]: undefined;
+  [Steps.PartnerDetailsStep]: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -24,36 +22,26 @@ const Stack = createStackNavigator<RootStackParamList>();
 function SignInScreenContainer() {
   return (
     <AuthFlowProvider>
-      <Stack.Navigator initialRouteName="SignIn">
+      <Stack.Navigator initialRouteName={Steps.SignInStep}>
         <Stack.Screen
           options={{ headerShown: false }}
-          name="SignIn"
+          name={Steps.SignInStep}
           component={SignInScreen}
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="EnterPhoneNumber"
+          name={Steps.PhoneNumberStep}
           component={PhoneNumberScreen}
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="UserDetails"
+          name={Steps.UserDetailsStep}
           component={UserDetailsScreen}
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="Birthday"
-          component={BirthdayScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="InvitePartner"
-          component={InvitePartnerScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="RelationshipStatus"
-          component={RelationshipStatusScreen}
+          name={Steps.PartnerDetailsStep}
+          component={PartnerDetailsScreen}
         />
       </Stack.Navigator>
     </AuthFlowProvider>
