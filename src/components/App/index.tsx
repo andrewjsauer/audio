@@ -3,16 +3,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import { signOut } from '@store/auth/thunks';
+import { signOut } from '@store/app/thunks';
 import {
   selectError,
   selectIsLoading,
   selectIsUserLoggedIn,
-} from '@store/auth/selectors';
+  selectIsUserRegistered,
+} from '@store/app/selectors';
 
 import useAuthSubscription from '@lib/customHooks/useAuthSubscription';
+import SettingsIcon from '@assets/icons/settings.svg';
 
-import { StyledView, StyledText } from './style';
+import { StyledView, StyledText, LogoutButton } from './style';
 import SignInScreen from '../SignInScreen';
 
 function App(): JSX.Element {
@@ -27,15 +29,16 @@ function App(): JSX.Element {
 
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
+
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
+  const isUserAlreadyRegistered = useSelector(selectIsUserRegistered);
 
   const handleLogout = () => {
     dispatch(signOut());
   };
 
-  let content;
   if (isLoading) {
-    content = (
+    return (
       <StyledView>
         <StyledText>Loading...</StyledText>
       </StyledView>
@@ -43,23 +46,25 @@ function App(): JSX.Element {
   }
 
   if (error) {
-    content = (
+    return (
       <StyledView>
         <StyledText>Error: {error}</StyledText>
       </StyledView>
     );
   }
 
-  if (isUserLoggedIn) {
-    content = (
+  if (isUserLoggedIn && isUserAlreadyRegistered) {
+    return (
       <StyledView>
-        <StyledText>Please log in.</StyledText>
+        <LogoutButton onPress={handleLogout}>
+          <SettingsIcon width={20} height={20} />
+        </LogoutButton>
+        <StyledText>You are logged in</StyledText>
       </StyledView>
     );
   }
 
-  content = <SignInScreen />;
-  return content;
+  return <SignInScreen />;
 }
 
 export default App;

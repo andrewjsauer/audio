@@ -2,24 +2,29 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { signOut } from './thunks';
 
-interface AuthState {
+interface AppState {
   user: FirebaseAuthTypes.User | null;
+  userData: object | null;
   isLoading: boolean;
   error: string | undefined | null;
 }
 
-const initialState: AuthState = {
-  user: null,
-  isLoading: false,
+const initialState: AppState = {
   error: null,
+  isLoading: false,
+  user: null,
+  userData: null,
 };
 
-const authSlice = createSlice({
-  name: 'auth',
+const appSlice = createSlice({
+  name: 'app',
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<FirebaseAuthTypes.User | null>) => {
       state.user = action.payload;
+    },
+    setUserData: (state, action: PayloadAction<object | null>) => {
+      state.userData = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -37,5 +42,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser } = authSlice.actions;
-export default authSlice.reducer;
+export const { setUser, setUserData } = appSlice.actions;
+export default appSlice.reducer;

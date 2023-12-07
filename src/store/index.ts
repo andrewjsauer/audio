@@ -14,7 +14,6 @@ if (__DEV__) {
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  // whitelist: ['user'], uncomment if needed
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -32,6 +31,11 @@ const setupStore = (preloadedState?: Partial<RootState>) => {
   });
 
   const persistor = persistStore(store);
+
+  if (__DEV__) {
+    persistor.purge();
+  }
+
   return { store, persistor };
 };
 

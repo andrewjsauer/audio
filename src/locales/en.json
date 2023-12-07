@@ -2,7 +2,15 @@
   "next": "Next",
   "errors": {
     "tryAgain": "Try Again",
-    "whoops": "Whoops! Looks like there was an error"
+    "pleaseTryAgain": "Please Try Again",
+    "whoops": "Oops! Looks like there was an error",
+    "verificationCodeEmpty": "Verification code cannot be empty",
+    "invalidAPICode": "Something went wrong when submitting your verification code",
+    "phoneNumberEmpty": "Phone number cannot be empty",
+    "phoneNumberInvalid": "Phone number is invalid",
+    "phoneNumberAPIError": "Something went wrong when submitting your phone number",
+    "resendingVerificationCodeFailed": "Something went wrong when resending your verification code",
+    "registrationCheckFailed": "Something went wrong when checking your registration"
   },
   "auth": {
     "signInScreen": {
@@ -13,6 +21,15 @@
     "phoneNumberScreen": {
       "welcome": "Welcome! Sign In to get started",
       "disclaimer": "To sign in, type your phone number for a verification code."
+    },
+    "verificationCodeScreen": {
+      "title": "Your login code was sent to your number.",
+      "subtitle": "Verification Code",
+      "description": "<0><1>Tap here</1> to retry in 30 seconds.</0> ",
+      "descriptionP1": "Didn't receive your code? ",
+      "descriptionP2": "Tap here ",
+      "descriptionP3": "to resend in ",
+      "buttonText": "Verify"
     },
     "signIn": "Sign In",
     "enterPhone": "Enter your phone number",

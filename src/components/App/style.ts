@@ -12,3 +12,9 @@ export const StyledView = styled.View`
   justify-content: center;
   background-color: ${(p) => p.theme.colors.white};
 `;
+
+export const LogoutButton = styled.TouchableOpacity`
+  position: absolute;
+  top: 6%;
+  right: 6%;
+`;

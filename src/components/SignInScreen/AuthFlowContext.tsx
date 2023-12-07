@@ -18,7 +18,7 @@ interface AuthFlowContextProps {
 
 const AuthFlowContext = createContext<AuthFlowContextProps>({
   currentStep: 1,
-  totalSteps: 6,
+  totalSteps: 5,
   goToNextStep: () => {},
   goToPreviousStep: () => {},
 });
@@ -34,7 +34,6 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
   const steps = [
     'SignIn',
     'EnterPhoneNumber',
-    'EnterCode',
     'UserDetails',
     'Birthday',
     'InvitePartner',
@@ -43,6 +42,13 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
 
   const totalSteps = steps.length;
 
+  const pascalToSnakeCase = (str: string) => {
+    return str.replace(
+      /([A-Z])/g,
+      (_, p1, offset) => (offset > 0 ? '_' : '') + p1.toLowerCase(),
+    );
+  };
+
   const goToNextStep = useCallback(() => {
     if (currentStep < totalSteps) {
       const nextScreen = steps[currentStep];
@@ -50,7 +56,7 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
       setCurrentStep((prevStep) => prevStep + 1);
       navigation.navigate(nextScreen);
 
-      trackEvent(`Step to next screen: ${nextScreen}`);
+      trackEvent(`step_to_next_screen_${pascalToSnakeCase(nextScreen)}`);
     }
   }, [currentStep, navigation, steps, totalSteps]);
 
@@ -61,7 +67,9 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
       setCurrentStep((prevStep) => prevStep - 1);
       navigation.navigate(previousScreen);
 
-      trackEvent(`Step to previous screen: ${previousScreen}`);
+      trackEvent(
+        `step_to_previous_screen_${pascalToSnakeCase(previousScreen)}`,
+      );
     }
   }, [currentStep, navigation, steps]);
 

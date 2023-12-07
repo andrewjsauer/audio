@@ -12,7 +12,7 @@ import './lib/ignoreLogs';
 import setupStore from './store';
 import App from './components/App';
 import AppSafeAreaProvider from './components/shared/SafeAreaProvider';
-import Notifications from './components/shared/Notification';
+import NotificationProvider from './components/shared/NotificationProvider';
 import MainErrorBoundary from './components/shared/ErrorScreens/MainErrorBoundary';
 import theme from './styles/theme';
 
@@ -30,7 +30,7 @@ function AppContainer(): JSX.Element {
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <NavigationContainer>
-                <Notifications />
+                <NotificationProvider />
                 <App />
               </NavigationContainer>
             </PersistGate>

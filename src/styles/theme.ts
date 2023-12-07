@@ -7,6 +7,7 @@ const theme = {
     white: '#FFFFFF',
     error: '#DD5C42',
     success: '#4CAF50',
+    blue: '#2196F3',
   },
   fonts: {
     regular: 'Nunito-Regular',

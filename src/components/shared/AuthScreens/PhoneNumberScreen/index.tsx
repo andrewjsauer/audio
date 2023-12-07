@@ -1,113 +1,199 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
-import PhoneNumberInput from 'react-native-phone-number-input';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import PhoneInput from 'react-native-phone-number-input';
+
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import { trackEvent } from '@lib/analytics';
 
-import { useAuthFlow } from '@components/SignInScreen/AuthFlowContext';
-import Button from '@components/shared/Button';
 import { showNotification } from '@store/ui/slice';
+import { setUser, setUserData } from '@store/app/slice';
 
-import Layout from '../Layout';
 import {
-  Container,
-  PhoneWrapper,
-  PhoneSubtitle,
-  PhoneTitle,
-  ButtonWrapper,
-} from './style';
+  selectIsUserLoggedIn,
+  selectIsUserRegistered,
+} from '@store/app/selectors';
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-  },
-  label: {
-    fontSize: 16,
-    color: '#000000',
-    marginBottom: 5,
-  },
-  phoneInput: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#909090',
-    fontSize: 18,
-    fontFamily: 'Nunito-Regular',
-  },
-  textInput: {
-    fontSize: 18,
-    fontFamily: 'Nunito-Bold',
-    color: '#000000',
-  },
-  codeText: {
-    fontSize: 14,
-    fontFamily: 'Nunito-Regular',
-    color: '#000000',
-  },
-  textContainer: {
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 0,
-  },
-});
+import { useAuthFlow } from '@components/SignInScreen/AuthFlowContext';
 
-function PhoneNumberScreen() {
+import PhoneNumberScreen from './PhoneNumberScreen';
+import VerificationCodeScreen from './VerificationCodeScreen';
+
+function PhoneNumberScreenContainer() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const phoneInputRef = useRef<PhoneInput>(null);
   const { currentStep, goToNextStep, goToPreviousStep } = useAuthFlow();
+
+  const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
+  const isUserAlreadyRegistered = useSelector(selectIsUserRegistered);
+
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [code, setCode] = useState('');
 
-  // const signInWithPhoneNumber = async (number) => {
-  //   setIsLoading(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [confirm, setConfirm] = useState(null);
 
-  //   const confirmation = await auth().signInWithPhoneNumber(number);
+  const showError = (errorKey: string, trackingKey: string) => {
+    dispatch(
+      showNotification({
+        title: t('errors.pleaseTryAgain'),
+        description: t(errorKey),
+        type: 'error',
+      }),
+    );
 
-  //   trackEvent('phone_number_submitted', {
-  //     number,
-  //   });
+    trackEvent(trackingKey);
+    setIsLoading(false);
+  };
 
-  //   setIsLoading(false);
-  //   onConfirm(confirmation);
-  // };
-  dispatch(
-    showNotification({
-      title: 'Know when Linda answers...',
-      description: 'Allow notifications for questions and answers',
-      type: 'success',
-    }),
-  );
+  const handlePhoneSubmit = async () => {
+    setIsLoading(true);
 
-  return (
-    <Layout
-      step={currentStep}
-      goBack={goToPreviousStep}
-      title={t('auth.phoneNumberScreen.welcome')}>
-      <Container>
-        <PhoneWrapper>
-          <PhoneTitle>{t('auth.signIn')} *</PhoneTitle>
-          <PhoneNumberInput
-            autoFocus
-            defaultCode="US"
-            layout="first"
-            onChangeFormattedText={setPhoneNumber}
-            value={phoneNumber}
-            containerStyle={styles.phoneInput}
-            textInputStyle={styles.textInput}
-            codeTextStyle={styles.codeText}
-            textContainerStyle={styles.textContainer}
-          />
-          <PhoneSubtitle>
-            {t('auth.phoneNumberScreen.disclaimer')}
-          </PhoneSubtitle>
-        </PhoneWrapper>
-        <ButtonWrapper>
-          <Button text={t('auth.getCode')} onPress={() => goToNextStep()} />
-        </ButtonWrapper>
-      </Container>
-    </Layout>
+    if (!phoneNumber) {
+      showError('errors.phoneNumberEmpty', 'phone_number_empty');
+      return;
+    }
+
+    const isValid = phoneInputRef.current?.isValidNumber(phoneNumber);
+    if (!isValid) {
+      showError('errors.phoneNumberInvalid', 'phone_number_invalid');
+      return;
+    }
+
+    try {
+      const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+      setConfirm(confirmation);
+
+      trackEvent('phone_number_submitted');
+      setIsLoading(false);
+    } catch (error) {
+      showError('errors.phoneNumberAPIError', 'phone_number_api_error');
+      crashlytics().recordError(error);
+    }
+  };
+
+  const checkIfUserRegistered = async (uid: string) => {
+    try {
+      const userDoc = await firestore().collection('users').doc(uid).get();
+
+      if (userDoc.exists) {
+        dispatch(setUserData(userDoc.data()));
+        return { isRegistered: true };
+      }
+
+      const partnerQuery = await firestore()
+        .collection('partners')
+        .where('partnerPhoneNumbers', 'array-contains', phoneNumber)
+        .get();
+
+      const hasPartner = !partnerQuery.empty;
+      return { isRegistered: false, hasPartner };
+    } catch (error) {
+      crashlytics().recordError(error);
+      return { error };
+    }
+  };
+
+  const onVerificationCodeSubmit = async () => {
+    setIsLoading(true);
+
+    if (!code) {
+      showError('errors.verificationCodeEmpty', 'verification_code_empty');
+      return;
+    }
+
+    try {
+      await confirm?.confirm(code);
+      trackEvent('confirmed_verification_code');
+
+      const user = auth().currentUser;
+      dispatch(setUser(user));
+
+      const {
+        error,
+        hasPartner,
+        isRegistered,
+      }: {
+        error?: object;
+        hasPartner?: boolean;
+        isRegistered: boolean;
+      } = await checkIfUserRegistered(user.uid);
+
+      if (error) {
+        showError(
+          'errors.registrationCheckFailed',
+          'registration_check_failed',
+        );
+
+        return;
+      }
+
+      if (!isRegistered) {
+        if (!hasPartner) {
+          goToNextStep(); // User not registered and no partner associated: P1 scenario
+          trackEvent('user_not_registered_no_partner');
+        } else {
+          goToNextStep(); // User not registered but has a partner: P2 scenario
+          trackEvent('user_not_registered_has_partner');
+        }
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      showError('errors.invalidAPICode', 'invalid_api_code');
+      crashlytics().recordError(error);
+    }
+  };
+
+  const handleResendCode = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
+    try {
+      const confirmation = await auth().signInWithPhoneNumber(
+        phoneNumber,
+        true,
+      );
+      setConfirm(confirmation);
+
+      trackEvent('verification_code_resent');
+      setIsLoading(false);
+    } catch (error) {
+      showError(
+        'errors.resendingVerificationCodeFailed',
+        'resend_verification_code_failed',
+      );
+
+      crashlytics().recordError(error);
+    }
+  };
+
+  return !confirm ? (
+    <PhoneNumberScreen
+      currentStep={currentStep}
+      goToPreviousStep={goToPreviousStep}
+      phoneInputRef={phoneInputRef}
+      phoneNumber={phoneNumber}
+      setPhoneNumber={setPhoneNumber}
+      onPhoneSubmit={handlePhoneSubmit}
+      isLoading={isLoading}
+    />
+  ) : (
+    <VerificationCodeScreen
+      code={code}
+      currentStep={currentStep}
+      goToPreviousStep={goToPreviousStep}
+      isLoading={isLoading}
+      onResendCode={handleResendCode}
+      onVerificationCodeSubmit={onVerificationCodeSubmit}
+      setCode={setCode}
+    />
   );
 }
 
-export default PhoneNumberScreen;
+export default PhoneNumberScreenContainer;
