@@ -33,6 +33,12 @@
       "buttonText": "Verify",
       "partnerFound": "We found your partner! Let's finish your registration"
     },
+    "partnerDetailsScreen": {
+      "partnersName": "Let's get started, what’s your partner’s name?",
+      "partnersNameInputTitle": "Your Partner's Name",
+      "partnersNameInputPlaceholder": "Partner's first name",
+      "partnersNameInputDescription": "Enter your partner's first name or the name they most use."
+    },
     "signIn": "Sign In",
     "enterPhone": "Enter your phone number",
     "getCode": "Get Code",

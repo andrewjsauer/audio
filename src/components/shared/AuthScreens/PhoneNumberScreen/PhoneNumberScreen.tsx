@@ -8,11 +8,11 @@ import Button from '@components/shared/Button';
 import Layout from '../Layout';
 import {
   Container,
-  InputWrapper,
-  InputSubtitle,
-  InputTitle,
   ButtonWrapper,
-} from './style';
+  InputTitle,
+  InputSubtitle,
+  InputWrapper,
+} from '../style';
 
 const styles = StyleSheet.create({
   label: {

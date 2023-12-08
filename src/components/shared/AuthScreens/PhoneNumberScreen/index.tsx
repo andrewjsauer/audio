@@ -23,7 +23,8 @@ function PhoneNumberScreenContainer() {
   const dispatch = useDispatch();
 
   const phoneInputRef = useRef<PhoneInput>(null);
-  const { currentStep, goToNextStep, goToPreviousStep } = useAuthFlow();
+  const { currentStep, goToNextStep, goToPreviousStep, handleUserDetails } =
+    useAuthFlow();
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [code, setCode] = useState('');
@@ -146,6 +147,8 @@ function PhoneNumberScreenContainer() {
       }
 
       if (!isRegistered) {
+        handleUserDetails({ phoneNumber });
+
         if (!hasPartner) {
           goToNextStep(Steps.PartnerDetailsStep);
           trackEvent('user_not_registered_no_partner');

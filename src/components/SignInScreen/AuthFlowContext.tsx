@@ -10,11 +10,31 @@ import { useNavigation } from '@react-navigation/native';
 import { SignInFlowStepTypes as Steps } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
 
+interface UserDetails {
+  birthday?: string;
+  color?: string;
+  id?: string;
+  name?: string;
+  phoneNumber?: string;
+}
+
+interface PartnerDetails {
+  birthday?: string;
+  name?: string;
+  phoneNumber?: string;
+  relationshipDate?: string;
+  relationshipType?: string;
+}
+
 interface AuthFlowContextProps {
   currentStep: number;
   totalSteps: number;
-  goToNextStep: () => void;
+  goToNextStep: (step?: string) => void;
   goToPreviousStep: () => void;
+  handleUserDetails: (newDetails: UserDetails) => void;
+  handlePartnerDetails: (newDetails: PartnerDetails) => void;
+  userDetails: UserDetails;
+  partnerDetails: PartnerDetails;
 }
 
 const AuthFlowContext = createContext<AuthFlowContextProps>({
@@ -22,6 +42,8 @@ const AuthFlowContext = createContext<AuthFlowContextProps>({
   totalSteps: 5,
   goToPreviousStep: () => {},
   goToNextStep: () => {},
+  handleUserDetails: () => {},
+  handlePartnerDetails: () => {},
 });
 
 const steps = [
@@ -33,9 +55,26 @@ const steps = [
 
 export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
   const navigation = useNavigation();
+
+  const [userDetails, setUserDetails] = useState<UserDetails>({});
+  const [partnerDetails, setPartnerDetails] = useState<PartnerDetails>({});
   const [currentStep, setCurrentStep] = useState(1);
 
   const totalSteps = steps.length;
+
+  const handlePartnerDetails = (newDetails: PartnerDetails) => {
+    setPartnerDetails((prevDetails) => ({
+      ...prevDetails,
+      ...newDetails,
+    }));
+  };
+
+  const handleUserDetails = (newDetails: UserDetails) => {
+    setUserDetails((prevDetails) => ({
+      ...prevDetails,
+      ...newDetails,
+    }));
+  };
 
   const pascalToSnakeCase = (str: string) => {
     return str.replace(
@@ -84,11 +123,22 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
   const contextValue = useMemo(
     () => ({
       currentStep,
-      totalSteps,
       goToNextStep,
       goToPreviousStep,
+      handlePartnerDetails,
+      handleUserDetails,
+      partnerDetails,
+      totalSteps,
+      userDetails,
     }),
-    [currentStep, totalSteps, goToNextStep, goToPreviousStep],
+    [
+      currentStep,
+      totalSteps,
+      userDetails,
+      partnerDetails,
+      goToNextStep,
+      goToPreviousStep,
+    ],
   );
 
   return (
