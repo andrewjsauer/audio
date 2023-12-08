@@ -22,7 +22,7 @@ interface PartnerDetails {
   birthday?: string;
   name?: string;
   phoneNumber?: string;
-  relationshipDate?: string;
+  relationshipDate?: Date;
   relationshipType?: string;
 }
 

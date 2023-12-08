@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import PhoneNumberInput from 'react-native-phone-number-input';
+import PhoneNumberInputProp from 'react-native-phone-number-input';
 
 import Button from '@components/shared/Button';
+import PhoneNumberInput from '@components/shared/PhoneNumberInput';
 
 import Layout from '../Layout';
 import {
@@ -14,40 +14,11 @@ import {
   InputWrapper,
 } from '../style';
 
-const styles = StyleSheet.create({
-  label: {
-    fontSize: 16,
-    color: '#000000',
-    marginBottom: 5,
-  },
-  phoneInput: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 2,
-    borderWidth: 1,
-    borderColor: '#909090',
-    fontSize: 18,
-    fontFamily: 'Nunito-Regular',
-  },
-  textInput: {
-    fontSize: 18,
-    fontFamily: 'Nunito-Bold',
-    color: '#000000',
-  },
-  codeText: {
-    fontSize: 14,
-    fontFamily: 'Nunito-Regular',
-    color: '#000000',
-  },
-  textContainer: {
-    backgroundColor: '#FFFFFF',
-  },
-});
-
 type Props = {
   goToPreviousStep: () => void;
   isLoading: boolean;
   onPhoneSubmit: () => void;
-  phoneInputRef: React.RefObject<PhoneNumberInput>;
+  phoneInputRef: React.RefObject<PhoneNumberInputProp>;
   phoneNumber: string;
   setPhoneNumber: (text: string) => void;
 };
@@ -70,16 +41,9 @@ function PhoneNumberScreen({
         <InputWrapper>
           <InputTitle>{t('auth.signIn')} *</InputTitle>
           <PhoneNumberInput
-            autoFocus
-            codeTextStyle={styles.codeText}
-            containerStyle={styles.phoneInput}
-            defaultCode="US"
-            layout="first"
-            onChangeFormattedText={setPhoneNumber}
-            ref={phoneInputRef}
-            textContainerStyle={styles.textContainer}
-            textInputStyle={styles.textInput}
-            value={phoneNumber}
+            setPhoneNumber={setPhoneNumber}
+            phoneInputRef={phoneInputRef}
+            phoneNumber={phoneNumber}
           />
           <InputSubtitle>
             {t('auth.phoneNumberScreen.disclaimer')}

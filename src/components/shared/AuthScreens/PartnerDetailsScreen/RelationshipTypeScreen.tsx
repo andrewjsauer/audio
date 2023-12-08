@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/SignInScreen/AuthFlowContext';
 import { PartnerDetailsSteps as Steps } from '@lib/types';
+import { trackScreen } from '@lib/analytics';
 
 import Layout from '../Layout';
 import { Container, ButtonWrapper } from '../style';
@@ -45,6 +46,10 @@ function RadioButton({ label, value, checked, onChange }: RadioButtonProps) {
 
 function RelationshipTypeScreen() {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    trackScreen('RelationshipTypeScreen');
+  }, []);
 
   const {
     goToNextStep,

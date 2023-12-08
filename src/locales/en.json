@@ -11,7 +11,8 @@
     "phoneNumberInvalid": "Phone number is invalid",
     "phoneNumberAPIError": "Something went wrong when submitting your phone number",
     "resendingVerificationCodeFailed": "Something went wrong when resending your verification code",
-    "registrationCheckFailed": "Something went wrong when checking your registration"
+    "registrationCheckFailed": "Something went wrong when checking your registration",
+    "invitePartnerAPIError": "Something went wrong when inviting your partner"
   },
   "auth": {
     "signInScreen": {
@@ -56,6 +57,18 @@
           { "inAnOpenRelationship": "Open Relationship" },
           { "married": "Married" }
         ]
+      },
+      "relationshipDateScreen": {
+        "title": "When did you start getting to know each other?",
+        "inputTitle": "Start of Relationship *",
+        "inputDescription": "Knowing the relationship's age helps customize your experience"
+      },
+      "invitePartnerScreen": {
+        "title": "This app only works with your partner. Send your partner the invite!",
+        "inputTitle": "Your Partner's Phone Number",
+        "inputPlaceholder": "Partner's phone number",
+        "inputDescription": "Your partner will receive an invitation to join you.",
+        "sendInvite": "Send Invite"
       }
     },
     "signIn": "Sign In",

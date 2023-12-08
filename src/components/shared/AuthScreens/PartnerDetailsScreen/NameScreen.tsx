@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { trackScreen } from '@lib/analytics';
 
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/SignInScreen/AuthFlowContext';
@@ -17,6 +19,10 @@ import { TextInput } from './style';
 
 function NameScreen() {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    trackScreen('NameScreen');
+  }, []);
 
   const { goToNextStep, partnerDetails, handlePartnerDetails } = useAuthFlow();
   const { name } = partnerDetails;

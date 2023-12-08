@@ -23,8 +23,7 @@ function PhoneNumberScreenContainer() {
   const dispatch = useDispatch();
 
   const phoneInputRef = useRef<PhoneInput>(null);
-  const { currentStep, goToNextStep, goToPreviousStep, handleUserDetails } =
-    useAuthFlow();
+  const { goToNextStep, goToPreviousStep, handleUserDetails } = useAuthFlow();
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [code, setCode] = useState('');
