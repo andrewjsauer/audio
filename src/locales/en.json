@@ -33,11 +33,30 @@
       "buttonText": "Verify",
       "partnerFound": "We found your partner! Let's finish your registration"
     },
-    "partnerDetailsScreen": {
-      "partnersName": "Let's get started, what’s your partner’s name?",
-      "partnersNameInputTitle": "Your Partner's Name",
-      "partnersNameInputPlaceholder": "Partner's first name",
-      "partnersNameInputDescription": "Enter your partner's first name or the name they most use."
+    "partnerDetails": {
+      "nameScreen": {
+        "title": "Welcome! Let's get started, what’s your partner’s name?",
+        "inputTitle": "Your Partner's Name",
+        "inputPlaceholder": "Partner's first name",
+        "inputDescription": "Enter your partner's first name or the name they most use."
+      },
+      "relationshipTypeScreen": {
+        "title": "What's your relationship status?",
+        "types": [
+          { "stillGettingToKnowEachOther": "Still Getting to Know Each Other" },
+          { "dating": "Dating" },
+          { "inARelationship": "In a Relationship" },
+          { "engaged": "Engaged" },
+          { "domesticPartnership": "Domestic Partnership" },
+          { "cohabiting": "Cohabiting" },
+          { "longDistanceRelationship": "Long Distance Relationship" },
+          {
+            "consensualNonMonogamousRelationship": "Consensual Non-monogamous Relationship"
+          },
+          { "inAnOpenRelationship": "Open Relationship" },
+          { "married": "Married" }
+        ]
+      }
     },
     "signIn": "Sign In",
     "enterPhone": "Enter your phone number",

@@ -24,24 +24,24 @@ function SignInScreenContainer() {
     <AuthFlowProvider>
       <Stack.Navigator initialRouteName={Steps.SignInStep}>
         <Stack.Screen
-          options={{ headerShown: false }}
-          name={Steps.SignInStep}
           component={SignInScreen}
+          name={Steps.SignInStep}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
-          name={Steps.PhoneNumberStep}
           component={PhoneNumberScreen}
+          name={Steps.PhoneNumberStep}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
-          name={Steps.UserDetailsStep}
           component={UserDetailsScreen}
+          name={Steps.UserDetailsStep}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
-          name={Steps.PartnerDetailsStep}
           component={PartnerDetailsScreen}
+          name={Steps.PartnerDetailsStep}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </AuthFlowProvider>

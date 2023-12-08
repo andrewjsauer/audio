@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  currentStep: number;
   goToPreviousStep: () => void;
   isLoading: boolean;
   onPhoneSubmit: () => void;
@@ -54,7 +53,6 @@ type Props = {
 };
 
 function PhoneNumberScreen({
-  currentStep,
   goToPreviousStep,
   isLoading,
   onPhoneSubmit,
@@ -66,7 +64,6 @@ function PhoneNumberScreen({
 
   return (
     <Layout
-      step={currentStep}
       goBack={goToPreviousStep}
       title={t('auth.phoneNumberScreen.welcome')}>
       <Container>

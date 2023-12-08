@@ -3,6 +3,9 @@ import styled from 'styled-components/native';
 import { Button } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { useAuthFlow } from '@components/SignInScreen/AuthFlowContext';
+import Layout from './Layout';
+
 const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -19,11 +22,20 @@ const NameInput = styled.TextInput`
 function UserDetailsScreen() {
   const { t } = useTranslation();
 
+  const {
+    goToNextStep,
+    goToPreviousStep,
+    partnerDetails,
+    handlePartnerDetails,
+  } = useAuthFlow();
+
   return (
-    <Container>
-      <NameInput placeholder={t('enterName')} />
-      <Button title={t('next')} onPress={() => {}} />
-    </Container>
+    <Layout goBack={goToPreviousStep} isBackButtonEnabled title="TEST">
+      <Container>
+        <NameInput placeholder={t('enterName')} />
+        <Button title={t('next')} onPress={() => {}} />
+      </Container>
+    </Layout>
   );
 }
 

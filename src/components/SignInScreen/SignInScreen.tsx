@@ -19,14 +19,14 @@ import {
 
 function SignInScreen() {
   const { t } = useTranslation();
-  const { goToNextStep, currentStep } = useAuthFlow();
+  const { goToNextStep } = useAuthFlow();
 
   useEffect(() => {
     trackScreen('SignInScreen');
   }, []);
 
   return (
-    <Layout step={currentStep}>
+    <Layout isHeaderEnabled={false}>
       <Container>
         <View>
           <Title>{t('auth.signInScreen.title')}</Title>

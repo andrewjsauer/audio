@@ -13,21 +13,30 @@ import {
 } from './style';
 
 type LayoutProps = {
-  goBack?: () => void;
-  step: number;
-  title?: string;
   children: React.ReactNode;
+  goBack?: () => void;
+  isBackButtonEnabled?: boolean;
+  isHeaderEnabled?: boolean;
+  title?: string;
 };
 
-function Layout({ goBack, step, title, children }: LayoutProps) {
+function Layout({
+  children,
+  goBack,
+  isBackButtonEnabled = true,
+  isHeaderEnabled = true,
+  title,
+}: LayoutProps) {
   return (
     <LayoutContainer>
-      {step > 1 && (
-        <Header>
-          <BackButtonWrapper onPress={goBack}>
-            <ChevronLeft width={30} height={30} />
-          </BackButtonWrapper>
-          <Title>{title}</Title>
+      {isHeaderEnabled && (
+        <Header isAddedPadding={!isBackButtonEnabled}>
+          {isBackButtonEnabled && (
+            <BackButtonWrapper onPress={goBack}>
+              <ChevronLeft width={30} height={30} />
+            </BackButtonWrapper>
+          )}
+          <Title isLeftMargin={isBackButtonEnabled}>{title}</Title>
         </Header>
       )}
       <KeyboardAvoidingView

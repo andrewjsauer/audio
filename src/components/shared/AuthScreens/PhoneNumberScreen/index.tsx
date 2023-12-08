@@ -190,7 +190,6 @@ function PhoneNumberScreenContainer() {
 
   return !confirm ? (
     <PhoneNumberScreen
-      currentStep={currentStep}
       goToPreviousStep={goToPreviousStep}
       phoneInputRef={phoneInputRef}
       phoneNumber={phoneNumber}
@@ -201,7 +200,6 @@ function PhoneNumberScreenContainer() {
   ) : (
     <VerificationCodeScreen
       code={code}
-      currentStep={currentStep}
       goToPreviousStep={goToPreviousStep}
       isLoading={isLoading}
       onResendCode={handleResendCode}

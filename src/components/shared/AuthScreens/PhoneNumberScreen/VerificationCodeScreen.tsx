@@ -17,7 +17,6 @@ import { CodeInput, ResendCodeWrapper, ResendCodeTextWrapper } from './style';
 
 type Props = {
   code: string;
-  currentStep: number;
   goToPreviousStep: () => void;
   isLoading: boolean;
   onResendCode: () => void;
@@ -27,7 +26,6 @@ type Props = {
 
 function VerificationCodeScreen({
   code,
-  currentStep,
   goToPreviousStep,
   isLoading,
   onResendCode,
@@ -65,7 +63,6 @@ function VerificationCodeScreen({
   return (
     <Layout
       goBack={goToPreviousStep}
-      step={currentStep}
       title={t('auth.verificationCodeScreen.title')}>
       <Container>
         <InputWrapper>

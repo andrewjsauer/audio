@@ -30,7 +30,7 @@ interface AuthFlowContextProps {
   currentStep: number;
   totalSteps: number;
   goToNextStep: (step?: string) => void;
-  goToPreviousStep: () => void;
+  goToPreviousStep: (arg0: string | void) => void;
   handleUserDetails: (newDetails: UserDetails) => void;
   handlePartnerDetails: (newDetails: PartnerDetails) => void;
   userDetails: UserDetails;
@@ -39,11 +39,13 @@ interface AuthFlowContextProps {
 
 const AuthFlowContext = createContext<AuthFlowContextProps>({
   currentStep: 1,
-  totalSteps: 5,
-  goToPreviousStep: () => {},
   goToNextStep: () => {},
-  handleUserDetails: () => {},
+  goToPreviousStep: () => {},
   handlePartnerDetails: () => {},
+  handleUserDetails: () => {},
+  partnerDetails: {},
+  totalSteps: 5,
+  userDetails: {},
 });
 
 const steps = [
@@ -59,6 +61,9 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
   const [userDetails, setUserDetails] = useState<UserDetails>({});
   const [partnerDetails, setPartnerDetails] = useState<PartnerDetails>({});
   const [currentStep, setCurrentStep] = useState(1);
+
+  console.log('partnerDetails', partnerDetails);
+  console.log('userDetails', userDetails);
 
   const totalSteps = steps.length;
 
@@ -86,6 +91,7 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
   const goToNextStep = useCallback(
     (nextStepName?: string) => {
       let nextScreen = nextStepName;
+      console.log('nextStepName', nextStepName);
 
       if (!nextScreen) {
         if (currentStep < totalSteps) {
@@ -107,18 +113,31 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
     [currentStep, navigation, steps, totalSteps],
   );
 
-  const goToPreviousStep = useCallback(() => {
-    if (currentStep > 1) {
-      const previousScreen = steps[currentStep - 2];
+  const goToPreviousStep = useCallback(
+    (prevStepName?: string) => {
+      let prevScreen = prevStepName;
+      console.log('prevScreen', prevScreen);
 
-      setCurrentStep((prevStep) => prevStep - 1);
-      navigation.navigate(previousScreen);
+      if (!prevScreen) {
+        if (currentStep > 1) {
+          prevScreen = steps[currentStep - 2];
+          setCurrentStep((prevStep) => prevStep - 1);
+        }
+      } else {
+        const stepIndex = steps.indexOf(prevStepName);
+        if (stepIndex >= 0) {
+          setCurrentStep(stepIndex + 1);
+        }
+        prevScreen = prevStepName;
+      }
 
-      trackEvent(
-        `step_to_previous_screen_${pascalToSnakeCase(previousScreen)}`,
-      );
-    }
-  }, [currentStep, navigation, steps]);
+      if (prevScreen) {
+        navigation.navigate(prevScreen);
+        trackEvent(`step_to_previous_screen_${pascalToSnakeCase(prevScreen)}`);
+      }
+    },
+    [currentStep, navigation, steps],
+  );
 
   const contextValue = useMemo(
     () => ({

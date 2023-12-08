@@ -9,16 +9,17 @@ export const BackButtonWrapper = styled.TouchableOpacity`
   margin-bottom: 20px;
 `;
 
-export const Header = styled.View`
+export const Header = styled.View<{ isAddedPadding: boolean }>`
   margin-top: 40px;
-  padding: 10px;
+  padding: ${(p) => (p.isAddedPadding ? '20px' : '10px')};
 `;
 
-export const Title = styled.Text`
+export const Title = styled.Text<{ isLeftMargin: boolean }>`
   font-family: ${(p) => p.theme.fonts.bold};
   font-size: ${(p) => p.theme.fontSizes.medium};
   color: ${(p) => p.theme.colors.black};
-  margin-left: 20px;
+
+  ${(p) => p.isLeftMargin && 'margin-left: 20px;'}
 `;
 
 export const KeyboardAvoidingView = styled.KeyboardAvoidingView`
