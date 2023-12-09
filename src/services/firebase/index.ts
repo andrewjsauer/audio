@@ -18,7 +18,21 @@ rnfbProvider.configure({
   },
 });
 
+const test = async () => {
+  try {
+    const { token } = await firebase.appCheck().getToken(true);
+
+    if (token.length > 0) {
+      console.log('AppCheck verification passed');
+    }
+  } catch (error) {
+    console.log('AppCheck verification failed', error);
+  }
+};
+
 firebase.appCheck().initializeAppCheck({
   provider: rnfbProvider,
   isTokenAutoRefreshEnabled: true,
 });
+
+test();

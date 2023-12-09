@@ -106,6 +106,8 @@ function PhoneNumberScreenContainer() {
 
       return { isRegistered: false, hasPartner };
     } catch (error) {
+      console.log('error', error);
+
       crashlytics().recordError(error);
       return { error };
     }
