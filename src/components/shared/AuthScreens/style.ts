@@ -4,7 +4,7 @@ export const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: flex-end;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 `;
 
 export const ButtonWrapper = styled.View`

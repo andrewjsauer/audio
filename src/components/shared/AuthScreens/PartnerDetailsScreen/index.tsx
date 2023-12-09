@@ -3,13 +3,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { PartnerDetailsSteps as Steps } from '@lib/types';
 
-import NameScreen from './NameScreen';
+import PartnerNameScreen from './PartnerNameScreen';
 import RelationshipTypeScreen from './RelationshipTypeScreen';
 import RelationshipDateScreen from './RelationshipDateScreen';
 import InviteScreen from './InviteScreen';
 
 export type RootStackParamList = {
-  [Steps.NameStep]: undefined;
+  [Steps.PartnerNameStep]: undefined;
   [Steps.RelationshipTypeStep]: undefined;
   [Steps.RelationshipDateStep]: undefined;
   [Steps.InviteStep]: undefined;
@@ -19,10 +19,10 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function PartnerDetailsScreen() {
   return (
-    <Stack.Navigator initialRouteName={Steps.NameStep}>
+    <Stack.Navigator initialRouteName={Steps.PartnerNameStep}>
       <Stack.Screen
-        component={NameScreen}
-        name={Steps.NameStep}
+        component={PartnerNameScreen}
+        name={Steps.PartnerNameStep}
         options={{ headerShown: false }}
       />
       <Stack.Screen

@@ -7,7 +7,7 @@ import PartnerDetailsScreen from '@components/shared/AuthScreens/PartnerDetailsS
 
 import { SignInFlowStepTypes as Steps } from '@lib/types';
 
-import { AuthFlowProvider } from './AuthFlowContext';
+import { AuthFlowProvider } from '@components/shared/AuthScreens/AuthFlowContext';
 import SignInScreen from './SignInScreen';
 
 export type RootStackParamList = {

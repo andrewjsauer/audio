@@ -50,7 +50,7 @@ export const Title = styled.Text`
 
 export const Description = styled.Text`
   font-family: ${(p) => p.theme.fonts.regular};
-  font-size: ${(p) => p.theme.fontSizes.small};
+  font-size: ${(p) => p.theme.fontSizes.regular};
   color: ${(p) => p.theme.colors.white};
 `;
 

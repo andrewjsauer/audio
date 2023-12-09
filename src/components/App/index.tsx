@@ -54,6 +54,9 @@ function App(): JSX.Element {
   }
 
   if (isUserLoggedIn && isUserAlreadyRegistered) {
+    // lets setup a subscriber when logged in for the partners data since that is where we will
+    // be updating the most
+
     return (
       <StyledView>
         <LogoutButton onPress={handleLogout}>

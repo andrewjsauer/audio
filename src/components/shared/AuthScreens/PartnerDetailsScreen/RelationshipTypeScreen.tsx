@@ -1,10 +1,14 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+
+import { trackEvent, trackScreen } from '@lib/analytics';
 
 import Button from '@components/shared/Button';
-import { useAuthFlow } from '@components/SignInScreen/AuthFlowContext';
+import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
+
 import { PartnerDetailsSteps as Steps } from '@lib/types';
-import { trackScreen } from '@lib/analytics';
+import { showNotification } from '@store/ui/slice';
 
 import Layout from '../Layout';
 import { Container, ButtonWrapper } from '../style';
@@ -46,6 +50,7 @@ function RadioButton({ label, value, checked, onChange }: RadioButtonProps) {
 
 function RelationshipTypeScreen() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     trackScreen('RelationshipTypeScreen');
@@ -61,12 +66,29 @@ function RelationshipTypeScreen() {
   const relationshipType =
     partnerDetails?.relationshipType ?? ('' as RelationshipType);
 
+  const handleSubmit = () => {
+    if (!relationshipType) {
+      dispatch(
+        showNotification({
+          title: t('errors.pleaseTryAgain'),
+          description: t('errors.relationshipTypeEmpty'),
+          type: 'error',
+        }),
+      );
+
+      trackEvent('relationship_type_empty');
+      return;
+    }
+
+    goToNextStep(Steps.RelationshipDateStep);
+  };
+
   const types = t('auth.partnerDetails.relationshipTypeScreen.types', {
     returnObjects: true,
   }) as { [key in RelationshipType]: string }[];
   return (
     <Layout
-      goBack={() => goToPreviousStep(Steps.NameStep)}
+      goBack={() => goToPreviousStep(Steps.PartnerNameStep)}
       isBackButtonEnabled
       title={t('auth.partnerDetails.relationshipTypeScreen.title')}>
       <Container>
@@ -91,10 +113,7 @@ function RelationshipTypeScreen() {
           })}
         </RelationshipTypeContainer>
         <ButtonWrapper>
-          <Button
-            onPress={() => goToNextStep(Steps.RelationshipDateStep)}
-            text={t('next')}
-          />
+          <Button onPress={handleSubmit} text={t('next')} />
         </ButtonWrapper>
       </Container>
     </Layout>

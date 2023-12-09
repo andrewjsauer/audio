@@ -7,8 +7,13 @@ export enum SignInFlowStepTypes {
 }
 
 export enum PartnerDetailsSteps {
-  NameStep = 'NameScreen',
+  PartnerNameStep = 'PartnerNameScreen',
   RelationshipTypeStep = 'RelationshipTypeScreen',
   RelationshipDateStep = 'RelationshipDateScreen',
   InviteStep = 'InviteScreen',
+}
+
+export enum UserDetailsSteps {
+  UserNameStep = 'UserNameScreen',
+  BirthdayStep = 'BirthdayScreen',
 }

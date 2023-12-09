@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import PhoneInputProp from 'react-native-phone-number-input';
 import firestore from '@react-native-firebase/firestore';
-import { v4 as uuidv4 } from 'uuid';
 import crashlytics from '@react-native-firebase/crashlytics';
+import functions from '@react-native-firebase/functions';
+import { v4 as uuidv4 } from 'uuid';
 
 import Button from '@components/shared/Button';
-import { useAuthFlow } from '@components/SignInScreen/AuthFlowContext';
+import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
 import PhoneNumberInput from '@components/shared/PhoneNumberInput';
 
 import { showNotification } from '@store/ui/slice';
@@ -44,10 +45,8 @@ function InviteScreen() {
     goToPreviousStep,
     partnerDetails,
     handlePartnerDetails,
-    userDetails,
   } = useAuthFlow();
 
-  const { phoneNumber: usersPhoneNumber } = userDetails;
   const {
     name: partnerName,
     phoneNumber,
@@ -68,13 +67,16 @@ function InviteScreen() {
     setIsLoading(false);
   };
 
-  async function sendSmsToPartner(
-    phoneNumber: string,
-    partnerName: string,
-    partnerId: string,
-  ) {
-    // Call your cloud function or use Firebase Cloud Messaging to send an SMS
-    // This is a placeholder function. Replace with your actual implementation.
+  async function sendSmsToPartner(data: {
+    partnerName: string;
+    phoneNumber: string;
+  }) {
+    try {
+      await functions().httpsCallable('sendPartnerInvite')(data);
+    } catch (error) {
+      crashlytics().recordError(error);
+      trackEvent('send_sms_invite_partner_api_error');
+    }
   }
 
   const handleSendInvite = async () => {
@@ -92,26 +94,24 @@ function InviteScreen() {
     }
 
     try {
-      const partnerId = uuidv4();
+      const partnershipId = uuidv4();
 
       const partnerData = {
-        id: partnerId,
+        id: partnershipId,
         partner1Id: user.uid,
         partner2Name: partnerName,
-        partnerPhoneNumbers: [phoneNumber, usersPhoneNumber],
+        partnerPhoneNumbers: [phoneNumber],
         relationshipDate,
         relationshipType,
       };
 
-      const partnerRef = firestore().collection('partners').doc(partnerId);
+      const partnerRef = firestore().collection('partners').doc(partnershipId);
       await partnerRef.set(partnerData, { merge: true });
 
-      // Send SMS via Firebase Cloud Messaging or your server (pseudocode)
-      // You would typically call a cloud function to handle SMS sending
-      await sendSmsToPartner(phoneNumber, partnerName, partnerId);
+      await sendSmsToPartner({ partnerName, phoneNumber });
 
+      dispatch(setPartnersData(partnerData));
       setIsLoading(false);
-      setPartnersData(partnerData);
 
       goToNextStep(SignInFlowStepTypes.UserDetailsStep);
     } catch (error) {

@@ -5,6 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
 
+import 'react-native-get-random-values';
 import './locales/index';
 import './services/firebase/index';
 import './lib/ignoreLogs';

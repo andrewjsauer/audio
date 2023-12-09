@@ -13,7 +13,7 @@ import { SignInFlowStepTypes as Steps } from '@lib/types';
 import { showNotification } from '@store/ui/slice';
 import { setUser, setUserData, setPartnersData } from '@store/app/slice';
 
-import { useAuthFlow } from '@components/SignInScreen/AuthFlowContext';
+import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
 
 import PhoneNumberScreen from './PhoneNumberScreen';
 import VerificationCodeScreen from './VerificationCodeScreen';
@@ -93,7 +93,7 @@ function PhoneNumberScreenContainer() {
 
       if (hasPartner) {
         partnerData = partnerQuery.docs[0].data();
-        setPartnersData(partnerData);
+        dispatch(setPartnersData(partnerData));
 
         dispatch(
           showNotification({

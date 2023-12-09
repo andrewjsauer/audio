@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 
-import { trackScreen } from '@lib/analytics';
+import { trackEvent, trackScreen } from '@lib/analytics';
 
 import Button from '@components/shared/Button';
-import { useAuthFlow } from '@components/SignInScreen/AuthFlowContext';
+import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
+
 import { PartnerDetailsSteps as Steps } from '@lib/types';
+import { showNotification } from '@store/ui/slice';
 
 import Layout from '../Layout';
 import {
@@ -17,15 +20,33 @@ import {
 } from '../style';
 import { TextInput } from './style';
 
-function NameScreen() {
+function PartnerNameScreen() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    trackScreen('NameScreen');
+    trackScreen('PartnerNameScreen');
   }, []);
 
   const { goToNextStep, partnerDetails, handlePartnerDetails } = useAuthFlow();
   const { name } = partnerDetails;
+
+  const handleSubmit = () => {
+    if (!name) {
+      dispatch(
+        showNotification({
+          title: t('errors.pleaseTryAgain'),
+          description: t('errors.partnerNameEmpty'),
+          type: 'error',
+        }),
+      );
+
+      trackEvent('partner_name_empty');
+      return;
+    }
+
+    goToNextStep(Steps.RelationshipTypeStep);
+  };
 
   return (
     <Layout
@@ -51,14 +72,11 @@ function NameScreen() {
           </InputSubtitle>
         </InputWrapper>
         <ButtonWrapper>
-          <Button
-            onPress={() => goToNextStep(Steps.RelationshipTypeStep)}
-            text={t('next')}
-          />
+          <Button onPress={handleSubmit} text={t('next')} />
         </ButtonWrapper>
       </Container>
     </Layout>
   );
 }
 
-export default NameScreen;
+export default PartnerNameScreen;

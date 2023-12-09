@@ -1,6 +1,7 @@
 {
   "next": "Next",
   "success": "Success!",
+  "submit": "Submit",
   "errors": {
     "tryAgain": "Try Again",
     "pleaseTryAgain": "Please Try Again",
@@ -12,7 +13,13 @@
     "phoneNumberAPIError": "Something went wrong when submitting your phone number",
     "resendingVerificationCodeFailed": "Something went wrong when resending your verification code",
     "registrationCheckFailed": "Something went wrong when checking your registration",
-    "invitePartnerAPIError": "Something went wrong when inviting your partner"
+    "invitePartnerAPIError": "Something went wrong when inviting your partner",
+    "partnerNameEmpty": "Partner's name cannot be empty",
+    "relationshipDateEmpty": "Relationship date cannot be empty",
+    "relationshipTypeEmpty": "Relationship status cannot be empty",
+    "userNameEmpty": "Your name cannot be empty",
+    "birthdayEmpty": "Birthday cannot be empty",
+    "colorEmpty": "Color cannot be empty"
   },
   "auth": {
     "signInScreen": {
@@ -67,8 +74,21 @@
         "title": "This app only works with your partner. Send your partner the invite!",
         "inputTitle": "Your Partner's Phone Number",
         "inputPlaceholder": "Partner's phone number",
-        "inputDescription": "Your partner will receive an invitation to join you.",
+        "inputDescription": "By submitting, I have confirmed that I have obtained my partner's consent to send them an SMS invitation",
         "sendInvite": "Send Invite"
+      }
+    },
+    "userDetails": {
+      "userNameScreen": {
+        "title": "Your turn! Choose your favorite color and tell us your name",
+        "inputTitle": "Your Name *",
+        "inputPlaceholder": "Your first name",
+        "inputDescription": "Enter your first name or the name you most use."
+      },
+      "birthdayScreen": {
+        "title": "Add your birthday so we can better tailor questions to you. Last question!",
+        "inputTitle": "Date of Birth*",
+        "inputDescription": "Knowing your age helps customize your experience"
       }
     },
     "signIn": "Sign In",

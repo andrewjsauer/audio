@@ -34,8 +34,10 @@ const appSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(signOut.fulfilled, (state) => {
-      state.user = null;
       state.isLoading = false;
+      state.partnersData = null;
+      state.user = null;
+      state.userData = null;
     });
     builder.addCase(signOut.pending, (state) => {
       state.isLoading = true;

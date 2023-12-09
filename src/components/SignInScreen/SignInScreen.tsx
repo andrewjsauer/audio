@@ -8,7 +8,7 @@ import Button from '@components/shared/Button';
 import Layout from '@components/shared/AuthScreens/Layout';
 import Logo from '@assets/icons/logo.svg';
 
-import { useAuthFlow } from './AuthFlowContext';
+import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
 import {
   ButtonWrapper,
   Container,

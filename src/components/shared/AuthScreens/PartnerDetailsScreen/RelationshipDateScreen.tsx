@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 
 import Button from '@components/shared/Button';
-import { useAuthFlow } from '@components/SignInScreen/AuthFlowContext';
+import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
 
 import { PartnerDetailsSteps as Steps } from '@lib/types';
-import { trackScreen } from '@lib/analytics';
+import { trackScreen, trackEvent } from '@lib/analytics';
+import { showNotification } from '@store/ui/slice';
 
 import Layout from '../Layout';
 import {
@@ -19,6 +21,7 @@ import { StyledDatePicker } from './style';
 
 function RelationshipDateScreen() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     trackScreen('RelationshipDateScreen');
@@ -34,6 +37,23 @@ function RelationshipDateScreen() {
   const relationshipDate = partnerDetails.relationshipDate
     ? new Date(partnerDetails.relationshipDate)
     : new Date();
+
+  const handleSubmit = () => {
+    if (!relationshipDate) {
+      dispatch(
+        showNotification({
+          title: t('errors.pleaseTryAgain'),
+          description: t('errors.relationshipDateEmpty'),
+          type: 'error',
+        }),
+      );
+
+      trackEvent('relationship_date_empty');
+      return;
+    }
+
+    goToNextStep(Steps.InviteStep);
+  };
 
   return (
     <Layout
@@ -57,10 +77,7 @@ function RelationshipDateScreen() {
           </InputSubtitle>
         </InputWrapper>
         <ButtonWrapper>
-          <Button
-            onPress={() => goToNextStep(Steps.InviteStep)}
-            text={t('next')}
-          />
+          <Button onPress={handleSubmit} text={t('next')} />
         </ButtonWrapper>
       </Container>
     </Layout>

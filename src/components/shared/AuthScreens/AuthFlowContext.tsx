@@ -11,15 +11,13 @@ import { SignInFlowStepTypes as Steps } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
 
 interface UserDetails {
-  birthday?: string;
+  birthDate?: Date;
   color?: string;
-  id?: string;
   name?: string;
   phoneNumber?: string;
 }
 
 interface PartnerDetails {
-  birthday?: string;
   name?: string;
   phoneNumber?: string;
   relationshipDate?: Date;
@@ -81,17 +79,18 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
     }));
   };
 
-  const pascalToSnakeCase = (str: string) => {
-    return str.replace(
-      /([A-Z])/g,
-      (_, p1, offset) => (offset > 0 ? '_' : '') + p1.toLowerCase(),
-    );
+  const pascalToSnakeCaseAnd40CharMax = (str: string) => {
+    return str
+      .replace(
+        /([A-Z])/g,
+        (_, p1, offset) => (offset > 0 ? '_' : '') + p1.toLowerCase(),
+      )
+      .slice(0, 40);
   };
 
   const goToNextStep = useCallback(
     (nextStepName?: string) => {
       let nextScreen = nextStepName;
-      console.log('nextStepName', nextStepName);
 
       if (!nextScreen) {
         if (currentStep < totalSteps) {
@@ -106,8 +105,12 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (nextScreen) {
+        console.log('nextScreen', nextScreen);
+
         navigation.navigate(nextScreen);
-        trackEvent(`step_to_next_screen_${pascalToSnakeCase(nextScreen)}`);
+        trackEvent(
+          `step_to_next_screen_${pascalToSnakeCaseAnd40CharMax(nextScreen)}`,
+        );
       }
     },
     [currentStep, navigation, steps, totalSteps],
@@ -116,7 +119,6 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
   const goToPreviousStep = useCallback(
     (prevStepName?: string) => {
       let prevScreen = prevStepName;
-      console.log('prevScreen', prevScreen);
 
       if (!prevScreen) {
         if (currentStep > 1) {
@@ -133,7 +135,11 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
 
       if (prevScreen) {
         navigation.navigate(prevScreen);
-        trackEvent(`step_to_previous_screen_${pascalToSnakeCase(prevScreen)}`);
+        trackEvent(
+          `step_to_previous_screen_${pascalToSnakeCaseAnd40CharMax(
+            prevScreen,
+          )}`,
+        );
       }
     },
     [currentStep, navigation, steps],
