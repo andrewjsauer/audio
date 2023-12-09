@@ -1,24 +1,42 @@
 import { configureStore } from '@reduxjs/toolkit';
-import createSagaMiddleware from 'redux-saga';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { persistReducer, persistStore } from 'redux-persist';
+import { createLogger } from 'redux-logger';
 
-import rootReducer from './rootReducer';
-import rootSaga from './rootSaga';
+import rootReducer, { RootState } from './rootReducer';
 
-const sagaMiddleware = createSagaMiddleware();
+const middleware: any = [];
 
-const setupStore = (preloadedState?: any) => {
+if (__DEV__) {
+  middleware.push(createLogger());
+}
+
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const setupStore = (preloadedState?: Partial<RootState>) => {
   const store = configureStore({
+    reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
+        immutableCheck: false,
         serializableCheck: false,
-      }).concat([sagaMiddleware]),
+      }).concat(middleware),
     preloadedState,
-    reducer: rootReducer,
+    devTools: __DEV__,
   });
 
-  sagaMiddleware.run(rootSaga);
+  const persistor = persistStore(store);
 
-  return store;
+  if (__DEV__) {
+    persistor.purge();
+  }
+
+  return { store, persistor };
 };
 
 export default setupStore;

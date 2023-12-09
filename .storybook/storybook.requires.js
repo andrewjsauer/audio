@@ -38,7 +38,7 @@ if (parameters) {
 
 const getStories = () => {
   return {
-    "./src/components/Button/index.stories.tsx": require("../src/components/Button/index.stories.tsx"),
+    "./src/components/shared/Button/index.stories.tsx": require("../src/components/shared/Button/index.stories.tsx"),
   };
 };
 

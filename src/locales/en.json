@@ -1,6 +1,112 @@
 {
-  "home": {
-    "example": "Edit <0>App.tsx</0> to change this screen and then come back to see your edits.",
-    "text": "Here is some text to demonstrate this!"
+  "next": "Next",
+  "success": "Success!",
+  "submit": "Submit",
+  "errors": {
+    "tryAgain": "Try Again",
+    "pleaseTryAgain": "Please Try Again",
+    "whoops": "Oops! Looks like there was an error",
+    "verificationCodeEmpty": "Verification code cannot be empty",
+    "invalidAPICode": "Something went wrong when submitting your verification code",
+    "phoneNumberEmpty": "Phone number cannot be empty",
+    "phoneNumberInvalid": "Phone number is invalid",
+    "phoneNumberAPIError": "Something went wrong when submitting your phone number",
+    "resendingVerificationCodeFailed": "Something went wrong when resending your verification code",
+    "registrationCheckFailed": "Something went wrong when checking your registration",
+    "invitePartnerAPIError": "Something went wrong when inviting your partner",
+    "partnerNameEmpty": "Partner's name cannot be empty",
+    "relationshipDateEmpty": "Relationship date cannot be empty",
+    "relationshipTypeEmpty": "Relationship status cannot be empty",
+    "userNameEmpty": "Your name cannot be empty",
+    "birthdayEmpty": "Birthday cannot be empty",
+    "colorEmpty": "Color cannot be empty"
+  },
+  "auth": {
+    "signInScreen": {
+      "title": "You First",
+      "subtitle": "Couples Edition",
+      "description": "Reveal each others’ answers\nto daily questions"
+    },
+    "phoneNumberScreen": {
+      "welcome": "Welcome! Sign In to get started",
+      "disclaimer": "To sign in, type your phone number for a verification code."
+    },
+    "verificationCodeScreen": {
+      "title": "Your login code was sent to your number.",
+      "subtitle": "Verification Code",
+      "description": "<0><1>Tap here</1> to retry in 30 seconds.</0> ",
+      "descriptionP1": "Didn't receive your code? ",
+      "descriptionP2": "Tap here ",
+      "descriptionP3": "to resend in ",
+      "buttonText": "Verify",
+      "partnerFound": "We found your partner! Let's finish your registration"
+    },
+    "partnerDetails": {
+      "nameScreen": {
+        "title": "Welcome! Let's get started, what’s your partner’s name?",
+        "inputTitle": "Your Partner's Name",
+        "inputPlaceholder": "Partner's first name",
+        "inputDescription": "Enter your partner's first name or the name they most use."
+      },
+      "relationshipTypeScreen": {
+        "title": "What's your relationship status?",
+        "types": [
+          { "stillGettingToKnowEachOther": "Still Getting to Know Each Other" },
+          { "dating": "Dating" },
+          { "inARelationship": "In a Relationship" },
+          { "engaged": "Engaged" },
+          { "domesticPartnership": "Domestic Partnership" },
+          { "cohabiting": "Cohabiting" },
+          { "longDistanceRelationship": "Long Distance Relationship" },
+          {
+            "consensualNonMonogamousRelationship": "Consensual Non-monogamous Relationship"
+          },
+          { "inAnOpenRelationship": "Open Relationship" },
+          { "married": "Married" }
+        ]
+      },
+      "relationshipDateScreen": {
+        "title": "When did you start getting to know each other?",
+        "inputTitle": "Start of Relationship *",
+        "inputDescription": "Knowing the relationship's age helps customize your experience"
+      },
+      "invitePartnerScreen": {
+        "title": "This app only works with your partner. Send your partner the invite!",
+        "inputTitle": "Your Partner's Phone Number",
+        "inputPlaceholder": "Partner's phone number",
+        "inputDescription": "By submitting, I have confirmed that I have obtained my partner's consent to send them an SMS invitation",
+        "sendInvite": "Send Invite"
+      }
+    },
+    "userDetails": {
+      "userNameScreen": {
+        "title": "Your turn! Choose your favorite color and tell us your name",
+        "inputTitle": "Your Name *",
+        "inputPlaceholder": "Your first name",
+        "inputDescription": "Enter your first name or the name you most use."
+      },
+      "birthdayScreen": {
+        "title": "Add your birthday so we can better tailor questions to you. Last question!",
+        "inputTitle": "Date of Birth*",
+        "inputDescription": "Knowing your age helps customize your experience"
+      }
+    },
+    "signIn": "Sign In",
+    "enterPhone": "Enter your phone number",
+    "getCode": "Get Code",
+    "enterCode": "Enter the code",
+    "verify": "Verify",
+    "enterName": "Enter your full name",
+    "chooseColor": "Choose your favorite color",
+    "enterBirthday": "Enter your birthday",
+    "partnerPhone": "Your partner's phone number",
+    "sendInvite": "Send Invite",
+    "single": "Single",
+    "inARelationship": "In a Relationship",
+    "engaged": "Engaged",
+    "married": "Married",
+    "domesticPartnership": "Domestic Partnership",
+    "polyamorous": "Polyamorous (Coming Soon!)",
+    "relationshipStatus": "What's your relationship status?"
   }
 }

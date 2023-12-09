@@ -1,4 +1,6 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services' // Firebase setup
+apply plugin: 'com.google.firebase.crashlytics' // Firebase crashlytics setup
 apply plugin: "com.facebook.react"
 
 /**
@@ -73,9 +75,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.reactnativeboilerplatesetup"
+    namespace "com.sauerapple.audio"
     defaultConfig {
-        applicationId "com.reactnativeboilerplatesetup"
+        applicationId "com.sauerapple.audio"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -94,6 +96,10 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+                unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
+            }
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug

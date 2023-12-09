@@ -20,6 +20,20 @@ module.exports = {
     'jest/globals': true,
   },
   rules: {
+    'react/require-default-props': 'off',
+    'no-param-reassign': [
+      'error',
+      {
+        props: true,
+        ignorePropertyModificationsFor: [
+          'state', // Ignore `no-param-reassign` for `state` parameter inside slice files
+        ],
+      },
+    ],
+    'global-require': 'off',
+    'react-hooks/exhaustive-deps': 'off',
+    'import/prefer-default-export': 'off',
+    'import/no-unresolved': 'off',
     'prettier/prettier': 'error',
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.ts'] }],
     'react/react-in-jsx-scope': 'off',

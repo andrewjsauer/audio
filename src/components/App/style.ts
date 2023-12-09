@@ -1,38 +1,20 @@
 import styled from 'styled-components/native';
 
-export const SectionContainer = styled.View`
-  margin-top: 32px;
-  padding-horizontal: 24px;
+export const StyledText = styled.Text`
+  color: ${(p) => p.theme.colors.black};
+  font-family: ${(p) => p.theme.fonts.extraBold};
+  font-size: ${(p) => p.theme.fontSizes.large};
 `;
 
-export const SectionTitle = styled.Text`
-  font-size: 24px;
-  font-weight: 600;
-  color: ${({ theme }) => (theme.isDarkMode ? '#FFFFFF' : '#000000')};
+export const StyledView = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(p) => p.theme.colors.white};
 `;
 
-export const SectionDescription = styled.Text`
-  margin-top: 8px;
-  font-size: 18px;
-  font-weight: 400;
-  color: ${({ theme }) => (theme.isDarkMode ? '#D0D0C0' : '#333333')};
-`;
-
-export const Highlight = styled.Text`
-  font-weight: 700;
-`;
-
-export const StyledSafeAreaView = styled.SafeAreaView`
-  background-color: ${({ theme }) =>
-    theme.isDarkMode ? '#1C1C1E' : '#F3F3F3'};
-`;
-
-export const StyledScrollView = styled.ScrollView`
-  background-color: ${({ theme }) =>
-    theme.isDarkMode ? '#1C1C1E' : '#F3F3F3'};
-`;
-
-export const ContentContainer = styled.View`
-  background-color: ${({ theme }) =>
-    theme.isDarkMode ? '#000000' : '#FFFFFF'};
+export const LogoutButton = styled.TouchableOpacity`
+  position: absolute;
+  top: 6%;
+  right: 6%;
 `;

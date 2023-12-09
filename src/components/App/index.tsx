@@ -1,80 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import type { PropsWithChildren } from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
-import { Header } from 'react-native/Libraries/NewAppScreen';
-import { useTranslation, Trans } from 'react-i18next';
-import DropDownPicker from 'react-native-dropdown-picker';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import crashlytics from '@react-native-firebase/crashlytics';
 
+import { signOut } from '@store/app/thunks';
 import {
-  SectionContainer,
-  SectionTitle,
-  SectionDescription,
-  Highlight,
-  StyledSafeAreaView,
-  StyledScrollView,
-  ContentContainer,
-} from './style';
+  selectError,
+  selectIsLoading,
+  selectIsUserLoggedIn,
+  selectIsUserRegistered,
+} from '@store/app/selectors';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import useAuthSubscription from '@lib/customHooks/useAuthSubscription';
+import SettingsIcon from '@assets/icons/settings.svg';
 
-function Section({ children, title }: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <SectionContainer>
-      <SectionTitle theme={{ isDarkMode }}>{title}</SectionTitle>
-      <SectionDescription theme={{ isDarkMode }}>{children}</SectionDescription>
-    </SectionContainer>
-  );
-}
+import { StyledView, StyledText, LogoutButton } from './style';
+import SignInScreen from '../SignInScreen';
 
 function App(): JSX.Element {
-  const { t, i18n } = useTranslation();
-
-  const [open, setOpen] = useState(false);
-  const [language, setLanguage] = useState('en');
-  const [items, setItems] = useState([
-    { label: 'English', value: 'en' },
-    { label: 'Spanish', value: 'es' },
-  ]);
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language]);
+    crashlytics().log('App mounted.');
+  }, []);
 
-  const isDarkMode = useColorScheme() === 'dark';
+  useAuthSubscription();
 
-  return (
-    <StyledSafeAreaView theme={{ isDarkMode }}>
-      <DropDownPicker
-        open={open}
-        value={language}
-        items={items}
-        setOpen={setOpen}
-        setValue={setLanguage}
-        setItems={setItems}
-      />
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={isDarkMode ? '#1C1C1E' : '#F3F3F3'}
-      />
-      <StyledScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        theme={{ isDarkMode }}>
-        <Header />
-        <ContentContainer theme={{ isDarkMode }}>
-          <Section title="Step One">
-            <Trans i18nKey="home.example">
-              Edit <Highlight>App.tsx</Highlight> to change this screen and then
-              come back to see your edits.
-            </Trans>
-          </Section>
-          <Section title="Learn More">{t('home.text')}</Section>
-        </ContentContainer>
-      </StyledScrollView>
-    </StyledSafeAreaView>
-  );
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
+  const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
+  const isUserAlreadyRegistered = useSelector(selectIsUserRegistered);
+
+  const handleLogout = () => {
+    dispatch(signOut());
+  };
+
+  if (isLoading) {
+    return (
+      <StyledView>
+        <StyledText>Loading...</StyledText>
+      </StyledView>
+    );
+  }
+
+  if (error) {
+    return (
+      <StyledView>
+        <StyledText>Error: {error}</StyledText>
+      </StyledView>
+    );
+  }
+
+  if (isUserLoggedIn && isUserAlreadyRegistered) {
+    // lets setup a subscriber when logged in for the partners data since that is where we will
+    // be updating the most
+
+    return (
+      <StyledView>
+        <LogoutButton onPress={handleLogout}>
+          <SettingsIcon width={20} height={20} />
+        </LogoutButton>
+        <StyledText>You are logged in</StyledText>
+      </StyledView>
+    );
+  }
+
+  return <SignInScreen />;
 }
 
 export default App;
