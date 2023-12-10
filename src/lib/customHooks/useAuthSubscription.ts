@@ -12,10 +12,6 @@ function useAuthStateListener() {
   function onAuthStateChanged(user: any) {
     if (user) {
       crashlytics().setUserId(user.uid);
-      crashlytics().setAttributes({
-        name: user.displayName || '',
-      });
-
       dispatch(setUser(user));
     }
   }

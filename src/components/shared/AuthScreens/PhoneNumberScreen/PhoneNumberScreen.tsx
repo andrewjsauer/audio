@@ -54,6 +54,7 @@ function PhoneNumberScreen({
             isLoading={isLoading}
             text={t('auth.getCode')}
             onPress={onPhoneSubmit}
+            size="small"
           />
         </ButtonWrapper>
       </Container>

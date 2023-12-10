@@ -106,8 +106,6 @@ function PhoneNumberScreenContainer() {
 
       return { isRegistered: false, hasPartner };
     } catch (error) {
-      console.log('error', error);
-
       crashlytics().recordError(error);
       return { error };
     }
@@ -189,19 +187,28 @@ function PhoneNumberScreenContainer() {
     }
   };
 
+  const handleGoBackButtonClick = () => {
+    if (confirm) {
+      setConfirm(null);
+      return;
+    }
+
+    goToPreviousStep(Steps.SignInStep);
+  };
+
   return !confirm ? (
     <PhoneNumberScreen
-      goToPreviousStep={goToPreviousStep}
+      goToPreviousStep={handleGoBackButtonClick}
+      isLoading={isLoading}
+      onPhoneSubmit={handlePhoneSubmit}
       phoneInputRef={phoneInputRef}
       phoneNumber={phoneNumber}
       setPhoneNumber={setPhoneNumber}
-      onPhoneSubmit={handlePhoneSubmit}
-      isLoading={isLoading}
     />
   ) : (
     <VerificationCodeScreen
       code={code}
-      goToPreviousStep={goToPreviousStep}
+      goToPreviousStep={handleGoBackButtonClick}
       isLoading={isLoading}
       onResendCode={handleResendCode}
       onVerificationCodeSubmit={onVerificationCodeSubmit}

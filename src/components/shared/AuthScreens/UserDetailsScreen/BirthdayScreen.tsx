@@ -74,9 +74,13 @@ function BirthdayScreen() {
 
     try {
       const batch = firestore().batch();
+      const userDetailsData = {
+        ...userDetails,
+        partnerId: partnersData.id,
+      };
 
       const userRef = firestore().collection('users').doc(user.uid);
-      batch.set(userRef, userDetails, { merge: true });
+      batch.set(userRef, userDetailsData, { merge: true });
 
       const partnerData = {
         ...(partnersData.partner1Id === user.uid && {
@@ -97,11 +101,9 @@ function BirthdayScreen() {
 
       await batch.commit();
 
-      dispatch(setUserData(userDetails));
+      dispatch(setUserData(userDetailsData));
       setIsLoading(false);
     } catch (error) {
-      console.log('error', error);
-
       showError('errors.invitePartnerAPIError', 'invite_partner_api_error');
       crashlytics().recordError(error);
     }

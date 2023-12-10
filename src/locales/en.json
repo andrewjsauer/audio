@@ -25,7 +25,7 @@
     "signInScreen": {
       "title": "You First",
       "subtitle": "Couples Edition",
-      "description": "Reveal each others’ answers\nto daily questions"
+      "description": "Reveal each others’ answers to\n daily personalized questions"
     },
     "phoneNumberScreen": {
       "welcome": "Welcome! Sign In to get started",
@@ -46,7 +46,7 @@
         "title": "Welcome! Let's get started, what’s your partner’s name?",
         "inputTitle": "Your Partner's Name",
         "inputPlaceholder": "Partner's first name",
-        "inputDescription": "Enter your partner's first name or the name they most use."
+        "inputDescription": "Enter your partner's first name or a nickname you both most use."
       },
       "relationshipTypeScreen": {
         "title": "What's your relationship status?",

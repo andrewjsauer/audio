@@ -21,7 +21,7 @@ exports.sendPartnerInvite = functions.https.onCall(async (data, context) => {
       .collection('sms')
       .add({
         to: phoneNumber,
-        body: `Hey ${partnerName}! We've got an invite for you to join 'You First'. It's a unique way to answer daily personalized questions together. Download it here: [link] 😊`,
+        body: `Hello, ${partnerName}! Your partner has invited you to join 'You First.' Starting today, both of you can enjoy a free 30-day trial. Have fun exploring! Here's the download link: [link] 😊`,
       });
 
     functions.logger.info('SMS sent successfully!');
