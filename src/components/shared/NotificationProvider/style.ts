@@ -55,7 +55,7 @@ export const Description = styled.Text`
 `;
 
 export const ButtonWrapper = styled.View`
-  padding-left: 20px;
+  padding-left: 10px;
   flex-shrink: 0;
 `;
 

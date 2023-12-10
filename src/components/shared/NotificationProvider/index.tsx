@@ -73,11 +73,7 @@ function Notification() {
         </Content>
         {buttonText && (
           <ButtonWrapper>
-            <Button
-              onPress={() => {
-                dispatch(hideNotification());
-                onButtonPress?.();
-              }}>
+            <Button onPress={onButtonPress}>
               <ButtonText type={type}>{buttonText}</ButtonText>
             </Button>
           </ButtonWrapper>

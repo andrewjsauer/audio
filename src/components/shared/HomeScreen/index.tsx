@@ -4,13 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { signOut } from '@store/app/thunks';
-import { selectIsLoading } from '@store/app/selectors';
+import { selectIsLoading, selectError } from '@store/app/selectors';
+
+import Button from '@components/shared/Button';
+import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
 
 import SettingsIcon from '@assets/icons/settings.svg';
 
 import {
   StyledActivityIndicator,
   StyledView,
+  ErrorText,
   StyledText,
   LogoutButton,
 } from './style';
@@ -20,6 +24,9 @@ function App(): JSX.Element {
   const { t } = useTranslation();
 
   const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
+  useNotificationPermissions();
 
   const handleLogout = () => {
     dispatch(signOut());
@@ -48,6 +55,20 @@ function App(): JSX.Element {
     content = (
       <StyledView>
         <StyledActivityIndicator size="small" />
+      </StyledView>
+    );
+  }
+
+  if (error) {
+    content = (
+      <StyledView>
+        <ErrorText>{error?.message || t('errors.whoops')}</ErrorText>
+        <Button
+          onPress={handleLogout}
+          text={t('retry')}
+          size="small"
+          mode="error"
+        />
       </StyledView>
     );
   }

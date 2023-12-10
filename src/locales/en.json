@@ -2,6 +2,17 @@
   "next": "Next",
   "success": "Success!",
   "submit": "Submit",
+  "retry": "Retry",
+  "permissions": {
+    "notifications": {
+      "title": "Know when {{ name }} answers...",
+      "description": "Get notifications for questions & answers",
+      "buttonText": "Allow",
+      "deniedTitle": "Notifications are disabled",
+      "deniedDescription": "Tap Settings to turn on Allow Notifications.",
+      "deniedButtonText": "Settings"
+    }
+  },
   "errors": {
     "tryAgain": "Try Again",
     "pleaseTryAgain": "Please Try Again",

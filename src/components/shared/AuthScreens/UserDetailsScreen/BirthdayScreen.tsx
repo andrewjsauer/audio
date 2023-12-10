@@ -76,6 +76,7 @@ function BirthdayScreen() {
       const batch = firestore().batch();
       const userDetailsData = {
         ...userDetails,
+        id: user.uid,
         partnerId: partnersData.id,
       };
 

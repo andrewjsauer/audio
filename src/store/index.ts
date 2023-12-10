@@ -34,7 +34,7 @@ const setupStore = (preloadedState?: Partial<RootState>) => {
 
   if (__DEV__) {
     console.log('STORE PURGED');
-    persistor.purge();
+    // persistor.purge();
   }
 
   return { store, persistor };

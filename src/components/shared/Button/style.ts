@@ -4,7 +4,7 @@ import { ButtonProps } from './index';
 
 const buttonSizeStyles = {
   small: {
-    width: '200px',
+    width: '140px',
     height: '40px',
     fontSize: '14px',
   },
@@ -17,12 +17,20 @@ const buttonSizeStyles = {
 
 export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
   border-radius: 30px;
-  background-color: ${({ mode, disabled, theme }) =>
-    disabled
-      ? theme.colors.gray
-      : mode === 'light'
-        ? theme.colors.white
-        : theme.colors.gray};
+  background-color: ${({ mode, disabled, theme }) => {
+    if (disabled) return theme.colors.gray;
+
+    switch (mode) {
+      case 'light':
+        return theme.colors.white;
+      case 'dark':
+        return theme.colors.gray;
+      case 'error':
+        return theme.colors.error;
+      default:
+        return theme.colors.gray;
+    }
+  }};
   align-items: center;
   justify-content: center;
   position: relative;

@@ -15,3 +15,25 @@ export const selectIsUserRegistered = createSelector(
   selectUserData,
   (user) => !!user,
 );
+
+export const selectPartnersName = createSelector(
+  selectPartnersData,
+  selectUserData,
+  (partnersData, userData) => {
+    if (!partnersData || !userData) return null;
+
+    const partnerData = Object.values(partnersData).find(
+      (pData) =>
+        pData &&
+        (userData.id === pData.partner1Id || userData.id === pData.partner2Id),
+    );
+
+    if (partnerData) {
+      return userData.id === partnerData.partner1Id
+        ? partnerData.partner2Name
+        : partnerData.partner1Name;
+    }
+
+    return null;
+  },
+);
