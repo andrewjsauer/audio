@@ -9,9 +9,10 @@ import {
   openSettings,
 } from 'react-native-permissions';
 import { useTranslation } from 'react-i18next';
+import { trackEvent } from '@lib/analytics';
 
 import { selectPartnersName } from '@store/app/selectors';
-import { showNotification, hideNotification } from '@store/ui/slice';
+import { showNotification } from '@store/ui/slice';
 
 const useNotificationPermissions = () => {
   const dispatch = useDispatch();
@@ -19,40 +20,36 @@ const useNotificationPermissions = () => {
 
   const partnersName = useSelector(selectPartnersName);
 
-  // Reset partner data, delete DB and restart to make sure partners name goes through
-  // Add crashlytics log
-  // Add analytics log
-
   const handleNotificationPermission = (status: PermissionStatus) => {
-    if (status === RESULTS.GRANTED) {
-      dispatch(hideNotification());
-    } else if (status === RESULTS.DENIED || status === RESULTS.BLOCKED) {
+    if (status === RESULTS.DENIED || status === RESULTS.BLOCKED) {
       dispatch(
         showNotification({
-          title: t('permissions.notifications.deniedTitle'),
-          description: t('permissions.notifications.deniedDescription'),
-          type: 'error',
-          buttonText: t('permissions.notifications.deniedButtonText'),
-          onButtonPress: openSettings,
-        }),
-      );
-    } else {
-      dispatch(
-        showNotification({
-          title: t('permissions.notifications.title', { name: partnersName }),
+          title: partnersName
+            ? t('permissions.notifications.title', { name: partnersName })
+            : t('permissions.notifications.titleNameBackup'),
           description: t('permissions.notifications.description'),
           type: 'error',
           buttonText: t('permissions.notifications.buttonText'),
-          onButtonPress: () => {
-            try {
-              console.log('Requesting notifications');
-              requestNotifications(['alert', 'badge', 'providesAppSettings']);
-            } catch (error) {
-              console.error('Error requesting notifications:', error);
-            }
-          },
+          onButtonPress: openSettings,
         }),
       );
+
+      trackEvent('notification_permission_denied_shown');
+    } else {
+      dispatch(
+        showNotification({
+          title: partnersName
+            ? t('permissions.notifications.title', { name: partnersName })
+            : t('permissions.notifications.titleNameBackup'),
+          description: t('permissions.notifications.description'),
+          type: 'error',
+          buttonText: t('permissions.notifications.buttonText'),
+          onButtonPress: () =>
+            requestNotifications(['alert', 'badge', 'providesAppSettings']),
+        }),
+      );
+
+      trackEvent('notification_permission_shown');
     }
   };
 

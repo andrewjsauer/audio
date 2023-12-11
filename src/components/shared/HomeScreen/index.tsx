@@ -6,8 +6,11 @@ import { useTranslation } from 'react-i18next';
 import { signOut } from '@store/app/thunks';
 import { selectIsLoading, selectError } from '@store/app/selectors';
 
+import { trackEvent, trackScreen } from '@lib/analytics';
+
 import Button from '@components/shared/Button';
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
+import usePartnersDataSubscription from '@lib/customHooks/usePartnersDataSubscription';
 
 import SettingsIcon from '@assets/icons/settings.svg';
 
@@ -28,19 +31,24 @@ function App(): JSX.Element {
 
   useNotificationPermissions();
 
+  usePartnersDataSubscription();
+
+  useEffect(() => {
+    trackScreen('HomeScreen');
+  }, []);
+
   const handleLogout = () => {
+    trackEvent('SignOut');
     dispatch(signOut());
   };
 
-  // setup subscriber for partners data
-  // setup subscriber for recorded data
-  // setup notification listener for notification permission (on app start)
+  // setup subscriber for "questions" collection on the user document
 
   // questions are generated when user opens the app so the first step is checking to see if we have a question, if not,
   // we hit the API and start generating one. If we do have a question, we check to see if it's expired (check if the date
   // is pass todays date), if it is, we generate a new one. If it's not expired, we show the question.
 
-  // recordings and questions collection on the partners collection
+  // setup subscriber for "recordings" collection if the history tab is opened
 
   // once user has answered a question and partner has not downloaded or signed up, we SMS them in the Google cloud function
   let content;

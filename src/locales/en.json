@@ -6,11 +6,9 @@
   "permissions": {
     "notifications": {
       "title": "Know when {{ name }} answers...",
+      "titleNameBackup": "Know when your partner answers...",
       "description": "Get notifications for questions & answers",
-      "buttonText": "Allow",
-      "deniedTitle": "Notifications are disabled",
-      "deniedDescription": "Tap Settings to turn on Allow Notifications.",
-      "deniedButtonText": "Settings"
+      "buttonText": "Allow"
     }
   },
   "errors": {

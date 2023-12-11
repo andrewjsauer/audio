@@ -31,6 +31,9 @@ const appSlice = createSlice({
     setPartnersData: (state, action: PayloadAction<object | null>) => {
       state.partnersData = action.payload;
     },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(signOut.fulfilled, (state) => {
@@ -49,5 +52,6 @@ const appSlice = createSlice({
   },
 });
 
-export const { setUser, setUserData, setPartnersData } = appSlice.actions;
+export const { setError, setUser, setUserData, setPartnersData } =
+  appSlice.actions;
 export default appSlice.reducer;
