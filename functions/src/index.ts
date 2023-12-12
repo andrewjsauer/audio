@@ -14,14 +14,14 @@ exports.sendPartnerInvite = functions.https.onCall(async (data, context) => {
     );
   }
 
-  const { phoneNumber, partnerName } = data;
+  const { inviteName, invitePhoneNumber, senderName } = data;
   try {
     await admin
       .firestore()
       .collection('sms')
       .add({
-        to: phoneNumber,
-        body: `Hello, ${partnerName}! Your partner has invited you to join 'You First.' Starting today, both of you can enjoy a free 30-day trial. Have fun exploring! Here's the download link: [link] 😊`,
+        to: invitePhoneNumber,
+        body: `Hey, ${inviteName}! ${senderName} has invited you to join 'You First.' Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: [link] 😊`,
       });
 
     functions.logger.info('SMS sent successfully!');

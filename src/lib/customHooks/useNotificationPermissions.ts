@@ -11,14 +11,14 @@ import {
 import { useTranslation } from 'react-i18next';
 import { trackEvent } from '@lib/analytics';
 
-import { selectPartnersName } from '@store/app/selectors';
 import { showNotification } from '@store/ui/slice';
 
 const useNotificationPermissions = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const partnersName = useSelector(selectPartnersName);
+  const partnersName = 'Placeholder';
+  // useSelector(selectPartnersName);
 
   const handleNotificationPermission = (status: PermissionStatus) => {
     if (status === RESULTS.DENIED || status === RESULTS.BLOCKED) {

@@ -34,25 +34,23 @@ function PhoneNumberScreen({
   const { t } = useTranslation();
 
   return (
-    <Layout
-      goBack={goToPreviousStep}
-      title={t('auth.phoneNumberScreen.welcome')}>
+    <Layout goBack={goToPreviousStep} title={t('auth.phoneNumberScreen.title')}>
       <Container>
         <InputWrapper>
-          <InputTitle>{t('auth.signIn')} *</InputTitle>
+          <InputTitle>{t('auth.phoneNumberScreen.inputTitle')}</InputTitle>
           <PhoneNumberInput
             setPhoneNumber={setPhoneNumber}
             phoneInputRef={phoneInputRef}
             phoneNumber={phoneNumber}
           />
           <InputSubtitle>
-            {t('auth.phoneNumberScreen.disclaimer')}
+            {t('auth.phoneNumberScreen.inputDescription')}
           </InputSubtitle>
         </InputWrapper>
         <ButtonWrapper>
           <Button
             isLoading={isLoading}
-            text={t('auth.getCode')}
+            text={t('auth.signInScreen.buttonText')}
             onPress={onPhoneSubmit}
           />
         </ButtonWrapper>

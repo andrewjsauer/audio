@@ -4,35 +4,37 @@ import React, {
   useState,
   useCallback,
   useMemo,
+  useEffect,
 } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import { SignInFlowStepTypes as Steps } from '@lib/types';
+import { selectUserData, selectUserId } from '@store/auth/selectors';
+import { initializePartnership, updateUser } from '@store/auth/thunks';
+import { AppDispatch } from '@store/index';
+
+import {
+  AuthScreens as Steps,
+  PartnerDetailsType,
+  PartnershipDetailsType,
+  UserDetailsType,
+} from '@lib/types';
+
 import { trackEvent } from '@lib/analytics';
-
-interface UserDetails {
-  birthDate?: Date;
-  color?: string;
-  name?: string;
-  phoneNumber?: string;
-}
-
-interface PartnerDetails {
-  name?: string;
-  phoneNumber?: string;
-  relationshipDate?: Date;
-  relationshipType?: string;
-}
 
 interface AuthFlowContextProps {
   currentStep: number;
   totalSteps: number;
-  goToNextStep: (step?: string) => void;
-  goToPreviousStep: (arg0: string | void) => void;
-  handleUserDetails: (newDetails: UserDetails) => void;
-  handlePartnerDetails: (newDetails: PartnerDetails) => void;
-  userDetails: UserDetails;
-  partnerDetails: PartnerDetails;
+  goToNextStep: () => void;
+  goToPreviousStep: () => void;
+  handleUserDetails: (newDetails: Partial<UserDetailsType>) => void;
+  handlePartnerDetails: (newDetails: Partial<PartnerDetailsType>) => void;
+  handlePartnershipDetails: (
+    newDetails: Partial<PartnershipDetailsType>,
+  ) => void;
+  userDetails: UserDetailsType;
+  partnerDetails: PartnerDetailsType;
+  partnershipDetails: PartnershipDetailsType;
 }
 
 const AuthFlowContext = createContext<AuthFlowContextProps>({
@@ -40,44 +42,77 @@ const AuthFlowContext = createContext<AuthFlowContextProps>({
   goToNextStep: () => {},
   goToPreviousStep: () => {},
   handlePartnerDetails: () => {},
+  handlePartnershipDetails: () => {},
   handleUserDetails: () => {},
   partnerDetails: {},
-  totalSteps: 5,
+  partnershipDetails: {},
+  totalSteps: 8,
   userDetails: {},
 });
 
-const steps = [
-  Steps.SignInStep,
-  Steps.PhoneNumberStep,
-  Steps.UserDetailsStep,
-  Steps.PartnerDetailsStep,
-];
-
 export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
   const navigation = useNavigation();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const [userDetails, setUserDetails] = useState<UserDetails>({});
-  const [partnerDetails, setPartnerDetails] = useState<PartnerDetails>({});
+  const userData = useSelector(selectUserData);
+  const userId = useSelector(selectUserId);
+
+  const isPartner = userData && !userData.isRegistered;
+
+  const [userDetails, setUserDetails] = useState<UserDetailsType>({});
+  const [partnerDetails, setPartnerDetails] = useState<PartnerDetailsType>({});
+  const [partnershipDetails, setPartnershipDetails] =
+    useState<PartnershipDetailsType>({});
   const [currentStep, setCurrentStep] = useState(1);
 
-  console.log('partnerDetails', partnerDetails);
   console.log('userDetails', userDetails);
+
+  useEffect(() => {
+    if (userData) {
+      setUserDetails(userData);
+    }
+  }, [userData]);
+
+  const steps = [
+    Steps.SignInScreen,
+    Steps.PhoneNumberStep,
+    ...(!isPartner
+      ? [
+          Steps.UserNameStep,
+          Steps.BirthdayStep,
+          Steps.PartnerNameStep,
+          Steps.RelationshipTypeStep,
+          Steps.RelationshipDateStep,
+          Steps.InviteStep,
+        ]
+      : [Steps.UserNameStep, Steps.BirthdayStep]),
+  ];
 
   const totalSteps = steps.length;
 
-  const handlePartnerDetails = (newDetails: PartnerDetails) => {
-    setPartnerDetails((prevDetails) => ({
-      ...prevDetails,
-      ...newDetails,
-    }));
-  };
+  const handlePartnerDetails = useCallback(
+    (newDetails: Partial<PartnerDetailsType>) => {
+      setPartnerDetails((prevDetails) => ({ ...prevDetails, ...newDetails }));
+    },
+    [],
+  );
 
-  const handleUserDetails = (newDetails: UserDetails) => {
-    setUserDetails((prevDetails) => ({
-      ...prevDetails,
-      ...newDetails,
-    }));
-  };
+  const handleUserDetails = useCallback(
+    (newDetails: Partial<UserDetailsType>) => {
+      setUserDetails((prevDetails) => ({ ...prevDetails, ...newDetails }));
+    },
+    [],
+  );
+
+  const handlePartnershipDetails = useCallback(
+    (newDetails: Partial<PartnershipDetailsType>) => {
+      setPartnershipDetails((prevDetails) => ({
+        ...prevDetails,
+        ...newDetails,
+      }));
+    },
+    [],
+  );
 
   const pascalToSnakeCaseAnd40CharMax = (str: string) => {
     return str
@@ -88,62 +123,58 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
       .slice(0, 40);
   };
 
-  const goToNextStep = useCallback(
-    (nextStepName?: string) => {
-      let nextScreen = nextStepName;
+  const navigateToStep = (stepIndex: number) => {
+    const screen = steps[stepIndex - 1];
 
-      if (!nextScreen) {
-        if (currentStep < totalSteps) {
-          nextScreen = steps[currentStep];
-          setCurrentStep((prevStep) => prevStep + 1);
-        }
+    if (screen) {
+      navigation.navigate(screen);
+      trackEvent(`step_to_screen_${pascalToSnakeCaseAnd40CharMax(screen)}`);
+    }
+  };
+
+  const goToNextStep = useCallback(() => {
+    if (currentStep < totalSteps) {
+      setCurrentStep((prevStep) => {
+        const nextStepIndex = prevStep + 1;
+        navigateToStep(nextStepIndex);
+        return nextStepIndex;
+      });
+    } else if (currentStep === totalSteps) {
+      if (!isPartner) {
+        dispatch(
+          initializePartnership({
+            partnerDetails,
+            partnershipDetails,
+            userDetails,
+          }),
+        );
       } else {
-        const stepIndex = steps.indexOf(nextStepName);
-        if (stepIndex >= 0) {
-          setCurrentStep(stepIndex + 1);
-        }
-      }
-
-      if (nextScreen) {
-        console.log('nextScreen', nextScreen);
-
-        navigation.navigate(nextScreen);
-        trackEvent(
-          `step_to_next_screen_${pascalToSnakeCaseAnd40CharMax(nextScreen)}`,
+        dispatch(
+          updateUser({
+            id: userId,
+            userDetails: { ...userDetails, isRegistered: true },
+          }),
         );
       }
-    },
-    [currentStep, navigation, steps, totalSteps],
-  );
+    }
+  }, [
+    currentStep,
+    dispatch,
+    isPartner,
+    partnerDetails,
+    totalSteps,
+    userDetails,
+  ]);
 
-  const goToPreviousStep = useCallback(
-    (prevStepName?: string) => {
-      let prevScreen = prevStepName;
-
-      if (!prevScreen) {
-        if (currentStep > 1) {
-          prevScreen = steps[currentStep - 2];
-          setCurrentStep((prevStep) => prevStep - 1);
-        }
-      } else {
-        const stepIndex = steps.indexOf(prevStepName);
-        if (stepIndex >= 0) {
-          setCurrentStep(stepIndex + 1);
-        }
-        prevScreen = prevStepName;
-      }
-
-      if (prevScreen) {
-        navigation.navigate(prevScreen);
-        trackEvent(
-          `step_to_previous_screen_${pascalToSnakeCaseAnd40CharMax(
-            prevScreen,
-          )}`,
-        );
-      }
-    },
-    [currentStep, navigation, steps],
-  );
+  const goToPreviousStep = useCallback(() => {
+    if (currentStep > 1) {
+      setCurrentStep((prevStep) => {
+        const prevStepIndex = prevStep - 1;
+        navigateToStep(prevStepIndex);
+        return prevStepIndex;
+      });
+    }
+  }, [currentStep]);
 
   const contextValue = useMemo(
     () => ({
@@ -151,18 +182,24 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
       goToNextStep,
       goToPreviousStep,
       handlePartnerDetails,
+      handlePartnershipDetails,
       handleUserDetails,
       partnerDetails,
+      partnershipDetails,
       totalSteps,
       userDetails,
     }),
     [
       currentStep,
-      totalSteps,
-      userDetails,
-      partnerDetails,
       goToNextStep,
       goToPreviousStep,
+      handlePartnerDetails,
+      handlePartnershipDetails,
+      handleUserDetails,
+      partnerDetails,
+      partnershipDetails,
+      totalSteps,
+      userDetails,
     ],
   );
 

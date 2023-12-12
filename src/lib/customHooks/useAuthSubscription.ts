@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import { setUser } from '@store/app/slice';
+import { setUser } from '@store/auth/slice';
 
 function useAuthStateListener() {
   const dispatch = useDispatch();

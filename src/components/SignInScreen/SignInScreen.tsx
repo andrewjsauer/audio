@@ -37,11 +37,7 @@ function SignInScreen() {
         </View>
         <Logo width={110} height={80} />
         <ButtonWrapper>
-          <Button
-            mode="dark"
-            text={t('auth.signIn')}
-            onPress={() => goToNextStep()}
-          />
+          <Button mode="dark" text={t('auth.signIn')} onPress={goToNextStep} />
         </ButtonWrapper>
       </Container>
     </Layout>

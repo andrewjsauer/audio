@@ -7,7 +7,7 @@ export const Layout = styled.SafeAreaView`
 export const Container = styled.View`
   flex: 1;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -17,4 +17,5 @@ export const Message = styled.Text`
   color: #000000;
   padding: 0 48px;
   text-align: center;
+  margin-bottom: 24px;
 `;

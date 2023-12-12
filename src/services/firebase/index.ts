@@ -18,7 +18,7 @@ rnfbProvider.configure({
   },
 });
 
-const test = async () => {
+const checkAppCheckInit = async () => {
   try {
     const { token } = await firebase.appCheck().getToken(true);
 
@@ -35,4 +35,4 @@ firebase.appCheck().initializeAppCheck({
   isTokenAutoRefreshEnabled: true,
 });
 
-test();
+if (__DEV__) checkAppCheckInit();

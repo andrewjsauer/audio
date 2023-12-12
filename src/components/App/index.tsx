@@ -5,9 +5,8 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {
   selectIsUserLoggedIn,
   selectIsUserRegistered,
-} from '@store/app/selectors';
+} from '@store/auth/selectors';
 
-import useAuthSubscription from '@lib/customHooks/useAuthSubscription';
 import HomeScreen from '@components/shared/HomeScreen';
 
 import SignInScreen from '../SignInScreen';
@@ -16,8 +15,6 @@ function App(): JSX.Element {
   useEffect(() => {
     crashlytics().log('App mounted.');
   }, []);
-
-  useAuthSubscription();
 
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
   const isUserAlreadyRegistered = useSelector(selectIsUserRegistered);

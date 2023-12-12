@@ -8,10 +8,11 @@ import { selectIsLoading, selectError } from '@store/app/selectors';
 
 import { trackEvent, trackScreen } from '@lib/analytics';
 
-import Button from '@components/shared/Button';
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
 import usePartnersDataSubscription from '@lib/customHooks/usePartnersDataSubscription';
+import useAuthSubscription from '@lib/customHooks/useAuthSubscription';
 
+import Button from '@components/shared/Button';
 import SettingsIcon from '@assets/icons/settings.svg';
 
 import {
@@ -29,9 +30,11 @@ function App(): JSX.Element {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
 
-  useNotificationPermissions();
+  // useNotificationPermissions();
 
-  usePartnersDataSubscription();
+  // usePartnersDataSubscription();
+
+  // useAuthSubscription();
 
   useEffect(() => {
     trackScreen('HomeScreen');

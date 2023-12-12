@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { trackEvent, trackScreen } from '@lib/analytics';
+import { showNotification } from '@store/ui/slice';
 
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
 
-import { PartnerDetailsSteps as Steps } from '@lib/types';
-import { showNotification } from '@store/ui/slice';
-
+import ColorPicker from '@components/shared/ColorPicker';
 import Layout from '../Layout';
+
 import {
   Container,
   ButtonWrapper,
@@ -29,23 +29,23 @@ function PartnerNameScreen() {
   }, []);
 
   const { goToNextStep, partnerDetails, handlePartnerDetails } = useAuthFlow();
-  const { name } = partnerDetails;
+  const { name, color } = partnerDetails;
 
   const handleSubmit = () => {
     if (!name) {
       dispatch(
         showNotification({
-          title: t('errors.pleaseTryAgain'),
-          description: t('errors.partnerNameEmpty'),
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.partnerNameEmpty',
           type: 'error',
         }),
       );
 
-      trackEvent('partner_name_empty');
+      trackEvent('partner_name_empty_error');
       return;
     }
 
-    goToNextStep(Steps.RelationshipTypeStep);
+    goToNextStep();
   };
 
   return (
@@ -53,10 +53,13 @@ function PartnerNameScreen() {
       isBackButtonEnabled={false}
       title={t('auth.partnerDetails.nameScreen.title')}>
       <Container>
+        <ColorPicker
+          color={color}
+          onChange={(colorOption) =>
+            handlePartnerDetails({ color: colorOption })
+          }
+        />
         <InputWrapper>
-          <InputTitle>
-            {t('auth.partnerDetails.nameScreen.inputTitle')} *
-          </InputTitle>
           <TextInput
             placeholder={t('auth.partnerDetails.nameScreen.inputPlaceholder')}
             keyboardType="default"
