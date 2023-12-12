@@ -7,7 +7,6 @@ import { trackEvent, trackScreen } from '@lib/analytics';
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
 
-import { PartnerDetailsSteps as Steps } from '@lib/types';
 import { showNotification } from '@store/ui/slice';
 
 import Layout from '../Layout';
@@ -59,28 +58,27 @@ function RelationshipTypeScreen() {
   const {
     goToNextStep,
     goToPreviousStep,
-    partnerDetails,
-    handlePartnerDetails,
+    handlePartnershipDetails,
+    partnershipDetails,
   } = useAuthFlow();
 
-  const relationshipType =
-    partnerDetails?.relationshipType ?? ('' as RelationshipType);
+  const relationshipType = partnershipDetails?.type ?? ('' as RelationshipType);
 
   const handleSubmit = () => {
     if (!relationshipType) {
       dispatch(
         showNotification({
-          title: t('errors.pleaseTryAgain'),
-          description: t('errors.relationshipTypeEmpty'),
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.relationshipTypeEmpty',
           type: 'error',
         }),
       );
 
-      trackEvent('relationship_type_empty');
+      trackEvent('relationship_type_empty_error');
       return;
     }
 
-    goToNextStep(Steps.RelationshipDateStep);
+    goToNextStep();
   };
 
   const types = t('auth.partnerDetails.relationshipTypeScreen.types', {
@@ -88,7 +86,7 @@ function RelationshipTypeScreen() {
   }) as { [key in RelationshipType]: string }[];
   return (
     <Layout
-      goBack={() => goToPreviousStep(Steps.PartnerNameStep)}
+      goBack={goToPreviousStep}
       isBackButtonEnabled
       title={t('auth.partnerDetails.relationshipTypeScreen.title')}>
       <Container>
@@ -101,9 +99,7 @@ function RelationshipTypeScreen() {
 
             return (
               <RadioButton
-                onChange={(value) =>
-                  handlePartnerDetails({ relationshipType: value })
-                }
+                onChange={(value) => handlePartnershipDetails({ type: value })}
                 checked={relationshipType === key}
                 key={key}
                 label={label}

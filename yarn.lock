@@ -1825,42 +1825,42 @@
     prompts "^2.4.0"
     semver "^7.5.2"
 
-"@react-native-firebase/analytics@^18.7.1":
-  version "18.7.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-18.7.1.tgz#92546343c8d5d8516492ab1e8ceb63ceec724341"
-  integrity sha512-OAtbj7nT44CiQo6Tq6YJW7EGI4dgTbdnxeeGzDG26D6+icm/V7o5MyA1Zspv/WWIOXzLwibRhHASMfflC8pPGQ==
+"@react-native-firebase/analytics@^18.7.2":
+  version "18.7.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-18.7.2.tgz#a7cc9ec5ee99a30ccc2b0a82d5cd9254b8f6e4f9"
+  integrity sha512-4MvGcBnF98JswmSUdlP9hgSFizjqHMjh7LgCPbm7OIwqwuzueb/itfl+80w8FZUVgFnvVoqxdSAXDvTLA7JHdQ==
 
-"@react-native-firebase/app-check@^18.7.1":
-  version "18.7.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-check/-/app-check-18.7.1.tgz#612c0a7a1cb8da1ab19fad9ddd7194c986a81702"
-  integrity sha512-SXebLQ1Xksnc29HklMLeAH99eP9aAsGSPvWkG8GOCkc0pEFuXFZDf6NZ+GrxdeYV0EuaOC+DCApj1me4kNup2Q==
+"@react-native-firebase/app-check@^18.7.2":
+  version "18.7.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-check/-/app-check-18.7.2.tgz#807c3ae336e483b68dafb0ce4bbc4f5a3e2aaa64"
+  integrity sha512-rCxyTPSnwmeWHkhYoHHGxvxJqSh7O0BLegVD1atujdERQXdwViK6lneLwykp4cNNRxq7ZJ1OW24A1ra+okCAKA==
 
-"@react-native-firebase/app@^18.7.1":
-  version "18.7.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-18.7.1.tgz#89fea18713a0fec9e2a0190a4be6b6c54208a73e"
-  integrity sha512-OcWfOUl47pIXcmD5lDn+b1hJktiU7DawXTqjxzDLfWpPzSQUys4OH9kV2ZEnFNKMuvgPELNtzq/H9+Bylc4PGA==
+"@react-native-firebase/app@^18.7.2":
+  version "18.7.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-18.7.2.tgz#f50fc3ad5d990086cb01802f4d2e72137e454425"
+  integrity sha512-ZLHB0SfTPEwEzFO1oxWKb24Y8uI0vfGVjfWhfViFQsRKIhe9GF414lff7AFEbI2zW2zb23KdcKCE4WU10i+YrA==
   dependencies:
     opencollective-postinstall "^2.0.3"
     superstruct "^0.6.2"
 
-"@react-native-firebase/auth@^18.7.1":
-  version "18.7.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-18.7.1.tgz#899da48311170369a815f9ee970cd901e826d5ff"
-  integrity sha512-1Bs8JFq6ygtRX8St9ucyS61YQq+T0t2DMXYKIXH+ueX3giVTq5+cE4U/DfDNpAWzWb7fl4yVWROiEItkw4CGFA==
+"@react-native-firebase/auth@^18.7.2":
+  version "18.7.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-18.7.2.tgz#29db8dbcf45d9c1c31e815f77597958bca8bfe52"
+  integrity sha512-6s7JOLWi/sLsGb644UFL83Lkj181dJ+Z7CtX+xO6oLq+34fU5KbAIctQMcL6YnEqTDMBVdGOaiqwf/UsKjldsg==
   dependencies:
     plist "^3.1.0"
 
-"@react-native-firebase/crashlytics@^18.7.1":
-  version "18.7.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-18.7.1.tgz#c54dadc2b018ad72b14387749099ceb199cf36a2"
-  integrity sha512-fxLussdIR+MiAK5dMRds6XA5saYIJdDIPj0I5HbCVOOQQPi60vw98ROqVG7ZRWXaXSPCfnIp0RECNu7g6FhxUg==
+"@react-native-firebase/crashlytics@^18.7.2":
+  version "18.7.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-18.7.2.tgz#b40217f026ab8459505b138054652e473eb52ce9"
+  integrity sha512-rC1qZCRH+9AcDxggeF5Z3Ubw79rlWOJxz6XI+UUmKtw8EEzGHcspzpqR4UZdfQbq+a9GYkWdlPGh6CokBgunew==
   dependencies:
     stacktrace-js "^2.0.2"
 
-"@react-native-firebase/firestore@^18.7.1":
-  version "18.7.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-18.7.1.tgz#be6eabaa909ccd0e75ab95ad2508a9450eb802c0"
-  integrity sha512-PAhB31U9L6Cf0VpVM/OwAYa9l9X7/CFASOh/bSyR5tTNjuXa13I37xGiIbBwVe7zplibLNRB6AvcejMBHdD0ew==
+"@react-native-firebase/firestore@^18.7.2":
+  version "18.7.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-18.7.2.tgz#1fec11f8daa36757244938f307e2a98285802a96"
+  integrity sha512-AX/fqvTQ6zFTnwvQG8JAl44XD0lJISpedeX0EWEFUa47rKPNEFqkDsGvv1AQkAkT+twfIhaj+ORVtZMB3snIFg==
 
 "@react-native-firebase/functions@^18.7.2":
   version "18.7.2"
@@ -7446,6 +7446,11 @@ levn@^0.4.1:
   dependencies:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
+
+libphonenumber-js@^1.10.51:
+  version "1.10.51"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.51.tgz#a3b8c15db2721c3e5f7fe6759e2a524712b578e6"
+  integrity sha512-vY2I+rQwrDQzoPds0JeTEpeWzbUJgqoV0O4v31PauHBb/e+1KCXKylHcDnBMgJZ9fH9mErsEbROJY3Z3JtqEmg==
 
 lines-and-columns@^1.1.6:
   version "1.2.4"

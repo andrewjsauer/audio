@@ -7,46 +7,21 @@ import { trackEvent, trackScreen } from '@lib/analytics';
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
 
-import { UserDetailsSteps as Steps } from '@lib/types';
 import { showNotification } from '@store/ui/slice';
 
+import ColorPicker from '@components/shared/ColorPicker';
 import Layout from '../Layout';
+
 import {
   Container,
   ButtonWrapper,
   InputSubtitle,
   InputWrapper,
 } from '../style';
-import {
-  TextInput,
-  ColorPickerRow,
-  ColorPickerContainer,
-  ColorOption,
-} from './style';
 
-const row1 = [
-  '#175419',
-  '#397729',
-  '#62BE8D',
-  '#82A326',
-  '#BC5252',
-  '#E27140',
-  '#EBA741',
-  '#F3CC03',
-];
+import { TextInput } from './style';
 
-const row2 = [
-  '#164780',
-  '#1B6470',
-  '#505883',
-  '#937AC8',
-  '#9C3D76',
-  '#BD3C6A',
-  '#D394E3',
-  '#E1A3C8',
-];
-
-function PartnerNameScreen() {
+function UserNameScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -61,30 +36,30 @@ function PartnerNameScreen() {
     if (!color) {
       dispatch(
         showNotification({
-          title: t('errors.pleaseTryAgain'),
-          description: t('errors.colorEmpty'),
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.colorEmpty',
           type: 'error',
         }),
       );
 
-      trackEvent('users_color_empty');
+      trackEvent('users_color_empty_error');
       return;
     }
 
     if (!name) {
       dispatch(
         showNotification({
-          title: t('errors.pleaseTryAgain'),
-          description: t('errors.userNameEmpty'),
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.userNameEmpty',
           type: 'error',
         }),
       );
 
-      trackEvent('users_name_empty');
+      trackEvent('users_name_empty_error');
       return;
     }
 
-    goToNextStep(Steps.BirthdayStep);
+    goToNextStep();
   };
 
   return (
@@ -92,28 +67,10 @@ function PartnerNameScreen() {
       isBackButtonEnabled={false}
       title={t('auth.userDetails.userNameScreen.title')}>
       <Container>
-        <ColorPickerContainer>
-          <ColorPickerRow>
-            {row1.map((colorOption) => (
-              <ColorOption
-                key={colorOption}
-                color={colorOption}
-                isSelected={colorOption === color}
-                onPress={() => handleUserDetails({ color: colorOption })}
-              />
-            ))}
-          </ColorPickerRow>
-          <ColorPickerRow>
-            {row2.map((colorOption) => (
-              <ColorOption
-                key={colorOption}
-                color={colorOption}
-                isSelected={colorOption === color}
-                onPress={() => handleUserDetails({ color: colorOption })}
-              />
-            ))}
-          </ColorPickerRow>
-        </ColorPickerContainer>
+        <ColorPicker
+          color={color}
+          onChange={(colorOption) => handleUserDetails({ color: colorOption })}
+        />
         <InputWrapper>
           <TextInput
             placeholder={t('auth.userDetails.userNameScreen.inputPlaceholder')}
@@ -135,4 +92,4 @@ function PartnerNameScreen() {
   );
 }
 
-export default PartnerNameScreen;
+export default UserNameScreen;

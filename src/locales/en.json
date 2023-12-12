@@ -2,6 +2,15 @@
   "next": "Next",
   "success": "Success!",
   "submit": "Submit",
+  "retry": "Retry",
+  "permissions": {
+    "notifications": {
+      "title": "Know when {{ name }} answers...",
+      "titleNameBackup": "Know when your partner answers...",
+      "description": "Get notifications for questions & answers",
+      "buttonText": "Allow"
+    }
+  },
   "errors": {
     "tryAgain": "Try Again",
     "pleaseTryAgain": "Please Try Again",
@@ -19,37 +28,40 @@
     "relationshipTypeEmpty": "Relationship status cannot be empty",
     "userNameEmpty": "Your name cannot be empty",
     "birthdayEmpty": "Birthday cannot be empty",
-    "colorEmpty": "Color cannot be empty"
+    "colorEmpty": "Color cannot be empty",
+    "userUpdateFailed": "Something went wrong when updating your user",
+    "partnershipInitializationFailed": "Something went wrong when initializing your partnership"
   },
   "auth": {
     "signInScreen": {
       "title": "You First",
       "subtitle": "Couples Edition",
-      "description": "Reveal each others’ answers\nto daily questions"
+      "description": "Reveal each others’ answers to\n daily personalized questions",
+      "buttonText": "Get Code"
     },
     "phoneNumberScreen": {
-      "welcome": "Welcome! Sign In to get started",
-      "disclaimer": "To sign in, type your phone number for a verification code."
+      "title": "Welcome! Sign In to get started",
+      "inputTitle": "Sign In *",
+      "inputDescription": "To sign in, type your phone number for a verification code."
     },
     "verificationCodeScreen": {
       "title": "Your login code was sent to your number.",
-      "subtitle": "Verification Code",
-      "description": "<0><1>Tap here</1> to retry in 30 seconds.</0> ",
-      "descriptionP1": "Didn't receive your code? ",
-      "descriptionP2": "Tap here ",
-      "descriptionP3": "to resend in ",
-      "buttonText": "Verify",
-      "partnerFound": "We found your partner! Let's finish your registration"
+      "inputTitle": "Verification Code *",
+      "inputDescriptionP1": "Didn't receive your code? ",
+      "inputDescriptionP2": "Tap here ",
+      "inputDescriptionP3": "to resend in ",
+      "inputDescriptionP4": " secs",
+      "buttonText": "Verify"
     },
     "partnerDetails": {
       "nameScreen": {
-        "title": "Welcome! Let's get started, what’s your partner’s name?",
-        "inputTitle": "Your Partner's Name",
-        "inputPlaceholder": "Partner's first name",
-        "inputDescription": "Enter your partner's first name or the name they most use."
+        "title": "Okay, time to invite your partner! What’s your partner’s name?",
+        "inputTitle": "Your Partner's Name *",
+        "inputPlaceholder": "Partner's First Name",
+        "inputDescription": "Enter your partner's first name or a nickname you both use."
       },
       "relationshipTypeScreen": {
-        "title": "What's your relationship status?",
+        "title": "What's your relationship status with your partner?",
         "types": [
           { "stillGettingToKnowEachOther": "Still Getting to Know Each Other" },
           { "dating": "Dating" },
@@ -80,13 +92,13 @@
     },
     "userDetails": {
       "userNameScreen": {
-        "title": "Your turn! Choose your favorite color and tell us your name",
+        "title": "Choose your favorite color and name so your partner can recognize you.",
         "inputTitle": "Your Name *",
-        "inputPlaceholder": "Your first name",
-        "inputDescription": "Enter your first name or the name you most use."
+        "inputPlaceholder": "First name",
+        "inputDescription": "Use your first name or a name your partner will recognize"
       },
       "birthdayScreen": {
-        "title": "Add your birthday so we can better tailor questions to you. Last question!",
+        "title": "Add your birthday so we can better tailor questions to you.",
         "inputTitle": "Date of Birth*",
         "inputDescription": "Knowing your age helps customize your experience"
       }

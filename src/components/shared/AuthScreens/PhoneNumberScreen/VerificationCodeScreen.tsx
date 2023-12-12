@@ -66,7 +66,7 @@ function VerificationCodeScreen({
       title={t('auth.verificationCodeScreen.title')}>
       <Container>
         <InputWrapper>
-          <InputTitle>{t('auth.verificationCodeScreen.subtitle')} *</InputTitle>
+          <InputTitle>{t('auth.verificationCodeScreen.inputTitle')}</InputTitle>
           <CodeInput
             autoFocus
             placeholder="6-Digit Code"
@@ -78,18 +78,19 @@ function VerificationCodeScreen({
           />
           <ResendCodeWrapper>
             <InputSubtitle>
-              {t('auth.verificationCodeScreen.descriptionP1')}
+              {t('auth.verificationCodeScreen.inputDescriptionP1')}
             </InputSubtitle>
             <TouchableOpacity onPress={handleResendCode}>
               <ResendCodeTextWrapper>
                 <InputSubtitle>
-                  {t('auth.verificationCodeScreen.descriptionP2')}
+                  {t('auth.verificationCodeScreen.inputDescriptionP2')}
                 </InputSubtitle>
               </ResendCodeTextWrapper>
             </TouchableOpacity>
             <InputSubtitle>
-              {t('auth.verificationCodeScreen.descriptionP3')}
+              {t('auth.verificationCodeScreen.inputDescriptionP3')}
               {remainingTime}
+              {t('auth.verificationCodeScreen.inputDescriptionP4')}
             </InputSubtitle>
           </ResendCodeWrapper>
         </InputWrapper>

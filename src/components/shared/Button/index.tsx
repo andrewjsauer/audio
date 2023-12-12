@@ -2,37 +2,49 @@ import React from 'react';
 import { ActivityIndicator, TouchableOpacityProps } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
-import { ButtonContainer, ButtonText } from './style';
+import { ButtonContainer, NotificationOrb, ButtonText } from './style';
 
-export interface StyledButtonProps
-  extends Omit<TouchableOpacityProps, 'children'> {
+export interface ButtonProps extends Omit<TouchableOpacityProps, 'children'> {
+  hasNotification?: boolean;
   isDisabled?: boolean;
   isLoading?: boolean;
-  mode?: 'light' | 'dark';
-  text: string;
+  mode?: 'light' | 'dark' | 'error';
+  size?: 'small' | 'medium';
+  text?: string;
 }
 
-function StyledButton({
+function Button({
+  hasNotification = false,
   isDisabled = false,
   isLoading = false,
   mode = 'dark',
+  size = 'medium',
   text,
   ...props
-}: StyledButtonProps) {
+}: ButtonProps) {
   const theme = useTheme();
 
   return (
-    <ButtonContainer disabled={isLoading || isDisabled} mode={mode} {...props}>
+    <ButtonContainer
+      disabled={isLoading || isDisabled}
+      mode={mode}
+      size={size}
+      {...props}>
       {isLoading ? (
         <ActivityIndicator
           size="small"
           color={theme.colors[mode === 'light' ? 'black' : 'white']}
         />
       ) : (
-        <ButtonText mode={mode}>{text}</ButtonText>
+        <>
+          <ButtonText size={size} mode={mode}>
+            {text}
+          </ButtonText>
+          {hasNotification && <NotificationOrb />}
+        </>
       )}
     </ButtonContainer>
   );
 }
 
-export default StyledButton;
+export default Button;

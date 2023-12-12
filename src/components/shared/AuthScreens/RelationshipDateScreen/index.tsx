@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
 
-import { PartnerDetailsSteps as Steps } from '@lib/types';
 import { trackScreen, trackEvent } from '@lib/analytics';
 import { showNotification } from '@store/ui/slice';
 
@@ -30,34 +29,34 @@ function RelationshipDateScreen() {
   const {
     goToNextStep,
     goToPreviousStep,
-    partnerDetails,
-    handlePartnerDetails,
+    handlePartnershipDetails,
+    partnershipDetails,
   } = useAuthFlow();
 
-  const relationshipDate = partnerDetails.relationshipDate
-    ? new Date(partnerDetails.relationshipDate)
+  const relationshipDate = partnershipDetails.startDate
+    ? new Date(partnershipDetails.startDate)
     : new Date();
 
   const handleSubmit = () => {
     if (!relationshipDate) {
       dispatch(
         showNotification({
-          title: t('errors.pleaseTryAgain'),
-          description: t('errors.relationshipDateEmpty'),
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.relationshipDateEmpty',
           type: 'error',
         }),
       );
 
-      trackEvent('relationship_date_empty');
+      trackEvent('relationship_date_empty_error');
       return;
     }
 
-    goToNextStep(Steps.InviteStep);
+    goToNextStep();
   };
 
   return (
     <Layout
-      goBack={() => goToPreviousStep(Steps.RelationshipTypeStep)}
+      goBack={goToPreviousStep}
       isBackButtonEnabled
       title={t('auth.partnerDetails.relationshipDateScreen.title')}>
       <Container>
@@ -68,7 +67,7 @@ function RelationshipDateScreen() {
           <StyledDatePicker
             date={relationshipDate}
             onDateChange={(date) =>
-              handlePartnerDetails({ relationshipDate: date })
+              handlePartnershipDetails({ startDate: date })
             }
             mode="date"
           />

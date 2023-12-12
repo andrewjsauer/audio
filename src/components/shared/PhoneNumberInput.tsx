@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
+
 import PhoneNumberInput from 'react-native-phone-number-input';
+import { AsYouType } from 'libphonenumber-js';
 
 const styles = StyleSheet.create({
   label: {
@@ -13,8 +15,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth: 1,
     borderColor: '#909090',
-    fontSize: 18,
-    fontFamily: 'Nunito-Regular',
   },
   textInput: {
     fontSize: 18,
@@ -42,14 +42,28 @@ function PhoneNumberInputContainer({
   phoneNumber,
   setPhoneNumber,
 }: Props) {
+  const [countryCode, setCountryCode] = useState<any>('US');
+
+  const handlePhoneNumberChange = (number: string) => {
+    const formattedNumber = new AsYouType(countryCode).input(number);
+    setPhoneNumber(formattedNumber);
+  };
+
+  const handleCountryCodeChange = (code: string) => {
+    setCountryCode(code);
+  };
+
   return (
     <PhoneNumberInput
       autoFocus
       codeTextStyle={styles.codeText}
       containerStyle={styles.phoneInput}
-      defaultCode="US"
+      defaultCode={countryCode}
       layout="first"
-      onChangeFormattedText={setPhoneNumber}
+      onChangeFormattedText={handlePhoneNumberChange}
+      onChangeCountry={(country) => {
+        handleCountryCodeChange(country?.cca2 || 'US');
+      }}
       ref={phoneInputRef}
       textContainerStyle={styles.textContainer}
       textInputStyle={styles.textInput}

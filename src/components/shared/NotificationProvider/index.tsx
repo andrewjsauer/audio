@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Animated } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,6 +21,8 @@ import {
 } from './style';
 
 function Notification() {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const notification = useSelector(selectNotification);
 
@@ -68,17 +71,13 @@ function Notification() {
     <AnimatedContainer style={{ opacity: fadeAnim }}>
       <Container type={type}>
         <Content>
-          <Title>{title}</Title>
-          {description && <Description>{description}</Description>}
+          <Title>{t(title)}</Title>
+          {description && <Description>{t(description)}</Description>}
         </Content>
         {buttonText && (
           <ButtonWrapper>
-            <Button
-              onPress={() => {
-                dispatch(hideNotification());
-                onButtonPress?.();
-              }}>
-              <ButtonText type={type}>{buttonText}</ButtonText>
+            <Button onPress={onButtonPress}>
+              <ButtonText type={type}>{t(buttonText)}</ButtonText>
             </Button>
           </ButtonWrapper>
         )}

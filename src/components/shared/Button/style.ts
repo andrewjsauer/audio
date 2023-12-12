@@ -1,23 +1,44 @@
 /* eslint-disable no-nested-ternary */
 import styled from 'styled-components/native';
-import { StyledButtonProps } from './index';
+import { ButtonProps } from './index';
 
-export const ButtonContainer = styled.TouchableOpacity<StyledButtonProps>`
+const buttonSizeStyles = {
+  small: {
+    width: '140px',
+    height: '40px',
+    fontSize: '14px',
+  },
+  medium: {
+    width: '320px',
+    height: '60px',
+    fontSize: '18px',
+  },
+};
+
+export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
   border-radius: 30px;
-  background-color: ${({ mode, disabled, theme }) =>
-    disabled
-      ? theme.colors.gray
-      : mode === 'light'
-        ? theme.colors.white
-        : theme.colors.gray};
+  background-color: ${({ mode, disabled, theme }) => {
+    if (disabled) return theme.colors.gray;
+
+    switch (mode) {
+      case 'light':
+        return theme.colors.white;
+      case 'dark':
+        return theme.colors.gray;
+      case 'error':
+        return theme.colors.error;
+      default:
+        return theme.colors.gray;
+    }
+  }};
   align-items: center;
   justify-content: center;
-  width: 320px;
-  height: 60px;
+  position: relative;
+
+  ${({ size }) => size && buttonSizeStyles[size]};
 `;
 
-export const ButtonText = styled.Text<StyledButtonProps>`
-  padding: 10px 20px;
+export const ButtonText = styled.Text<ButtonProps>`
   color: ${({ mode, disabled, theme }) =>
     disabled
       ? theme.colors.white
@@ -25,5 +46,16 @@ export const ButtonText = styled.Text<StyledButtonProps>`
         ? theme.colors.black
         : theme.colors.white};
   font-family: ${(props) => props.theme.fonts.bold};
-  font-size: ${(props) => props.theme.fontSizes.large};
+  font-size: ${(props) => buttonSizeStyles[props.size ?? 'medium'].fontSize};
+`;
+
+export const NotificationOrb = styled.View`
+  position: absolute;
+  top: -8px;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background-color: ${(props) => props.theme.colors.red};
+  border-radius: 10px;
+  border: 3px solid white;
 `;
