@@ -68,7 +68,10 @@ export const verifyCode = createAsyncThunk(
       if (userSnapshot.empty) {
         trackEvent('verify_code_no_user_found');
       } else {
-        userData = userSnapshot.docs[0].data() as UserDataType;
+        const responseData = userSnapshot.docs[0].data() as UserDataType;
+
+        crashlytics().setUserId(responseData.id);
+        userData = responseData;
       }
 
       return { user: currentUser, userData };

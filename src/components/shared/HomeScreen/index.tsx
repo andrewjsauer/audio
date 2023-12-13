@@ -5,11 +5,11 @@ import { useTranslation } from 'react-i18next';
 
 import { signOut } from '@store/app/thunks';
 import { selectIsLoading, selectError } from '@store/app/selectors';
+import { AppDispatch } from '@store/index';
 
 import { trackEvent, trackScreen } from '@lib/analytics';
-
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
-import usePartnersDataSubscription from '@lib/customHooks/usePartnersDataSubscription';
+import usePartnershipDataSubscription from '@lib/customHooks/usePartnershipDataSubscription';
 import useAuthSubscription from '@lib/customHooks/useAuthSubscription';
 
 import Button from '@components/shared/Button';
@@ -24,24 +24,24 @@ import {
 } from './style';
 
 function App(): JSX.Element {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
 
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
 
-  // useNotificationPermissions();
+  useNotificationPermissions();
 
-  // usePartnersDataSubscription();
+  usePartnershipDataSubscription();
 
-  // useAuthSubscription();
+  useAuthSubscription();
 
   useEffect(() => {
     trackScreen('HomeScreen');
   }, []);
 
   const handleLogout = () => {
-    trackEvent('SignOut');
+    trackEvent('signOut_button_clicked');
     dispatch(signOut());
   };
 

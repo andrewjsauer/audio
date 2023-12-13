@@ -65,8 +65,6 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
     useState<PartnershipDetailsType>({});
   const [currentStep, setCurrentStep] = useState(1);
 
-  console.log('userDetails', userDetails);
-
   useEffect(() => {
     if (userData) {
       setUserDetails(userData);

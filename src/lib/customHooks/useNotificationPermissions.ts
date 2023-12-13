@@ -11,17 +11,19 @@ import {
 import { useTranslation } from 'react-i18next';
 import { trackEvent } from '@lib/analytics';
 
-import { showNotification } from '@store/ui/slice';
+import { showNotification, hideNotification } from '@store/ui/slice';
+import { selectPartnerName } from '@store/partnership/selectors';
 
 const useNotificationPermissions = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const partnersName = 'Placeholder';
-  // useSelector(selectPartnersName);
+  const partnersName = useSelector(selectPartnerName);
 
   const handleNotificationPermission = (status: PermissionStatus) => {
-    if (status === RESULTS.DENIED || status === RESULTS.BLOCKED) {
+    if (status === RESULTS.GRANTED) {
+      dispatch(hideNotification());
+    } else if (status === RESULTS.DENIED || status === RESULTS.BLOCKED) {
       dispatch(
         showNotification({
           title: partnersName

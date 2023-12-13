@@ -14,7 +14,7 @@ export const selectIsUserLoggedIn = createSelector(
 
 export const selectIsUserRegistered = createSelector(
   selectUserData,
-  (userData) => !!userData && userData.isRegistered,
+  (userData) => !!userData && !!userData.isRegistered,
 );
 
 export const selectUserId = createSelector(selectUserData, (user) => user?.id);

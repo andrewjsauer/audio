@@ -15,10 +15,10 @@ export enum AuthScreens {
 export type UserDataType = {
   birthDate?: Date;
   color?: string;
-  createdAt?: FirebaseFirestoreTypes.Timestamp;
+  createdAt?: FirebaseFirestoreTypes.FieldValue;
   id?: string;
-  isRegistered: boolean;
-  lastActiveAt?: FirebaseFirestoreTypes.Timestamp;
+  isRegistered?: boolean;
+  lastActiveAt?: FirebaseFirestoreTypes.FieldValue;
   name?: string;
   partnershipId?: string;
   phoneNumber?: string;
@@ -28,7 +28,7 @@ export type PartnershipDataType = {
   id?: string;
   startDate: Date;
   type: string;
-  createdAt: FirebaseFirestoreTypes.Timestamp;
+  createdAt: FirebaseFirestoreTypes.FieldValue;
 };
 
 export type UserDetailsType = {

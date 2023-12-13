@@ -1,20 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { PartnershipDataType } from '@lib/types';
+import {
+  PartnershipDataType,
+  UserDataType as PartnerDataType,
+} from '@lib/types';
 
 import { signOut } from '@store/app/thunks';
 import { initializePartnership } from '@store/auth/thunks';
+import { fetchPartnerData } from './thunks';
 
 interface PartnershipState {
-  error: string | undefined | null;
-  isLoading: boolean;
+  partnerData: PartnerDataType | null;
   partnershipData: PartnershipDataType | null;
 }
 
 const initialState: PartnershipState = {
-  error: null,
-  isLoading: false,
   partnershipData: null,
+  partnerData: null,
 };
 
 const partnershipSlice = createSlice({
@@ -27,12 +29,14 @@ const partnershipSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(signOut.fulfilled, (state) => {
-      state.isLoading = false;
       state.partnershipData = null;
     });
     builder.addCase(initializePartnership.fulfilled, (state, action) => {
       state.partnershipData = action.payload
         .partnershipData as PartnershipDataType;
+    });
+    builder.addCase(fetchPartnerData.fulfilled, (state, action) => {
+      state.partnerData = action.payload as PartnerDataType;
     });
   },
 });

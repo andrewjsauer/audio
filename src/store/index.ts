@@ -33,8 +33,8 @@ const setupStore = (preloadedState?: Partial<RootReducerState>) => {
   const persistor = persistStore(store);
 
   if (__DEV__) {
-    console.log('STORE PURGED');
-    persistor.purge();
+    // console.log('STORE PURGED');
+    // persistor.purge();
   }
 
   return { store, persistor };
