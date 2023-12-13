@@ -16,6 +16,7 @@ export type UserDataType = {
   birthDate?: Date;
   color?: string;
   createdAt?: FirebaseFirestoreTypes.FieldValue;
+  deviceIds?: FirebaseFirestoreTypes.FieldValue;
   id?: string;
   isRegistered?: boolean;
   lastActiveAt?: FirebaseFirestoreTypes.FieldValue;
@@ -28,6 +29,14 @@ export type PartnershipDataType = {
   id?: string;
   startDate: Date;
   type: string;
+  createdAt: FirebaseFirestoreTypes.FieldValue;
+};
+
+export type PartnershipUserDataType = {
+  id?: string;
+  partnershipId?: string;
+  userId?: string;
+  otherUserId?: string;
   createdAt: FirebaseFirestoreTypes.FieldValue;
 };
 

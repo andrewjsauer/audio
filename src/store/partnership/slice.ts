@@ -3,20 +3,23 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   PartnershipDataType,
   UserDataType as PartnerDataType,
+  PartnershipUserDataType,
 } from '@lib/types';
 
 import { signOut } from '@store/app/thunks';
-import { initializePartnership } from '@store/auth/thunks';
-import { fetchPartnerData } from './thunks';
+import { generatePartnership } from '@store/auth/thunks';
+import { fetchPartnerData, updatePartnershipUser } from './thunks';
 
 interface PartnershipState {
   partnerData: PartnerDataType | null;
   partnershipData: PartnershipDataType | null;
+  partnershipUserData: PartnershipUserDataType | null;
 }
 
 const initialState: PartnershipState = {
-  partnershipData: null,
   partnerData: null,
+  partnershipData: null,
+  partnershipUserData: null,
 };
 
 const partnershipSlice = createSlice({
@@ -30,13 +33,21 @@ const partnershipSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(signOut.fulfilled, (state) => {
       state.partnershipData = null;
+      state.partnershipUserData = null;
+      state.partnerData = null;
     });
-    builder.addCase(initializePartnership.fulfilled, (state, action) => {
+    builder.addCase(generatePartnership.fulfilled, (state, action) => {
       state.partnershipData = action.payload
         .partnershipData as PartnershipDataType;
     });
     builder.addCase(fetchPartnerData.fulfilled, (state, action) => {
       state.partnerData = action.payload as PartnerDataType;
+    });
+    builder.addCase(updatePartnershipUser.fulfilled, (state, action) => {
+      state.partnershipUserData = {
+        ...state.partnershipUserData,
+        ...action.payload,
+      };
     });
   },
 });

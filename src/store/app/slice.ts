@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchPartnerData } from '@store/partnership/thunks';
 
-import { signOut } from './thunks';
+import { signOut, initializeSession } from './thunks';
 
 interface AppState {
   error: string | undefined | null;
@@ -31,13 +30,13 @@ const appSlice = createSlice({
     builder.addCase(signOut.rejected, (state) => {
       state.isLoading = false;
     });
-    builder.addCase(fetchPartnerData.fulfilled, (state) => {
+    builder.addCase(initializeSession.fulfilled, (state) => {
       state.isLoading = false;
     });
-    builder.addCase(fetchPartnerData.pending, (state) => {
+    builder.addCase(initializeSession.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(fetchPartnerData.rejected, (state) => {
+    builder.addCase(initializeSession.rejected, (state) => {
       state.isLoading = false;
     });
   },

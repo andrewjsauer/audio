@@ -669,6 +669,9 @@ PODS:
   - Firebase/Functions (10.19.0):
     - Firebase/CoreOnly
     - FirebaseFunctions (~> 10.19.0)
+  - Firebase/Messaging (10.19.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 10.19.0)
   - FirebaseAnalytics (10.19.0):
     - FirebaseAnalytics/AdIdSupport (= 10.19.0)
     - FirebaseCore (~> 10.0)
@@ -750,6 +753,15 @@ PODS:
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
+  - FirebaseMessaging (10.19.0):
+    - FirebaseCore (~> 10.0)
+    - FirebaseInstallations (~> 10.0)
+    - GoogleDataTransport (~> 9.3)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
+    - GoogleUtilities/Environment (~> 7.8)
+    - GoogleUtilities/Reachability (~> 7.8)
+    - GoogleUtilities/UserDefaults (~> 7.8)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
   - FirebaseMessagingInterop (10.19.0)
   - FirebaseSessions (10.19.0):
     - FirebaseCore (~> 10.5)
@@ -1303,33 +1315,38 @@ PODS:
   - RecaptchaInterop (100.0.0)
   - RNCAsyncStorage (1.21.0):
     - React-Core
-  - RNFBAnalytics (18.7.2):
+  - RNFBAnalytics (18.7.3):
     - Firebase/Analytics (= 10.19.0)
     - React-Core
     - RNFBApp
-  - RNFBApp (18.7.2):
+  - RNFBApp (18.7.3):
     - Firebase/CoreOnly (= 10.19.0)
     - React-Core
-  - RNFBAppCheck (18.7.2):
+  - RNFBAppCheck (18.7.3):
     - Firebase/AppCheck (= 10.19.0)
     - React-Core
     - RNFBApp
-  - RNFBAuth (18.7.2):
+  - RNFBAuth (18.7.3):
     - Firebase/Auth (= 10.19.0)
     - React-Core
     - RNFBApp
-  - RNFBCrashlytics (18.7.2):
+  - RNFBCrashlytics (18.7.3):
     - Firebase/Crashlytics (= 10.19.0)
     - FirebaseCoreExtension (= 10.19.0)
     - React-Core
     - RNFBApp
-  - RNFBFirestore (18.7.2):
+  - RNFBFirestore (18.7.3):
     - Firebase/Firestore (= 10.19.0)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - React-Core
     - RNFBApp
-  - RNFBFunctions (18.7.2):
+  - RNFBFunctions (18.7.3):
     - Firebase/Functions (= 10.19.0)
+    - React-Core
+    - RNFBApp
+  - RNFBMessaging (18.7.3):
+    - Firebase/Messaging (= 10.19.0)
+    - FirebaseCoreExtension (= 10.19.0)
     - React-Core
     - RNFBApp
   - RNGestureHandler (2.14.0):
@@ -1395,6 +1412,7 @@ DEPENDENCIES:
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - "RNFBFunctions (from `../node_modules/@react-native-firebase/functions`)"
+  - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -1419,6 +1437,7 @@ SPEC REPOS:
     - FirebaseFirestoreInternal
     - FirebaseFunctions
     - FirebaseInstallations
+    - FirebaseMessaging
     - FirebaseMessagingInterop
     - FirebaseSessions
     - FirebaseSharedSwift
@@ -1539,6 +1558,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/firestore"
   RNFBFunctions:
     :path: "../node_modules/@react-native-firebase/functions"
+  RNFBMessaging:
+    :path: "../node_modules/@react-native-firebase/messaging"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNPermissions:
@@ -1570,6 +1591,7 @@ SPEC CHECKSUMS:
   FirebaseFirestoreInternal: a15405fb607dfd14edd568bba77028f4c7a69688
   FirebaseFunctions: 3414721d8c0846b171dc8e388efc1d877caab2c2
   FirebaseInstallations: 033d199474164db20c8350736842a94fe717b960
+  FirebaseMessaging: d322bd030a0e97398bf134746e087b88e6ba0074
   FirebaseMessagingInterop: ec84569ed0436f52280ca07a214a83f48674cf5c
   FirebaseSessions: e5f4caa188dc8bc6142abc974355be75b042215e
   FirebaseSharedSwift: f34eeb7d3ea87a34497629b6ca41657beadef76a
@@ -1625,13 +1647,14 @@ SPEC CHECKSUMS:
   ReactCommon: 4ef37cb61335f2c7a29225d754c06857b4cc6361
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
-  RNFBAnalytics: c572a6f8c1d33878c2803adaf5abbdd2ec5ca88a
-  RNFBApp: 1a09a90a680865646fcb6ad4c7af505f36b02473
-  RNFBAppCheck: ec74ae2865fd5aaa94787c84da5a544c38ebf89f
-  RNFBAuth: 4a8ebbec4c355562a74836e4b76da13b8e64080a
-  RNFBCrashlytics: 99236f5d414db702746256f07206a118ac1a247b
-  RNFBFirestore: d179fefac45ac3d1f74c448262a48b16de75eace
-  RNFBFunctions: 99b081e32208c0a08c6623a5893ea025ebbe5c8c
+  RNFBAnalytics: fdecb8b774abd12f9ed79675794159d1a0fadc6c
+  RNFBApp: 5ee688b07ed0fa692a3a8fd07df6d6ae41e4c3a0
+  RNFBAppCheck: 774b5d72e44d9a481f08cd688e553ce43a73fa48
+  RNFBAuth: a800af76ce0baed0c839307aa0aa0c2443dbbee6
+  RNFBCrashlytics: 11f52604cc41fde69e8cc8fcc9c578fc8d5b8a15
+  RNFBFirestore: d469f8331952970100a1015baebc2bb831a667a7
+  RNFBFunctions: ecf9a0311d3f73a98e0ee3bc64118e56e481b553
+  RNFBMessaging: c839473d12cbe1b042b29898177033de4214e932
   RNGestureHandler: a5039da2ac028b073ae801289476060b34d559b1
   RNPermissions: b4ccb7f1a3cece23cbcf4339c662c940a9098163
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a

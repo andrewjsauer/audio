@@ -30,7 +30,8 @@
     "birthdayEmpty": "Birthday cannot be empty",
     "colorEmpty": "Color cannot be empty",
     "userUpdateFailed": "Something went wrong when updating your user",
-    "partnershipInitializationFailed": "Something went wrong when initializing your partnership"
+    "partnershipGenerationFailed": "Something went wrong when initializing your partnership",
+    "initializeSession": "Something went wrong when initializing your user"
   },
   "auth": {
     "signInScreen": {

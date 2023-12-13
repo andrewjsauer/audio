@@ -3,17 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDispatch } from '@store/index';
 import { selectUserId } from '@store/auth/selectors';
-import { fetchPartnerData } from '@store/partnership/thunks';
+import { initializeSession } from '@store/app/thunks';
 
-const usePartnershipDataSubscription = () => {
+const useInitializeSession = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector(selectUserId);
 
   useEffect(() => {
     if (userId) {
-      dispatch(fetchPartnerData(userId));
+      dispatch(initializeSession(userId));
     }
   }, [userId, dispatch]);
 };
 
-export default usePartnershipDataSubscription;
+export default useInitializeSession;

@@ -1,13 +1,18 @@
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from 'react-native';
+
+import messaging from '@react-native-firebase/messaging';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import { AppDispatch } from '@store/index';
 import { setUser } from '@store/auth/slice';
 import { updateUser } from '@store/auth/thunks';
 import { selectUserId } from '@store/auth/selectors';
+
+import { trackEvent } from '@lib/analytics';
 
 function useAuthStateListener() {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,6 +20,7 @@ function useAuthStateListener() {
 
   function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
     if (user) {
+      crashlytics().setUserId(user.uid);
       dispatch(setUser(user));
     }
   }
@@ -37,6 +43,36 @@ function useAuthStateListener() {
     return subscriber;
   }, []);
 
+  async function saveTokenToUser(token: string) {
+    if (userId) {
+      dispatch(
+        updateUser({
+          id: userId,
+          userDetails: {
+            deviceIds: firestore.FieldValue.arrayUnion(token),
+          },
+        }),
+      );
+    }
+  }
+
+  useEffect(() => {
+    try {
+      messaging()
+        .getToken()
+        .then((token) => {
+          return saveTokenToUser(token);
+        });
+    } catch (error) {
+      trackEvent('get_firebase_device_token_error', { error });
+      crashlytics().recordError(error);
+    }
+
+    return messaging().onTokenRefresh((token) => {
+      saveTokenToUser(token);
+    });
+  }, []);
+
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState.match(/inactive|background/)) {
@@ -45,7 +81,6 @@ function useAuthStateListener() {
     });
 
     return () => {
-      handleUpdateLastActiveAt();
       subscription.remove();
     };
   }, [handleUpdateLastActiveAt]);

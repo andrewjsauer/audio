@@ -20,14 +20,20 @@ const useNotificationPermissions = () => {
 
   const partnersName = useSelector(selectPartnerName);
 
-  const handleNotificationPermission = (status: PermissionStatus) => {
+  const handleNotificationPermission = ({
+    status,
+    name,
+  }: {
+    status: PermissionStatus;
+    name: string | null;
+  }) => {
     if (status === RESULTS.GRANTED) {
       dispatch(hideNotification());
-    } else if (status === RESULTS.DENIED || status === RESULTS.BLOCKED) {
+    } else if (status === RESULTS.BLOCKED) {
       dispatch(
         showNotification({
-          title: partnersName
-            ? t('permissions.notifications.title', { name: partnersName })
+          title: name
+            ? t('permissions.notifications.title', { name })
             : t('permissions.notifications.titleNameBackup'),
           description: t('permissions.notifications.description'),
           type: 'error',
@@ -40,14 +46,14 @@ const useNotificationPermissions = () => {
     } else {
       dispatch(
         showNotification({
-          title: partnersName
-            ? t('permissions.notifications.title', { name: partnersName })
+          title: name
+            ? t('permissions.notifications.title', { name })
             : t('permissions.notifications.titleNameBackup'),
           description: t('permissions.notifications.description'),
           type: 'error',
           buttonText: t('permissions.notifications.buttonText'),
           onButtonPress: () =>
-            requestNotifications(['alert', 'badge', 'providesAppSettings']),
+            requestNotifications(['alert', 'badge', 'sound', 'carPlay']),
         }),
       );
 
@@ -55,25 +61,25 @@ const useNotificationPermissions = () => {
     }
   };
 
-  const checkNotificationPermission = () => {
+  const checkNotificationPermission = (name: string | null) => {
     checkNotifications().then(({ status }) => {
-      handleNotificationPermission(status);
+      handleNotificationPermission({ status, name });
     });
   };
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState === 'active') {
-        checkNotificationPermission();
+        checkNotificationPermission(partnersName);
       }
     });
 
-    checkNotificationPermission();
+    checkNotificationPermission(partnersName);
 
     return () => {
       subscription.remove();
     };
-  }, [dispatch, t]);
+  }, [partnersName, dispatch, t]);
 };
 
 export default useNotificationPermissions;

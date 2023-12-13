@@ -69,8 +69,6 @@ export const verifyCode = createAsyncThunk(
         trackEvent('verify_code_no_user_found');
       } else {
         const responseData = userSnapshot.docs[0].data() as UserDataType;
-
-        crashlytics().setUserId(responseData.id);
         userData = responseData;
       }
 
@@ -97,20 +95,22 @@ async function sendSmsToPartner(data: {
   }
 }
 
-interface InitializePartnershipArgs {
+interface GeneratePartnershipArgs {
   userDetails: UserDetailsType;
   partnerDetails: PartnerDetailsType;
   partnershipDetails: PartnershipDetailsType;
+  userId: string;
 }
 
-export const initializePartnership = createAsyncThunk(
-  'auth/initializePartnership',
+export const generatePartnership = createAsyncThunk(
+  'auth/generatePartnership',
   async (
     {
       userDetails,
       partnerDetails,
       partnershipDetails,
-    }: InitializePartnershipArgs,
+      userId,
+    }: GeneratePartnershipArgs,
     { rejectWithValue },
   ) => {
     const { type, startDate } = partnershipDetails;
@@ -119,8 +119,7 @@ export const initializePartnership = createAsyncThunk(
       const batch = firestore().batch();
 
       const partnershipId = uuidv4();
-      const partnerId = uuidv4();
-      const userId = uuidv4();
+      const tempPartnerId = uuidv4();
 
       const partnershipRef = firestore()
         .collection('partnership')
@@ -145,7 +144,7 @@ export const initializePartnership = createAsyncThunk(
           id: partnershipUser1Id,
           partnershipId,
           userId,
-          otherUserId: partnerId,
+          otherUserId: tempPartnerId,
           createdAt: firestore.FieldValue.serverTimestamp(),
         },
         { merge: true },
@@ -160,7 +159,7 @@ export const initializePartnership = createAsyncThunk(
         {
           id: partnershipUser2Id,
           partnershipId,
-          userId: partnerId,
+          userId: tempPartnerId,
           otherUserId: userId,
           createdAt: firestore.FieldValue.serverTimestamp(),
         },
@@ -178,11 +177,11 @@ export const initializePartnership = createAsyncThunk(
       };
       batch.set(userRef, userPayload, { merge: true });
 
-      const partnerRef = firestore().collection('users').doc(partnerId);
+      const partnerRef = firestore().collection('users').doc(tempPartnerId);
       const partnerPayload = {
         ...partnerDetails,
         createdAt: firestore.FieldValue.serverTimestamp(),
-        id: partnerId,
+        id: tempPartnerId,
         isRegistered: false,
         lastActiveAt: firestore.FieldValue.serverTimestamp(),
         partnershipId,
@@ -210,6 +209,7 @@ export const initializePartnership = createAsyncThunk(
 interface UpdateUserArgs {
   id: string;
   userDetails: UserDataType;
+  tempId?: string;
 }
 
 export const updateUser = createAsyncThunk(
@@ -224,6 +224,69 @@ export const updateUser = createAsyncThunk(
       return userDetails;
     } catch (error) {
       trackEvent('update_user_data_error', { error });
+      crashlytics().recordError(error);
+
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const updateNewUser = createAsyncThunk(
+  'auth/updateNewUser',
+  async ({ id, userDetails, tempId }: UpdateUserArgs, { rejectWithValue }) => {
+    const db = firestore();
+    const batch = db.batch();
+
+    try {
+      const usersCollection = db.collection('users');
+      const tempDocRef = usersCollection.doc(tempId);
+      const tempDoc = await tempDocRef.get();
+
+      if (tempDoc.exists) {
+        const newUserRef = usersCollection.doc(id);
+        batch.set(
+          newUserRef,
+          { ...tempDoc.data(), ...userDetails, id },
+          { merge: true },
+        );
+        batch.delete(tempDocRef);
+      } else {
+        return rejectWithValue('Temp user not found');
+      }
+
+      const partnershipUserRef = db.collection('partnershipUser');
+      const pUserQuery = partnershipUserRef.where('userId', '==', tempId);
+      const pUserSnapshot = await pUserQuery.get();
+
+      if (!pUserSnapshot.empty) {
+        const partnershipDocRef = pUserSnapshot.docs[0].ref;
+        batch.set(partnershipDocRef, { userId: id }, { merge: true });
+      } else {
+        return rejectWithValue('Temp partnership user not found');
+      }
+
+      const pUserPartnerQuery = partnershipUserRef.where(
+        'otherUserId',
+        '==',
+        tempId,
+      );
+      const pUserPartnerSnapshot = await pUserPartnerQuery.get();
+
+      if (!pUserPartnerSnapshot.empty) {
+        const partnershipPartnerDocRef = pUserPartnerSnapshot.docs[0].ref;
+        batch.set(
+          partnershipPartnerDocRef,
+          { otherUserId: id },
+          { merge: true },
+        );
+      } else {
+        return rejectWithValue('Temp partnership partners user not found');
+      }
+
+      await batch.commit(); // Commit the batch
+      return userDetails;
+    } catch (error) {
+      trackEvent('update_new_user_data_error', { error });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);

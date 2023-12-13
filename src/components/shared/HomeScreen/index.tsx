@@ -5,12 +5,13 @@ import { useTranslation } from 'react-i18next';
 
 import { signOut } from '@store/app/thunks';
 import { selectIsLoading, selectError } from '@store/app/selectors';
+import { selectUserId } from '@store/auth/selectors';
 import { AppDispatch } from '@store/index';
 
 import { trackEvent, trackScreen } from '@lib/analytics';
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
-import usePartnershipDataSubscription from '@lib/customHooks/usePartnershipDataSubscription';
 import useAuthSubscription from '@lib/customHooks/useAuthSubscription';
+import useInitializeSession from '@lib/customHooks/useInitializeSession';
 
 import Button from '@components/shared/Button';
 import SettingsIcon from '@assets/icons/settings.svg';
@@ -29,20 +30,21 @@ function App(): JSX.Element {
 
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
+  const userId = useSelector(selectUserId);
 
-  useNotificationPermissions();
-
-  usePartnershipDataSubscription();
+  useInitializeSession();
 
   useAuthSubscription();
+
+  useNotificationPermissions();
 
   useEffect(() => {
     trackScreen('HomeScreen');
   }, []);
 
   const handleLogout = () => {
-    trackEvent('signOut_button_clicked');
-    dispatch(signOut());
+    trackEvent('sign_out_button_clicked');
+    dispatch(signOut(userId));
   };
 
   // setup subscriber for "questions" collection on the user document

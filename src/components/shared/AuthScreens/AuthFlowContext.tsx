@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { selectUserData, selectUserId } from '@store/auth/selectors';
-import { initializePartnership, updateUser } from '@store/auth/thunks';
+import { generatePartnership, updateNewUser } from '@store/auth/thunks';
 import { AppDispatch } from '@store/index';
 
 import {
@@ -140,16 +140,18 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
     } else if (currentStep === totalSteps) {
       if (!isPartner) {
         dispatch(
-          initializePartnership({
+          generatePartnership({
             partnerDetails,
             partnershipDetails,
             userDetails,
+            userId,
           }),
         );
       } else {
         dispatch(
-          updateUser({
+          updateNewUser({
             id: userId,
+            tempId: userData.id,
             userDetails: { ...userDetails, isRegistered: true },
           }),
         );

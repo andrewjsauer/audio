@@ -5,9 +5,10 @@ import { UserDataType } from '@lib/types';
 
 import { signOut } from '@store/app/thunks';
 import {
-  initializePartnership,
+  generatePartnership,
   resendCode,
   submitPhoneNumber,
+  updateNewUser,
   updateUser,
   verifyCode,
 } from './thunks';
@@ -63,8 +64,7 @@ const authSlice = createSlice({
         state.confirm = action.payload;
         state.isLoading = false;
       })
-      .addCase(submitPhoneNumber.rejected, (state, action) => {
-        state.error = action.payload as string;
+      .addCase(submitPhoneNumber.rejected, (state) => {
         state.isLoading = false;
       })
       .addCase(resendCode.pending, (state) => {
@@ -86,19 +86,17 @@ const authSlice = createSlice({
         state.user = action.payload.user as FirebaseAuthTypes.User;
         state.isLoading = false;
       })
-      .addCase(verifyCode.rejected, (state, action) => {
-        state.error = action.payload as string;
+      .addCase(verifyCode.rejected, (state) => {
         state.isLoading = false;
       })
-      .addCase(initializePartnership.pending, (state) => {
+      .addCase(generatePartnership.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(initializePartnership.fulfilled, (state, action) => {
+      .addCase(generatePartnership.fulfilled, (state, action) => {
         state.isLoading = false;
         state.userData = action.payload.userData as UserDataType;
       })
-      .addCase(initializePartnership.rejected, (state, action) => {
-        state.error = action.payload as string;
+      .addCase(generatePartnership.rejected, (state) => {
         state.isLoading = false;
       })
       .addCase(updateUser.pending, (state) => {
@@ -111,8 +109,20 @@ const authSlice = createSlice({
           ...action.payload,
         } as UserDataType;
       })
-      .addCase(updateUser.rejected, (state, action) => {
-        state.error = action.payload as string;
+      .addCase(updateUser.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(updateNewUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateNewUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userData = {
+          ...state.userData,
+          ...action.payload,
+        } as UserDataType;
+      })
+      .addCase(updateNewUser.rejected, (state) => {
         state.isLoading = false;
       });
   },
