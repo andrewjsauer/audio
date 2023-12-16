@@ -1,6 +1,18 @@
 /* eslint-disable no-shadow */
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
+export enum RootScreens {
+  AuthStack = 'AuthStack',
+  AppStack = 'AppStack',
+}
+
+export enum AppScreens {
+  QuestionScreen = 'QuestionScreen',
+  AccountScreen = 'AccountScreen',
+  HistoryScreen = 'HistoryScreen',
+  TrialScreen = 'TrialScreen',
+}
+
 export enum AuthScreens {
   SignInScreen = 'SignInScreen',
   PhoneNumberStep = 'PhoneNumberScreen',

@@ -1997,6 +1997,11 @@
     redux-thunk "^2.4.2"
     reselect "^4.1.8"
 
+"@revenuecat/purchases-typescript-internal@8.1.1":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@revenuecat/purchases-typescript-internal/-/purchases-typescript-internal-8.1.1.tgz#2f91d71a7c9680954143ecd8adbc0e63407f7fff"
+  integrity sha512-U3H+WsU6MYiCwK9HwaPjFWDeNcZhc3cPTrJ/NbSIw8dqR1xD7Mr71AoDTUW0pDVh/87E0/9FACRPPH6iVVHZ/Q==
+
 "@sideway/address@^4.1.3":
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.4.tgz#03dccebc6ea47fdc226f7d3d1ad512955d4783f0"
@@ -9152,6 +9157,13 @@ react-native-phone-number-input@^2.1.0:
   dependencies:
     google-libphonenumber "^3.2.10"
     react-native-country-picker-modal "^2.0.0"
+
+react-native-purchases@^7.5.1:
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-7.5.1.tgz#58dd4129e3eeb7702abcdcaaf201acf69cf0ef08"
+  integrity sha512-zSKLcEUHVm0ja/ZGUl3y8IeB3BG0eZGM2Z/B6Lft73fcOF+l9UHjfKrK+uvhMDBuxwjlr+2CbRl4NQTOSRFQ0Q==
+  dependencies:
+    "@revenuecat/purchases-typescript-internal" "8.1.1"
 
 react-native-safe-area-context@^4.7.4:
   version "4.7.4"

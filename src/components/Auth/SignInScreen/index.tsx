@@ -5,10 +5,10 @@ import { View } from 'react-native';
 import { trackScreen } from '@lib/analytics';
 
 import Button from '@components/shared/Button';
-import Layout from '@components/shared/AuthScreens/Layout';
+import Layout from '@components/Auth/Layout';
 import Logo from '@assets/icons/logo.svg';
 
-import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
+import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 import {
   ButtonWrapper,
   Container,

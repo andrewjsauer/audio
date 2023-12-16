@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@components/shared/Button';
-import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
+import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 
 import { showNotification } from '@store/ui/slice';
 import { selectIsLoading } from '@store/auth/selectors';

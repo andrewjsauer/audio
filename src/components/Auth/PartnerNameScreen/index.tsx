@@ -6,7 +6,7 @@ import { trackEvent, trackScreen } from '@lib/analytics';
 import { showNotification } from '@store/ui/slice';
 
 import Button from '@components/shared/Button';
-import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
+import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 
 import ColorPicker from '@components/shared/ColorPicker';
 import Layout from '../Layout';

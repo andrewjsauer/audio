@@ -6,10 +6,11 @@ import messaging from '@react-native-firebase/messaging';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
+import analytics from '@react-native-firebase/analytics';
 
 import { AppDispatch } from '@store/index';
 import { setUser } from '@store/auth/slice';
-import { updateUser } from '@store/auth/thunks';
+import { updateUser, getUsersEntitlements } from '@store/auth/thunks';
 import { selectUserId } from '@store/auth/selectors';
 
 import { trackEvent } from '@lib/analytics';
@@ -21,7 +22,10 @@ function useAuthStateListener() {
   function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
     if (user) {
       crashlytics().setUserId(user.uid);
+      analytics().setUserId(user.uid);
+
       dispatch(setUser(user));
+      dispatch(getUsersEntitlements(user));
     }
   }
 

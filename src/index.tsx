@@ -11,7 +11,7 @@ import './services/firebase/index';
 import './lib/ignoreLogs';
 
 import setupStore from './store';
-import App from './components/App';
+import App from './components';
 import AppSafeAreaProvider from './components/shared/SafeAreaProvider';
 import NotificationProvider from './components/shared/NotificationProvider';
 import MainErrorBoundary from './components/shared/ErrorScreens/MainErrorBoundary';

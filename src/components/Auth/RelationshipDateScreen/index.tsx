@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import Button from '@components/shared/Button';
-import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
+import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 
 import { trackScreen, trackEvent } from '@lib/analytics';
 import { showNotification } from '@store/ui/slice';

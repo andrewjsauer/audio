@@ -6,6 +6,7 @@ import { UserDataType } from '@lib/types';
 import { signOut } from '@store/app/thunks';
 import {
   generatePartnership,
+  getUsersEntitlements,
   resendCode,
   submitPhoneNumber,
   updateNewUser,
@@ -20,6 +21,7 @@ interface AuthState {
   isLoading: boolean;
   user: FirebaseAuthTypes.User | null;
   userData: UserDataType | null;
+  isSubscriber: boolean;
 }
 
 const initialState: AuthState = {
@@ -29,6 +31,7 @@ const initialState: AuthState = {
   isLoading: false,
   user: null,
   userData: null,
+  isSubscriber: false,
 };
 
 const authSlice = createSlice({
@@ -124,6 +127,9 @@ const authSlice = createSlice({
       })
       .addCase(updateNewUser.rejected, (state) => {
         state.isLoading = false;
+      })
+      .addCase(getUsersEntitlements.fulfilled, (state, action) => {
+        state.isSubscriber = action.payload.isSubscriber;
       });
   },
 });

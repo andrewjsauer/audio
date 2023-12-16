@@ -17,7 +17,7 @@ import {
 } from '@store/auth/selectors';
 
 import { AppDispatch } from '@store/index';
-import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
+import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 
 import PhoneNumberScreen from './PhoneNumberScreen';
 import VerificationCodeScreen from './VerificationCodeScreen';

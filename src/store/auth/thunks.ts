@@ -95,6 +95,19 @@ async function sendSmsToPartner(data: {
   }
 }
 
+async function getPartnerIdByPhoneNumber(phoneNumber: string) {
+  const userQuery = await firestore()
+    .collection('users')
+    .where('phoneNumber', '==', phoneNumber)
+    .get();
+
+  if (!userQuery.empty) {
+    return userQuery.docs[0].id;
+  }
+
+  return uuidv4();
+}
+
 interface GeneratePartnershipArgs {
   userDetails: UserDetailsType;
   partnerDetails: PartnerDetailsType;
@@ -117,9 +130,11 @@ export const generatePartnership = createAsyncThunk(
 
     try {
       const batch = firestore().batch();
-
       const partnershipId = uuidv4();
-      const tempPartnerId = uuidv4();
+
+      const partnerId = await getPartnerIdByPhoneNumber(
+        partnerDetails.phoneNumber as string,
+      );
 
       const partnershipRef = firestore()
         .collection('partnership')
@@ -144,7 +159,7 @@ export const generatePartnership = createAsyncThunk(
           id: partnershipUser1Id,
           partnershipId,
           userId,
-          otherUserId: tempPartnerId,
+          otherUserId: partnerId,
           createdAt: firestore.FieldValue.serverTimestamp(),
         },
         { merge: true },
@@ -159,7 +174,7 @@ export const generatePartnership = createAsyncThunk(
         {
           id: partnershipUser2Id,
           partnershipId,
-          userId: tempPartnerId,
+          userId: partnerId,
           otherUserId: userId,
           createdAt: firestore.FieldValue.serverTimestamp(),
         },
@@ -177,11 +192,11 @@ export const generatePartnership = createAsyncThunk(
       };
       batch.set(userRef, userPayload, { merge: true });
 
-      const partnerRef = firestore().collection('users').doc(tempPartnerId);
+      const partnerRef = firestore().collection('users').doc(partnerId);
       const partnerPayload = {
         ...partnerDetails,
         createdAt: firestore.FieldValue.serverTimestamp(),
-        id: tempPartnerId,
+        id: partnerId,
         isRegistered: false,
         lastActiveAt: firestore.FieldValue.serverTimestamp(),
         partnershipId,
@@ -283,10 +298,34 @@ export const updateNewUser = createAsyncThunk(
         return rejectWithValue('Temp partnership partners user not found');
       }
 
-      await batch.commit(); // Commit the batch
+      await batch.commit();
       return userDetails;
     } catch (error) {
       trackEvent('update_new_user_data_error', { error });
+      crashlytics().recordError(error);
+
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const getUsersEntitlements = createAsyncThunk(
+  'auth/getUsersEntitlements',
+  async (user: FirebaseAuthTypes.User, { rejectWithValue }) => {
+    try {
+      const idTokenResult = await user.getIdTokenResult;
+      console.log(
+        'TEST idTokenResult',
+        idTokenResult?.claims?.activeEntitlements,
+      );
+
+      if (idTokenResult?.claims?.activeEntitlements.includes('premium')) {
+        return { isSubscriber: true };
+      }
+
+      return { isSubscriber: false };
+    } catch (error) {
+      trackEvent('get_current_users_entitlements_error', { error });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);

@@ -1,18 +1,18 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import PhoneNumberScreen from '@components/shared/AuthScreens/PhoneNumberScreen';
-import UserNameScreen from '@components/shared/AuthScreens/UserNameScreen';
-import BirthdayScreen from '@components/shared/AuthScreens/BirthdayScreen';
-import PartnerNameScreen from '@components/shared/AuthScreens/PartnerNameScreen';
-import RelationshipTypeScreen from '@components/shared/AuthScreens/RelationshipTypeScreen';
-import RelationshipDateScreen from '@components/shared/AuthScreens/RelationshipDateScreen';
-import InviteScreen from '@components/shared/AuthScreens/InviteScreen';
+import PhoneNumberScreen from '@components/Auth/PhoneNumberScreen';
+import UserNameScreen from '@components/Auth/UserNameScreen';
+import BirthdayScreen from '@components/Auth/BirthdayScreen';
+import PartnerNameScreen from '@components/Auth/PartnerNameScreen';
+import RelationshipTypeScreen from '@components/Auth/RelationshipTypeScreen';
+import RelationshipDateScreen from '@components/Auth/RelationshipDateScreen';
+import InviteScreen from '@components/Auth/InviteScreen';
+import SignInScreen from '@components/Auth/SignInScreen';
 
 import { AuthScreens as Steps } from '@lib/types';
 
-import { AuthFlowProvider } from '@components/shared/AuthScreens/AuthFlowContext';
-import SignInScreen from './SignInScreen';
+import { AuthFlowProvider } from '@components/Auth/AuthFlowContext';
 
 export type RootStackParamList = {
   [Steps.SignInScreen]: undefined;
@@ -27,7 +27,7 @@ export type RootStackParamList = {
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-function SignInScreenContainer() {
+function AuthStack() {
   return (
     <AuthFlowProvider>
       <Stack.Navigator initialRouteName={Steps.SignInScreen}>
@@ -76,4 +76,4 @@ function SignInScreenContainer() {
   );
 }
 
-export default SignInScreenContainer;
+export default AuthStack;

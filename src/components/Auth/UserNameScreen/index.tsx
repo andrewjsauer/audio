@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { trackEvent, trackScreen } from '@lib/analytics';
 
 import Button from '@components/shared/Button';
-import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
+import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 
 import { showNotification } from '@store/ui/slice';
 

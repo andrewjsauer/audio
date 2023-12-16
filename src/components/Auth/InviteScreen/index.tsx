@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PhoneInputProp from 'react-native-phone-number-input';
 
 import Button from '@components/shared/Button';
-import { useAuthFlow } from '@components/shared/AuthScreens/AuthFlowContext';
+import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 import PhoneNumberInput from '@components/shared/PhoneNumberInput';
 
 import { showNotification } from '@store/ui/slice';
