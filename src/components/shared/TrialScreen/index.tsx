@@ -1,60 +1,46 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import Purchases from 'react-native-purchases';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
-import { Alert, ActivityIndicator } from 'react-native';
+import { trackEvent } from '@lib/analytics';
 
+import { AppDispatch } from '@store/index';
+import { restorePurchases, purchaseProduct } from '@store/app/thunks';
 import { selectUser } from '@store/auth/selectors';
-import Button from '@components/shared/Button';
 
+import Button from '@components/shared/Button';
 import { Container, Title, PriceInfo } from './style';
 
 function TrailScreen() {
-  const [isPurchasing, setIsPurchasing] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation();
 
   const user = useSelector(selectUser);
 
-  const startTrial = async () => {
-    setIsPurchasing(true);
-    try {
-      await Purchases.purchaseProduct('yf_1799_1m_1m0');
-    } catch (e) {
-      if (!e.userCancelled) {
-        Alert.alert('Error purchasing', e.message);
-      }
-    } finally {
-      await user.getIdToken(true);
-      setIsPurchasing(false);
-    }
+  const handlePurchase = () => {
+    trackEvent('start_trial_button_clicked');
+    dispatch(purchaseProduct(user));
   };
 
-  const restorePurchases = async () => {
-    setIsPurchasing(true);
-    try {
-      await Purchases.restorePurchases();
-    } catch (e) {
-      Alert.alert('Error restoring', e.message);
-    } finally {
-      setIsPurchasing(false);
-    }
+  const handleRestorePurchases = () => {
+    trackEvent('restore_purchases_button_clicked');
+    dispatch(restorePurchases(user));
   };
 
   return (
     <Container>
-      {isPurchasing ? (
-        <ActivityIndicator />
-      ) : (
-        <>
-          <Title>Start your 30-Day Trial</Title>
-          <PriceInfo>$17.99/month per couple</PriceInfo>
-          <Button onPress={startTrial} text="Start Trial" mode="dark" />
-          <Button
-            onPress={restorePurchases}
-            text="Restore Purchases"
-            mode="light"
-          />
-        </>
-      )}
+      <Title>{t('trialScreen.title')}</Title>
+      <PriceInfo>{t('trialScreen.description')}</PriceInfo>
+      <Button
+        onPress={handlePurchase}
+        text={t('trialScreen.startTrialButtonText')}
+        mode="dark"
+      />
+      <Button
+        onPress={handleRestorePurchases}
+        text={t('trialScreen.restoreButtonText')}
+        mode="light"
+      />
     </Container>
   );
 }

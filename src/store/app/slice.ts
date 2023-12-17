@@ -1,17 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { signOut, initializeSession } from './thunks';
+import {
+  signOut,
+  restorePurchases,
+  purchaseProduct,
+  initializeSession,
+} from './thunks';
 
 interface AppState {
   error: string | undefined | null;
   isLoading: boolean;
   isPreviouslySubscribed: boolean;
+  transactionError: string | undefined | null;
 }
 
 const initialState: AppState = {
   error: null,
   isLoading: false,
   isPreviouslySubscribed: false,
+  transactionError: null,
 };
 
 const appSlice = createSlice({
@@ -30,6 +37,7 @@ const appSlice = createSlice({
     });
     builder.addCase(signOut.pending, (state) => {
       state.isLoading = true;
+      state.error = null;
     });
     builder.addCase(signOut.rejected, (state) => {
       state.isLoading = false;
@@ -40,10 +48,33 @@ const appSlice = createSlice({
     });
     builder.addCase(initializeSession.pending, (state) => {
       state.isLoading = true;
+      state.error = null;
     });
     builder.addCase(initializeSession.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload as string;
+    });
+    builder.addCase(purchaseProduct.pending, (state) => {
+      state.isLoading = true;
+      state.transactionError = null;
+    });
+    builder.addCase(purchaseProduct.rejected, (state, action) => {
+      state.isLoading = false;
+      state.transactionError = action.payload as string;
+    });
+    builder.addCase(purchaseProduct.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(restorePurchases.pending, (state) => {
+      state.isLoading = true;
+      state.transactionError = null;
+    });
+    builder.addCase(restorePurchases.rejected, (state, action) => {
+      state.isLoading = false;
+      state.transactionError = action.payload as string;
+    });
+    builder.addCase(restorePurchases.fulfilled, (state) => {
+      state.isLoading = false;
     });
   },
 });

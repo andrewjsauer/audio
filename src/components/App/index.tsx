@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
+import { Alert } from 'react-native';
 
 import {
   selectIsLoading,
   selectError,
   selectIsPreviouslySubscribed,
+  selectTransactionError,
 } from '@store/app/selectors';
 import { selectUserId } from '@store/auth/selectors';
 import { AppDispatch } from '@store/index';
@@ -43,8 +45,15 @@ function App(): JSX.Element {
   const error = useSelector(selectError);
   const userId = useSelector(selectUserId);
   const isPreviouslySubscribed = useSelector(selectIsPreviouslySubscribed);
+  const transactionError = useSelector(selectTransactionError);
 
   useInitializeSession();
+
+  useEffect(() => {
+    if (transactionError) {
+      Alert.alert(t('errors.errorPurchasing'), transactionError);
+    }
+  }, [transactionError]);
 
   const handleLogout = () => {
     trackEvent('sign_out_button_clicked');

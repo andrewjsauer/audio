@@ -1,45 +1,40 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import { AppDispatch } from '@store/index';
-import { selectUserId } from '@store/auth/selectors';
+import { selectIsSubscriber } from '@store/auth/selectors';
 
-import { fetchPartnerData } from '@store/partnership/thunks';
-import { signOut } from '@store/app/thunks';
+import { QuestionScreens } from '@lib/types';
 
-import { trackEvent, trackScreen } from '@lib/analytics';
-import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
+import SubscriberScreen from '@components/shared/QuestionScreen/Subscriber';
+import NonSubscriberScreen from '@components/shared/QuestionScreen/NonSubscriber';
 
-import SettingsIcon from '@assets/icons/settings.svg';
+export type AppStackParamList = {
+  [QuestionScreens.QuestionSubscriberScreen]: typeof SubscriberScreen;
+  [QuestionScreens.QuestionNonSubscriberScreen]: typeof NonSubscriberScreen;
+};
 
-import { StyledView, StyledText, LogoutButton } from './style';
+const Stack = createStackNavigator<AppStackParamList>();
 
 function QuestionScreen() {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const userId = useSelector(selectUserId);
-
-  useEffect(() => {
-    trackScreen('QuestionScreen');
-    dispatch(fetchPartnerData(userId));
-  }, []);
-
-  useNotificationPermissions();
-
-  const handleLogout = () => {
-    trackEvent('sign_out_button_clicked');
-    dispatch(signOut(userId));
-  };
+  const isSubscribed = useSelector(selectIsSubscriber);
 
   return (
-    <StyledView>
-      <LogoutButton onPress={handleLogout}>
-        <SettingsIcon width={24} height={24} />
-      </LogoutButton>
-      <StyledView>
-        <StyledText>You are logged in</StyledText>
-      </StyledView>
-    </StyledView>
+    <Stack.Navigator>
+      {isSubscribed ? (
+        <Stack.Screen
+          component={SubscriberScreen}
+          name={QuestionScreens.QuestionSubscriberScreen}
+          options={{ headerShown: false }}
+        />
+      ) : (
+        <Stack.Screen
+          component={NonSubscriberScreen}
+          name={QuestionScreens.QuestionNonSubscriberScreen}
+          options={{ headerShown: false }}
+        />
+      )}
+    </Stack.Navigator>
   );
 }
 

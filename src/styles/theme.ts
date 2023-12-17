@@ -6,7 +6,7 @@ const theme = {
     red: '#D32F2F',
     white: '#FFFFFF',
     error: '#DD5C42',
-    success: '#4CAF50',
+    success: '#358A57',
     blue: '#2196F3',
   },
   fonts: {

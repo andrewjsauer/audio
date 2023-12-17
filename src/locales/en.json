@@ -31,7 +31,27 @@
     "colorEmpty": "Color cannot be empty",
     "userUpdateFailed": "Something went wrong when updating your user",
     "partnershipGenerationFailed": "Something went wrong when initializing your partnership",
-    "initializeSession": "Something went wrong when initializing your user"
+    "initializeSession": "Something went wrong when initializing your user",
+    "errorPurchasing": "Error Purchasing"
+  },
+  "questionScreen": {
+    "nonSubscriberScreen": {
+      "notification": {
+        "title": "Oops! Your subscription has expired...",
+        "description": "Please fix your payment to continue using the app!",
+        "restoreButtonText": "Restore Purchases",
+        "updatePaymentButtonText": "Update Payment"
+      }
+    }
+  },
+  "trialScreen": {
+    "title": "Start your 30-Day Trial",
+    "description": "$17.99/month per couple",
+    "restoreButtonText": "Restore Purchases",
+    "startTrialButtonText": "Start Trial"
+  },
+  "historyScreen": {
+    "title": "History"
   },
   "auth": {
     "signInScreen": {

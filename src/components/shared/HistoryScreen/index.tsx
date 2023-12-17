@@ -1,12 +1,22 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { useSelector } from 'react-redux';
 
-function HistoryScreen() {
+import { selectIsSubscriber } from '@store/auth/selectors';
+
+import NonSubscriberNotification from '@components/shared/NonSubscriberNotification';
+
+import Layout from './Layout';
+import HistoryScreen from './HistoryScreen';
+
+function HistoryScreenContainer() {
+  const isSubscribed = useSelector(selectIsSubscriber);
+
   return (
-    <View>
-      <Text>History Screen</Text>
-    </View>
+    <Layout>
+      {!isSubscribed && <NonSubscriberNotification />}
+      <HistoryScreen />
+    </Layout>
   );
 }
 
-export default HistoryScreen;
+export default HistoryScreenContainer;

@@ -24,6 +24,16 @@ export enum AuthScreens {
   InviteStep = 'InviteScreen',
 }
 
+export enum QuestionScreens {
+  QuestionSubscriberScreen = 'QuestionSubscriberScreen',
+  QuestionNonSubscriberScreen = 'QuestionNonSubscriberScreen',
+}
+
+export enum HistoryScreens {
+  HistorySubscriberScreen = 'HistorySubscriberScreen',
+  HistoryNonSubscriberScreen = 'HistoryNonSubscriberScreen',
+}
+
 export type UserDataType = {
   birthDate?: Date;
   color?: string;
