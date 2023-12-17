@@ -52,18 +52,24 @@ exports.sendPartnerInvite = functions.https.onCall(async (data, context) => {
   }
 });
 
-async function updatePartnerEntitlement(partnerId: string, hasAccess: boolean) {
+async function updatePartnerEntitlement(userId: string, hasAccess: boolean) {
   try {
+    const partnerId = await fetchPartnerId(userId);
+    if (!partnerId) {
+      functions.logger.error('No partner ID found');
+      return;
+    }
+
     const partner = await admin.auth().getUser(partnerId);
     const currentClaims = partner.customClaims || {};
 
     await admin.auth().setCustomUserClaims(partnerId, {
       ...currentClaims,
-      premium: hasAccess,
+      revenueCatEntitlements: hasAccess ? ['premium'] : [],
     });
 
     functions.logger.info(
-      `Updated partner (${partnerId}) premium access to: ${hasAccess}`,
+      `Updated partner to subscription access: ${hasAccess}`,
     );
   } catch (error: unknown) {
     const e = error as {
@@ -147,26 +153,13 @@ function checkTrialPeriod(eventData: any) {
 
 exports.handleSubscriptionEvents = functions.firestore
   .document('customerEvents/{eventId}')
-  .onCreate(async (snapshot, context) => {
-    if (!context.auth) {
-      throw new functions.https.HttpsError(
-        'unauthenticated',
-        'Endpoint requires authentication!',
-      );
-    }
-
+  .onCreate(async (snapshot) => {
     try {
       const eventData = snapshot.data();
       const userId = eventData.app_user_id;
       const eventType = eventData.type;
 
       functions.logger.info('Event Type', eventType);
-
-      const partnerId = await fetchPartnerId(userId);
-      if (!partnerId) {
-        functions.logger.error('No partner ID found');
-        return;
-      }
 
       const isTrialPeriod = checkTrialPeriod(eventData);
 
@@ -176,24 +169,21 @@ exports.handleSubscriptionEvents = functions.firestore
         case 'UNCANCELLATION':
         case 'NON_RENEWING_PURCHASE':
         case 'SUBSCRIPTION_EXTENDED':
-          await updatePartnerEntitlement(partnerId, true);
+          await updatePartnerEntitlement(userId, true);
           break;
         case 'CANCELLATION':
           if (!isTrialPeriod) {
-            await updatePartnerEntitlement(partnerId, false);
+            await updatePartnerEntitlement(userId, false);
           }
           break;
         case 'EXPIRATION':
-          await updatePartnerEntitlement(partnerId, false);
+          await updatePartnerEntitlement(userId, false);
           break;
         case 'SUBSCRIPTION_PAUSED':
           // Handle paused subscription, but do not revoke access
           break;
         case 'BILLING_ISSUE':
           // Handle billing issue, but do not revoke access
-          break;
-        case 'TEST':
-          // Handle test event, but do not revoke access
           break;
       }
     } catch (error: unknown) {

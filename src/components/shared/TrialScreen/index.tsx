@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Purchases from 'react-native-purchases';
 
 import { Alert, ActivityIndicator } from 'react-native';
 
+import { selectUser } from '@store/auth/selectors';
 import Button from '@components/shared/Button';
 
 import { Container, Title, PriceInfo } from './style';
@@ -10,15 +12,18 @@ import { Container, Title, PriceInfo } from './style';
 function TrailScreen() {
   const [isPurchasing, setIsPurchasing] = useState(false);
 
+  const user = useSelector(selectUser);
+
   const startTrial = async () => {
     setIsPurchasing(true);
     try {
-      await Purchases.purchasePackage('yf_1799_1m_1m0');
+      await Purchases.purchaseProduct('yf_1799_1m_1m0');
     } catch (e) {
       if (!e.userCancelled) {
         Alert.alert('Error purchasing', e.message);
       }
     } finally {
+      await user.getIdToken(true);
       setIsPurchasing(false);
     }
   };

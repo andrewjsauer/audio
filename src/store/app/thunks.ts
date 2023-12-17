@@ -59,12 +59,11 @@ export const initializeSession = createAsyncThunk(
         $firebaseAppInstanceId: appInstanceId,
       });
 
-      const customerUserSnapshot = await firestore()
+      const customerUserDocRef = firestore()
         .collection('customers')
-        .where('user_id', '==', user.uid)
-        .get();
+        .doc(user.uid);
 
-      if (!customerUserSnapshot.empty) {
+      if (!customerUserDocRef.empty) {
         trackEvent('customer_user_found');
         return { isPreviouslySubscribed: true };
       }

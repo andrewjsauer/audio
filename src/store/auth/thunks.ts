@@ -313,13 +313,12 @@ export const getUsersEntitlements = createAsyncThunk(
   'auth/getUsersEntitlements',
   async (user: FirebaseAuthTypes.User, { rejectWithValue }) => {
     try {
-      const idTokenResult = await user.getIdTokenResult;
-      console.log(
-        'TEST idTokenResult',
-        idTokenResult?.claims?.activeEntitlements,
-      );
+      const idTokenResult = await user.getIdTokenResult();
+      console.log('idTokenResult', idTokenResult);
 
-      if (idTokenResult?.claims?.activeEntitlements.includes('premium')) {
+      if (
+        idTokenResult?.claims?.revenueCatEntitlements.includes('subscription')
+      ) {
         return { isSubscriber: true };
       }
 

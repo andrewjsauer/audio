@@ -1,6 +1,6 @@
 #import "AppDelegate.h"
-#import "RNFBAppCheckModule.h" // Firebase app check
-#import <Firebase.h> // Firebase setup
+#import "RNFBAppCheckModule.h"
+#import <Firebase.h>
 
 #import <React/RCTBundleURLProvider.h>
 

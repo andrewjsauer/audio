@@ -31,7 +31,7 @@
     "libphonenumber-js": "^1.10.51",
     "react": "18.2.0",
     "react-i18next": "^13.5.0",
-    "react-native": "0.72.7",
+    "react-native": "^0.73.0",
     "react-native-config": "^1.5.1",
     "react-native-date-picker": "^4.3.4",
     "react-native-gesture-handler": "^2.14.0",
