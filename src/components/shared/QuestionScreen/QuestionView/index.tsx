@@ -1,4 +1,6 @@
 import React from 'react';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { useTranslation } from 'react-i18next';
 
 import { UserDataType } from '@lib/types';
 
@@ -24,23 +26,30 @@ function QuestionView({
   timeRemaining,
   user,
 }: QuestionViewProps) {
+  const { t } = useTranslation();
+
   return (
     <Container>
-      <TimerText>{timeRemaining} remaining...</TimerText>
+      <TimerText>
+        {t('questionScreen.subscriberScreen.timeRemaining', {
+          time: timeRemaining,
+        })}
+      </TimerText>
       <QuestionText>{text}</QuestionText>
       <RecordViewContainer>
         <RecordView
           color={user.color as string}
           name={user.name as string}
-          status={StatusTypes.NotRecorded}
-          createdAt={new Date()}
+          status={StatusTypes.Play}
+          createdAt={partner?.createdAt as FirebaseFirestoreTypes.Timestamp}
         />
         <RecordView
-          color={partner.color as string}
-          createdAt={new Date()}
+          color={partner?.color as string}
+          createdAt={partner?.createdAt as FirebaseFirestoreTypes.Timestamp}
           isPartner
-          name={partner.name as string}
-          status={StatusTypes.NotRecorded}
+          name={partner?.name as string}
+          status={StatusTypes.PendingRecord}
+          isDisabled={!!StatusTypes.PendingRecord}
         />
       </RecordViewContainer>
     </Container>

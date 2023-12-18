@@ -6,7 +6,6 @@ export const Container = styled.View`
   border-radius: 10px;
   flex-direction: column;
   background-color: ${(p) => p.theme.colors.success};
-  max-width: 400px;
 `;
 
 export const Title = styled.Text`
@@ -23,7 +22,7 @@ export const Description = styled.Text`
 
 export const ButtonWrapper = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   margin-top: 12px;
 `;

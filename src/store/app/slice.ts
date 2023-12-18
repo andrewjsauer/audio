@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { fetchPartnerData } from '@store/partnership/thunks';
 import {
   signOut,
   restorePurchases,
@@ -10,6 +11,7 @@ import {
 interface AppState {
   error: string | undefined | null;
   isLoading: boolean;
+  isLoadingPartnerData: boolean;
   isPreviouslySubscribed: boolean;
   transactionError: string | undefined | null;
 }
@@ -17,6 +19,7 @@ interface AppState {
 const initialState: AppState = {
   error: null,
   isLoading: false,
+  isLoadingPartnerData: false,
   isPreviouslySubscribed: false,
   transactionError: null,
 };
@@ -75,6 +78,16 @@ const appSlice = createSlice({
     });
     builder.addCase(restorePurchases.fulfilled, (state) => {
       state.isLoading = false;
+    });
+    builder.addCase(fetchPartnerData.fulfilled, (state) => {
+      state.isLoadingPartnerData = false;
+    });
+    builder.addCase(fetchPartnerData.rejected, (state, action) => {
+      state.isLoadingPartnerData = false;
+      state.error = action.payload as string;
+    });
+    builder.addCase(fetchPartnerData.pending, (state) => {
+      state.isLoadingPartnerData = true;
     });
   },
 });

@@ -37,6 +37,9 @@
   },
   "questionScreen": {
     "nonSubscriberScreen": {
+      "default": {
+        "text": "Whats the best date you two have been on together?"
+      },
       "notification": {
         "title": "Oops! Your subscription has expired...",
         "description": "Please fix your payment to continue using the app!",
@@ -45,6 +48,7 @@
       }
     },
     "subscriberScreen": {
+      "timeRemaining": "{{ time }} remaining...",
       "lock": {
         "title": "{{ name }} answered",
         "description": "Record your answer to hear it!"

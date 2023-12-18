@@ -5,8 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 
 import {
-  selectIsLoading,
   selectError,
+  selectIsLoading,
+  selectIsLoadingPartnerData,
   selectIsPreviouslySubscribed,
   selectTransactionError,
 } from '@store/app/selectors';
@@ -20,13 +21,14 @@ import useInitializeSession from '@lib/customHooks/useInitializeSession';
 import { AppScreens } from '@lib/types';
 
 import Button from '@components/shared/Button';
+import LoadingView from '@components/shared/LoadingView';
 
 import QuestionScreen from '@components/shared/QuestionScreen';
 import HistoryScreen from '@components/shared/HistoryScreen';
 import AccountScreen from '@components/shared/AccountScreen';
 import TrialScreen from '@components/shared/TrialScreen';
 
-import { StyledActivityIndicator, StyledView, ErrorText } from './style';
+import { StyledView, ErrorText } from './style';
 
 export type AppStackParamList = {
   [AppScreens.QuestionScreen]: undefined;
@@ -42,6 +44,7 @@ function App(): JSX.Element {
   const { t } = useTranslation();
 
   const isLoading = useSelector(selectIsLoading);
+  const isLoadingPartnerData = useSelector(selectIsLoadingPartnerData);
   const error = useSelector(selectError);
   const userId = useSelector(selectUserId);
   const isPreviouslySubscribed = useSelector(selectIsPreviouslySubscribed);
@@ -60,12 +63,8 @@ function App(): JSX.Element {
     dispatch(signOut(userId));
   };
 
-  if (isLoading) {
-    return (
-      <StyledView>
-        <StyledActivityIndicator size="small" />
-      </StyledView>
-    );
+  if (isLoading || isLoadingPartnerData) {
+    return <LoadingView />;
   }
 
   if (error) {

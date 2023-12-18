@@ -4,6 +4,7 @@ import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { UserDataType } from '@lib/types';
 
 import { signOut } from '@store/app/thunks';
+
 import {
   generatePartnership,
   getUsersEntitlements,
@@ -19,6 +20,7 @@ interface AuthState {
   confirm: FirebaseAuthTypes.ConfirmationResult | null;
   error: string | null;
   isLoading: boolean;
+  isLoadingPartnerData: boolean;
   user: FirebaseAuthTypes.User | null;
   userData: UserDataType | null;
   isSubscriber: boolean;
@@ -29,6 +31,7 @@ const initialState: AuthState = {
   confirm: null,
   error: null,
   isLoading: false,
+  isLoadingPartnerData: false,
   user: null,
   userData: null,
   isSubscriber: false,

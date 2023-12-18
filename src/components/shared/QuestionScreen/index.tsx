@@ -1,8 +1,10 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { selectIsSubscriber } from '@store/auth/selectors';
+import { selectIsSubscriber, selectUserId } from '@store/auth/selectors';
+import { fetchPartnerData } from '@store/partnership/thunks';
+import { AppDispatch } from '@store/index';
 
 import { QuestionScreens } from '@lib/types';
 
@@ -18,10 +20,17 @@ const Stack = createStackNavigator<AppStackParamList>();
 
 function QuestionScreen() {
   const isSubscribed = useSelector(selectIsSubscriber);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userId = useSelector(selectUserId);
+
+  useEffect(() => {
+    dispatch(fetchPartnerData(userId));
+  }, []);
 
   return (
     <Stack.Navigator>
-      {true ? (
+      {isSubscribed ? (
         <Stack.Screen
           component={SubscriberScreen}
           name={QuestionScreens.QuestionSubscriberScreen}

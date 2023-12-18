@@ -21,6 +21,8 @@ export const fetchPartnershipUser = createAsyncThunk(
         trackEvent('partnership_user_fetched');
 
         const partnershipUserData = partnershipUserSnapshot.docs[0].data();
+        console.log('TEST partnershipUserData', partnershipUserData);
+
         return partnershipUserData as PartnershipUserDataType;
       }
 
@@ -70,6 +72,8 @@ export const fetchPartnerData = createAsyncThunk(
         fetchPartnershipUser(userId),
       );
 
+      console.log('TEST partnershipUserResponse', partnershipUserResponse);
+
       if (
         partnershipUserResponse.type === fetchPartnershipUser.fulfilled.type
       ) {
@@ -82,8 +86,12 @@ export const fetchPartnerData = createAsyncThunk(
           .doc(partnerId)
           .get();
 
+        console.log('partnerSnapshot.exists', partnerSnapshot.exists);
+
         if (partnerSnapshot.exists) {
           trackEvent('partnership_data_fetched');
+          console.log('TEST partnerSnapshot.data()', partnerSnapshot.data());
+
           return partnerSnapshot.data() as PartnerDataType;
         }
       } else {

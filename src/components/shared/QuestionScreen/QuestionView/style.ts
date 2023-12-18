@@ -1,9 +1,9 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  flex: 1;
   flex-direction: column;
   justify-content: center;
+  padding: 0 20px;
 `;
 
 export const TimerText = styled.Text`
@@ -20,5 +20,5 @@ export const QuestionText = styled.Text`
 `;
 
 export const RecordViewContainer = styled.View`
-  margin-top: 26px;
+  margin-top: 20px;
 `;

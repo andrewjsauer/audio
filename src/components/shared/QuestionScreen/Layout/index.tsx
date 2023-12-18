@@ -14,12 +14,7 @@ import { AppScreens } from '@lib/types';
 import SettingsIcon from '@assets/icons/settings.svg';
 import Button from '@components/shared/Button';
 
-import {
-  QuestionContainer,
-  Container,
-  LogoutButton,
-  HistoryButtonContainer,
-} from './style';
+import { Container, LogoutButton, HistoryButtonContainer } from './style';
 
 function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,11 +39,12 @@ function Layout({ children }: { children: React.ReactNode }) {
       <LogoutButton onPress={handleLogout}>
         <SettingsIcon width={24} height={24} />
       </LogoutButton>
-      <QuestionContainer>{children}</QuestionContainer>
+      {children}
       <HistoryButtonContainer>
         <Button
           text="View History"
           size="small"
+          mode="hidden"
           onPress={handleNavigateToHistory}
         />
       </HistoryButtonContainer>

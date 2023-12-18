@@ -4,3 +4,5 @@ export const selectIsPreviouslySubscribed = (state: any) =>
   state.app.isPreviouslySubscribed;
 export const selectTransactionError = (state: any) =>
   state.app.transactionError;
+export const selectIsLoadingPartnerData = (state) =>
+  state.auth.isLoadingPartnerData;

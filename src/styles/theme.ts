@@ -3,6 +3,7 @@ const theme = {
     black: '#000000',
     gray: '#404040',
     lightGray: '#909090',
+    transparentGray: '#F1F1F1',
     red: '#D32F2F',
     white: '#FFFFFF',
     error: '#DD5C42',

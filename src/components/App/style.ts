@@ -7,8 +7,6 @@ export const StyledView = styled.View`
   background-color: ${(p) => p.theme.colors.white};
 `;
 
-export const StyledActivityIndicator = styled.ActivityIndicator``;
-
 export const ErrorText = styled.Text`
   color: ${(p) => p.theme.colors.red};
   font-family: ${(p) => p.theme.fonts.regular};
