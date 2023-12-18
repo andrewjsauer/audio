@@ -7,14 +7,11 @@ import { Alert } from 'react-native';
 import {
   selectError,
   selectIsLoading,
-  selectIsLoadingPartnerData,
   selectIsPreviouslySubscribed,
+  selectLastFailedAction,
   selectTransactionError,
 } from '@store/app/selectors';
-import { selectUserId } from '@store/auth/selectors';
 import { AppDispatch } from '@store/index';
-
-import { signOut } from '@store/app/thunks';
 
 import { trackEvent } from '@lib/analytics';
 import useInitializeSession from '@lib/customHooks/useInitializeSession';
@@ -44,11 +41,10 @@ function App(): JSX.Element {
   const { t } = useTranslation();
 
   const isLoading = useSelector(selectIsLoading);
-  const isLoadingPartnerData = useSelector(selectIsLoadingPartnerData);
   const error = useSelector(selectError);
-  const userId = useSelector(selectUserId);
   const isPreviouslySubscribed = useSelector(selectIsPreviouslySubscribed);
   const transactionError = useSelector(selectTransactionError);
+  const lastFailedAction = useSelector(selectLastFailedAction);
 
   useInitializeSession();
 
@@ -58,12 +54,20 @@ function App(): JSX.Element {
     }
   }, [transactionError]);
 
-  const handleLogout = () => {
-    trackEvent('sign_out_button_clicked');
-    dispatch(signOut(userId));
+  const handleRetry = () => {
+    if (lastFailedAction) {
+      trackEvent('retry_button_clicked', {
+        action: lastFailedAction.type,
+      });
+
+      dispatch({
+        type: lastFailedAction.type,
+        payload: lastFailedAction.payload,
+      });
+    }
   };
 
-  if (isLoading || isLoadingPartnerData) {
+  if (isLoading) {
     return <LoadingView />;
   }
 
@@ -72,7 +76,7 @@ function App(): JSX.Element {
       <StyledView>
         <ErrorText>{error?.message || t('errors.whoops')}</ErrorText>
         <Button
-          onPress={handleLogout}
+          onPress={handleRetry}
           text={t('retry')}
           size="small"
           mode="error"

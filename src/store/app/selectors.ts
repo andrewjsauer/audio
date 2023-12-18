@@ -1,8 +1,10 @@
-export const selectIsLoading = (state: any) => state.app.isLoading;
-export const selectError = (state: any) => state.app.error;
-export const selectIsPreviouslySubscribed = (state: any) =>
+import { AppState } from './slice';
+
+export const selectIsLoading = (state: AppState) => state.app.loadingCount > 0;
+export const selectError = (state: AppState) => state.app.error;
+export const selectIsPreviouslySubscribed = (state: AppState) =>
   state.app.isPreviouslySubscribed;
-export const selectTransactionError = (state: any) =>
+export const selectTransactionError = (state: AppState) =>
   state.app.transactionError;
-export const selectIsLoadingPartnerData = (state) =>
-  state.auth.isLoadingPartnerData;
+export const selectLastFailedAction = (state: AppState) =>
+  state.app.lastFailedAction;

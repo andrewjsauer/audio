@@ -37,11 +37,11 @@ export enum HistoryScreens {
 export type UserDataType = {
   birthDate?: Date;
   color?: string;
-  createdAt?: FirebaseFirestoreTypes.FieldValue;
-  deviceIds?: FirebaseFirestoreTypes.FieldValue;
+  createdAt?: FirebaseFirestoreTypes.Timestamp;
+  deviceIds?: FirebaseFirestoreTypes.Timestamp;
   id?: string;
   isRegistered?: boolean;
-  lastActiveAt?: FirebaseFirestoreTypes.FieldValue;
+  lastActiveAt?: FirebaseFirestoreTypes.Timestamp;
   name?: string;
   partnershipId?: string;
   phoneNumber?: string;
@@ -51,7 +51,7 @@ export type PartnershipDataType = {
   id?: string;
   startDate: Date;
   type: string;
-  createdAt: FirebaseFirestoreTypes.FieldValue;
+  createdAt: FirebaseFirestoreTypes.Timestamp;
 };
 
 export type PartnershipUserDataType = {
@@ -59,7 +59,7 @@ export type PartnershipUserDataType = {
   partnershipId?: string;
   userId?: string;
   otherUserId?: string;
-  createdAt: FirebaseFirestoreTypes.FieldValue;
+  createdAt: FirebaseFirestoreTypes.Timestamp;
 };
 
 export type UserDetailsType = {
@@ -78,4 +78,11 @@ export type PartnerDetailsType = {
 export type PartnershipDetailsType = {
   startDate?: Date;
   type?: string;
+};
+
+export type QuestionType = {
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  id: string;
+  partnershipId: string;
+  text: string;
 };

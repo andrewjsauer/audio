@@ -4,11 +4,13 @@ import appReducer from './app/slice';
 import authSlice from './auth/slice';
 import uiReducer from './ui/slice';
 import partnershipReducer from './partnership/slice';
+import questionReducer from './question/slice';
 
 const rootReducer = combineReducers({
   app: appReducer,
   auth: authSlice,
   partnership: partnershipReducer,
+  question: questionReducer,
   ui: uiReducer,
 });
 

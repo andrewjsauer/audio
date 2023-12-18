@@ -8,7 +8,11 @@ import {
 
 import { signOut } from '@store/app/thunks';
 import { generatePartnership } from '@store/auth/thunks';
-import { fetchPartnerData, updatePartnershipUser } from './thunks';
+import {
+  fetchPartnerData,
+  updatePartnershipUser,
+  fetchPartnership,
+} from './thunks';
 
 interface PartnershipState {
   partnerData: PartnerDataType | null;
@@ -48,6 +52,9 @@ const partnershipSlice = createSlice({
         ...state.partnershipUserData,
         ...action.payload,
       };
+    });
+    builder.addCase(fetchPartnership.fulfilled, (state, action) => {
+      state.partnershipData = action.payload as PartnershipDataType;
     });
   },
 });

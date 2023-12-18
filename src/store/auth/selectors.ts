@@ -19,3 +19,8 @@ export const selectIsUserRegistered = createSelector(
   selectUserData,
   (userData) => !!userData && !!userData.isRegistered,
 );
+
+export const selectPartnershipId = createSelector(
+  selectUserData,
+  (userData) => !!userData && userData.partnershipId,
+);

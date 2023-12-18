@@ -6,7 +6,35 @@ import { trackEvent } from '@lib/analytics';
 import {
   UserDataType as PartnerDataType,
   PartnershipUserDataType,
+  PartnershipDataType,
 } from '@lib/types';
+
+export const fetchPartnership = createAsyncThunk(
+  'partnership/fetchPartnership',
+  async (partnershipId: string, { rejectWithValue }) => {
+    try {
+      const partnershipSnapshot = await firestore()
+        .collection('partnership')
+        .doc(partnershipId)
+        .get();
+
+      if (partnershipSnapshot.exists) {
+        trackEvent('partnership_fetched');
+
+        const partnershipData = partnershipSnapshot.data();
+        return partnershipData as PartnershipDataType;
+      }
+
+      trackEvent('partnership_not_found');
+      return rejectWithValue('Partnership not found');
+    } catch (error) {
+      trackEvent('partnership_fetch_error', { error });
+      crashlytics().recordError(error);
+
+      return rejectWithValue(error);
+    }
+  },
+);
 
 export const fetchPartnershipUser = createAsyncThunk(
   'partnership/fetchPartnershipUser',
@@ -21,8 +49,6 @@ export const fetchPartnershipUser = createAsyncThunk(
         trackEvent('partnership_user_fetched');
 
         const partnershipUserData = partnershipUserSnapshot.docs[0].data();
-        console.log('TEST partnershipUserData', partnershipUserData);
-
         return partnershipUserData as PartnershipUserDataType;
       }
 
@@ -71,8 +97,6 @@ export const fetchPartnerData = createAsyncThunk(
       const partnershipUserResponse = await dispatch(
         fetchPartnershipUser(userId),
       );
-
-      console.log('TEST partnershipUserResponse', partnershipUserResponse);
 
       if (
         partnershipUserResponse.type === fetchPartnershipUser.fulfilled.type
