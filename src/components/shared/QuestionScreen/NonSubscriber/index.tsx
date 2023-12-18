@@ -11,7 +11,7 @@ import NonSubscriberNotification from '@components/shared/NonSubscriberNotificat
 
 import Layout from '../Layout';
 import Question from '../QuestionView';
-import { QuestionContainer } from './style';
+import { QuestionContainer, BlurredBackground } from './style';
 
 function NonSubscribedScreen() {
   const { t } = useTranslation();
@@ -26,15 +26,17 @@ function NonSubscribedScreen() {
   return (
     <Layout>
       <NonSubscriberNotification />
-      <QuestionContainer
-        blurType="light"
-        blurAmount={10}
-        reducedTransparencyFallbackColor="white">
+      <QuestionContainer>
         <Question
           partner={partnerData}
           text={t('questionScreen.nonSubscriberScreen.default.text')}
           timeRemaining="22h 6m 31s"
           user={userData}
+        />
+        <BlurredBackground
+          blurType="light"
+          blurAmount={8}
+          reducedTransparencyFallbackColor="white"
         />
       </QuestionContainer>
     </Layout>

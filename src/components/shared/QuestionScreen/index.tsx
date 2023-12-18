@@ -30,7 +30,7 @@ function QuestionScreen() {
 
   return (
     <Stack.Navigator>
-      {isSubscribed ? (
+      {true ? (
         <Stack.Screen
           component={SubscriberScreen}
           name={QuestionScreens.QuestionSubscriberScreen}

@@ -16,6 +16,7 @@ type RecordViewProps = {
   isDisabled?: boolean;
   isPartner?: boolean;
   name: string;
+  onPress: () => void;
   status: StatusTypes;
 };
 
@@ -67,6 +68,7 @@ function RecordView({
   isDisabled = false,
   isPartner = false,
   name,
+  onPress,
   status,
 }: RecordViewProps) {
   const { t } = useTranslation();
@@ -79,7 +81,7 @@ function RecordView({
 
   return (
     <Container>
-      <IconButton color={color} disabled={isDisabled}>
+      <IconButton color={color} disabled={isDisabled} onPress={onPress}>
         <Icon width={30} height={30} />
       </IconButton>
       <Content>
