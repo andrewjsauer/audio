@@ -314,7 +314,6 @@ export const getUsersEntitlements = createAsyncThunk(
   async (user: FirebaseAuthTypes.User, { rejectWithValue }) => {
     try {
       const idTokenResult = await user.getIdTokenResult();
-      console.log('idTokenResult', idTokenResult);
 
       if (
         idTokenResult?.claims?.revenueCatEntitlements.includes('subscription')

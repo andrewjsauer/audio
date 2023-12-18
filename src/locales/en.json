@@ -3,6 +3,7 @@
   "success": "Success!",
   "submit": "Submit",
   "retry": "Retry",
+  "you": "You",
   "permissions": {
     "notifications": {
       "title": "Know when {{ name }} answers...",
@@ -41,6 +42,22 @@
         "description": "Please fix your payment to continue using the app!",
         "restoreButtonText": "Restore Purchases",
         "updatePaymentButtonText": "Update Payment"
+      }
+    },
+    "subscriberScreen": {
+      "lock": {
+        "title": "{{ name }} answered",
+        "description": "Record your answer to hear it!"
+      },
+      "pendingRecord": {
+        "title": "{{ name }} has not yet answered"
+      },
+      "record": {
+        "title": "Tap to record your answer"
+      },
+      "play": {
+        "title": "{{ name }} answered",
+        "description": "{{ date }} at {{ time }}"
       }
     }
   },

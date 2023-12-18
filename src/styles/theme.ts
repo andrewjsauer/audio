@@ -28,11 +28,13 @@ const theme = {
     semiBoldItalic: 'Nunito-SemiBoldItalic',
   },
   fontSizes: {
+    xsmall: '12px',
     small: '14px',
     regular: '16px',
     medium: '18px',
     large: '20px',
     xlarge: '24px',
+    question: '32px',
     logo: '44px',
   },
 };

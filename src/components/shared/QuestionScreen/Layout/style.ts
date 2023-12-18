@@ -15,3 +15,8 @@ export const HistoryButtonContainer = styled.View`
   align-items: center;
   margin-bottom: 18px;
 `;
+
+export const QuestionContainer = styled.View`
+  flex: 1;
+  padding: 0 20px;
+`;
