@@ -18,6 +18,7 @@
 		1B7D74DAEEC62C0AC1D97B46 /* Pods_audio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37A43CE2F903DAE64B395859 /* Pods_audio.framework */; };
 		1D1782AE2B2A822300080B6E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D1782AD2B2A822300080B6E /* StoreKit.framework */; };
 		1D2174982B226B0000C58B9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1D2174972B226B0000C58B9D /* GoogleService-Info.plist */; };
+		1D44E1EA2B321E0400FBF39C /* Required-Swift-File-For-Bridging-Header-File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D44E1E92B321E0400FBF39C /* Required-Swift-File-For-Bridging-Header-File.swift */; };
 		2DD11872D4F248A29BF6F7A2 /* Nunito-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0931FB3AE19C49928A60D4A2 /* Nunito-SemiBoldItalic.ttf */; };
 		313577EDCF1240F4890C1B56 /* Nunito-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D156C0C749E14C55924EF72B /* Nunito-Black.ttf */; };
 		373D557AC8F84F5F89592822 /* Nunito-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20FC379891994D208D0E375E /* Nunito-Medium.ttf */; };
@@ -58,6 +59,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = audio/main.m; sourceTree = "<group>"; };
 		1D1782AD2B2A822300080B6E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		1D2174972B226B0000C58B9D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1D44E1E62B321D9200FBF39C /* Audio-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Audio-Bridging-Header.h"; sourceTree = "<group>"; };
+		1D44E1E92B321E0400FBF39C /* Required-Swift-File-For-Bridging-Header-File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Required-Swift-File-For-Bridging-Header-File.swift"; sourceTree = "<group>"; };
 		1D7AC8F52B1EC7DC005A028B /* audio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = audio.entitlements; path = audio/audio.entitlements; sourceTree = "<group>"; };
 		20FC379891994D208D0E375E /* Nunito-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Medium.ttf"; path = "../src/assets/fonts/Nunito-Medium.ttf"; sourceTree = "<group>"; };
 		37A43CE2F903DAE64B395859 /* Pods_audio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_audio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,6 +182,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				1D44E1E92B321E0400FBF39C /* Required-Swift-File-For-Bridging-Header-File.swift */,
+				1D44E1E62B321D9200FBF39C /* Audio-Bridging-Header.h */,
 				1D2174972B226B0000C58B9D /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* audio */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -275,7 +280,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1510;
 					};
 				};
 			};
@@ -525,6 +530,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				1D44E1EA2B321E0400FBF39C /* Required-Swift-File-For-Bridging-Header-File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -621,6 +627,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sauerapple.audio;
 				PRODUCT_NAME = audio;
+				SWIFT_OBJC_BRIDGING_HEADER = "audio-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -652,6 +659,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sauerapple.audio;
 				PRODUCT_NAME = audio;
+				SWIFT_OBJC_BRIDGING_HEADER = "audio-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -755,6 +763,7 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "audio/Audio-Bridging-Header.h";
 				USE_HERMES = true;
 			};
 			name = Debug;
@@ -852,6 +861,7 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "audio/Audio-Bridging-Header.h";
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};

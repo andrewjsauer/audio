@@ -7,6 +7,7 @@ import {
   verifyCode,
 } from '@store/auth/thunks';
 import { signOut } from '@store/app/thunks';
+import { saveUserRecording } from '@store/recording/thunks';
 
 interface UIState {
   notification: {
@@ -74,6 +75,13 @@ export const uiSlice = createSlice({
         state.notification = {
           title: 'errors.pleaseTryAgain',
           description: 'errors.signOutFailed',
+          type: 'error',
+        };
+      })
+      .addCase(saveUserRecording.rejected, (state) => {
+        state.notification = {
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.recordingSaveFailed',
           type: 'error',
         };
       });

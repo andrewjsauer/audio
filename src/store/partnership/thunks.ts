@@ -36,33 +36,6 @@ export const fetchPartnership = createAsyncThunk(
   },
 );
 
-export const fetchPartnershipUser = createAsyncThunk(
-  'partnership/fetchPartnershipUser',
-  async (userId: string, { rejectWithValue }) => {
-    try {
-      const partnershipUserSnapshot = await firestore()
-        .collection('partnershipUser')
-        .where('userId', '==', userId)
-        .get();
-
-      if (!partnershipUserSnapshot.empty) {
-        trackEvent('partnership_user_fetched');
-
-        const partnershipUserData = partnershipUserSnapshot.docs[0].data();
-        return partnershipUserData as PartnershipUserDataType;
-      }
-
-      trackEvent('partnership_user_not_found');
-      return rejectWithValue('No partnership user found');
-    } catch (error) {
-      trackEvent('partnership_user_fetch_error', { error });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error);
-    }
-  },
-);
-
 interface UpdatePartnershipUserArgs {
   id: string;
   partnershipUserData: PartnershipUserDataType;
@@ -90,6 +63,33 @@ export const updatePartnershipUser = createAsyncThunk(
   },
 );
 
+export const fetchPartnershipUser = createAsyncThunk(
+  'partnership/fetchPartnershipUser',
+  async (userId: string, { rejectWithValue }) => {
+    try {
+      const partnershipUserSnapshot = await firestore()
+        .collection('partnershipUser')
+        .where('userId', '==', userId)
+        .get();
+
+      if (!partnershipUserSnapshot.empty) {
+        trackEvent('partnership_user_fetched');
+
+        const partnershipUserData = partnershipUserSnapshot.docs[0].data();
+        return partnershipUserData as PartnershipUserDataType;
+      }
+
+      trackEvent('partnership_user_not_found');
+      return rejectWithValue('No partnership user found');
+    } catch (error) {
+      trackEvent('partnership_user_fetch_error', { error });
+      crashlytics().recordError(error);
+
+      return rejectWithValue(error);
+    }
+  },
+);
+
 export const fetchPartnerData = createAsyncThunk(
   'partnership/fetchPartnerData',
   async (userId: string, { dispatch, rejectWithValue }) => {
@@ -110,12 +110,8 @@ export const fetchPartnerData = createAsyncThunk(
           .doc(partnerId)
           .get();
 
-        console.log('partnerSnapshot.exists', partnerSnapshot.exists);
-
         if (partnerSnapshot.exists) {
           trackEvent('partnership_data_fetched');
-          console.log('TEST partnerSnapshot.data()', partnerSnapshot.data());
-
           return partnerSnapshot.data() as PartnerDataType;
         }
       } else {

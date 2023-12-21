@@ -1,0 +1,216 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import LoadingView from '@components/shared/LoadingView';
+import ErrorView from '@components/shared/ErrorView';
+
+import {
+  HistoryScreens,
+  HistoryType,
+  UserActionStatusType as StatusTypes,
+  ReactionTypeIcons,
+} from '@lib/types';
+import { formatDate } from '@lib/dateUtils';
+
+import PlayIcon from '@assets/icons/play.svg';
+import QuestionIcon from '@assets/icons/help.svg';
+import LockIcon from '@assets/icons/lock.svg';
+import MicIcon from '@assets/icons/mic.svg';
+
+import {
+  BlurredBackground,
+  Container,
+  IconButton,
+  ItemContainer,
+  ItemDate,
+  ItemIconContainer,
+  ItemQuestionContainer,
+  ItemQuestionStatusText,
+  ItemQuestionText,
+  NoResultsContainer,
+  NoResultsText,
+  ReactionOrb,
+  ReactionIcon,
+} from './style';
+
+const statusIcons = () => ({
+  [StatusTypes.Lock]: {
+    icon: LockIcon,
+  },
+  [StatusTypes.PendingRecord]: {
+    icon: QuestionIcon,
+  },
+  [StatusTypes.Play]: {
+    icon: PlayIcon,
+  },
+  [StatusTypes.Record]: {
+    icon: MicIcon,
+  },
+});
+
+function HistoryScreen({
+  error,
+  handleRetry,
+  isBlurred,
+  isLoading,
+  partnerId,
+  partnerName,
+  questions,
+  userId,
+}: {
+  error: string | null;
+  handleRetry: () => void;
+  isBlurred: boolean;
+  isLoading: boolean;
+  partnerName: string;
+  questions: HistoryType[];
+  userId: string;
+  partnerId: string;
+}) {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+
+  if (isLoading) {
+    return (
+      <Container>
+        <LoadingView />
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container>
+        <ErrorView onRetry={handleRetry} error={error} />
+      </Container>
+    );
+  }
+
+  if (!questions?.length) {
+    return (
+      <Container>
+        <NoResultsContainer>
+          <NoResultsText>{t('historyScreen.noResults')}</NoResultsText>
+        </NoResultsContainer>
+      </Container>
+    );
+  }
+
+  const renderHistoryItem = ({
+    item: {
+      createdAt,
+      id,
+      partnerAudioUrl,
+      partnerColor,
+      partnerDuration,
+      partnerReactionToUser,
+      partnerRecordingId,
+      partnershipTextKey,
+      partnerStatus,
+      text,
+      userAudioUrl,
+      userColor,
+      userDuration,
+      userReactionToPartner,
+      userRecordingId,
+      userStatus,
+    },
+  }: {
+    item: HistoryType;
+  }) => {
+    const { icon: UserIcon } = statusIcons()[userStatus];
+    const { icon: PartnerIcon } = statusIcons()[partnerStatus];
+    return (
+      <ItemContainer key={id}>
+        <ItemQuestionContainer>
+          <ItemDate>{formatDate(createdAt)}</ItemDate>
+          <ItemQuestionText numberOfLines={2} ellipsizeMode="tail">
+            {text}
+          </ItemQuestionText>
+          <ItemQuestionStatusText>
+            {t(`historyScreen.status.${partnershipTextKey}`, {
+              name: partnerName,
+            })}
+          </ItemQuestionStatusText>
+        </ItemQuestionContainer>
+        <ItemIconContainer>
+          <IconButton
+            color={partnerColor}
+            disabled={
+              partnerStatus === StatusTypes.PendingRecord ||
+              partnerStatus === StatusTypes.Lock
+            }
+            onPress={() =>
+              navigation.navigate(HistoryScreens.PlayUserModal, {
+                audioUrl: partnerAudioUrl,
+                duration: partnerDuration,
+                isUsersPartner: true,
+                questionText: text,
+                reaction: userReactionToPartner,
+                recordingId: partnerRecordingId,
+                userId,
+                questionId: id,
+              })
+            }>
+            <PartnerIcon width={18} height={18} />
+            {userReactionToPartner && (
+              <ReactionOrb color={userColor}>
+                <ReactionIcon>
+                  {ReactionTypeIcons[userReactionToPartner]}
+                </ReactionIcon>
+              </ReactionOrb>
+            )}
+          </IconButton>
+          <IconButton
+            color={userColor}
+            disabled={
+              userStatus === StatusTypes.PendingRecord ||
+              userStatus === StatusTypes.Lock
+            }
+            onPress={() =>
+              navigation.navigate(HistoryScreens.PlayUserModal, {
+                audioUrl: userAudioUrl,
+                duration: userDuration,
+                isUsersPartner: false,
+                questionText: text,
+                reaction: partnerReactionToUser,
+                recordingId: userRecordingId,
+                userId: partnerId,
+                questionId: id,
+              })
+            }>
+            <UserIcon width={18} height={18} />
+            {partnerReactionToUser && (
+              <ReactionOrb color={partnerColor}>
+                <ReactionIcon>
+                  {ReactionTypeIcons[partnerReactionToUser]}
+                </ReactionIcon>
+              </ReactionOrb>
+            )}
+          </IconButton>
+        </ItemIconContainer>
+      </ItemContainer>
+    );
+  };
+
+  return (
+    <Container>
+      <FlatList
+        data={questions}
+        renderItem={renderHistoryItem}
+        keyExtractor={(item) => item.id}
+      />
+      {isBlurred && (
+        <BlurredBackground
+          blurType="light"
+          blurAmount={8}
+          reducedTransparencyFallbackColor="white"
+        />
+      )}
+    </Container>
+  );
+}
+
+export default HistoryScreen;

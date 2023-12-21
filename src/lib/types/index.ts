@@ -11,6 +11,7 @@ export enum AppScreens {
   AccountScreen = 'AccountScreen',
   HistoryScreen = 'HistoryScreen',
   TrialScreen = 'TrialScreen',
+  BrowserScreen = 'BrowserScreen',
 }
 
 export enum AuthScreens {
@@ -27,11 +28,17 @@ export enum AuthScreens {
 export enum QuestionScreens {
   QuestionSubscriberScreen = 'QuestionSubscriberScreen',
   QuestionNonSubscriberScreen = 'QuestionNonSubscriberScreen',
+  AccountSettingsScreen = 'AccountSettingsScreen',
+}
+
+export enum ModalScreens {
+  RecordUserModal = 'RecordUserModal',
+  PlayUserModal = 'PlayUserModal',
 }
 
 export enum HistoryScreens {
-  HistorySubscriberScreen = 'HistorySubscriberScreen',
-  HistoryNonSubscriberScreen = 'HistoryNonSubscriberScreen',
+  HistoryScreen = 'QuestionSubscriberScreen',
+  PlayUserModal = 'PlayUserModal',
 }
 
 export type UserDataType = {
@@ -49,9 +56,10 @@ export type UserDataType = {
 
 export type PartnershipDataType = {
   id?: string;
-  startDate: Date;
-  type: string;
-  createdAt: FirebaseFirestoreTypes.Timestamp;
+  startDate?: Date;
+  type?: string;
+  createdAt?: FirebaseFirestoreTypes.Timestamp;
+  latestQuestionId?: string;
 };
 
 export type PartnershipUserDataType = {
@@ -85,4 +93,65 @@ export type QuestionType = {
   id: string;
   partnershipId: string;
   text: string;
+};
+
+export enum UserActionStatusType {
+  Lock = 'Lock',
+  PendingRecord = 'PendingRecord',
+  Play = 'Play',
+  Record = 'Record',
+}
+
+export enum ReactionType {
+  Love = 'love',
+  Laugh = 'laugh',
+  Cute = 'cute',
+  Fire = 'fire',
+}
+
+export enum ReactionTypeIcons {
+  love = '❤️',
+  laugh = '😂',
+  cute = '🥹',
+  fire = '🔥',
+}
+
+export type RecordingType = {
+  id: string;
+  userId: string;
+  questionId: string;
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  duration: string;
+  audioUrl: string;
+  partnershipId: string;
+  didLikeQuestion: boolean | null;
+  feedbackText: string | null;
+  reaction: ReactionType[] | null;
+};
+
+export type HistoryType = {
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  id: string;
+  partnerAudioUrl: string | null;
+  partnerColor: string;
+  partnerDuration: string | null;
+  partnerReactionToUser: ReactionType | null;
+  partnerRecordingId: string | null;
+  partnershipTextKey: string;
+  partnerStatus: UserActionStatusType;
+  text: string;
+  userAudioUrl: string | null;
+  userColor: string;
+  userDuration: string | null;
+  userReactionToPartner: ReactionType | null;
+  userRecordingId: string | null;
+  userStatus: UserActionStatusType;
+};
+
+export type ListeningType = {
+  id: string;
+  recordingId: string;
+  userId: string;
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  reaction: ReactionType;
 };

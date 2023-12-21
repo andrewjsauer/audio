@@ -5,7 +5,7 @@ export const Container = styled.View`
   background-color: ${(p) => p.theme.colors.white};
 `;
 
-export const LogoutButton = styled.TouchableOpacity`
+export const SettingsButton = styled.TouchableOpacity`
   padding: 10px;
   align-self: flex-end;
   margin-right: 10px;

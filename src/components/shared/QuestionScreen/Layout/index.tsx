@@ -1,12 +1,6 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-
-import { AppDispatch } from '@store/index';
-import { selectUserId } from '@store/auth/selectors';
-
-import { signOut } from '@store/app/thunks';
 
 import { trackEvent } from '@lib/analytics';
 import { AppScreens } from '@lib/types';
@@ -14,19 +8,21 @@ import { AppScreens } from '@lib/types';
 import SettingsIcon from '@assets/icons/settings.svg';
 import Button from '@components/shared/Button';
 
-import { Container, LogoutButton, HistoryButtonContainer } from './style';
+import { Container, SettingsButton, HistoryButtonContainer } from './style';
 
-function Layout({ children }: { children: React.ReactNode }) {
-  const dispatch = useDispatch<AppDispatch>();
-
+function Layout({
+  children,
+  isLoading = false,
+}: {
+  isLoading?: boolean;
+  children: React.ReactNode;
+}) {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
-  const userId = useSelector(selectUserId);
-
-  const handleLogout = () => {
-    trackEvent('sign_out_button_clicked');
-    dispatch(signOut(userId));
+  const handleNavigateToSettings = () => {
+    trackEvent('settings_button_clicked');
+    navigation.navigate(AppScreens.AccountScreen);
   };
 
   const handleNavigateToHistory = () => {
@@ -36,15 +32,16 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <Container style={{ paddingTop: Math.max(insets.top, 28) }}>
-      <LogoutButton onPress={handleLogout}>
+      <SettingsButton onPress={handleNavigateToSettings}>
         <SettingsIcon width={24} height={24} />
-      </LogoutButton>
+      </SettingsButton>
       {children}
       <HistoryButtonContainer>
         <Button
           text="View History"
           size="small"
           mode="hidden"
+          isLoading={isLoading}
           onPress={handleNavigateToHistory}
         />
       </HistoryButtonContainer>

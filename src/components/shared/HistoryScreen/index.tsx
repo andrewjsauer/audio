@@ -1,21 +1,40 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import { selectIsSubscriber } from '@store/auth/selectors';
+import { HistoryScreens } from '@lib/types';
 
-import NonSubscriberNotification from '@components/shared/NonSubscriberNotification';
+import PlayUserModal from '@components/shared/PlayUserModal';
+import HistoryScreen from './History';
 
-import Layout from './Layout';
-import HistoryScreen from './HistoryScreen';
+export type HistoryStackParamList = {
+  [HistoryScreens.HistoryScreen]: typeof HistoryScreen;
+  [HistoryScreens.PlayUserModal]: typeof PlayUserModal;
+};
+
+const Stack = createStackNavigator<HistoryStackParamList>();
 
 function HistoryScreenContainer() {
-  const isSubscribed = useSelector(selectIsSubscriber);
-
   return (
-    <Layout>
-      {!isSubscribed && <NonSubscriberNotification />}
-      <HistoryScreen />
-    </Layout>
+    <Stack.Navigator initialRouteName={HistoryScreens.HistoryScreen}>
+      <Stack.Group>
+        <Stack.Screen
+          component={HistoryScreen}
+          name={HistoryScreens.HistoryScreen}
+          options={{ headerShown: false }}
+        />
+      </Stack.Group>
+      <Stack.Group
+        screenOptions={{
+          presentation: 'transparentModal',
+          headerShown: false,
+          animationEnabled: true,
+        }}>
+        <Stack.Screen
+          name={HistoryScreens.PlayUserModal}
+          component={PlayUserModal}
+        />
+      </Stack.Group>
+    </Stack.Navigator>
   );
 }
 

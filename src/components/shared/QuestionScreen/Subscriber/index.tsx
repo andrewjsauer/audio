@@ -1,110 +1,157 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 
 import { selectUserData, selectPartnershipId } from '@store/auth/selectors';
 import {
+  selectError,
+  selectIsLoading,
+  selectLastFailedAction,
   selectPartnerData,
   selectPartnershipData,
 } from '@store/partnership/selectors';
 import {
   selectCurrentQuestion,
-  selectError,
-  selectIsLoading,
-  selectLastFailedAction,
+  selectIsLoadingQuestion,
 } from '@store/question/selectors';
+import {
+  selectPartnerRecording,
+  selectPartnerRecordingStatus,
+  selectUserRecording,
+  selectUserRecordingStatus,
+  selectUserReactionToPartnerType,
+  selectPartnerReactionToUserType,
+} from '@store/recording/selectors';
 
 import { AppDispatch } from '@store/index';
 
 import { fetchLatestQuestion } from '@store/question/thunks';
-import { fetchPartnership } from '@store/partnership/thunks';
+import { fetchPartnership, fetchPartnerData } from '@store/partnership/thunks';
 
-import { UserDataType } from '@lib/types';
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackScreen, trackEvent } from '@lib/analytics';
+import { QuestionType } from '@lib/types';
+
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
+import useTimeRemainingToMidnight from '@lib/customHooks/useTimeRemainingToMidnight';
+import useRecordingSubscription from '@lib/customHooks/useRecordingSubscription';
+import useListeningSubscription from '@lib/customHooks/useListeningSubscription';
 
-import Button from '@components/shared/Button';
 import LoadingView from '@components/shared/LoadingView';
+import ErrorView from '@components/shared/ErrorView';
 
 import Layout from '../Layout';
 import Question from '../QuestionView';
-import { Container, ErrorText } from './style';
+import { Container } from './style';
 
 function SubscriberScreen() {
   const dispatch = useDispatch<AppDispatch>();
-  const { t } = useTranslation();
 
-  const userData = useSelector<UserDataType>(selectUserData);
   const partnershipId = useSelector(selectPartnershipId);
-  const partnerData = useSelector<UserDataType>(selectPartnerData);
+  const userData = useSelector(selectUserData);
+  const partnerData = useSelector(selectPartnerData);
   const partnershipData = useSelector(selectPartnershipData);
-
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
   const lastFailedAction = useSelector(selectLastFailedAction);
   const currentQuestion = useSelector(selectCurrentQuestion);
+  const isLoadingQuestion = useSelector(selectIsLoadingQuestion);
+  const partnerStatus = useSelector(selectPartnerRecordingStatus);
+  const userStatus = useSelector(selectUserRecordingStatus);
+  const partnerRecording = useSelector(selectPartnerRecording);
+  const userRecording = useSelector(selectUserRecording);
+  const userReactionToPartner = useSelector(selectUserReactionToPartnerType);
+  const partnerReactionToUser = useSelector(selectPartnerReactionToUserType);
 
   useEffect(() => {
     trackScreen('SubscriberScreen');
 
-    if (!partnershipData) {
-      dispatch(fetchPartnership(partnershipId));
-    }
+    if (!partnershipData) dispatch(fetchPartnership(partnershipId));
+    if (!partnerData) dispatch(fetchPartnerData(userData.id));
   }, []);
 
   useEffect(() => {
+    const isQuestionExpired = (question: QuestionType) => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      let questionCreatedAt;
+      const { createdAt } = question;
+
+      if (typeof createdAt === 'function') {
+        questionCreatedAt = createdAt.toDate();
+      } else questionCreatedAt = new Date(createdAt.seconds * 1000);
+
+      return questionCreatedAt < today;
+    };
+
     if (
+      (!currentQuestion || isQuestionExpired(currentQuestion)) &&
       partnershipData &&
-      partnershipData.latestQuestionId === currentQuestion.id
+      partnerData
     ) {
-      dispatch(fetchLatestQuestion(partnershipData));
+      dispatch(fetchLatestQuestion({ partnershipData, partnerData, userData }));
     }
-  }, [dispatch, partnershipData, currentQuestion]);
+  }, [partnershipData?.id, currentQuestion, partnerData]);
 
   useNotificationPermissions();
 
-  const handleRetry = () => {
-    if (lastFailedAction) {
-      trackEvent('retry_button_clicked', {
-        action: lastFailedAction.type,
-      });
+  useRecordingSubscription({
+    userData,
+    partnerData,
+    questionId: currentQuestion?.id,
+  });
 
-      dispatch({
-        type: lastFailedAction.type,
-        payload: lastFailedAction.payload,
-      });
+  useListeningSubscription({
+    partnerData,
+    partnerRecordingId: partnerRecording?.id,
+    userData,
+    userRecordingId: userRecording?.id,
+  });
+
+  const timeRemaining = useTimeRemainingToMidnight();
+
+  const handleRetry = () => {
+    trackEvent('retry_button_clicked', {
+      action: lastFailedAction.type,
+    });
+
+    if (
+      lastFailedAction &&
+      lastFailedAction.type === fetchPartnership.typePrefix
+    ) {
+      dispatch(fetchPartnership(lastFailedAction.payload));
+    } else if (
+      lastFailedAction &&
+      lastFailedAction.type === fetchPartnerData.typePrefix
+    ) {
+      dispatch(fetchPartnerData(lastFailedAction.payload));
     }
   };
 
   let content = (
     <Question
       partner={partnerData}
-      text="Whats the best date you two have been on together?"
-      timeRemaining="22h 6m 31s"
+      partnerReactionToUser={partnerReactionToUser}
+      partnerRecording={partnerRecording}
+      partnerStatus={partnerStatus}
+      text={currentQuestion?.text}
+      timeRemaining={timeRemaining}
       user={userData}
+      userReactionToPartner={userReactionToPartner}
+      userRecording={userRecording}
+      userStatus={userStatus}
     />
   );
 
-  if (isLoading) {
+  if (isLoading || isLoadingQuestion) {
     content = <LoadingView />;
   }
 
   if (error) {
-    content = (
-      <>
-        <ErrorText>{error || t('errors.whoops')}</ErrorText>
-        <Button
-          onPress={handleRetry}
-          text={t('retry')}
-          size="small"
-          mode="error"
-        />
-      </>
-    );
+    content = <ErrorView error={error} onRetry={handleRetry} />;
   }
 
   return (
-    <Layout>
+    <Layout isLoading={isLoading}>
       <Container>{content}</Container>
     </Layout>
   );

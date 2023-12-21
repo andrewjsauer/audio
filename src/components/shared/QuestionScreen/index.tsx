@@ -1,41 +1,55 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { selectIsSubscriber, selectUserId } from '@store/auth/selectors';
-import { fetchPartnerData } from '@store/partnership/thunks';
-import { AppDispatch } from '@store/index';
+import { selectIsSubscriber } from '@store/auth/selectors';
 
-import { QuestionScreens } from '@lib/types';
+import { QuestionScreens, ModalScreens } from '@lib/types';
 
 import SubscriberScreen from '@components/shared/QuestionScreen/Subscriber';
 import NonSubscriberScreen from '@components/shared/QuestionScreen/NonSubscriber';
+import RecordUserModal from '@components/shared/QuestionScreen/RecordUserModal';
+import PlayUserModal from '@components/shared/PlayUserModal';
 
-export type AppStackParamList = {
+export type QuestionStackParamList = {
   [QuestionScreens.QuestionSubscriberScreen]: typeof SubscriberScreen;
   [QuestionScreens.QuestionNonSubscriberScreen]: typeof NonSubscriberScreen;
+  [ModalScreens.RecordUserModal]: typeof RecordUserModal;
+  [ModalScreens.PlayUserModal]: typeof PlayUserModal;
 };
 
-const Stack = createStackNavigator<AppStackParamList>();
+const Stack = createStackNavigator<QuestionStackParamList>();
 
 function QuestionScreen() {
   const isSubscribed = useSelector(selectIsSubscriber);
-  const dispatch = useDispatch<AppDispatch>();
-
-  const userId = useSelector(selectUserId);
-
-  useEffect(() => {
-    dispatch(fetchPartnerData(userId));
-  }, []);
 
   return (
     <Stack.Navigator>
       {true ? (
-        <Stack.Screen
-          component={SubscriberScreen}
-          name={QuestionScreens.QuestionSubscriberScreen}
-          options={{ headerShown: false }}
-        />
+        <>
+          <Stack.Group>
+            <Stack.Screen
+              component={SubscriberScreen}
+              name={QuestionScreens.QuestionSubscriberScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Group>
+          <Stack.Group
+            screenOptions={{
+              presentation: 'transparentModal',
+              headerShown: false,
+              animationEnabled: true,
+            }}>
+            <Stack.Screen
+              name={ModalScreens.RecordUserModal}
+              component={RecordUserModal}
+            />
+            <Stack.Screen
+              name={ModalScreens.PlayUserModal}
+              component={PlayUserModal}
+            />
+          </Stack.Group>
+        </>
       ) : (
         <Stack.Screen
           component={NonSubscriberScreen}

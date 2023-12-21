@@ -19,6 +19,6 @@ export const QuestionText = styled.Text`
   color: ${(p) => p.theme.colors.black};
 `;
 
-export const RecordViewContainer = styled.View`
+export const ActionViewContainer = styled.View`
   margin-top: 20px;
 `;

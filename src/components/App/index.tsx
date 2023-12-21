@@ -11,26 +11,29 @@ import {
   selectLastFailedAction,
   selectTransactionError,
 } from '@store/app/selectors';
+
+import { initializeSession } from '@store/app/thunks';
+
 import { AppDispatch } from '@store/index';
 
 import { trackEvent } from '@lib/analytics';
 import useInitializeSession from '@lib/customHooks/useInitializeSession';
 import { AppScreens } from '@lib/types';
 
-import Button from '@components/shared/Button';
 import LoadingView from '@components/shared/LoadingView';
+import ErrorView from '@components/shared/ErrorView';
 
-import QuestionScreen from '@components/shared/QuestionScreen';
-import HistoryScreen from '@components/shared/HistoryScreen';
 import AccountScreen from '@components/shared/AccountScreen';
+import BrowserScreen from '@components/shared/BrowserScreen';
+import HistoryScreen from '@components/shared/HistoryScreen';
+import QuestionScreen from '@components/shared/QuestionScreen';
 import TrialScreen from '@components/shared/TrialScreen';
 
-import { StyledView, ErrorText } from './style';
-
 export type AppStackParamList = {
-  [AppScreens.QuestionScreen]: undefined;
-  [AppScreens.HistoryScreen]: undefined;
   [AppScreens.AccountScreen]: undefined;
+  [AppScreens.BrowserScreen]: undefined;
+  [AppScreens.HistoryScreen]: undefined;
+  [AppScreens.QuestionScreen]: undefined;
   [AppScreens.TrialScreen]: undefined;
 };
 
@@ -50,20 +53,20 @@ function App(): JSX.Element {
 
   useEffect(() => {
     if (transactionError) {
-      Alert.alert(t('errors.errorPurchasing'), transactionError);
+      Alert.alert(t('errors.errorPurchasing'), t(transactionError));
     }
   }, [transactionError]);
 
   const handleRetry = () => {
-    if (lastFailedAction) {
+    if (
+      lastFailedAction &&
+      lastFailedAction.type === initializeSession.typePrefix
+    ) {
       trackEvent('retry_button_clicked', {
         action: lastFailedAction.type,
       });
 
-      dispatch({
-        type: lastFailedAction.type,
-        payload: lastFailedAction.payload,
-      });
+      dispatch(initializeSession(lastFailedAction.payload));
     }
   };
 
@@ -72,17 +75,7 @@ function App(): JSX.Element {
   }
 
   if (error) {
-    return (
-      <StyledView>
-        <ErrorText>{error?.message || t('errors.whoops')}</ErrorText>
-        <Button
-          onPress={handleRetry}
-          text={t('retry')}
-          size="small"
-          mode="error"
-        />
-      </StyledView>
-    );
+    return <ErrorView onRetry={handleRetry} error={error} />;
   }
 
   return (
@@ -102,6 +95,11 @@ function App(): JSX.Element {
           <Stack.Screen
             component={AccountScreen}
             name={AppScreens.AccountScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            component={BrowserScreen}
+            name={AppScreens.BrowserScreen}
             options={{ headerShown: false }}
           />
         </>

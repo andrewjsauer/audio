@@ -33,7 +33,29 @@
     "userUpdateFailed": "Something went wrong when updating your user",
     "partnershipGenerationFailed": "Something went wrong when initializing your partnership",
     "initializeSession": "Something went wrong when initializing your user",
-    "errorPurchasing": "Error Purchasing"
+    "errorPurchasing": "Error Purchasing",
+    "recordingSaveFailed": "Something went wrong when saving your recording",
+    "historyAPIError": "Something went wrong when fetching your history",
+    "initSessionAPIError": "Something went wrong when initializing your session",
+    "purchaseError": "Something went wrong when purchasing your subscription",
+    "restoreError": "Something went wrong when restoring your subscription",
+    "fetchPartnerDataAPIError": "Something went wrong when fetching your partner's data",
+    "fetchPartnershipDataAPIError": "Something went wrong when fetching your partnership data",
+    "fetchQuestionAPIError": "Something went wrong when fetching your question",
+    "audioPlayBackError": "Something went wrong when playing your audio. Please try again"
+  },
+  "accountScreen": {
+    "title": "Account Settings",
+    "yourName": "Your First Name",
+    "yourColor": "Your Color",
+    "yourPartnerName": "Your Partner's Name",
+    "yourPartnerColor": "Your Partner's Color",
+    "signOut": "Sign Out",
+    "deleteAccount": "End Relationship and Delete Accounts",
+    "and": " and ",
+    "legal": "Daily Qs from SAUERAPPLE LLC",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy"
   },
   "questionScreen": {
     "nonSubscriberScreen": {
@@ -48,6 +70,8 @@
       }
     },
     "subscriberScreen": {
+      "redo": "Redo",
+      "submit": "Submit",
       "timeRemaining": "{{ time }} remaining...",
       "lock": {
         "title": "{{ name }} answered",
@@ -62,6 +86,11 @@
       "play": {
         "title": "{{ name }} answered",
         "description": "{{ date }} at {{ time }}"
+      },
+      "audioPermissions": {
+        "title": "Allow permissions to record",
+        "description": "You must allow permissions to record your answer",
+        "buttonText": "Allow"
       }
     }
   },
@@ -72,7 +101,14 @@
     "startTrialButtonText": "Start Trial"
   },
   "historyScreen": {
-    "title": "History"
+    "title": "History",
+    "noResults": "Past recordings will show up here...\n\n You’ll only be able to listen to recordings where you both answered the question!",
+    "status": {
+      "bothAnswered": "You both answered",
+      "partnerAnswered": "{{ name }} answered, but you didn't",
+      "userAnswered": "You answered, but {{ name }} didn't",
+      "bothDidNotAnswer": "Neither of you answered"
+    }
   },
   "auth": {
     "signInScreen": {

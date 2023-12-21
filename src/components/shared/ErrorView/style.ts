@@ -1,12 +1,5 @@
 import styled from 'styled-components/native';
 
-export const StyledView = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  background-color: ${(p) => p.theme.colors.white};
-`;
-
 export const ErrorText = styled.Text`
   color: ${(p) => p.theme.colors.red};
   font-family: ${(p) => p.theme.fonts.regular};
@@ -14,4 +7,10 @@ export const ErrorText = styled.Text`
   padding: 0 20px;
   text-align: center;
   margin-bottom: 20px;
+`;
+
+export const ErrorContainer = styled.View`
+  align-items: center;
+  flex: 1;
+  justify-content: center;
 `;

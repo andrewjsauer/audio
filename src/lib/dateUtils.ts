@@ -2,31 +2,35 @@ import { format, isToday } from 'date-fns';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 export const formatDate = (timestamp?: FirebaseFirestoreTypes.Timestamp) => {
-  if (!timestamp || typeof timestamp.toDate !== 'function') {
-    console.log('Invalid timestamp provided to formatDate:', timestamp);
-    return '';
-  }
+  if (!timestamp) return '';
+  let date = timestamp as FirebaseFirestoreTypes.Timestamp;
 
   try {
-    const date = timestamp.toDate();
+    if (typeof timestamp?.toDate === 'function') {
+      date = timestamp.toDate();
+    } else {
+      date = new Date(timestamp.seconds * 1000);
+    }
+
     return isToday(date) ? 'Today' : format(date, 'PPP');
   } catch (error) {
-    console.log('Error converting timestamp to date:', error);
     return '';
   }
 };
 
 export const formatTime = (timestamp?: FirebaseFirestoreTypes.Timestamp) => {
-  if (!timestamp || typeof timestamp.toDate !== 'function') {
-    console.log('Invalid timestamp provided to formatDate:', timestamp);
-    return '';
-  }
+  if (!timestamp) return '';
+  let date = timestamp;
 
   try {
-    const date = timestamp.toDate();
+    if (typeof timestamp?.toDate === 'function') {
+      date = timestamp.toDate();
+    } else {
+      date = new Date(timestamp.seconds * 1000);
+    }
+
     return format(date, 'p');
   } catch (error) {
-    console.log('Error converting timestamp to date:', error);
     return '';
   }
 };

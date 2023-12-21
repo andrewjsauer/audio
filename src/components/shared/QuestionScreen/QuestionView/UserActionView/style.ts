@@ -20,8 +20,8 @@ export const IconButton = styled.TouchableOpacity.attrs((props) => ({
 }))<{ color: string; disabled?: boolean }>`
   align-items: center;
   justify-content: center;
-  width: 78px;
-  height: 78px;
+  width: 70px;
+  height: 70px;
   border-radius: 50px;
   background-color: ${(p) => p.color};
   margin: 5px;
@@ -50,4 +50,21 @@ export const Description = styled.Text`
   font-size: ${(p) => p.theme.fontSizes.small};
   color: ${(p) => p.theme.colors.lightGray};
   text-align: center;
+`;
+
+export const ReactionOrb = styled.View<{ color: string }>`
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 30px;
+  height: 30px;
+  background-color: ${(props) => props.color};
+  border-radius: 50px;
+  border: 2px solid ${(props) => props.theme.colors.white};
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ReactionIcon = styled.Text`
+  font-size: 11px;
 `;

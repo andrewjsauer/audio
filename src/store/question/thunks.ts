@@ -3,15 +3,24 @@ import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import functions from '@react-native-firebase/functions';
 
-import { PartnershipDataType, QuestionType } from '@lib/types';
+import { PartnershipDataType, UserDataType, QuestionType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
+
+interface FetchLatestQuestionArgs {
+  partnerData: UserDataType;
+  userData: UserDataType;
+  partnershipData: PartnershipDataType;
+}
 
 export const fetchLatestQuestion = createAsyncThunk<
   QuestionType,
-  PartnershipDataType
+  FetchLatestQuestionArgs
 >(
   'question/fetchLatestQuestion',
-  async (partnershipData, { rejectWithValue }) => {
+  async (
+    { partnershipData, partnerData, userData }: FetchLatestQuestionArgs,
+    { rejectWithValue },
+  ) => {
     try {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -28,7 +37,7 @@ export const fetchLatestQuestion = createAsyncThunk<
 
         const generateQuestionResponse = await functions().httpsCallable(
           'generateQuestion',
-        )({ partnershipData });
+        )({ partnershipData, partnerData, userData });
 
         return generateQuestionResponse.data;
       }
@@ -46,7 +55,7 @@ export const fetchLatestQuestion = createAsyncThunk<
       trackEvent('question_out_of_date');
       const generateQuestionResponse = await functions().httpsCallable(
         'generateQuestion',
-      )({ partnershipData });
+      )({ partnershipData, partnerData, userData });
 
       return generateQuestionResponse.data;
     } catch (error) {

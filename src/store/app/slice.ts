@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchPartnerData, fetchPartnership } from '@store/partnership/thunks';
 import {
   signOut,
   restorePurchases,
@@ -10,18 +9,18 @@ import {
 
 export interface AppState {
   error: string | undefined | null;
-  loadingCount: number;
+  isLoading: boolean;
   isPreviouslySubscribed: boolean;
-  transactionError: string | undefined | null;
   lastFailedAction: object | null;
+  transactionError: string | undefined | null;
 }
 
 const initialState: AppState = {
   error: null,
-  loadingCount: 0,
+  isLoading: false,
   isPreviouslySubscribed: false,
-  transactionError: null,
   lastFailedAction: null,
+  transactionError: null,
 };
 
 const appSlice = createSlice({
@@ -33,90 +32,56 @@ const appSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    const setLoading = (state: AppState, isLoading: boolean) => {
-      state.loadingCount += isLoading ? 1 : -1;
-    };
-
     builder.addCase(signOut.fulfilled, (state) => {
       state.error = null;
       state.isPreviouslySubscribed = false;
-      setLoading(state, false);
+      state.isLoading = false;
     });
     builder.addCase(signOut.pending, (state) => {
       state.error = null;
-      setLoading(state, true);
+      state.isLoading = true;
     });
     builder.addCase(signOut.rejected, (state) => {
-      setLoading(state, false);
+      state.isLoading = false;
     });
     builder.addCase(initializeSession.fulfilled, (state, action) => {
       state.isPreviouslySubscribed = action.payload.isPreviouslySubscribed;
-      setLoading(state, false);
+      state.isLoading = false;
     });
     builder.addCase(initializeSession.pending, (state) => {
       state.error = null;
-      setLoading(state, true);
+      state.isLoading = true;
+      state.lastFailedAction = null;
     });
     builder.addCase(initializeSession.rejected, (state, action) => {
-      state.error = action.payload as string;
+      state.isLoading = false;
+      state.error = 'errors.initSessionAPIError';
       state.lastFailedAction = {
         type: initializeSession.typePrefix,
         payload: action.meta.arg,
       };
-
-      setLoading(state, false);
     });
     builder.addCase(purchaseProduct.pending, (state) => {
       state.transactionError = null;
-      setLoading(state, true);
+      state.isLoading = true;
     });
-    builder.addCase(purchaseProduct.rejected, (state, action) => {
-      state.transactionError = action.payload as string;
-      setLoading(state, false);
+    builder.addCase(purchaseProduct.rejected, (state) => {
+      state.transactionError = 'errors.purchaseError';
+      state.isLoading = false;
     });
     builder.addCase(purchaseProduct.fulfilled, (state) => {
-      setLoading(state, false);
+      state.isLoading = false;
     });
     builder.addCase(restorePurchases.pending, (state) => {
       state.transactionError = null;
-      setLoading(state, true);
+      state.isLoading = true;
     });
-    builder.addCase(restorePurchases.rejected, (state, action) => {
-      state.transactionError = action.payload as string;
-      setLoading(state, false);
+    builder.addCase(restorePurchases.rejected, (state) => {
+      state.transactionError = 'errors.restoreError';
+      state.isLoading = false;
     });
     builder.addCase(restorePurchases.fulfilled, (state) => {
-      setLoading(state, false);
-    });
-    builder.addCase(fetchPartnerData.fulfilled, (state) => {
-      setLoading(state, false);
-    });
-    builder.addCase(fetchPartnerData.rejected, (state, action) => {
-      state.error = action.payload as string;
-      state.lastFailedAction = {
-        type: fetchPartnerData.typePrefix,
-        payload: action.meta.arg,
-      };
-
-      setLoading(state, false);
-    });
-    builder.addCase(fetchPartnerData.pending, (state) => {
-      setLoading(state, true);
-    });
-    builder.addCase(fetchPartnership.fulfilled, (state) => {
-      setLoading(state, false);
-    });
-    builder.addCase(fetchPartnership.rejected, (state, action) => {
-      state.error = action.payload as string;
-      state.lastFailedAction = {
-        type: fetchPartnership.typePrefix,
-        payload: action.meta.arg,
-      };
-
-      setLoading(state, false);
-    });
-    builder.addCase(fetchPartnership.pending, (state) => {
-      setLoading(state, true);
+      state.isLoading = false;
     });
   },
 });
