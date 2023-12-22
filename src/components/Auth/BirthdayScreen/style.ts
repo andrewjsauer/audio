@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
-import DatePicker from 'react-native-date-picker';
 
-export const StyledDatePicker = styled(DatePicker)`
+export const StyledDatePickerContainer = styled.View`
   width: 400px;
 `;

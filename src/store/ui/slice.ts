@@ -5,6 +5,7 @@ import {
   submitPhoneNumber,
   updateUser,
   verifyCode,
+  deleteRelationship,
 } from '@store/auth/thunks';
 import { signOut } from '@store/app/thunks';
 import { saveUserRecording } from '@store/recording/thunks';
@@ -82,6 +83,13 @@ export const uiSlice = createSlice({
         state.notification = {
           title: 'errors.pleaseTryAgain',
           description: 'errors.recordingSaveFailed',
+          type: 'error',
+        };
+      })
+      .addCase(deleteRelationship.rejected, (state) => {
+        state.notification = {
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.deleteRelationshipFailed',
           type: 'error',
         };
       });

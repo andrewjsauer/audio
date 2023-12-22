@@ -41,7 +41,9 @@ const recordingSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(signOut.fulfilled, (state) => {
       state.isLoading = false;
+      state.partnerReactionToUser = null;
       state.partnerRecording = null;
+      state.userReactionToPartner = null;
       state.userRecording = null;
     });
     builder.addCase(saveUserRecording.fulfilled, (state, action) => {
@@ -57,10 +59,6 @@ const recordingSlice = createSlice({
   },
 });
 
-export const {
-  setUserRecording,
-  setPartnerRecording,
-  setUserReactionToPartner,
-  setPartnerReactionToUser,
-} = recordingSlice.actions;
+export const { setUserRecording, setPartnerRecording, setUserReactionToPartner, setPartnerReactionToUser } =
+  recordingSlice.actions;
 export default recordingSlice.reducer;

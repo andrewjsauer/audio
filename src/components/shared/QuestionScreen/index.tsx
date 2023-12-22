@@ -25,7 +25,7 @@ function QuestionScreen() {
 
   return (
     <Stack.Navigator>
-      {true ? (
+      {isSubscribed ? (
         <>
           <Stack.Group>
             <Stack.Screen
@@ -39,15 +39,10 @@ function QuestionScreen() {
               presentation: 'transparentModal',
               headerShown: false,
               animationEnabled: true,
-            }}>
-            <Stack.Screen
-              name={ModalScreens.RecordUserModal}
-              component={RecordUserModal}
-            />
-            <Stack.Screen
-              name={ModalScreens.PlayUserModal}
-              component={PlayUserModal}
-            />
+            }}
+          >
+            <Stack.Screen name={ModalScreens.RecordUserModal} component={RecordUserModal} />
+            <Stack.Screen name={ModalScreens.PlayUserModal} component={PlayUserModal} />
           </Stack.Group>
         </>
       ) : (

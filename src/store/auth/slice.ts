@@ -13,6 +13,7 @@ import {
   updateNewUser,
   updateUser,
   verifyCode,
+  deleteRelationship,
 } from './thunks';
 
 interface AuthState {
@@ -47,21 +48,21 @@ const authSlice = createSlice({
     setCode: (state, action: PayloadAction<string>) => {
       state.code = action.payload;
     },
-    setConfirm: (
-      state,
-      action: PayloadAction<FirebaseAuthTypes.ConfirmationResult>,
-    ) => {
+    setConfirm: (state, action: PayloadAction<FirebaseAuthTypes.ConfirmationResult>) => {
       state.confirm = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(signOut.fulfilled, (state) => {
-        state.isLoading = false;
+        state.code = '';
         state.confirm = null;
+        state.error = null;
+        state.isLoading = false;
+        state.isLoadingPartnerData = false;
         state.user = null;
         state.userData = null;
-        state.code = '';
+        state.isSubscriber = false;
       })
       .addCase(submitPhoneNumber.pending, (state) => {
         state.isLoading = true;
@@ -133,6 +134,15 @@ const authSlice = createSlice({
       })
       .addCase(getUsersEntitlements.fulfilled, (state, action) => {
         state.isSubscriber = action.payload.isSubscriber;
+      })
+      .addCase(deleteRelationship.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteRelationship.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(deleteRelationship.rejected, (state) => {
+        state.isLoading = false;
       });
   },
 });

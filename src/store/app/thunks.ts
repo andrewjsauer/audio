@@ -15,8 +15,17 @@ import { updateUser } from '@store/auth/thunks';
 
 export const signOut = createAsyncThunk(
   'app/signOut',
-  async (userId: string, { dispatch, rejectWithValue }) => {
-    if (userId) {
+  async (
+    {
+      userId,
+      isDelete,
+    }: {
+      userId: string;
+      isDelete?: boolean;
+    },
+    { dispatch, rejectWithValue },
+  ) => {
+    if (userId && !isDelete) {
       dispatch(
         updateUser({
           id: userId,
@@ -45,10 +54,7 @@ export const initializeSession = createAsyncThunk(
       if (__DEV__) Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
 
       Purchases.configure({
-        apiKey:
-          Platform.OS === 'ios'
-            ? (Config.revenueCatiOSKey as string)
-            : (Config.revenueCatAndroidKey as string),
+        apiKey: Platform.OS === 'ios' ? (Config.revenueCatiOSKey as string) : (Config.revenueCatAndroidKey as string),
         appUserID: user.uid,
         observerMode: false,
         useAmazon: false,
@@ -59,9 +65,7 @@ export const initializeSession = createAsyncThunk(
         $firebaseAppInstanceId: appInstanceId,
       });
 
-      const customerUserDocRef = firestore()
-        .collection('customers')
-        .doc(user.uid);
+      const customerUserDocRef = firestore().collection('customers').doc(user.uid);
 
       if (!customerUserDocRef.empty) {
         trackEvent('customer_user_found');

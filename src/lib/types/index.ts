@@ -41,6 +41,12 @@ export enum HistoryScreens {
   PlayUserModal = 'PlayUserModal',
 }
 
+export enum AccountScreens {
+  SettingsScreen = 'SettingsScreen',
+  ColorScreen = 'ColorScreen',
+  NameScreen = 'NameScreen',
+}
+
 export type UserDataType = {
   birthDate?: Date;
   color?: string;

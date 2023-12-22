@@ -40,8 +40,7 @@ export const Content = styled.View`
 export const Title = styled.Text<{ isFaded: boolean }>`
   font-family: ${(p) => p.theme.fonts.bold};
   font-size: ${(p) => p.theme.fontSizes.regular};
-  color: ${(p) =>
-    p.isFaded ? p.theme.colors.lightGray : p.theme.colors.black};
+  color: ${(p) => (p.isFaded ? p.theme.colors.lightGray : p.theme.colors.black)};
   text-align: center;
 `;
 
@@ -54,10 +53,10 @@ export const Description = styled.Text`
 
 export const ReactionOrb = styled.View<{ color: string }>`
   position: absolute;
-  top: -12px;
-  right: -12px;
-  width: 30px;
-  height: 30px;
+  top: -14px;
+  right: -14px;
+  width: 32px;
+  height: 32px;
   background-color: ${(props) => props.color};
   border-radius: 50px;
   border: 2px solid ${(props) => props.theme.colors.white};
@@ -66,5 +65,5 @@ export const ReactionOrb = styled.View<{ color: string }>`
 `;
 
 export const ReactionIcon = styled.Text`
-  font-size: 11px;
+  font-size: 12px;
 `;

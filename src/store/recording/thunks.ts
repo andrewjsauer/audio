@@ -2,26 +2,24 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import storage from '@react-native-firebase/storage';
-import { v4 as uuidv4 } from 'uuid';
+import functions from '@react-native-firebase/functions';
 
-import { UserDataType, ListeningType } from '@lib/types';
+import { UserDataType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
 
 type saveUserRecordingArgs = {
   recordPath: string;
   questionId: string;
-  user: UserDataType;
+  userData: UserDataType;
+  partnerData: UserDataType;
   duration: string;
 };
 
 export const saveUserRecording = createAsyncThunk(
   'recording/saveUserRecording',
-  async (
-    { recordPath, questionId, user, duration }: saveUserRecordingArgs,
-    { rejectWithValue },
-  ) => {
+  async ({ recordPath, questionId, userData, duration, partnerData }: saveUserRecordingArgs, { rejectWithValue }) => {
     try {
-      const { id: userId, partnershipId } = user;
+      const { id: userId, partnershipId } = userData;
       const recordingId = `${userId}_${questionId}`;
 
       const storageRef = storage().ref(`/recordings/${recordingId}.mp4`);
@@ -33,8 +31,7 @@ export const saveUserRecording = createAsyncThunk(
         uploadTask.on(
           'state_changed',
           (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log(`Upload is ${progress}% done`);
           },
           (error) => {
@@ -58,10 +55,20 @@ export const saveUserRecording = createAsyncThunk(
                 reaction: [],
               };
 
-              await firestore()
-                .collection('recordings')
-                .doc(recordingId)
-                .set(recordingData, { merge: true });
+              await firestore().collection('recordings').doc(recordingId).set(recordingData, { merge: true });
+
+              if (partnerData.deviceIds?.length) {
+                await functions().httpsCallable('sendNotification')({
+                  tokens: partnerData.deviceIds,
+                  title: `${userData.name} recorded todays question!`,
+                  body: 'Tap to listen to their answer.',
+                });
+              } else {
+                await functions().httpsCallable('sendSMS')({
+                  phoneNumber: partnerData.phoneNumber,
+                  message: `${userData.name} recorded todays question!`,
+                });
+              }
 
               resolve(recordingData);
             } catch (error) {

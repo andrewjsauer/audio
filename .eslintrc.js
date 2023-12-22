@@ -8,14 +8,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
   ],
-  plugins: [
-    'react',
-    'react-hooks',
-    'jsx-a11y',
-    'prettier',
-    '@typescript-eslint',
-    'jest',
-  ],
+  plugins: ['react', 'react-hooks', 'jsx-a11y', 'prettier', '@typescript-eslint', 'jest'],
   env: {
     'jest/globals': true,
   },

@@ -1,5 +1,8 @@
 import React from 'react';
-import { Container, WebViewStyled } from './style';
+
+import Layout from '@components/shared/Layout';
+
+import { WebViewStyled } from './style';
 
 type Props = {
   route: {
@@ -11,13 +14,13 @@ type Props = {
 
 function BrowserScreen({ route }: Props) {
   return (
-    <Container>
+    <Layout titleKey="browserScreen.title" screen="browser_screen">
       <WebViewStyled
         source={{
           uri: route.params.url,
         }}
       />
-    </Container>
+    </Layout>
   );
 }
 

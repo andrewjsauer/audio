@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import firestore from '@react-native-firebase/firestore';
 
 import { trackScreen } from '@lib/analytics';
+import { UserActionStatusType } from '@lib/types';
 
 import { selectUserData } from '@store/auth/selectors';
 import { selectPartnerData } from '@store/partnership/selectors';
@@ -29,15 +31,31 @@ function NonSubscribedScreen() {
       <QuestionContainer>
         <Question
           partner={partnerData}
+          partnerReactionToUser={null}
+          partnerRecording={{
+            id: 'partnerRecordingId',
+            userId: 'partnerId',
+            createdAt: firestore.FieldValue.serverTimestamp(),
+            partnershipId: 'partnershipId',
+            audioUrl: '',
+            duration: '10',
+          }}
+          partnerStatus={UserActionStatusType.PendingRecord}
           text={t('questionScreen.nonSubscriberScreen.default.text')}
           timeRemaining="22h 6m 31s"
           user={userData}
+          userReactionToPartner={null}
+          userRecording={{
+            userId: 'userId',
+            createdAt: firestore.FieldValue.serverTimestamp(),
+            partnershipId: 'partnershipId',
+            audioUrl: '',
+            duration: '10',
+            id: 'userRecordingId',
+          }}
+          userStatus={UserActionStatusType.PendingRecord}
         />
-        <BlurredBackground
-          blurType="light"
-          blurAmount={8}
-          reducedTransparencyFallbackColor="white"
-        />
+        <BlurredBackground blurType="light" blurAmount={8} reducedTransparencyFallbackColor="white" />
       </QuestionContainer>
     </Layout>
   );

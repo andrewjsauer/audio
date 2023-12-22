@@ -42,11 +42,6 @@ const setupStore = (preloadedState?: Partial<RootReducerState>) => {
 
 export type AppDispatch = ReturnType<typeof setupStore>['store']['dispatch'];
 export type RootState = ReturnType<typeof rootReducer>;
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;
 
 export default setupStore;

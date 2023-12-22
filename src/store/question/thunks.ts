@@ -12,15 +12,9 @@ interface FetchLatestQuestionArgs {
   partnershipData: PartnershipDataType;
 }
 
-export const fetchLatestQuestion = createAsyncThunk<
-  QuestionType,
-  FetchLatestQuestionArgs
->(
+export const fetchLatestQuestion = createAsyncThunk<QuestionType, FetchLatestQuestionArgs>(
   'question/fetchLatestQuestion',
-  async (
-    { partnershipData, partnerData, userData }: FetchLatestQuestionArgs,
-    { rejectWithValue },
-  ) => {
+  async ({ partnershipData, partnerData, userData }: FetchLatestQuestionArgs, { rejectWithValue }) => {
     try {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -35,9 +29,11 @@ export const fetchLatestQuestion = createAsyncThunk<
       if (snapshot.empty) {
         trackEvent('question_not_found');
 
-        const generateQuestionResponse = await functions().httpsCallable(
-          'generateQuestion',
-        )({ partnershipData, partnerData, userData });
+        const generateQuestionResponse = await functions().httpsCallable('generateQuestion')({
+          partnershipData,
+          partnerData,
+          userData,
+        });
 
         return generateQuestionResponse.data;
       }
@@ -53,9 +49,11 @@ export const fetchLatestQuestion = createAsyncThunk<
       }
 
       trackEvent('question_out_of_date');
-      const generateQuestionResponse = await functions().httpsCallable(
-        'generateQuestion',
-      )({ partnershipData, partnerData, userData });
+      const generateQuestionResponse = await functions().httpsCallable('generateQuestion')({
+        partnershipData,
+        partnerData,
+        userData,
+      });
 
       return generateQuestionResponse.data;
     } catch (error) {

@@ -42,7 +42,11 @@
     "fetchPartnerDataAPIError": "Something went wrong when fetching your partner's data",
     "fetchPartnershipDataAPIError": "Something went wrong when fetching your partnership data",
     "fetchQuestionAPIError": "Something went wrong when fetching your question",
-    "audioPlayBackError": "Something went wrong when playing your audio. Please try again"
+    "audioPlayBackError": "Something went wrong when playing your audio. Please try again",
+    "deleteRelationshipFailed": "Something went wrong when deleting your relationship"
+  },
+  "browserScreen": {
+    "title": "Browser"
   },
   "accountScreen": {
     "title": "Account Settings",
@@ -55,7 +59,23 @@
     "and": " and ",
     "legal": "Daily Qs from SAUERAPPLE LLC",
     "terms": "Terms & Conditions",
-    "privacy": "Privacy Policy"
+    "privacy": "Privacy Policy",
+    "deleteAccountModal": {
+      "title": "Are you sure you want to end this relationship?",
+      "description": "This will delete your account and your partner's account. You will no longer be able to access your history or recordings.",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "colorScreen": {
+      "title": "Change your color",
+      "success": "Your color has been updated!"
+    },
+    "nameScreen": {
+      "title": "Change your name",
+      "submitButton": "Save",
+      "placeholder": "Type a new name",
+      "success": "Your name has been updated!"
+    }
   },
   "questionScreen": {
     "nonSubscriberScreen": {
@@ -95,10 +115,19 @@
     }
   },
   "trialScreen": {
-    "title": "Start your 30-Day Trial",
-    "description": "$17.99/month per couple",
-    "restoreButtonText": "Restore Purchases",
-    "startTrialButtonText": "Start Trial"
+    "title": "Okay, you're all set!",
+    "subTitle": "Start your 30-day trial",
+    "benefit1": "First 30 days",
+    "free": "free",
+    "benefit2": "Monthly per couple",
+    "benefit2Description": "Starting {{ date }}",
+    "price": "$17.99",
+    "footer": {
+      "title": "Cancel Anytime. Try it out!",
+      "description": "Your treat! You'll be paying $17.99 month for both you and your partner. Try it for free this month. Cancel anytime.",
+      "buttonText": "Start Free Trial",
+      "restoreButtonText": "Restore Purchases"
+    }
   },
   "historyScreen": {
     "title": "History",
@@ -112,10 +141,11 @@
   },
   "auth": {
     "signInScreen": {
-      "title": "You First",
+      "title": "Daily Qs",
       "subtitle": "Couples Edition",
       "description": "Reveal each others’ answers to\n daily personalized questions",
-      "buttonText": "Get Code"
+      "buttonText": "Get Code",
+      "terms": "By signing up, you agree to our"
     },
     "phoneNumberScreen": {
       "title": "Welcome! Sign In to get started",

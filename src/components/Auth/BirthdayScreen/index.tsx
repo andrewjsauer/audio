@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import DatePicker from 'react-native-date-picker';
 
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/Auth/AuthFlowContext';
@@ -11,15 +12,9 @@ import { selectIsLoading } from '@store/auth/selectors';
 import { trackScreen, trackEvent } from '@lib/analytics';
 
 import Layout from '../Layout';
-import {
-  Container,
-  ButtonWrapper,
-  InputTitle,
-  InputSubtitle,
-  InputWrapper,
-} from '../style';
+import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
 
-import { StyledDatePicker } from './style';
+import { StyledDatePickerContainer } from './style';
 
 function BirthdayScreen() {
   const { t } = useTranslation();
@@ -31,12 +26,9 @@ function BirthdayScreen() {
     trackScreen('BirthdayScreen');
   }, []);
 
-  const { goToPreviousStep, goToNextStep, userDetails, handleUserDetails } =
-    useAuthFlow();
+  const { goToPreviousStep, goToNextStep, userDetails, handleUserDetails } = useAuthFlow();
 
-  const birthday = userDetails.birthDate
-    ? new Date(userDetails.birthDate)
-    : new Date();
+  const birthday = userDetails.birthDate ? new Date(userDetails.birthDate) : new Date();
 
   const handleSubmit = async () => {
     if (!birthday) {
@@ -57,30 +49,17 @@ function BirthdayScreen() {
   };
 
   return (
-    <Layout
-      goBack={goToPreviousStep}
-      isBackButtonEnabled
-      title={t('auth.userDetails.birthdayScreen.title')}>
+    <Layout goBack={goToPreviousStep} isBackButtonEnabled title={t('auth.userDetails.birthdayScreen.title')}>
       <Container>
         <InputWrapper>
-          <InputTitle>
-            {t('auth.userDetails.birthdayScreen.inputTitle')}
-          </InputTitle>
-          <StyledDatePicker
-            date={birthday}
-            onDateChange={(date) => handleUserDetails({ birthDate: date })}
-            mode="date"
-          />
-          <InputSubtitle>
-            {t('auth.userDetails.birthdayScreen.inputDescription')}
-          </InputSubtitle>
+          <InputTitle>{t('auth.userDetails.birthdayScreen.inputTitle')}</InputTitle>
+          <StyledDatePickerContainer>
+            <DatePicker date={birthday} onDateChange={(date) => handleUserDetails({ birthDate: date })} mode="date" />
+          </StyledDatePickerContainer>
+          <InputSubtitle>{t('auth.userDetails.birthdayScreen.inputDescription')}</InputSubtitle>
         </InputWrapper>
         <ButtonWrapper>
-          <Button
-            isLoading={isLoading}
-            onPress={handleSubmit}
-            text={t('next')}
-          />
+          <Button isLoading={isLoading} onPress={handleSubmit} text={t('next')} />
         </ButtonWrapper>
       </Container>
     </Layout>

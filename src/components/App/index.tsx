@@ -24,7 +24,6 @@ import LoadingView from '@components/shared/LoadingView';
 import ErrorView from '@components/shared/ErrorView';
 
 import AccountScreen from '@components/shared/AccountScreen';
-import BrowserScreen from '@components/shared/BrowserScreen';
 import HistoryScreen from '@components/shared/HistoryScreen';
 import QuestionScreen from '@components/shared/QuestionScreen';
 import TrialScreen from '@components/shared/TrialScreen';
@@ -58,10 +57,7 @@ function App(): JSX.Element {
   }, [transactionError]);
 
   const handleRetry = () => {
-    if (
-      lastFailedAction &&
-      lastFailedAction.type === initializeSession.typePrefix
-    ) {
+    if (lastFailedAction && lastFailedAction.type === initializeSession.typePrefix) {
       trackEvent('retry_button_clicked', {
         action: lastFailedAction.type,
       });
@@ -82,33 +78,12 @@ function App(): JSX.Element {
     <Stack.Navigator>
       {isPreviouslySubscribed ? (
         <>
-          <Stack.Screen
-            component={QuestionScreen}
-            name={AppScreens.QuestionScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            component={HistoryScreen}
-            name={AppScreens.HistoryScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            component={AccountScreen}
-            name={AppScreens.AccountScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            component={BrowserScreen}
-            name={AppScreens.BrowserScreen}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen component={QuestionScreen} name={AppScreens.QuestionScreen} options={{ headerShown: false }} />
+          <Stack.Screen component={HistoryScreen} name={AppScreens.HistoryScreen} options={{ headerShown: false }} />
+          <Stack.Screen component={AccountScreen} name={AppScreens.AccountScreen} options={{ headerShown: false }} />
         </>
       ) : (
-        <Stack.Screen
-          component={TrialScreen}
-          name={AppScreens.TrialScreen}
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen component={TrialScreen} name={AppScreens.TrialScreen} options={{ headerShown: false }} />
       )}
     </Stack.Navigator>
   );

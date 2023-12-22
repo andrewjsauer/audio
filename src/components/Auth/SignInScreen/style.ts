@@ -31,5 +31,27 @@ export const SubtitleDescription = styled.Text`
 `;
 
 export const ButtonWrapper = styled.View`
-  margin-bottom: -40px;
+  margin-bottom: -60px;
+`;
+
+export const LegalContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px 0;
+  width: 100%;
+  margin-bottom: 20px;
+`;
+
+export const LegalText = styled.Text`
+  font-family: ${(p) => p.theme.fonts.regular};
+  font-size: ${(p) => p.theme.fontSizes.small};
+  color: ${(p) => p.theme.colors.lightGray};
+`;
+
+export const LegalButtonContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;

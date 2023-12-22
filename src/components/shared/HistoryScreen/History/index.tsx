@@ -3,12 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { selectIsSubscriber, selectUserData } from '@store/auth/selectors';
 import { selectPartnerData } from '@store/partnership/selectors';
-import {
-  selectError,
-  selectIsLoading,
-  selectLastFailedAction,
-  selectQuestions,
-} from '@store/history/selectors';
+import { selectError, selectIsLoading, selectLastFailedAction, selectQuestions } from '@store/history/selectors';
 
 import { fetchHistoryData } from '@store/history/thunks';
 import { AppDispatch } from '@store/index';
@@ -41,10 +36,7 @@ function HistoryScreenContainer() {
   }, []);
 
   const handleRetry = () => {
-    if (
-      lastFailedAction &&
-      lastFailedAction.type === fetchHistoryData.typePrefix
-    ) {
+    if (lastFailedAction && lastFailedAction.type === fetchHistoryData.typePrefix) {
       trackEvent('retry_button_clicked', {
         action: lastFailedAction.type,
       });
@@ -59,7 +51,7 @@ function HistoryScreenContainer() {
       <HistoryScreen
         error={error}
         handleRetry={handleRetry}
-        isBlurred={false}
+        isBlurred={!isSubscribed}
         isLoading={isLoading}
         partnerId={partnerData?.id}
         partnerName={partnerData?.name}

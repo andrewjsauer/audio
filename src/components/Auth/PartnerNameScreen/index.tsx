@@ -11,13 +11,7 @@ import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 import ColorPicker from '@components/shared/ColorPicker';
 import Layout from '../Layout';
 
-import {
-  Container,
-  ButtonWrapper,
-  InputTitle,
-  InputSubtitle,
-  InputWrapper,
-} from '../style';
+import { Container, ButtonWrapper, InputSubtitle, InputWrapper } from '../style';
 import { TextInput } from './style';
 
 function PartnerNameScreen() {
@@ -49,30 +43,20 @@ function PartnerNameScreen() {
   };
 
   return (
-    <Layout
-      isBackButtonEnabled={false}
-      title={t('auth.partnerDetails.nameScreen.title')}>
+    <Layout isBackButtonEnabled={false} title={t('auth.partnerDetails.nameScreen.title')}>
       <Container>
-        <ColorPicker
-          color={color}
-          onChange={(colorOption) =>
-            handlePartnerDetails({ color: colorOption })
-          }
-        />
+        <ColorPicker color={color} onChange={(colorOption) => handlePartnerDetails({ color: colorOption })} />
         <InputWrapper>
           <TextInput
             placeholder={t('auth.partnerDetails.nameScreen.inputPlaceholder')}
             keyboardType="default"
-            onChangeText={(typedName) =>
-              handlePartnerDetails({ name: typedName })
-            }
+            onChangeText={(typedName) => handlePartnerDetails({ name: typedName })}
             autoCapitalize="words"
             returnKeyType="next"
             value={name}
+            autoFocus
           />
-          <InputSubtitle>
-            {t('auth.partnerDetails.nameScreen.inputDescription')}
-          </InputSubtitle>
+          <InputSubtitle>{t('auth.partnerDetails.nameScreen.inputDescription')}</InputSubtitle>
         </InputWrapper>
         <ButtonWrapper>
           <Button onPress={handleSubmit} text={t('next')} />

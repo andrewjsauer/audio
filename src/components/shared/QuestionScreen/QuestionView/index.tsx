@@ -3,22 +3,11 @@ import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
-import {
-  UserDataType,
-  UserActionStatusType,
-  RecordingType,
-  ModalScreens,
-  ReactionType,
-} from '@lib/types';
+import { UserDataType, UserActionStatusType, RecordingType, ModalScreens, ReactionType } from '@lib/types';
 
 import UserActionView from './UserActionView';
 
-import {
-  ActionViewContainer,
-  Container,
-  QuestionText,
-  TimerText,
-} from './style';
+import { ActionViewContainer, Container, QuestionText, TimerText } from './style';
 
 type QuestionViewProps = {
   partner: UserDataType;
@@ -87,9 +76,7 @@ function QuestionView({
       <ActionViewContainer>
         <UserActionView
           color={user?.color as string}
-          createdAt={
-            userRecording?.createdAt as FirebaseFirestoreTypes.Timestamp
-          }
+          createdAt={userRecording?.createdAt as FirebaseFirestoreTypes.Timestamp}
           key={`user_${user?.id}`}
           name={user?.name as string}
           onPress={() => handleNavigation(false)}
@@ -99,9 +86,7 @@ function QuestionView({
         />
         <UserActionView
           color={partner?.color as string}
-          createdAt={
-            partnerRecording?.createdAt as FirebaseFirestoreTypes.Timestamp
-          }
+          createdAt={partnerRecording?.createdAt as FirebaseFirestoreTypes.Timestamp}
           isPartner
           key={`partner_${partner?.id}`}
           name={partner?.name as string}

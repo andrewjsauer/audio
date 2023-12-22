@@ -6,12 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import LoadingView from '@components/shared/LoadingView';
 import ErrorView from '@components/shared/ErrorView';
 
-import {
-  HistoryScreens,
-  HistoryType,
-  UserActionStatusType as StatusTypes,
-  ReactionTypeIcons,
-} from '@lib/types';
+import { HistoryScreens, HistoryType, UserActionStatusType as StatusTypes, ReactionTypeIcons } from '@lib/types';
 import { formatDate } from '@lib/dateUtils';
 
 import PlayIcon from '@assets/icons/play.svg';
@@ -138,10 +133,7 @@ function HistoryScreen({
         <ItemIconContainer>
           <IconButton
             color={partnerColor}
-            disabled={
-              partnerStatus === StatusTypes.PendingRecord ||
-              partnerStatus === StatusTypes.Lock
-            }
+            disabled={partnerStatus === StatusTypes.PendingRecord || partnerStatus === StatusTypes.Lock}
             onPress={() =>
               navigation.navigate(HistoryScreens.PlayUserModal, {
                 audioUrl: partnerAudioUrl,
@@ -153,22 +145,18 @@ function HistoryScreen({
                 userId,
                 questionId: id,
               })
-            }>
+            }
+          >
             <PartnerIcon width={18} height={18} />
             {userReactionToPartner && (
               <ReactionOrb color={userColor}>
-                <ReactionIcon>
-                  {ReactionTypeIcons[userReactionToPartner]}
-                </ReactionIcon>
+                <ReactionIcon>{ReactionTypeIcons[userReactionToPartner]}</ReactionIcon>
               </ReactionOrb>
             )}
           </IconButton>
           <IconButton
             color={userColor}
-            disabled={
-              userStatus === StatusTypes.PendingRecord ||
-              userStatus === StatusTypes.Lock
-            }
+            disabled={userStatus === StatusTypes.PendingRecord || userStatus === StatusTypes.Lock}
             onPress={() =>
               navigation.navigate(HistoryScreens.PlayUserModal, {
                 audioUrl: userAudioUrl,
@@ -180,13 +168,12 @@ function HistoryScreen({
                 userId: partnerId,
                 questionId: id,
               })
-            }>
+            }
+          >
             <UserIcon width={18} height={18} />
             {partnerReactionToUser && (
               <ReactionOrb color={partnerColor}>
-                <ReactionIcon>
-                  {ReactionTypeIcons[partnerReactionToUser]}
-                </ReactionIcon>
+                <ReactionIcon>{ReactionTypeIcons[partnerReactionToUser]}</ReactionIcon>
               </ReactionOrb>
             )}
           </IconButton>
@@ -197,18 +184,8 @@ function HistoryScreen({
 
   return (
     <Container>
-      <FlatList
-        data={questions}
-        renderItem={renderHistoryItem}
-        keyExtractor={(item) => item.id}
-      />
-      {isBlurred && (
-        <BlurredBackground
-          blurType="light"
-          blurAmount={8}
-          reducedTransparencyFallbackColor="white"
-        />
-      )}
+      <FlatList data={questions} renderItem={renderHistoryItem} keyExtractor={(item) => item.id} />
+      {isBlurred && <BlurredBackground blurType="light" blurAmount={8} reducedTransparencyFallbackColor="white" />}
     </Container>
   );
 }

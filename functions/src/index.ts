@@ -37,31 +37,71 @@ const relationshipTypeMap: { [key in RelationshipType]: string } = {
   married: 'Married',
 };
 
+function calculateDuration(startDate: Date | string | typeof admin.firestore.Timestamp) {
+  const now = new Date();
+  let start;
+
+  if (startDate instanceof Date) {
+    start = startDate;
+  } else if (startDate instanceof admin.firestore.Timestamp) {
+    start = startDate.toDate();
+  } else {
+    start = new Date(startDate as string);
+  }
+
+  if (Number.isNaN(start.getTime())) {
+    functions.logger.error(`Invalid date: ${startDate}`);
+    return 'some amount of time';
+  }
+
+  let years = now.getFullYear() - start.getFullYear();
+  let months = now.getMonth() - start.getMonth();
+  let days = now.getDate() - start.getDate();
+
+  if (days < 0) {
+    months -= 1;
+    days += new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate();
+  }
+
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  if (years > 0) {
+    return `${years} year${years > 1 ? 's' : ''}`;
+  }
+  if (months > 0) {
+    return `${months} month${months !== 1 ? 's' : ''}`;
+  }
+  if (days > 0) {
+    return `${days} day${days !== 1 ? 's' : ''}`;
+  }
+
+  return 'Same day';
+}
+
 exports.generateQuestion = functions
   .runWith({ secrets: [openApiKey] })
   .https.onCall(async (data, context) => {
     if (!context.auth) {
-      throw new functions.https.HttpsError(
-        'unauthenticated',
-        'Endpoint requires authentication!',
-      );
+      throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
     }
 
     const { partnershipData, partnerData, userData } = data;
-    functions.logger.info(
-      `Partnership Data: ${JSON.stringify(partnershipData)}`,
-    );
+    functions.logger.info(`Partnership Data: ${JSON.stringify(partnershipData)}`);
 
     const db = admin.firestore();
     const apiKey = openApiKey.value();
     const openai = new OpenAI({ apiKey });
 
+    let questionText;
+
     try {
       const relationshipDuration = calculateDuration(partnershipData.startDate);
       const userName = userData.name;
       const partnerName = partnerData.name;
-      const relationshipType =
-        relationshipTypeMap[partnershipData.type as RelationshipType];
+      const relationshipType = relationshipTypeMap[partnershipData.type as RelationshipType];
 
       const adjectives = [
         'insightful',
@@ -70,37 +110,80 @@ exports.generateQuestion = functions
         'creative',
         'unique',
         'engaging',
+        'reflective',
+        'heartwarming',
+        'challenging',
+        'humorous',
+        'intimate',
+        'empathetic',
+        'curious',
+        'romantic',
+        'practical',
+        'inspirational',
       ];
+      const timeFrames = ['past', 'present', 'future'];
 
-      const randomAdjective =
-        adjectives[Math.floor(Math.random() * adjectives.length)];
+      const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+      const randomTimeFrame = timeFrames[Math.floor(Math.random() * timeFrames.length)];
 
-      const prompt = `Craft a ${randomAdjective} question (85 characters max) for ${userName} and ${partnerName}, who are ${relationshipType} for ${relationshipDuration}.`;
+      const prompt = `Craft a ${randomAdjective} question (90 characters max) about their ${randomTimeFrame} for ${userName} and ${partnerName} who are ${relationshipType} and have been together for ${relationshipDuration}.`;
       const systemPrompt = `As a couples expert, suggest a question that encourages ${userName} and ${partnerName} to explore new dimensions of their relationship, foster understanding, or share a meaningful moment.`;
 
       functions.logger.info(`Prompt: ${prompt}`);
 
-      const chatCompletion: OpenAI.Chat.ChatCompletion =
-        await openai.chat.completions.create({
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: prompt },
-          ],
-          model: 'gpt-4',
-        });
+      const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: prompt },
+        ],
+        model: 'gpt-4',
+      });
 
-      const questionText: string | null =
-        chatCompletion.choices[0].message.content;
-      const cleanedQuestionText = questionText?.replace(/^["']|["']$/g, '');
+      const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
+      questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
+    } catch (error: unknown) {
+      functions.logger.error(`Error with OpenAI request: ${JSON.stringify(error)}`);
 
-      const questionId = uuidv4();
-      const question = {
-        id: questionId,
-        partnershipId: partnershipData.id,
-        text: cleanedQuestionText,
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      };
+      const defaultQuestions = [
+        'What is your favorite memory of your partner?',
+        'What is your favorite thing about your partner?',
+        'What is something you admire about your partner?',
+        'What is something you want to learn about your partner?',
+        'What is something you want to do with your partner?',
+        'How has your partner positively influenced your life?',
+        'What shared goal would you like to achieve with your partner?',
+        'What is a fun tradition you would like to start with your partner?',
+        'What was your first impression of your partner, and how has it changed?',
+        'What is a challenge you’ve overcome together with your partner?',
+        'What do you appreciate most about your relationship?',
+        'What is a dream vacation you want to take with your partner?',
+        'How do you both handle disagreements or conflicts?',
+        'What is a small thing your partner does that makes you happy?',
+        'What have you learned about love and relationships from being with your partner?',
+        'What is a funny or quirky habit of your partner?',
+        'How do you show love and affection to each other?',
+        'What is the best piece of advice you’ve received as a couple?',
+        'What is something new you want to try together?',
+        'How do you both support each other’s individual goals?',
+        'What is a significant lesson your relationship has taught you?',
+        'What are some ways you keep the romance alive?',
+        'How do you both manage stress and maintain balance in your relationship?',
+        'What is your most cherished tradition or celebration as a couple?',
+        'How has your relationship grown or evolved over time?',
+      ];
 
+      questionText = defaultQuestions[Math.floor(Math.random() * defaultQuestions.length)];
+    }
+
+    const questionId = uuidv4();
+    const question = {
+      id: questionId,
+      partnershipId: partnershipData.id,
+      text: questionText,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    };
+
+    try {
       const batch = db.batch();
       batch.set(
         db.collection('partnership').doc(partnershipData.id),
@@ -115,9 +198,7 @@ exports.generateQuestion = functions
       });
 
       await batch.commit();
-
-      return question;
-    } catch (error: unknown) {
+    } catch (error) {
       const e = error as {
         response?: { status?: string; data?: object };
         message?: string;
@@ -129,115 +210,36 @@ exports.generateQuestion = functions
 
         throw new functions.https.HttpsError(
           'unknown',
-          `Error sending SMS: ${e.response.data}`,
+          `Error saving generated question: ${e.response.data}`,
           e.response.data,
         );
       } else {
         functions.logger.error(`Error message ${error}`);
-
         throw new functions.https.HttpsError(
           'unknown',
-          `Error sending SMS: ${error}`,
+          `Error saving generated question: ${error}`,
           error,
         );
       }
     }
+
+    return question;
   });
 
-function calculateDuration(startDate: string) {
-  const now = new Date();
-  const start = new Date(startDate);
-
-  if (isNaN(start.getTime())) {
-    return 'some amount of time';
-  }
-
-  let years = now.getFullYear() - start.getFullYear();
-  let months = now.getMonth() - start.getMonth();
-
-  if (months < 0 || (months === 0 && now.getDate() < start.getDate())) {
-    years--;
-    months = 12 + months;
-  }
-
-  if (now.getDate() < start.getDate()) {
-    months--;
-  }
-
-  if (years > 0) {
-    return `${years} year${years > 1 ? 's' : ''}`;
-  } else if (months >= 0) {
-    return `${months} month${months !== 1 ? 's' : ''}`;
-  } else {
-    return 'Less than a month';
-  }
-}
-
-exports.sendPartnerInvite = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      'unauthenticated',
-      'Endpoint requires authentication!',
-    );
-  }
-
-  const { inviteName, invitePhoneNumber, senderName } = data;
+async function fetchPartnerId(userId: string) {
   try {
-    await admin
+    const partnerRef = admin
       .firestore()
-      .collection('sms')
-      .add({
-        to: invitePhoneNumber,
-        body: `Hey, ${inviteName}! ${senderName} has invited you to join 'You First.' Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: [link] 😊`,
-      });
+      .collection('partnershipUser')
+      .where('userId', '==', userId);
 
-    functions.logger.info('SMS sent successfully!');
-  } catch (error: unknown) {
-    const e = error as {
-      response?: { status?: string; data?: object };
-      message?: string;
-    };
-
-    if (e.response) {
-      functions.logger.error(`Error status ${e.response.status}`);
-      functions.logger.error(`Error data ${JSON.stringify(e.response.data)}`);
-
-      throw new functions.https.HttpsError(
-        'unknown',
-        `Error sending SMS: ${e.response.data}`,
-        e.response.data,
-      );
-    } else {
-      functions.logger.error(`Error message ${error}`);
-
-      throw new functions.https.HttpsError(
-        'unknown',
-        `Error sending SMS: ${error}`,
-        error,
-      );
+    const snapshot = await partnerRef.get();
+    if (!snapshot.empty) {
+      const partnerData = snapshot.docs[0].data();
+      return partnerData.otherUserId;
     }
-  }
-});
-
-async function updatePartnerEntitlement(userId: string, hasAccess: boolean) {
-  try {
-    const partnerId = await fetchPartnerId(userId);
-    if (!partnerId) {
-      functions.logger.error('No partner ID found');
-      return;
-    }
-
-    const partner = await admin.auth().getUser(partnerId);
-    const currentClaims = partner.customClaims || {};
-
-    await admin.auth().setCustomUserClaims(partnerId, {
-      ...currentClaims,
-      revenueCatEntitlements: hasAccess ? ['premium'] : [],
-    });
-
-    functions.logger.info(
-      `Updated partner to subscription access: ${hasAccess}`,
-    );
+    functions.logger.error(`No partner found for user ID: ${userId}`);
+    return null;
   } catch (error: unknown) {
     const e = error as {
       response?: { status?: string; data?: object };
@@ -265,21 +267,23 @@ async function updatePartnerEntitlement(userId: string, hasAccess: boolean) {
   }
 }
 
-async function fetchPartnerId(userId: string) {
+async function updatePartnerEntitlement(userId: string, hasAccess: boolean) {
   try {
-    const partnerRef = admin
-      .firestore()
-      .collection('partnershipUser')
-      .where('userId', '==', userId);
-
-    const snapshot = await partnerRef.get();
-    if (!snapshot.empty) {
-      const partnerData = snapshot.docs[0].data();
-      return partnerData.otherUserId;
-    } else {
-      functions.logger.error(`No partner found for user ID: ${userId}`);
-      return null;
+    const partnerId = await fetchPartnerId(userId);
+    if (!partnerId) {
+      functions.logger.error('No partner ID found');
+      return;
     }
+
+    const partner = await admin.auth().getUser(partnerId);
+    const currentClaims = partner.customClaims || {};
+
+    await admin.auth().setCustomUserClaims(partnerId, {
+      ...currentClaims,
+      revenueCatEntitlements: hasAccess ? ['premium'] : [],
+    });
+
+    functions.logger.info(`Updated partner to subscription access: ${hasAccess}`);
   } catch (error: unknown) {
     const e = error as {
       response?: { status?: string; data?: object };
@@ -352,6 +356,8 @@ exports.handleSubscriptionEvents = functions.firestore
         case 'BILLING_ISSUE':
           // Handle billing issue, but do not revoke access
           break;
+        default:
+          break;
       }
     } catch (error: unknown) {
       const e = error as {
@@ -380,16 +386,164 @@ exports.handleSubscriptionEvents = functions.firestore
     }
   });
 
-// Notifications function
-// https://rnfirebase.io/messaging/notifications
+exports.deletePartnership = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+  }
 
-// await admin.messaging().sendMulticast({
-//   tokens: [
-//     /* ... */
-//   ], // ['token_1', 'token_2', ...]
-//   notification: {
-//     title: 'Basic Notification',
-//     body: 'This is a basic notification sent from the server!',
-//     imageUrl: 'https://my-cdn.com/app-logo.png',
-//   },
-// });
+  const { userId, partnershipId, partnerId } = data;
+  try {
+    const db = admin.firestore();
+    const batch = db.batch();
+
+    const userRef = db.collection('users').doc(userId);
+    batch.delete(userRef);
+
+    const partnerRef = db.collection('users').doc(partnerId);
+    batch.delete(partnerRef);
+
+    const partnershipUserRefs = db
+      .collection('partnershipUser')
+      .where('partnershipId', '==', partnershipId);
+    const partnershipUserSnapshot = await partnershipUserRefs.get();
+    partnershipUserSnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    const recordingsRefs = db
+      .collection('recordings')
+      .where('userId', 'in', [userId, partnerId].filter(Boolean));
+    const recordingsSnapshot = await recordingsRefs.get();
+    recordingsSnapshot.forEach((doc) => {
+      const recordingData = doc.data();
+      batch.delete(doc.ref);
+
+      admin.storage().bucket().file(`recordings/${recordingData.audioUrl}`).delete();
+    });
+
+    const questionsRef = db.collection('questions').where('partnershipId', '==', partnershipId);
+    const questionsSnapshot = await questionsRef.get();
+    questionsSnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    const listeningsRef = db
+      .collection('listenings')
+      .where('userId', 'in', [userId, partnerId].filter(Boolean));
+    const listeningsSnapshot = await listeningsRef.get();
+    listeningsSnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    functions.logger.info(`Deleting partnership ${partnershipId}`);
+
+    await batch.commit();
+
+    return null;
+  } catch (error: unknown) {
+    const e = error as {
+      response?: { status?: string; data?: object };
+      message?: string;
+    };
+
+    if (e.response) {
+      functions.logger.error(`Error status ${e.response.status}`);
+      functions.logger.error(`Error data ${JSON.stringify(e.response.data)}`);
+
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error deleting relationship: ${e.response.data}`,
+        e.response.data,
+      );
+    } else {
+      functions.logger.error(`Error message ${error}`);
+
+      throw new functions.https.HttpsError(
+        'unknown',
+        `
+        Error deleting relationship: ${error}`,
+        error,
+      );
+    }
+  }
+});
+
+exports.sendNotification = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+  }
+
+  const { title, body, tokens } = data;
+  try {
+    await admin.messaging().sendMulticast({
+      tokens,
+      notification: {
+        title,
+        body,
+      },
+    });
+
+    functions.logger.info('Notification sent successfully!');
+  } catch (error: unknown) {
+    const e = error as {
+      response?: { status?: string; data?: object };
+      message?: string;
+    };
+
+    if (e.response) {
+      functions.logger.error(`Error status ${e.response.status}`);
+      functions.logger.error(`Error data ${JSON.stringify(e.response.data)}`);
+
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error sending notification: ${e.response.data}`,
+        e.response.data,
+      );
+    } else {
+      functions.logger.error(`Error message ${error}`);
+
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error sending notification: ${error}`,
+        error,
+      );
+    }
+  }
+});
+
+exports.sendSMS = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+  }
+
+  const { phoneNumber, body } = data;
+
+  try {
+    await admin.firestore().collection('sms').add({
+      to: phoneNumber,
+      body,
+    });
+
+    functions.logger.info('SMS sent successfully!');
+  } catch (error: unknown) {
+    const e = error as {
+      response?: { status?: string; data?: object };
+      message?: string;
+    };
+
+    if (e.response) {
+      functions.logger.error(`Error status ${e.response.status}`);
+      functions.logger.error(`Error data ${JSON.stringify(e.response.data)}`);
+
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error sending SMS: ${e.response.data}`,
+        e.response.data,
+      );
+    } else {
+      functions.logger.error(`Error message ${error}`);
+
+      throw new functions.https.HttpsError('unknown', `Error sending SMS: ${error}`, error);
+    }
+  }
+});

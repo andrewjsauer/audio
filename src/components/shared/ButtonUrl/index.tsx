@@ -14,8 +14,7 @@ type ButtonURLProps = {
 function ButtonURL({ url, children }: ButtonURLProps) {
   const navigation = useNavigation();
 
-  const handlePress = () =>
-    navigation.navigate(AppScreens.BrowserScreen, { url });
+  const handlePress = () => navigation.navigate(AppScreens.BrowserScreen, { url });
 
   return (
     <TouchableOpacity onPress={handlePress}>

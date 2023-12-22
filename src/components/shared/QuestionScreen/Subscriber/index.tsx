@@ -9,10 +9,7 @@ import {
   selectPartnerData,
   selectPartnershipData,
 } from '@store/partnership/selectors';
-import {
-  selectCurrentQuestion,
-  selectIsLoadingQuestion,
-} from '@store/question/selectors';
+import { selectCurrentQuestion, selectIsLoadingQuestion } from '@store/question/selectors';
 import {
   selectPartnerRecording,
   selectPartnerRecordingStatus,
@@ -83,11 +80,7 @@ function SubscriberScreen() {
       return questionCreatedAt < today;
     };
 
-    if (
-      (!currentQuestion || isQuestionExpired(currentQuestion)) &&
-      partnershipData &&
-      partnerData
-    ) {
+    if ((!currentQuestion || isQuestionExpired(currentQuestion)) && partnershipData && partnerData) {
       dispatch(fetchLatestQuestion({ partnershipData, partnerData, userData }));
     }
   }, [partnershipData?.id, currentQuestion, partnerData]);
@@ -114,15 +107,9 @@ function SubscriberScreen() {
       action: lastFailedAction.type,
     });
 
-    if (
-      lastFailedAction &&
-      lastFailedAction.type === fetchPartnership.typePrefix
-    ) {
+    if (lastFailedAction && lastFailedAction.type === fetchPartnership.typePrefix) {
       dispatch(fetchPartnership(lastFailedAction.payload));
-    } else if (
-      lastFailedAction &&
-      lastFailedAction.type === fetchPartnerData.typePrefix
-    ) {
+    } else if (lastFailedAction && lastFailedAction.type === fetchPartnerData.typePrefix) {
       dispatch(fetchPartnerData(lastFailedAction.payload));
     }
   };

@@ -13,11 +13,9 @@ import AudioRecorderPlayer, {
 } from 'react-native-audio-recorder-player';
 
 import { selectUserData } from '@store/auth/selectors';
+import { selectPartnerData } from '@store/partnership/selectors';
 import { selectCurrentQuestion } from '@store/question/selectors';
-import {
-  selectUserRecording,
-  selectIsLoading,
-} from '@store/recording/selectors';
+import { selectUserRecording, selectIsLoading } from '@store/recording/selectors';
 import { AppDispatch } from '@store/index';
 
 import { saveUserRecording } from '@store/recording/thunks';
@@ -50,6 +48,7 @@ function RecordUserModal() {
   const navigation = useNavigation();
 
   const userData = useSelector(selectUserData);
+  const partnerData = useSelector(selectPartnerData);
   const currentQuestion = useSelector(selectCurrentQuestion);
   const isLoading = useSelector(selectIsLoading);
   const userRecording = useSelector(selectUserRecording);
@@ -61,8 +60,7 @@ function RecordUserModal() {
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const { isPermissionGranted, handlePermissionPress } =
-    useAudioRecordingPermission();
+  const { isPermissionGranted, handlePermissionPress } = useAudioRecordingPermission();
 
   useEffect(() => {
     if (userRecording) {
@@ -167,7 +165,8 @@ function RecordUserModal() {
           duration: maxRecordTime,
           questionId: currentQuestion.id,
           recordPath,
-          user: userData,
+          userData,
+          partnerData,
         }),
       );
     }
@@ -202,46 +201,24 @@ function RecordUserModal() {
   if (!recordPath) {
     buttonContent = (
       <RecordContainer>
-        <RecordButton
-          onPress={handleRecordPress}
-          disabled={!isPermissionGranted}
-          type="record">
-          {isRecording ? (
-            <StopIcon width={30} height={30} />
-          ) : (
-            <MicIcon width={30} height={30} />
-          )}
+        <RecordButton onPress={handleRecordPress} disabled={!isPermissionGranted} type="record">
+          {isRecording ? <StopIcon width={30} height={30} /> : <MicIcon width={30} height={30} />}
         </RecordButton>
       </RecordContainer>
     );
   } else {
-    const buttonIcon = isPlaying ? (
-      <StopIcon width={30} height={30} />
-    ) : (
-      <PlayIcon width={30} height={30} />
-    );
+    const buttonIcon = isPlaying ? <StopIcon width={30} height={30} /> : <PlayIcon width={30} height={30} />;
 
     buttonContent = (
       <PostRecordContainer>
         <SecondaryButton type="redo" onPress={onRedo} disabled={isLoading}>
-          <SecondaryButtonText type="redo">
-            {t('questionScreen.subscriberScreen.redo')}
-          </SecondaryButtonText>
+          <SecondaryButtonText type="redo">{t('questionScreen.subscriberScreen.redo')}</SecondaryButtonText>
         </SecondaryButton>
-        <RecordButton
-          onPress={handlePlayPress}
-          type="play"
-          disabled={isLoading}>
-          {isLoading ? (
-            <ActivityIndicator size="small" color="#FFFFFF" />
-          ) : (
-            buttonIcon
-          )}
+        <RecordButton onPress={handlePlayPress} type="play" disabled={isLoading}>
+          {isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : buttonIcon}
         </RecordButton>
         <SecondaryButton type="submit" onPress={onSubmit} disabled={isLoading}>
-          <SecondaryButtonText type="submit">
-            {t('questionScreen.subscriberScreen.submit')}
-          </SecondaryButtonText>
+          <SecondaryButtonText type="submit">{t('questionScreen.subscriberScreen.submit')}</SecondaryButtonText>
         </SecondaryButton>
       </PostRecordContainer>
     );

@@ -17,22 +17,16 @@ function HistoryScreenContainer() {
   return (
     <Stack.Navigator initialRouteName={HistoryScreens.HistoryScreen}>
       <Stack.Group>
-        <Stack.Screen
-          component={HistoryScreen}
-          name={HistoryScreens.HistoryScreen}
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen component={HistoryScreen} name={HistoryScreens.HistoryScreen} options={{ headerShown: false }} />
       </Stack.Group>
       <Stack.Group
         screenOptions={{
           presentation: 'transparentModal',
           headerShown: false,
           animationEnabled: true,
-        }}>
-        <Stack.Screen
-          name={HistoryScreens.PlayUserModal}
-          component={PlayUserModal}
-        />
+        }}
+      >
+        <Stack.Screen name={HistoryScreens.PlayUserModal} component={PlayUserModal} />
       </Stack.Group>
     </Stack.Navigator>
   );

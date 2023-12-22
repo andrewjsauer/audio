@@ -6,6 +6,19 @@ export const Container = styled.View`
   padding: 16px;
 `;
 
+export const ScreenContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const NameScreenContainer = styled.View`
+  flex: 1;
+  padding-bottom: 18px;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const OptionContainer = styled.View`
   flex-direction: row;
   align-items: center;
@@ -25,7 +38,7 @@ export const OptionTitle = styled.Text`
 `;
 
 export const OptionName = styled.Text`
-  font-family: ${(p) => p.theme.fonts.black};
+  font-family: ${(p) => p.theme.fonts.bold};
   font-size: ${(p) => p.theme.fontSizes.regular};
   color: ${(p) => p.theme.colors.black};
   margin-right: 8px;
@@ -86,7 +99,7 @@ export const LegalContainer = styled.View`
 
 export const LegalText = styled.Text`
   font-family: ${(p) => p.theme.fonts.regular};
-  font-size: ${(p) => p.theme.fontSizes.medium};
+  font-size: ${(p) => p.theme.fontSizes.small};
   color: ${(p) => p.theme.colors.lightGray};
 `;
 
@@ -95,5 +108,20 @@ export const LegalButtonContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 12px;
+`;
+
+export const TextInput = styled.TextInput`
+  font-size: ${(p) => p.theme.fontSizes.regular};
+  font-family: ${(p) => p.theme.fonts.regular};
+  border: 1px solid ${(p) => p.theme.colors.lightGray};
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 4px;
+  background-color: ${(p) => p.theme.colors.white};
+`;
+
+export const InputWrapper = styled.View`
+  padding: 0 20px;
+  width: 100%;
+  margin-bottom: 30px;
 `;

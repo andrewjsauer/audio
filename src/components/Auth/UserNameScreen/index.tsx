@@ -12,12 +12,7 @@ import { showNotification } from '@store/ui/slice';
 import ColorPicker from '@components/shared/ColorPicker';
 import Layout from '../Layout';
 
-import {
-  Container,
-  ButtonWrapper,
-  InputSubtitle,
-  InputWrapper,
-} from '../style';
+import { Container, ButtonWrapper, InputSubtitle, InputWrapper } from '../style';
 
 import { TextInput } from './style';
 
@@ -63,14 +58,9 @@ function UserNameScreen() {
   };
 
   return (
-    <Layout
-      isBackButtonEnabled={false}
-      title={t('auth.userDetails.userNameScreen.title')}>
+    <Layout isBackButtonEnabled={false} title={t('auth.userDetails.userNameScreen.title')}>
       <Container>
-        <ColorPicker
-          color={color}
-          onChange={(colorOption) => handleUserDetails({ color: colorOption })}
-        />
+        <ColorPicker color={color} onChange={(colorOption) => handleUserDetails({ color: colorOption })} />
         <InputWrapper>
           <TextInput
             placeholder={t('auth.userDetails.userNameScreen.inputPlaceholder')}
@@ -79,10 +69,9 @@ function UserNameScreen() {
             autoCapitalize="words"
             returnKeyType="next"
             value={name}
+            autoFocus
           />
-          <InputSubtitle>
-            {t('auth.userDetails.userNameScreen.inputDescription')}
-          </InputSubtitle>
+          <InputSubtitle>{t('auth.userDetails.userNameScreen.inputDescription')}</InputSubtitle>
         </InputWrapper>
         <ButtonWrapper>
           <Button onPress={handleSubmit} text={t('next')} />

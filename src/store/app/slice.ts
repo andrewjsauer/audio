@@ -1,11 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import {
-  signOut,
-  restorePurchases,
-  purchaseProduct,
-  initializeSession,
-} from './thunks';
+import { signOut, restorePurchases, purchaseProduct, initializeSession } from './thunks';
 
 export interface AppState {
   error: string | undefined | null;
@@ -34,8 +29,10 @@ const appSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(signOut.fulfilled, (state) => {
       state.error = null;
-      state.isPreviouslySubscribed = false;
       state.isLoading = false;
+      state.isPreviouslySubscribed = false;
+      state.lastFailedAction = null;
+      state.transactionError = null;
     });
     builder.addCase(signOut.pending, (state) => {
       state.error = null;

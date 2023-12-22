@@ -6,41 +6,37 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 import functions from '@react-native-firebase/functions';
 
-import {
-  PartnershipDetailsType,
-  UserDataType,
-  UserDetailsType,
-  PartnerDetailsType,
-} from '@lib/types';
+import { PartnershipDetailsType, UserDataType, UserDetailsType, PartnerDetailsType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
+import { signOut } from '@store/app/thunks';
 
-export const submitPhoneNumber = createAsyncThunk<
-  FirebaseAuthTypes.ConfirmationResult,
-  string
->('auth/submitPhoneNumber', async (phoneNumber, { rejectWithValue }) => {
-  try {
-    return await auth().signInWithPhoneNumber(phoneNumber);
-  } catch (error) {
-    trackEvent('submit_phone_number_error', { error });
-    crashlytics().recordError(error);
+export const submitPhoneNumber = createAsyncThunk<FirebaseAuthTypes.ConfirmationResult, string>(
+  'auth/submitPhoneNumber',
+  async (phoneNumber, { rejectWithValue }) => {
+    try {
+      return await auth().signInWithPhoneNumber(phoneNumber);
+    } catch (error) {
+      trackEvent('submit_phone_number_error', { error });
+      crashlytics().recordError(error);
 
-    return rejectWithValue(error.message);
-  }
-});
+      return rejectWithValue(error.message);
+    }
+  },
+);
 
-export const resendCode = createAsyncThunk<
-  FirebaseAuthTypes.ConfirmationResult,
-  string
->('auth/resendCode', async (phoneNumber, { rejectWithValue }) => {
-  try {
-    return await auth().signInWithPhoneNumber(phoneNumber, true);
-  } catch (error) {
-    trackEvent('resend_code_error', { error });
-    crashlytics().recordError(error);
+export const resendCode = createAsyncThunk<FirebaseAuthTypes.ConfirmationResult, string>(
+  'auth/resendCode',
+  async (phoneNumber, { rejectWithValue }) => {
+    try {
+      return await auth().signInWithPhoneNumber(phoneNumber, true);
+    } catch (error) {
+      trackEvent('resend_code_error', { error });
+      crashlytics().recordError(error);
 
-    return rejectWithValue(error.message);
-  }
-});
+      return rejectWithValue(error.message);
+    }
+  },
+);
 
 interface VerifyCodeArgs {
   confirm: FirebaseAuthTypes.ConfirmationResult;
@@ -50,18 +46,12 @@ interface VerifyCodeArgs {
 
 export const verifyCode = createAsyncThunk(
   'auth/verifyCode',
-  async (
-    { confirm, code, phoneNumber }: VerifyCodeArgs,
-    { rejectWithValue },
-  ) => {
+  async ({ confirm, code, phoneNumber }: VerifyCodeArgs, { rejectWithValue }) => {
     try {
       await confirm.confirm(code);
       const { currentUser } = auth();
 
-      const userSnapshot = await firestore()
-        .collection('users')
-        .where('phoneNumber', '==', phoneNumber)
-        .get();
+      const userSnapshot = await firestore().collection('users').where('phoneNumber', '==', phoneNumber).get();
 
       let userData = null;
 
@@ -82,13 +72,12 @@ export const verifyCode = createAsyncThunk(
   },
 );
 
-async function sendSmsToPartner(data: {
-  inviteName: string;
-  invitePhoneNumber: string;
-  senderName: string;
-}) {
+async function sendSmsToPartner(data: { inviteName: string; invitePhoneNumber: string; senderName: string }) {
   try {
-    await functions().httpsCallable('sendPartnerInvite')(data);
+    await functions().httpsCallable('sendSMS')({
+      phoneNumber: data.invitePhoneNumber,
+      body: `Hey, ${data.inviteName}! ${data.senderName} has invited you to join 'You First.' Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: [link] 😊`,
+    });
   } catch (error) {
     trackEvent('send_sms_invite_partner_api_error');
     crashlytics().recordError(error);
@@ -96,10 +85,7 @@ async function sendSmsToPartner(data: {
 }
 
 async function getPartnerIdByPhoneNumber(phoneNumber: string) {
-  const userQuery = await firestore()
-    .collection('users')
-    .where('phoneNumber', '==', phoneNumber)
-    .get();
+  const userQuery = await firestore().collection('users').where('phoneNumber', '==', phoneNumber).get();
 
   if (!userQuery.empty) {
     return userQuery.docs[0].id;
@@ -117,28 +103,16 @@ interface GeneratePartnershipArgs {
 
 export const generatePartnership = createAsyncThunk(
   'auth/generatePartnership',
-  async (
-    {
-      userDetails,
-      partnerDetails,
-      partnershipDetails,
-      userId,
-    }: GeneratePartnershipArgs,
-    { rejectWithValue },
-  ) => {
+  async ({ userDetails, partnerDetails, partnershipDetails, userId }: GeneratePartnershipArgs, { rejectWithValue }) => {
     const { type, startDate } = partnershipDetails;
 
     try {
       const batch = firestore().batch();
       const partnershipId = uuidv4();
 
-      const partnerId = await getPartnerIdByPhoneNumber(
-        partnerDetails.phoneNumber as string,
-      );
+      const partnerId = await getPartnerIdByPhoneNumber(partnerDetails.phoneNumber as string);
 
-      const partnershipRef = firestore()
-        .collection('partnership')
-        .doc(partnershipId);
+      const partnershipRef = firestore().collection('partnership').doc(partnershipId);
 
       const partnershipData = {
         id: partnershipId,
@@ -149,9 +123,7 @@ export const generatePartnership = createAsyncThunk(
       batch.set(partnershipRef, partnershipData, { merge: true });
 
       const partnershipUser1Id = uuidv4();
-      const partnershipUserRef1 = firestore()
-        .collection('partnershipUser')
-        .doc(partnershipUser1Id);
+      const partnershipUserRef1 = firestore().collection('partnershipUser').doc(partnershipUser1Id);
 
       batch.set(
         partnershipUserRef1,
@@ -166,9 +138,7 @@ export const generatePartnership = createAsyncThunk(
       );
 
       const partnershipUser2Id = uuidv4();
-      const partnershipUserRef2 = firestore()
-        .collection('partnershipUser')
-        .doc(partnershipUser2Id);
+      const partnershipUserRef2 = firestore().collection('partnershipUser').doc(partnershipUser2Id);
       batch.set(
         partnershipUserRef2,
         {
@@ -211,7 +181,7 @@ export const generatePartnership = createAsyncThunk(
         senderName: userDetails.name,
       });
 
-      return { userData: userPayload, partnershipData };
+      return { userData: userPayload, partnerData: partnerPayload, partnershipData };
     } catch (error) {
       trackEvent('initialize_partnership_error', { error });
       crashlytics().recordError(error);
@@ -231,10 +201,7 @@ export const updateUser = createAsyncThunk(
   'auth/updateUser',
   async ({ id, userDetails }: UpdateUserArgs, { rejectWithValue }) => {
     try {
-      await firestore()
-        .collection('users')
-        .doc(id)
-        .set(userDetails, { merge: true });
+      await firestore().collection('users').doc(id).set(userDetails, { merge: true });
 
       return userDetails;
     } catch (error) {
@@ -259,11 +226,7 @@ export const updateNewUser = createAsyncThunk(
 
       if (tempDoc.exists) {
         const newUserRef = usersCollection.doc(id);
-        batch.set(
-          newUserRef,
-          { ...tempDoc.data(), ...userDetails, id },
-          { merge: true },
-        );
+        batch.set(newUserRef, { ...tempDoc.data(), ...userDetails, id }, { merge: true });
         batch.delete(tempDocRef);
       } else {
         return rejectWithValue('Temp user not found');
@@ -280,20 +243,12 @@ export const updateNewUser = createAsyncThunk(
         return rejectWithValue('Temp partnership user not found');
       }
 
-      const pUserPartnerQuery = partnershipUserRef.where(
-        'otherUserId',
-        '==',
-        tempId,
-      );
+      const pUserPartnerQuery = partnershipUserRef.where('otherUserId', '==', tempId);
       const pUserPartnerSnapshot = await pUserPartnerQuery.get();
 
       if (!pUserPartnerSnapshot.empty) {
         const partnershipPartnerDocRef = pUserPartnerSnapshot.docs[0].ref;
-        batch.set(
-          partnershipPartnerDocRef,
-          { otherUserId: id },
-          { merge: true },
-        );
+        batch.set(partnershipPartnerDocRef, { otherUserId: id }, { merge: true });
       } else {
         return rejectWithValue('Temp partnership partners user not found');
       }
@@ -315,15 +270,42 @@ export const getUsersEntitlements = createAsyncThunk(
     try {
       const idTokenResult = await user.getIdTokenResult();
 
-      if (
-        idTokenResult?.claims?.revenueCatEntitlements.includes('subscription')
-      ) {
+      if (idTokenResult?.claims?.revenueCatEntitlements.includes('subscription')) {
         return { isSubscriber: true };
       }
 
       return { isSubscriber: false };
     } catch (error) {
       trackEvent('get_current_users_entitlements_error', { error });
+      crashlytics().recordError(error);
+
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const deleteRelationship = createAsyncThunk(
+  'auth/deleteRelationship',
+  async (
+    {
+      userId,
+      partnershipId,
+      partnerId,
+    }: {
+      userId: string;
+      partnershipId: string;
+      partnerId: string;
+    },
+    { rejectWithValue, dispatch },
+  ) => {
+    try {
+      await functions().httpsCallable('deletePartnership')({ partnershipId, userId, partnerId });
+
+      dispatch(signOut({ userId, isDelete: true }));
+
+      return null;
+    } catch (error) {
+      trackEvent('delete_relationship_error', { error });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);
