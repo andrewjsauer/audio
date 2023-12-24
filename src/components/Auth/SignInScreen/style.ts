@@ -3,9 +3,14 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   flex: 1;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   background-color: ${(p) => p.theme.colors.white};
+`;
+
+export const Header = styled.View`
+  width: 100%;
+  margin-top: 120px;
 `;
 
 export const Title = styled.Text`
@@ -31,7 +36,7 @@ export const SubtitleDescription = styled.Text`
 `;
 
 export const ButtonWrapper = styled.View`
-  margin-bottom: -60px;
+  margin-bottom: 14px;
 `;
 
 export const LegalContainer = styled.View`
@@ -40,7 +45,6 @@ export const LegalContainer = styled.View`
   flex-direction: column;
   padding: 20px 0;
   width: 100%;
-  margin-bottom: 20px;
 `;
 
 export const LegalText = styled.Text`
@@ -54,4 +58,8 @@ export const LegalButtonContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+`;
+
+export const FooterContainer = styled.View`
+  width: 100%;
 `;

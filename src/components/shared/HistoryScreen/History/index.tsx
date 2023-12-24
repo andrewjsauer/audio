@@ -1,9 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectIsSubscriber, selectUserData } from '@store/auth/selectors';
+import { selectIsSubscribed, selectUserData } from '@store/auth/selectors';
 import { selectPartnerData } from '@store/partnership/selectors';
-import { selectError, selectIsLoading, selectLastFailedAction, selectQuestions } from '@store/history/selectors';
+import {
+  selectError,
+  selectIsLoading,
+  selectLastFailedAction,
+  selectQuestions,
+} from '@store/history/selectors';
 
 import { fetchHistoryData } from '@store/history/thunks';
 import { AppDispatch } from '@store/index';
@@ -17,7 +22,7 @@ import HistoryScreen from './HistoryScreen';
 function HistoryScreenContainer() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const isSubscribed = useSelector(selectIsSubscriber);
+  const isSubscribed = useSelector(selectIsSubscribed);
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
   const lastFailedAction = useSelector(selectLastFailedAction);

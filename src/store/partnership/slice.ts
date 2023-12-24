@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { PartnershipDataType, UserDataType as PartnerDataType, PartnershipUserDataType } from '@lib/types';
+import {
+  PartnershipDataType,
+  UserDataType as PartnerDataType,
+  PartnershipUserDataType,
+} from '@lib/types';
 
 import { signOut } from '@store/app/thunks';
 import { fetchLatestQuestion } from '@store/question/thunks';
@@ -34,6 +38,12 @@ const partnershipSlice = createSlice({
     setPartnershipData: (state, action: PayloadAction<object | null>) => {
       state.partnershipData = action.payload as PartnershipDataType;
     },
+    setPartnershipUserData: (state, action: PayloadAction<object | null>) => {
+      state.partnershipUserData = action.payload as PartnershipUserDataType;
+    },
+    setPartnerData: (state, action: PayloadAction<object | null>) => {
+      state.partnerData = action.payload as PartnershipDataType;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(signOut.fulfilled, (state) => {
@@ -47,6 +57,7 @@ const partnershipSlice = createSlice({
     });
     builder.addCase(generatePartnership.fulfilled, (state, action) => {
       state.partnershipData = action.payload.partnershipData as PartnershipDataType;
+      state.partnerData = action.payload.partnerData as PartnerDataType;
     });
     builder.addCase(updatePartnershipUser.fulfilled, (state, action) => {
       state.partnershipUserData = {
@@ -105,5 +116,6 @@ const partnershipSlice = createSlice({
   },
 });
 
-export const { setPartnershipData } = partnershipSlice.actions;
+export const { setPartnershipData, setPartnerData, setPartnershipUserData } =
+  partnershipSlice.actions;
 export default partnershipSlice.reducer;

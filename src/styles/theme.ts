@@ -38,8 +38,9 @@ const theme = {
     medium: '18px',
     large: '20px',
     xlarge: '24px',
+    xxlarge: '28px',
     question: '30px',
-    logo: '44px',
+    logo: '50px',
   },
 };
 

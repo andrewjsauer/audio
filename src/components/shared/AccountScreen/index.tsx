@@ -23,9 +23,21 @@ function AccountScreenContainer() {
 
   return (
     <Stack.Navigator initialRouteName={AccountScreens.SettingsScreen}>
-      <Stack.Screen component={SettingsScreen} name={AccountScreens.SettingsScreen} options={{ headerShown: false }} />
-      <Stack.Screen component={ColorScreen} name={AccountScreens.ColorScreen} options={{ headerShown: false }} />
-      <Stack.Screen component={NameScreen} name={AccountScreens.NameScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        component={SettingsScreen}
+        name={AccountScreens.SettingsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={ColorScreen}
+        name={AccountScreens.ColorScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={NameScreen}
+        name={AccountScreens.NameScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }

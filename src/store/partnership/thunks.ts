@@ -43,10 +43,7 @@ interface UpdatePartnershipUserArgs {
 
 export const updatePartnershipUser = createAsyncThunk(
   'partnership/updatePartnershipUser',
-  async (
-    { id, partnershipUserData }: UpdatePartnershipUserArgs,
-    { rejectWithValue },
-  ) => {
+  async ({ id, partnershipUserData }: UpdatePartnershipUserArgs, { rejectWithValue }) => {
     try {
       await firestore()
         .collection('partnershipUser')
@@ -94,21 +91,13 @@ export const fetchPartnerData = createAsyncThunk(
   'partnership/fetchPartnerData',
   async (userId: string, { dispatch, rejectWithValue }) => {
     try {
-      const partnershipUserResponse = await dispatch(
-        fetchPartnershipUser(userId),
-      );
+      const partnershipUserResponse = await dispatch(fetchPartnershipUser(userId));
 
-      if (
-        partnershipUserResponse.type === fetchPartnershipUser.fulfilled.type
-      ) {
-        const partnershipUserData =
-          partnershipUserResponse.payload as PartnershipUserDataType;
+      if (partnershipUserResponse.type === fetchPartnershipUser.fulfilled.type) {
+        const partnershipUserData = partnershipUserResponse.payload as PartnershipUserDataType;
         const partnerId = partnershipUserData.otherUserId;
 
-        const partnerSnapshot = await firestore()
-          .collection('users')
-          .doc(partnerId)
-          .get();
+        const partnerSnapshot = await firestore().collection('users').doc(partnerId).get();
 
         if (partnerSnapshot.exists) {
           trackEvent('partnership_data_fetched');
@@ -118,6 +107,8 @@ export const fetchPartnerData = createAsyncThunk(
         trackEvent('partnership_data_not_found');
         return rejectWithValue('Failed to fetch partnership user');
       }
+
+      return null;
     } catch (error) {
       trackEvent('partnership_data_fetch_error', { error });
       crashlytics().recordError(error);

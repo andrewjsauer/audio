@@ -4,6 +4,7 @@ export const Container = styled.View`
   flex-direction: column;
   justify-content: center;
   padding: 0 20px;
+  margin-bottom: 30px;
 `;
 
 export const TimerText = styled.Text`

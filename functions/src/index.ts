@@ -180,7 +180,7 @@ exports.generateQuestion = functions
       id: questionId,
       partnershipId: partnershipData.id,
       text: questionText,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: admin.firestore.Timestamp.now(),
     };
 
     try {
@@ -267,7 +267,10 @@ async function fetchPartnerId(userId: string) {
   }
 }
 
-async function updatePartnerEntitlement(userId: string, hasAccess: boolean) {
+async function updateSubscriptions(userId: string, hasAccess: boolean) {
+  const db = admin.firestore();
+  const batch = db.batch();
+
   try {
     const partnerId = await fetchPartnerId(userId);
     if (!partnerId) {
@@ -275,15 +278,15 @@ async function updatePartnerEntitlement(userId: string, hasAccess: boolean) {
       return;
     }
 
-    const partner = await admin.auth().getUser(partnerId);
-    const currentClaims = partner.customClaims || {};
+    const userDocRef = db.collection('users').doc(userId);
+    const partnerDocRef = db.collection('users').doc(partnerId);
 
-    await admin.auth().setCustomUserClaims(partnerId, {
-      ...currentClaims,
-      revenueCatEntitlements: hasAccess ? ['premium'] : [],
-    });
+    batch.set(userDocRef, { isSubscribed: hasAccess }, { merge: true });
+    batch.set(partnerDocRef, { isSubscribed: hasAccess }, { merge: true });
 
-    functions.logger.info(`Updated partner to subscription access: ${hasAccess}`);
+    await batch.commit();
+
+    functions.logger.info(`Updated user and partner to subscription access: ${hasAccess}`);
   } catch (error: unknown) {
     const e = error as {
       response?: { status?: string; data?: object };
@@ -340,15 +343,15 @@ exports.handleSubscriptionEvents = functions.firestore
         case 'UNCANCELLATION':
         case 'NON_RENEWING_PURCHASE':
         case 'SUBSCRIPTION_EXTENDED':
-          await updatePartnerEntitlement(userId, true);
+          await updateSubscriptions(userId, true);
           break;
         case 'CANCELLATION':
           if (!isTrialPeriod) {
-            await updatePartnerEntitlement(userId, false);
+            await updateSubscriptions(userId, false);
           }
           break;
         case 'EXPIRATION':
-          await updatePartnerEntitlement(userId, false);
+          await updateSubscriptions(userId, false);
           break;
         case 'SUBSCRIPTION_PAUSED':
           // Handle paused subscription, but do not revoke access
@@ -386,6 +389,94 @@ exports.handleSubscriptionEvents = functions.firestore
     }
   });
 
+exports.updateNewUser = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+  }
+
+  const { id, userDetails, tempId } = data;
+  const db = admin.firestore();
+  const batch = db.batch();
+
+  let userPayload = {
+    ...userDetails,
+    birthDate: admin.firestore.Timestamp.fromDate(new Date(userDetails.birthDate)),
+  };
+
+  try {
+    const usersCollection = db.collection('users');
+    const tempDocRef = usersCollection.doc(tempId);
+    const tempDoc = await tempDocRef.get();
+
+    if (tempDoc.exists) {
+      const newUserRef = usersCollection.doc(id);
+      userPayload = {
+        ...userPayload,
+        ...tempDoc.data(),
+        id,
+      };
+
+      batch.set(newUserRef, userPayload, { merge: true });
+      batch.delete(tempDocRef);
+    } else {
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error updating user data: Temp user not found`,
+      );
+    }
+
+    const partnershipUserRef = db.collection('partnershipUser');
+    const pUserQuery = partnershipUserRef.where('userId', '==', tempId);
+    const pUserSnapshot = await pUserQuery.get();
+
+    if (!pUserSnapshot.empty) {
+      const partnershipDocRef = pUserSnapshot.docs[0].ref;
+      batch.set(partnershipDocRef, { userId: id }, { merge: true });
+    } else {
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error updating user data: Temp partnership user not found`,
+      );
+    }
+
+    const pUserPartnerQuery = partnershipUserRef.where('otherUserId', '==', tempId);
+    const pUserPartnerSnapshot = await pUserPartnerQuery.get();
+
+    if (!pUserPartnerSnapshot.empty) {
+      const partnershipPartnerDocRef = pUserPartnerSnapshot.docs[0].ref;
+      batch.set(partnershipPartnerDocRef, { otherUserId: id }, { merge: true });
+    } else {
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error updating user data: Temp partnership partner not found`,
+      );
+    }
+
+    await batch.commit();
+    return userPayload;
+  } catch (error: unknown) {
+    const e = error as {
+      response?: { status?: string; data?: object };
+      message?: string;
+    };
+
+    if (e.response) {
+      functions.logger.error(`Error status ${e.response.status}`);
+      functions.logger.error(`Error data ${JSON.stringify(e.response.data)}`);
+
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error updating user data: ${e.response.data}`,
+        e.response.data,
+      );
+    } else {
+      functions.logger.error(`Error message ${error}`);
+
+      throw new functions.https.HttpsError('unknown', `Error updating user data: ${error}`, error);
+    }
+  }
+});
+
 exports.deletePartnership = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
@@ -402,6 +493,9 @@ exports.deletePartnership = functions.https.onCall(async (data, context) => {
     const partnerRef = db.collection('users').doc(partnerId);
     batch.delete(partnerRef);
 
+    const partnershipRef = db.collection('partnership').doc(partnershipId);
+    batch.delete(partnershipRef);
+
     const partnershipUserRefs = db
       .collection('partnershipUser')
       .where('partnershipId', '==', partnershipId);
@@ -414,17 +508,12 @@ exports.deletePartnership = functions.https.onCall(async (data, context) => {
       .collection('recordings')
       .where('userId', 'in', [userId, partnerId].filter(Boolean));
     const recordingsSnapshot = await recordingsRefs.get();
+
     recordingsSnapshot.forEach((doc) => {
       const recordingData = doc.data();
       batch.delete(doc.ref);
 
-      admin.storage().bucket().file(`recordings/${recordingData.audioUrl}`).delete();
-    });
-
-    const questionsRef = db.collection('questions').where('partnershipId', '==', partnershipId);
-    const questionsSnapshot = await questionsRef.get();
-    questionsSnapshot.forEach((doc) => {
-      batch.delete(doc.ref);
+      admin.storage().bucket().file(`recordings/${recordingData.id}.mp4`).delete();
     });
 
     const listeningsRef = db
@@ -432,6 +521,22 @@ exports.deletePartnership = functions.https.onCall(async (data, context) => {
       .where('userId', 'in', [userId, partnerId].filter(Boolean));
     const listeningsSnapshot = await listeningsRef.get();
     listeningsSnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    const customersRef = db
+      .collection('customers')
+      .where('userId', 'in', [userId, partnerId].filter(Boolean));
+    const customersSnapshot = await customersRef.get();
+    customersSnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    const customerEventsRef = db
+      .collection('customerEvents')
+      .where('app_user_id', 'in', [userId, partnerId].filter(Boolean));
+    const customerEventsSnapshot = await customerEventsRef.get();
+    customerEventsSnapshot.forEach((doc) => {
       batch.delete(doc.ref);
     });
 
@@ -544,6 +649,162 @@ exports.sendSMS = functions.https.onCall(async (data, context) => {
       functions.logger.error(`Error message ${error}`);
 
       throw new functions.https.HttpsError('unknown', `Error sending SMS: ${error}`, error);
+    }
+  }
+});
+
+async function getPartnerIdByPhoneNumber(phoneNumber: string) {
+  const userQuery = await admin
+    .firestore()
+    .collection('users')
+    .where('phoneNumber', '==', phoneNumber)
+    .get();
+
+  if (!userQuery.empty) {
+    return userQuery.docs[0].id;
+  }
+
+  return uuidv4();
+}
+
+const convertTimestampToISO = (timestamp: string | Date | any) => {
+  return timestamp ? timestamp.toDate().toISOString() : new Date().toISOString();
+};
+
+exports.generatePartnership = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+  }
+
+  const { userDetails, partnerDetails, partnershipDetails } = data;
+  const userId = context.auth.uid;
+
+  const { type, startDate } = partnershipDetails;
+
+  try {
+    const batch = admin.firestore().batch();
+    const partnershipId = uuidv4();
+    const partnerId = await getPartnerIdByPhoneNumber(partnerDetails.phoneNumber);
+
+    const partnershipRef = admin.firestore().collection('partnership').doc(partnershipId);
+    const partnershipData = {
+      id: partnershipId,
+      startDate: admin.firestore.Timestamp.fromDate(new Date(startDate)),
+      type,
+      createdAt: admin.firestore.Timestamp.now(),
+    };
+    batch.set(partnershipRef, partnershipData, { merge: true });
+
+    const partnershipUser1Id = uuidv4();
+    const partnershipUserRef1 = admin
+      .firestore()
+      .collection('partnershipUser')
+      .doc(partnershipUser1Id);
+
+    batch.set(
+      partnershipUserRef1,
+      {
+        id: partnershipUser1Id,
+        partnershipId,
+        userId,
+        otherUserId: partnerId,
+        createdAt: admin.firestore.Timestamp.now(),
+      },
+      { merge: true },
+    );
+
+    const partnershipUser2Id = uuidv4();
+    const partnershipUserRef2 = admin
+      .firestore()
+      .collection('partnershipUser')
+      .doc(partnershipUser2Id);
+    batch.set(
+      partnershipUserRef2,
+      {
+        id: partnershipUser2Id,
+        partnershipId,
+        userId: partnerId,
+        otherUserId: userId,
+        createdAt: admin.firestore.Timestamp.now(),
+      },
+      { merge: true },
+    );
+
+    const userRef = admin.firestore().collection('users').doc(userId);
+    const userPayload = {
+      ...userDetails,
+      birthDate: admin.firestore.Timestamp.fromDate(new Date(userDetails.birthDate)),
+      createdAt: admin.firestore.Timestamp.now(),
+      id: userId,
+      isPartner: false,
+      isRegistered: true,
+      lastActiveAt: admin.firestore.Timestamp.now(),
+      partnershipId,
+      isSubscribed: false,
+    };
+    batch.set(userRef, userPayload, { merge: true });
+
+    const partnerRef = admin.firestore().collection('users').doc(partnerId);
+    const partnerPayload = {
+      ...partnerDetails,
+      birthDate: null,
+      createdAt: admin.firestore.Timestamp.now(),
+      id: partnerId,
+      isPartner: true,
+      isRegistered: false,
+      lastActiveAt: admin.firestore.Timestamp.now(),
+      partnershipId,
+      isSubscribed: false,
+    };
+    batch.set(partnerRef, partnerPayload, { merge: true });
+
+    const smsRef = admin.firestore().collection('sms').doc();
+    batch.set(smsRef, {
+      to: partnerDetails.phoneNumber,
+      body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join 'Daily Qs.' Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: [link] 😊`,
+    });
+
+    await batch.commit();
+
+    return {
+      userPayload: {
+        ...userPayload,
+        birthDate: convertTimestampToISO(userPayload.birthDate),
+        createdAt: convertTimestampToISO(userPayload.createdAt),
+      },
+      partnerPayload: {
+        ...partnerPayload,
+        createdAt: convertTimestampToISO(partnerPayload.createdAt),
+      },
+      partnershipPayload: {
+        ...partnershipData,
+        createdAt: convertTimestampToISO(partnershipData.createdAt),
+        startDate: convertTimestampToISO(partnershipData.startDate),
+      },
+    };
+  } catch (error: unknown) {
+    const e = error as {
+      response?: { status?: string; data?: object };
+      message?: string;
+    };
+
+    if (e.response) {
+      functions.logger.error(`Error status ${e.response.status}`);
+      functions.logger.error(`Error data ${JSON.stringify(e.response.data)}`);
+
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error generating partnership: ${e.response.data}`,
+        e.response.data,
+      );
+    } else {
+      functions.logger.error(`Error message ${error}`);
+
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error generating partnership: ${error}`,
+        error,
+      );
     }
   }
 });

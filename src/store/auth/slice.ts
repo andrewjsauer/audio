@@ -3,11 +3,10 @@ import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import { UserDataType } from '@lib/types';
 
-import { signOut } from '@store/app/thunks';
+import { signOut, purchaseProduct } from '@store/app/thunks';
 
 import {
   generatePartnership,
-  getUsersEntitlements,
   resendCode,
   submitPhoneNumber,
   updateNewUser,
@@ -24,7 +23,6 @@ interface AuthState {
   isLoadingPartnerData: boolean;
   user: FirebaseAuthTypes.User | null;
   userData: UserDataType | null;
-  isSubscriber: boolean;
 }
 
 const initialState: AuthState = {
@@ -35,7 +33,6 @@ const initialState: AuthState = {
   isLoadingPartnerData: false,
   user: null,
   userData: null,
-  isSubscriber: false,
 };
 
 const authSlice = createSlice({
@@ -51,6 +48,9 @@ const authSlice = createSlice({
     setConfirm: (state, action: PayloadAction<FirebaseAuthTypes.ConfirmationResult>) => {
       state.confirm = action.payload;
     },
+    setUserData: (state, action: PayloadAction<UserDataType>) => {
+      state.userData = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,7 +62,6 @@ const authSlice = createSlice({
         state.isLoadingPartnerData = false;
         state.user = null;
         state.userData = null;
-        state.isSubscriber = false;
       })
       .addCase(submitPhoneNumber.pending, (state) => {
         state.isLoading = true;
@@ -132,9 +131,6 @@ const authSlice = createSlice({
       .addCase(updateNewUser.rejected, (state) => {
         state.isLoading = false;
       })
-      .addCase(getUsersEntitlements.fulfilled, (state, action) => {
-        state.isSubscriber = action.payload.isSubscriber;
-      })
       .addCase(deleteRelationship.pending, (state) => {
         state.isLoading = true;
       })
@@ -143,9 +139,15 @@ const authSlice = createSlice({
       })
       .addCase(deleteRelationship.rejected, (state) => {
         state.isLoading = false;
+      })
+      .addCase(purchaseProduct.fulfilled, (state, action) => {
+        state.userData = {
+          ...state.userData,
+          ...action.payload,
+        } as UserDataType;
       });
   },
 });
 
-export const { setCode, setUser, setConfirm } = authSlice.actions;
+export const { setCode, setUser, setConfirm, setUserData } = authSlice.actions;
 export default authSlice.reducer;

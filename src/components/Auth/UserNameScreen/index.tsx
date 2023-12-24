@@ -60,7 +60,10 @@ function UserNameScreen() {
   return (
     <Layout isBackButtonEnabled={false} title={t('auth.userDetails.userNameScreen.title')}>
       <Container>
-        <ColorPicker color={color} onChange={(colorOption) => handleUserDetails({ color: colorOption })} />
+        <ColorPicker
+          color={color}
+          onChange={(colorOption) => handleUserDetails({ color: colorOption })}
+        />
         <InputWrapper>
           <TextInput
             placeholder={t('auth.userDetails.userNameScreen.inputPlaceholder')}
@@ -70,6 +73,7 @@ function UserNameScreen() {
             returnKeyType="next"
             value={name}
             autoFocus
+            placeholderTextColor="#909090"
           />
           <InputSubtitle>{t('auth.userDetails.userNameScreen.inputDescription')}</InputSubtitle>
         </InputWrapper>

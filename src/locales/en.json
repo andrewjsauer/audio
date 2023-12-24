@@ -4,6 +4,7 @@
   "submit": "Submit",
   "retry": "Retry",
   "you": "You",
+  "phoneNumber": "Phone Number",
   "permissions": {
     "notifications": {
       "title": "Know when {{ name }} answers...",
@@ -86,7 +87,7 @@
         "title": "Oops! Your subscription has expired...",
         "description": "Please fix your payment to continue using the app!",
         "restoreButtonText": "Restore Purchases",
-        "updatePaymentButtonText": "Update Payment"
+        "updatePaymentButtonText": "Subscribe"
       }
     },
     "subscriberScreen": {

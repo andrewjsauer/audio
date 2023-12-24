@@ -17,7 +17,10 @@ type saveUserRecordingArgs = {
 
 export const saveUserRecording = createAsyncThunk(
   'recording/saveUserRecording',
-  async ({ recordPath, questionId, userData, duration, partnerData }: saveUserRecordingArgs, { rejectWithValue }) => {
+  async (
+    { recordPath, questionId, userData, duration, partnerData }: saveUserRecordingArgs,
+    { rejectWithValue },
+  ) => {
     try {
       const { id: userId, partnershipId } = userData;
       const recordingId = `${userId}_${questionId}`;
@@ -55,7 +58,10 @@ export const saveUserRecording = createAsyncThunk(
                 reaction: [],
               };
 
-              await firestore().collection('recordings').doc(recordingId).set(recordingData, { merge: true });
+              await firestore()
+                .collection('recordings')
+                .doc(recordingId)
+                .set(recordingData, { merge: true });
 
               if (partnerData.deviceIds?.length) {
                 await functions().httpsCallable('sendNotification')({
@@ -66,7 +72,7 @@ export const saveUserRecording = createAsyncThunk(
               } else {
                 await functions().httpsCallable('sendSMS')({
                   phoneNumber: partnerData.phoneNumber,
-                  message: `${userData.name} recorded todays question!`,
+                  body: `${userData.name} recorded todays question on Daily Qs! Download the app to listen to their answer. Link: https://dailyqs.app/download`,
                 });
               }
 

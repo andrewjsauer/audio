@@ -58,6 +58,7 @@ export type UserDataType = {
   name?: string;
   partnershipId?: string;
   phoneNumber?: string;
+  isSubscribed?: boolean;
 };
 
 export type PartnershipDataType = {

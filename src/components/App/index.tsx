@@ -78,12 +78,28 @@ function App(): JSX.Element {
     <Stack.Navigator>
       {isPreviouslySubscribed ? (
         <>
-          <Stack.Screen component={QuestionScreen} name={AppScreens.QuestionScreen} options={{ headerShown: false }} />
-          <Stack.Screen component={HistoryScreen} name={AppScreens.HistoryScreen} options={{ headerShown: false }} />
-          <Stack.Screen component={AccountScreen} name={AppScreens.AccountScreen} options={{ headerShown: false }} />
+          <Stack.Screen
+            component={QuestionScreen}
+            name={AppScreens.QuestionScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            component={HistoryScreen}
+            name={AppScreens.HistoryScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            component={AccountScreen}
+            name={AppScreens.AccountScreen}
+            options={{ headerShown: false }}
+          />
         </>
       ) : (
-        <Stack.Screen component={TrialScreen} name={AppScreens.TrialScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          component={TrialScreen}
+          name={AppScreens.TrialScreen}
+          options={{ headerShown: false }}
+        />
       )}
     </Stack.Navigator>
   );

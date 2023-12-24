@@ -9,13 +9,7 @@ import { trackScreen, trackEvent } from '@lib/analytics';
 import { showNotification } from '@store/ui/slice';
 
 import Layout from '../Layout';
-import {
-  Container,
-  ButtonWrapper,
-  InputTitle,
-  InputSubtitle,
-  InputWrapper,
-} from '../style';
+import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
 import { StyledDatePicker } from './style';
 
 function RelationshipDateScreen() {
@@ -26,12 +20,8 @@ function RelationshipDateScreen() {
     trackScreen('RelationshipDateScreen');
   }, []);
 
-  const {
-    goToNextStep,
-    goToPreviousStep,
-    handlePartnershipDetails,
-    partnershipDetails,
-  } = useAuthFlow();
+  const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =
+    useAuthFlow();
 
   const relationshipDate = partnershipDetails.startDate
     ? new Date(partnershipDetails.startDate)
@@ -58,18 +48,16 @@ function RelationshipDateScreen() {
     <Layout
       goBack={goToPreviousStep}
       isBackButtonEnabled
-      title={t('auth.partnerDetails.relationshipDateScreen.title')}>
+      title={t('auth.partnerDetails.relationshipDateScreen.title')}
+    >
       <Container>
         <InputWrapper>
-          <InputTitle>
-            {t('auth.partnerDetails.relationshipDateScreen.inputTitle')}
-          </InputTitle>
+          <InputTitle>{t('auth.partnerDetails.relationshipDateScreen.inputTitle')}</InputTitle>
           <StyledDatePicker
             date={relationshipDate}
-            onDateChange={(date) =>
-              handlePartnershipDetails({ startDate: date })
-            }
+            onDateChange={(date) => handlePartnershipDetails({ startDate: date })}
             mode="date"
+            textColor="#000"
           />
           <InputSubtitle>
             {t('auth.partnerDetails.relationshipDateScreen.inputDescription')}

@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { selectUserData, selectPartnershipId } from '@store/auth/selectors';
+import { selectUserData } from '@store/auth/selectors';
 import {
   selectError,
   selectIsLoading,
   selectLastFailedAction,
   selectPartnerData,
   selectPartnershipData,
+  selectPartnershipId,
 } from '@store/partnership/selectors';
 import { selectCurrentQuestion, selectIsLoadingQuestion } from '@store/question/selectors';
 import {
@@ -42,7 +43,6 @@ import { Container } from './style';
 function SubscriberScreen() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const partnershipId = useSelector(selectPartnershipId);
   const userData = useSelector(selectUserData);
   const partnerData = useSelector(selectPartnerData);
   const partnershipData = useSelector(selectPartnershipData);
@@ -61,8 +61,7 @@ function SubscriberScreen() {
   useEffect(() => {
     trackScreen('SubscriberScreen');
 
-    if (!partnershipData) dispatch(fetchPartnership(partnershipId));
-    if (!partnerData) dispatch(fetchPartnerData(userData.id));
+    if (!partnershipData) dispatch(fetchPartnership(userData?.partnershipId));
   }, []);
 
   useEffect(() => {
@@ -80,10 +79,14 @@ function SubscriberScreen() {
       return questionCreatedAt < today;
     };
 
-    if ((!currentQuestion || isQuestionExpired(currentQuestion)) && partnershipData && partnerData) {
+    if (
+      (!currentQuestion || isQuestionExpired(currentQuestion)) &&
+      partnershipData &&
+      partnerData
+    ) {
       dispatch(fetchLatestQuestion({ partnershipData, partnerData, userData }));
     }
-  }, [partnershipData?.id, currentQuestion, partnerData]);
+  }, [partnershipData, currentQuestion, partnerData]);
 
   useNotificationPermissions();
 

@@ -22,7 +22,6 @@ export const Description = styled.Text`
 
 export const ButtonWrapper = styled.View`
   flex-direction: row;
-  justify-content: space-around;
   align-items: center;
   margin-top: 12px;
 `;
@@ -32,6 +31,8 @@ export const Button = styled.TouchableOpacity`
   background-color: ${(p) => p.theme.colors.white};
   align-items: center;
   justify-content: center;
+  margin-right: 12px;
+  min-width: 120px;
 `;
 
 export const ButtonText = styled.Text`

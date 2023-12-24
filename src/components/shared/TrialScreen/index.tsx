@@ -9,6 +9,7 @@ import { AppDispatch } from '@store/index';
 import { restorePurchases, purchaseProduct } from '@store/app/thunks';
 import { selectIsLoading } from '@store/app/selectors';
 import { selectUser } from '@store/auth/selectors';
+import { selectPartnerData } from '@store/partnership/selectors';
 
 import Button from '@components/shared/Button';
 import {
@@ -36,10 +37,11 @@ function TrailScreen() {
 
   const user = useSelector(selectUser);
   const isLoading = useSelector(selectIsLoading);
+  const partnerData = useSelector(selectPartnerData);
 
   const handlePurchase = () => {
     trackEvent('start_trial_button_clicked');
-    dispatch(purchaseProduct(user));
+    dispatch(purchaseProduct({ user, partnerData }));
   };
 
   const handleRestorePurchases = () => {
@@ -71,7 +73,12 @@ function TrailScreen() {
       <Footer>
         <FooterTitle>{t('trialScreen.footer.title')}</FooterTitle>
         <FooterSubTitle>{t('trialScreen.footer.description')}</FooterSubTitle>
-        <Button isLoading={isLoading} onPress={handlePurchase} text={t('trialScreen.footer.buttonText')} mode="dark" />
+        <Button
+          isLoading={isLoading}
+          onPress={handlePurchase}
+          text={t('trialScreen.footer.buttonText')}
+          mode="dark"
+        />
         <RestoreButton onPress={handleRestorePurchases} disabled={isLoading}>
           <RestoreButtonText>{t('trialScreen.footer.restoreButtonText')}</RestoreButtonText>
         </RestoreButton>

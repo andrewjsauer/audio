@@ -55,7 +55,11 @@ function NonSubscribedScreen() {
           }}
           userStatus={UserActionStatusType.PendingRecord}
         />
-        <BlurredBackground blurType="light" blurAmount={8} reducedTransparencyFallbackColor="white" />
+        <BlurredBackground
+          blurType="light"
+          blurAmount={8}
+          reducedTransparencyFallbackColor="white"
+        />
       </QuestionContainer>
     </Layout>
   );

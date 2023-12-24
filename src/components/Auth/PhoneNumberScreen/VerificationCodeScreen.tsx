@@ -5,13 +5,7 @@ import { TouchableOpacity } from 'react-native';
 import Button from '@components/shared/Button';
 
 import Layout from '../Layout';
-import {
-  Container,
-  ButtonWrapper,
-  InputTitle,
-  InputSubtitle,
-  InputWrapper,
-} from '../style';
+import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
 
 import { CodeInput, ResendCodeWrapper, ResendCodeTextWrapper } from './style';
 
@@ -61,9 +55,7 @@ function VerificationCodeScreen({
   };
 
   return (
-    <Layout
-      goBack={goToPreviousStep}
-      title={t('auth.verificationCodeScreen.title')}>
+    <Layout goBack={goToPreviousStep} title={t('auth.verificationCodeScreen.title')}>
       <Container>
         <InputWrapper>
           <InputTitle>{t('auth.verificationCodeScreen.inputTitle')}</InputTitle>
@@ -77,14 +69,10 @@ function VerificationCodeScreen({
             textContentType="oneTimeCode"
           />
           <ResendCodeWrapper>
-            <InputSubtitle>
-              {t('auth.verificationCodeScreen.inputDescriptionP1')}
-            </InputSubtitle>
+            <InputSubtitle>{t('auth.verificationCodeScreen.inputDescriptionP1')}</InputSubtitle>
             <TouchableOpacity onPress={handleResendCode}>
               <ResendCodeTextWrapper>
-                <InputSubtitle>
-                  {t('auth.verificationCodeScreen.inputDescriptionP2')}
-                </InputSubtitle>
+                <InputSubtitle>{t('auth.verificationCodeScreen.inputDescriptionP2')}</InputSubtitle>
               </ResendCodeTextWrapper>
             </TouchableOpacity>
             <InputSubtitle>

@@ -30,13 +30,15 @@ import {
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const formatTime = (milliseconds: number): string => {
+  if (Number.isNaN(milliseconds) || milliseconds < 0) {
+    return '00m 00s';
+  }
+
   const totalSeconds = Math.floor(milliseconds / 1000);
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
 
-  return `${minutes < 10 ? '0' : ''}${minutes}m ${
-    seconds < 10 ? '0' : ''
-  }${seconds}s`;
+  return `${minutes < 10 ? '0' : ''}${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
 };
 
 function PlayUserModal() {
@@ -64,9 +66,7 @@ function PlayUserModal() {
     reaction: ReactionType | null;
   };
 
-  const [selectedReaction, setSelectedReaction] = useState<ReactionType | null>(
-    reaction || null,
-  );
+  const [selectedReaction, setSelectedReaction] = useState<ReactionType | null>(reaction || null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -95,7 +95,9 @@ function PlayUserModal() {
       if (isPlaying) {
         await audioRecorderPlayer.stopPlayer();
         audioRecorderPlayer.removePlayBackListener();
+
         setIsPlaying(false);
+        setCurrentTime(duration);
       } else {
         await audioRecorderPlayer.startPlayer(audioUrl);
         audioRecorderPlayer.addPlayBackListener((e: any) => {
@@ -104,6 +106,7 @@ function PlayUserModal() {
           if (e.currentPosition === e.duration) {
             audioRecorderPlayer.stopPlayer();
             setIsPlaying(false);
+            setCurrentTime(duration);
           }
         });
         setIsPlaying(true);
@@ -160,10 +163,9 @@ function PlayUserModal() {
               onPress={() => handleReaction(ReactionType.Love)}
               isSelected={selectedReaction === ReactionType.Love}
               isFaded={
-                (!!selectedReaction &&
-                  selectedReaction !== ReactionType.Love) ||
-                !isUsersPartner
-              }>
+                (!!selectedReaction && selectedReaction !== ReactionType.Love) || !isUsersPartner
+              }
+            >
               <ReactionIcon>❤️</ReactionIcon>
             </ReactionButton>
             <ReactionButton
@@ -171,31 +173,22 @@ function PlayUserModal() {
               onPress={() => handleReaction(ReactionType.Laugh)}
               isSelected={selectedReaction === ReactionType.Laugh}
               isFaded={
-                (!!selectedReaction &&
-                  selectedReaction !== ReactionType.Laugh) ||
-                !isUsersPartner
-              }>
+                (!!selectedReaction && selectedReaction !== ReactionType.Laugh) || !isUsersPartner
+              }
+            >
               <ReactionIcon>😂</ReactionIcon>
             </ReactionButton>
-            <PlayBackButton
-              onPress={onPlayPause}
-              type="play"
-              disabled={isLoading}>
-              {isLoading ? (
-                <ActivityIndicator size="small" color="#FFFFFF" />
-              ) : (
-                buttonIcon
-              )}
+            <PlayBackButton onPress={onPlayPause} type="play" disabled={isLoading}>
+              {isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : buttonIcon}
             </PlayBackButton>
             <ReactionButton
               disabled={isLoading || !isUsersPartner}
               onPress={() => handleReaction(ReactionType.Cute)}
               isSelected={selectedReaction === ReactionType.Cute}
               isFaded={
-                (!!selectedReaction &&
-                  selectedReaction !== ReactionType.Cute) ||
-                !isUsersPartner
-              }>
+                (!!selectedReaction && selectedReaction !== ReactionType.Cute) || !isUsersPartner
+              }
+            >
               <ReactionIcon>🥹</ReactionIcon>
             </ReactionButton>
             <ReactionButton
@@ -203,10 +196,9 @@ function PlayUserModal() {
               onPress={() => handleReaction(ReactionType.Fire)}
               isSelected={selectedReaction === ReactionType.Fire}
               isFaded={
-                (!!selectedReaction &&
-                  selectedReaction !== ReactionType.Fire) ||
-                !isUsersPartner
-              }>
+                (!!selectedReaction && selectedReaction !== ReactionType.Fire) || !isUsersPartner
+              }
+            >
               <ReactionIcon>🔥</ReactionIcon>
             </ReactionButton>
           </PlayBackContainer>

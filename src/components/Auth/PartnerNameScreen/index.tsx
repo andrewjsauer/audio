@@ -45,7 +45,10 @@ function PartnerNameScreen() {
   return (
     <Layout isBackButtonEnabled={false} title={t('auth.partnerDetails.nameScreen.title')}>
       <Container>
-        <ColorPicker color={color} onChange={(colorOption) => handlePartnerDetails({ color: colorOption })} />
+        <ColorPicker
+          color={color}
+          onChange={(colorOption) => handlePartnerDetails({ color: colorOption })}
+        />
         <InputWrapper>
           <TextInput
             placeholder={t('auth.partnerDetails.nameScreen.inputPlaceholder')}
@@ -55,6 +58,7 @@ function PartnerNameScreen() {
             returnKeyType="next"
             value={name}
             autoFocus
+            placeholderTextColor="#909090"
           />
           <InputSubtitle>{t('auth.partnerDetails.nameScreen.inputDescription')}</InputSubtitle>
         </InputWrapper>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { Platform } from 'react-native';
 
 import { AppDispatch } from '@store/index';
 import { updateUser } from '@store/auth/thunks';
@@ -13,7 +14,7 @@ import Layout from '@components/shared/Layout';
 import LoadingView from '@components/shared/LoadingView';
 import Button from '@components/shared/Button';
 
-import { ScreenContainer, TextInput, InputWrapper } from './style';
+import { KeyboardAvoidingView, TextInput, InputWrapper } from './style';
 
 function NameScreen() {
   const { t } = useTranslation();
@@ -48,7 +49,7 @@ function NameScreen() {
       {isLoading ? (
         <LoadingView />
       ) : (
-        <ScreenContainer>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <InputWrapper>
             <TextInput
               placeholder={t('accountScreen.nameScreen.placeholder')}
@@ -57,10 +58,15 @@ function NameScreen() {
               autoCapitalize="words"
               returnKeyType="next"
               value={newName}
+              placeholderTextColor="#909090"
             />
           </InputWrapper>
-          <Button text={t('accountScreen.nameScreen.submitButton')} onPress={handleSubmit} size="small" />
-        </ScreenContainer>
+          <Button
+            text={t('accountScreen.nameScreen.submitButton')}
+            onPress={handleSubmit}
+            size="small"
+          />
+        </KeyboardAvoidingView>
       )}
     </Layout>
   );

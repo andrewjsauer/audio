@@ -2,10 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 
-import {
-  setPartnerReactionToUser,
-  setUserReactionToPartner,
-} from '@store/recording/slice';
+import { setPartnerReactionToUser, setUserReactionToPartner } from '@store/recording/slice';
 import { UserDataType, ListeningType } from '@lib/types';
 
 type UseListeningSubscriptionProps = {

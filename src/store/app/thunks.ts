@@ -12,6 +12,7 @@ import Config from 'react-native-config';
 import { trackEvent } from '@lib/analytics';
 
 import { updateUser } from '@store/auth/thunks';
+import { UserDataType } from '@lib/types';
 
 export const signOut = createAsyncThunk(
   'app/signOut',
@@ -25,20 +26,25 @@ export const signOut = createAsyncThunk(
     },
     { dispatch, rejectWithValue },
   ) => {
-    if (userId && !isDelete) {
-      dispatch(
-        updateUser({
-          id: userId,
-          userDetails: {
-            lastActiveAt: firestore.FieldValue.serverTimestamp(),
-          },
-        }),
-      );
-    }
-
     try {
-      await Purchases.logOut();
-      await auth().signOut();
+      if (userId && !isDelete) {
+        dispatch(
+          updateUser({
+            id: userId,
+            userDetails: {
+              lastActiveAt: firestore.Timestamp.now(),
+            },
+          }),
+        );
+      }
+
+      if (auth().currentUser) {
+        await auth().signOut();
+      }
+
+      if (!Purchases.isConfigured) {
+        await Purchases.logOut();
+      }
 
       return null;
     } catch (error) {
@@ -54,7 +60,10 @@ export const initializeSession = createAsyncThunk(
       if (__DEV__) Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
 
       Purchases.configure({
-        apiKey: Platform.OS === 'ios' ? (Config.revenueCatiOSKey as string) : (Config.revenueCatAndroidKey as string),
+        apiKey:
+          Platform.OS === 'ios'
+            ? (Config.revenueCatiOSKey as string)
+            : (Config.revenueCatAndroidKey as string),
         appUserID: user.uid,
         observerMode: false,
         useAmazon: false,
@@ -66,14 +75,15 @@ export const initializeSession = createAsyncThunk(
       });
 
       const customerUserDocRef = firestore().collection('customers').doc(user.uid);
+      const customerUserDoc = await customerUserDocRef.get();
 
-      if (!customerUserDocRef.empty) {
+      if (customerUserDoc.exists) {
         trackEvent('customer_user_found');
-        return { isPreviouslySubscribed: true };
+        return true;
       }
 
       trackEvent('customer_user_not_found');
-      return { isPreviouslySubscribed: false };
+      return false;
     } catch (error) {
       crashlytics().log('Error initializing session');
       trackEvent('error_initializing_session', { error });
@@ -85,16 +95,44 @@ export const initializeSession = createAsyncThunk(
 
 export const purchaseProduct = createAsyncThunk(
   'app/purchaseProduct',
-  async (user: FirebaseAuthTypes.User, { rejectWithValue }) => {
+  async (
+    {
+      user,
+      partnerData,
+    }: {
+      user: FirebaseAuthTypes.User;
+      partnerData?: UserDataType;
+    },
+    { rejectWithValue },
+  ) => {
     try {
       await Purchases.purchaseProduct('yf_1799_1m_1m0');
-      await user.getIdToken(true);
 
-      return null;
+      await firestore()
+        .collection('users')
+        .doc(user.uid)
+        .set({ isSubscribed: true }, { merge: true });
+
+      if (partnerData) {
+        await firestore()
+          .collection('users')
+          .doc(partnerData.id)
+          .set({ isSubscribed: true }, { merge: true });
+      }
+
+      const customerUserDocRef = firestore().collection('customers').doc(user.uid);
+      const customerUserDoc = await customerUserDocRef.get();
+
+      if (customerUserDoc.exists) {
+        trackEvent('customer_user_found');
+        return true;
+      }
+
+      return false;
     } catch (error: any) {
       if (error.userCancelled) {
         trackEvent('user_cancelled_purchasing_product');
-        return null;
+        return false;
       }
 
       crashlytics().log('Error purchasing product');
@@ -107,13 +145,14 @@ export const purchaseProduct = createAsyncThunk(
 
 export const restorePurchases = createAsyncThunk(
   'app/restorePurchases',
-  async (user: FirebaseAuthTypes.User, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       await Purchases.restorePurchases();
-      await user.getIdToken(true);
 
       return null;
     } catch (error: any) {
+      console.log('Error restoring purchases', error);
+
       if (error.userCancelled) {
         trackEvent('user_cancelled_restoring_purchases');
         return null;

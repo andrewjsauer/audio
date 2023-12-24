@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { selectIsSubscriber } from '@store/auth/selectors';
+import { selectIsSubscribed } from '@store/auth/selectors';
 
 import { QuestionScreens, ModalScreens } from '@lib/types';
 
@@ -21,7 +21,7 @@ export type QuestionStackParamList = {
 const Stack = createStackNavigator<QuestionStackParamList>();
 
 function QuestionScreen() {
-  const isSubscribed = useSelector(selectIsSubscriber);
+  const isSubscribed = useSelector(selectIsSubscribed);
 
   return (
     <Stack.Navigator>

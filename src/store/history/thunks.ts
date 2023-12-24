@@ -2,20 +2,11 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {
-  UserDataType,
-  QuestionType,
-  RecordingType,
-  UserActionStatusType,
-} from '@lib/types';
+import { UserDataType, QuestionType, RecordingType, UserActionStatusType } from '@lib/types';
 
 import { trackEvent } from '@lib/analytics';
 
-async function getRecordingData(
-  recordings: RecordingType[],
-  userId: string,
-  partnerId: string,
-) {
+async function getRecordingData(recordings: RecordingType[], userId: string, partnerId: string) {
   const userRecording = recordings.find((rec) => rec.userId === userId);
   const partnerRecording = recordings.find((rec) => rec.userId === partnerId);
 
@@ -27,9 +18,7 @@ async function getRecordingData(
         .where('recordingId', '==', recordingId)
         .get();
 
-      return listeningSnapshot.empty
-        ? null
-        : listeningSnapshot.docs[0].data().reaction;
+      return listeningSnapshot.empty ? null : listeningSnapshot.docs[0].data().reaction;
     } catch (error) {
       trackEvent('fetch_reaction_error', { error });
       crashlytics().recordError(error);
@@ -38,14 +27,8 @@ async function getRecordingData(
   };
 
   if (userRecording && partnerRecording) {
-    const partnerReactionToUser = await fetchReaction(
-      partnerId,
-      userRecording.id,
-    );
-    const userReactionToPartner = await fetchReaction(
-      userId,
-      partnerRecording.id,
-    );
+    const partnerReactionToUser = await fetchReaction(partnerId, userRecording.id);
+    const userReactionToPartner = await fetchReaction(userId, partnerRecording.id);
 
     return {
       partnerAudioUrl: partnerRecording.audioUrl,
@@ -63,10 +46,7 @@ async function getRecordingData(
   }
 
   if (partnerRecording) {
-    const userReactionToPartner = await fetchReaction(
-      userId,
-      partnerRecording.id,
-    );
+    const userReactionToPartner = await fetchReaction(userId, partnerRecording.id);
 
     return {
       partnerAudioUrl: partnerRecording.audioUrl,
@@ -85,10 +65,7 @@ async function getRecordingData(
   }
 
   if (userRecording) {
-    const partnerReactionToUser = await fetchReaction(
-      partnerId,
-      userRecording.id,
-    );
+    const partnerReactionToUser = await fetchReaction(partnerId, userRecording.id);
 
     return {
       partnerAudioUrl: null,
@@ -123,10 +100,7 @@ async function getRecordingData(
 export const fetchHistoryData = createAsyncThunk(
   'history/fetchHistoryData',
   async (
-    {
-      userData,
-      partnerData,
-    }: { userData: UserDataType; partnerData: UserDataType },
+    { userData, partnerData }: { userData: UserDataType; partnerData: UserDataType },
     { rejectWithValue },
   ) => {
     try {
@@ -156,12 +130,10 @@ export const fetchHistoryData = createAsyncThunk(
             .where('questionId', '==', question.id)
             .get();
 
-          const recordings: RecordingType[] = recordingsSnapshot.docs.map(
-            (doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }),
-          );
+          const recordings: RecordingType[] = recordingsSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
 
           const {
             partnerAudioUrl,

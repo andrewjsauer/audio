@@ -125,3 +125,9 @@ export const InputWrapper = styled.View`
   width: 100%;
   margin-bottom: 30px;
 `;
+
+export const KeyboardAvoidingView = styled.KeyboardAvoidingView`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;

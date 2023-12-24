@@ -39,7 +39,7 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
-  padding: 4px 24px;
+  padding: 8px 20px;
   color: ${(p) => p.theme.colors.error};
   font-family: ${(p) => p.theme.fonts.bold};
   font-size: ${(p) => p.theme.fontSizes.small};

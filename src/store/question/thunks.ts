@@ -14,7 +14,14 @@ interface FetchLatestQuestionArgs {
 
 export const fetchLatestQuestion = createAsyncThunk<QuestionType, FetchLatestQuestionArgs>(
   'question/fetchLatestQuestion',
-  async ({ partnershipData, partnerData, userData }: FetchLatestQuestionArgs, { rejectWithValue }) => {
+  async (
+    { partnershipData, partnerData, userData }: FetchLatestQuestionArgs,
+    { rejectWithValue },
+  ) => {
+    console.log(`TEST!!!! partnership: ${JSON.stringify(partnershipData)}`);
+    console.log(`partner: ${JSON.stringify(partnerData)}`);
+    console.log(`user: ${JSON.stringify(userData)}`);
+
     try {
       const today = new Date();
       today.setHours(0, 0, 0, 0);

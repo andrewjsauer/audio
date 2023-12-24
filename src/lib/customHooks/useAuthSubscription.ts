@@ -10,7 +10,7 @@ import analytics from '@react-native-firebase/analytics';
 
 import { AppDispatch } from '@store/index';
 import { setUser } from '@store/auth/slice';
-import { updateUser, getUsersEntitlements } from '@store/auth/thunks';
+import { updateUser } from '@store/auth/thunks';
 import { selectUserId } from '@store/auth/selectors';
 
 import { trackEvent } from '@lib/analytics';
@@ -25,7 +25,6 @@ function useAuthStateListener() {
       analytics().setUserId(user.uid);
 
       dispatch(setUser(user));
-      dispatch(getUsersEntitlements(user));
     }
   }
 

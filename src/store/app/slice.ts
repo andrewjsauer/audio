@@ -25,6 +25,9 @@ const appSlice = createSlice({
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
     },
+    setIsPreviouslySubscribed: (state, action: PayloadAction<boolean>) => {
+      state.isPreviouslySubscribed = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(signOut.fulfilled, (state) => {
@@ -42,7 +45,7 @@ const appSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(initializeSession.fulfilled, (state, action) => {
-      state.isPreviouslySubscribed = action.payload.isPreviouslySubscribed;
+      state.isPreviouslySubscribed = action.payload;
       state.isLoading = false;
     });
     builder.addCase(initializeSession.pending, (state) => {
@@ -66,8 +69,9 @@ const appSlice = createSlice({
       state.transactionError = 'errors.purchaseError';
       state.isLoading = false;
     });
-    builder.addCase(purchaseProduct.fulfilled, (state) => {
+    builder.addCase(purchaseProduct.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.isPreviouslySubscribed = action.payload;
     });
     builder.addCase(restorePurchases.pending, (state) => {
       state.transactionError = null;
@@ -83,5 +87,5 @@ const appSlice = createSlice({
   },
 });
 
-export const { setError } = appSlice.actions;
+export const { setError, setIsPreviouslySubscribed } = appSlice.actions;
 export default appSlice.reducer;

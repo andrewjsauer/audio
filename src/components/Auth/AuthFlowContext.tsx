@@ -1,16 +1,11 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useMemo,
-  useEffect,
-} from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { AppState } from 'react-native';
 
-import { selectUserData, selectUserId } from '@store/auth/selectors';
+import { selectUserData, selectUserId, selectIsPartner } from '@store/auth/selectors';
 import { generatePartnership, updateNewUser } from '@store/auth/thunks';
+import { signOut } from '@store/app/thunks';
 import { AppDispatch } from '@store/index';
 
 import {
@@ -21,6 +16,7 @@ import {
 } from '@lib/types';
 
 import { trackEvent } from '@lib/analytics';
+import { set } from 'date-fns';
 
 interface AuthFlowContextProps {
   currentStep: number;
@@ -29,9 +25,7 @@ interface AuthFlowContextProps {
   goToPreviousStep: () => void;
   handleUserDetails: (newDetails: Partial<UserDetailsType>) => void;
   handlePartnerDetails: (newDetails: Partial<PartnerDetailsType>) => void;
-  handlePartnershipDetails: (
-    newDetails: Partial<PartnershipDetailsType>,
-  ) => void;
+  handlePartnershipDetails: (newDetails: Partial<PartnershipDetailsType>) => void;
   userDetails: UserDetailsType;
   partnerDetails: PartnerDetailsType;
   partnershipDetails: PartnershipDetailsType;
@@ -56,20 +50,36 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
 
   const userData = useSelector(selectUserData);
   const userId = useSelector(selectUserId);
-
-  const isPartner = userData && !userData.isRegistered;
+  const isPartner = useSelector(selectIsPartner);
 
   const [userDetails, setUserDetails] = useState<UserDetailsType>({});
   const [partnerDetails, setPartnerDetails] = useState<PartnerDetailsType>({});
-  const [partnershipDetails, setPartnershipDetails] =
-    useState<PartnershipDetailsType>({});
+  const [partnershipDetails, setPartnershipDetails] = useState<PartnershipDetailsType>({});
   const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
-    if (userData) {
-      setUserDetails(userData);
-    }
-  }, [userData]);
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (nextAppState.match(/inactive|background/)) {
+        dispatch(
+          signOut({
+            userId,
+            isDelete: false,
+          }),
+        );
+
+        setCurrentStep(1);
+        setUserDetails({});
+        setPartnerDetails({});
+        setPartnershipDetails({});
+
+        navigation.navigate(Steps.SignInScreen);
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   const steps = [
     Steps.SignInScreen,
@@ -88,36 +98,24 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
 
   const totalSteps = steps.length;
 
-  const handlePartnerDetails = useCallback(
-    (newDetails: Partial<PartnerDetailsType>) => {
-      setPartnerDetails((prevDetails) => ({ ...prevDetails, ...newDetails }));
-    },
-    [],
-  );
+  const handlePartnerDetails = useCallback((newDetails: Partial<PartnerDetailsType>) => {
+    setPartnerDetails((prevDetails) => ({ ...prevDetails, ...newDetails }));
+  }, []);
 
-  const handleUserDetails = useCallback(
-    (newDetails: Partial<UserDetailsType>) => {
-      setUserDetails((prevDetails) => ({ ...prevDetails, ...newDetails }));
-    },
-    [],
-  );
+  const handleUserDetails = useCallback((newDetails: Partial<UserDetailsType>) => {
+    setUserDetails((prevDetails) => ({ ...prevDetails, ...newDetails }));
+  }, []);
 
-  const handlePartnershipDetails = useCallback(
-    (newDetails: Partial<PartnershipDetailsType>) => {
-      setPartnershipDetails((prevDetails) => ({
-        ...prevDetails,
-        ...newDetails,
-      }));
-    },
-    [],
-  );
+  const handlePartnershipDetails = useCallback((newDetails: Partial<PartnershipDetailsType>) => {
+    setPartnershipDetails((prevDetails) => ({
+      ...prevDetails,
+      ...newDetails,
+    }));
+  }, []);
 
   const pascalToSnakeCaseAnd40CharMax = (str: string) => {
     return str
-      .replace(
-        /([A-Z])/g,
-        (_, p1, offset) => (offset > 0 ? '_' : '') + p1.toLowerCase(),
-      )
+      .replace(/([A-Z])/g, (_, p1, offset) => (offset > 0 ? '_' : '') + p1.toLowerCase())
       .slice(0, 40);
   };
 
@@ -144,10 +142,9 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
             partnerDetails,
             partnershipDetails,
             userDetails,
-            userId,
           }),
         );
-      } else {
+      } else if (isPartner && userData) {
         dispatch(
           updateNewUser({
             id: userId,
@@ -157,14 +154,7 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
         );
       }
     }
-  }, [
-    currentStep,
-    dispatch,
-    isPartner,
-    partnerDetails,
-    totalSteps,
-    userDetails,
-  ]);
+  }, [currentStep, dispatch, isPartner, partnerDetails, totalSteps, userDetails]);
 
   const goToPreviousStep = useCallback(() => {
     if (currentStep > 1) {
@@ -203,11 +193,7 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
     ],
   );
 
-  return (
-    <AuthFlowContext.Provider value={contextValue}>
-      {children}
-    </AuthFlowContext.Provider>
-  );
+  return <AuthFlowContext.Provider value={contextValue}>{children}</AuthFlowContext.Provider>;
 }
 
 export const useAuthFlow = () => useContext(AuthFlowContext);

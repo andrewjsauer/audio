@@ -4,7 +4,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ChevronLeft from '@assets/icons/chevron-left.svg';
 
-import { KeyboardAvoidingView, Header, Title, LayoutContainer, BackButtonWrapper, View } from './style';
+import {
+  KeyboardAvoidingView,
+  Header,
+  Title,
+  LayoutContainer,
+  BackButtonWrapper,
+  View,
+} from './style';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -14,7 +21,13 @@ type LayoutProps = {
   title?: string;
 };
 
-function Layout({ children, goBack, isBackButtonEnabled = true, isHeaderEnabled = true, title }: LayoutProps) {
+function Layout({
+  children,
+  goBack,
+  isBackButtonEnabled = true,
+  isHeaderEnabled = true,
+  title,
+}: LayoutProps) {
   const insets = useSafeAreaInsets();
 
   return (

@@ -3,7 +3,13 @@ import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
-import { UserDataType, UserActionStatusType, RecordingType, ModalScreens, ReactionType } from '@lib/types';
+import {
+  UserDataType,
+  UserActionStatusType,
+  RecordingType,
+  ModalScreens,
+  ReactionType,
+} from '@lib/types';
 
 import UserActionView from './UserActionView';
 

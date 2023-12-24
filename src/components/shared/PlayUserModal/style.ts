@@ -43,8 +43,7 @@ export const ReactionButton = styled.TouchableOpacity<{
   width: 50px;
   height: 50px;
   opacity: ${(p) => (p.isFaded ? 0.5 : 1)};
-  background-color: ${(p) =>
-    p.isSelected ? p.theme.colors.play : p.theme.colors.transparentGray};
+  background-color: ${(p) => (p.isSelected ? p.theme.colors.play : p.theme.colors.transparentGray)};
 `;
 
 export const ReactionIcon = styled.Text`

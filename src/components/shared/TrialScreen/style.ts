@@ -9,16 +9,16 @@ export const Container = styled.View`
 
 export const Header = styled.View`
   align-items: center;
-  margin-top: 80px;
+  margin-top: 120px;
 `;
 
 export const Footer = styled.View`
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 `;
 
 export const Title = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.xlarge};
+  font-size: ${(p) => p.theme.fontSizes.xxlarge};
   font-family: ${(p) => p.theme.fonts.black};
 `;
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const CodeInput = styled.TextInput.attrs((props) => ({
-  placeholderTextColor: props.theme.colors.placeholder,
+  placeholderTextColor: props.theme.colors.lightGray,
 }))`
   border: 1px solid ${(p) => p.theme.colors.lightGray};
   font-size: ${(p) => p.theme.fontSizes.regular};

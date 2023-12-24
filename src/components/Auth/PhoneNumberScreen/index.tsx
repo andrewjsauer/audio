@@ -9,12 +9,7 @@ import { resendCode, submitPhoneNumber, verifyCode } from '@store/auth/thunks';
 import { showNotification } from '@store/ui/slice';
 import { setConfirm, setCode } from '@store/auth/slice';
 
-import {
-  selectCode,
-  selectConfirm,
-  selectIsLoading,
-  selectUser,
-} from '@store/auth/selectors';
+import { selectCode, selectConfirm, selectIsLoading, selectUser } from '@store/auth/selectors';
 
 import { AppDispatch } from '@store/index';
 import { useAuthFlow } from '@components/Auth/AuthFlowContext';
@@ -26,8 +21,7 @@ function PhoneNumberScreenContainer() {
   const dispatch = useDispatch<AppDispatch>();
 
   const phoneInputRef = useRef<PhoneInput>(null);
-  const { goToNextStep, goToPreviousStep, handleUserDetails, userDetails } =
-    useAuthFlow();
+  const { goToNextStep, goToPreviousStep, handleUserDetails, userDetails } = useAuthFlow();
 
   const { phoneNumber = '' } = userDetails;
 
@@ -102,9 +96,7 @@ function PhoneNumberScreenContainer() {
       onPhoneSubmit={handlePhoneSubmit}
       phoneInputRef={phoneInputRef}
       phoneNumber={phoneNumber}
-      setPhoneNumber={(number: string) =>
-        handleUserDetails({ phoneNumber: number })
-      }
+      setPhoneNumber={(number: string) => handleUserDetails({ phoneNumber: number })}
     />
   ) : (
     <VerificationCodeScreen
