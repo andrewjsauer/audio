@@ -8,7 +8,6 @@ import {
   selectLastFailedAction,
   selectPartnerData,
   selectPartnershipData,
-  selectPartnershipId,
 } from '@store/partnership/selectors';
 import { selectCurrentQuestion, selectIsLoadingQuestion } from '@store/question/selectors';
 import {
@@ -82,11 +81,12 @@ function SubscriberScreen() {
     if (
       (!currentQuestion || isQuestionExpired(currentQuestion)) &&
       partnershipData &&
-      partnerData
+      partnerData &&
+      !isLoadingQuestion
     ) {
       dispatch(fetchLatestQuestion({ partnershipData, partnerData, userData }));
     }
-  }, [partnershipData, currentQuestion, partnerData]);
+  }, [partnershipData, isLoadingQuestion, currentQuestion, partnerData]);
 
   useNotificationPermissions();
 

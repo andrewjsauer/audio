@@ -37,16 +37,14 @@ const relationshipTypeMap: { [key in RelationshipType]: string } = {
   married: 'Married',
 };
 
-function calculateDuration(startDate: Date | string | typeof admin.firestore.Timestamp) {
+function calculateDuration(startDate: any) {
   const now = new Date();
   let start;
 
-  if (startDate instanceof Date) {
-    start = startDate;
-  } else if (startDate instanceof admin.firestore.Timestamp) {
+  if (typeof startDate?.toDate === 'function') {
     start = startDate.toDate();
   } else {
-    start = new Date(startDate as string);
+    start = new Date(startDate.seconds * 1000);
   }
 
   if (Number.isNaN(start.getTime())) {
@@ -409,10 +407,14 @@ exports.updateNewUser = functions.https.onCall(async (data, context) => {
     const tempDoc = await tempDocRef.get();
 
     if (tempDoc.exists) {
+      const prevData = tempDoc.data();
+      const { isSubscribed } = prevData as any;
+
       const newUserRef = usersCollection.doc(id);
       userPayload = {
-        ...userPayload,
         ...tempDoc.data(),
+        ...userPayload,
+        isSubscribed,
         id,
       };
 

@@ -17,7 +17,6 @@ const usePartnerSubscription = () => {
 
   useEffect(() => {
     let partnershipUserUnsubscribe = () => {};
-    let partnerUnsubscribe = () => {};
 
     if (userId) {
       partnershipUserUnsubscribe = firestore()
@@ -30,6 +29,14 @@ const usePartnerSubscription = () => {
           }
         });
     }
+
+    return () => {
+      partnershipUserUnsubscribe();
+    };
+  }, [userId, dispatch]);
+
+  useEffect(() => {
+    let partnerUnsubscribe = () => {};
 
     if (partnershipUserData) {
       partnerUnsubscribe = firestore()
@@ -44,10 +51,9 @@ const usePartnerSubscription = () => {
     }
 
     return () => {
-      partnershipUserUnsubscribe();
       partnerUnsubscribe();
     };
-  }, []);
+  }, [partnershipUserData, dispatch]);
 };
 
 export default usePartnerSubscription;

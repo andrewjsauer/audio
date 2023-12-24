@@ -43,8 +43,6 @@ function UserAction({
 }: UserActionProps) {
   const { t } = useTranslation();
 
-  const isDateValid = createdAt instanceof firebase.Timestamp;
-
   const statusOptions = useMemo(() => {
     return {
       [StatusTypes.Lock]: {
@@ -77,7 +75,7 @@ function UserAction({
         description: '',
       },
     };
-  }, []);
+  }, [status]);
 
   const { icon: Icon, title, description } = statusOptions[status];
   return (

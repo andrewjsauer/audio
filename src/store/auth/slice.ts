@@ -48,7 +48,7 @@ const authSlice = createSlice({
     setConfirm: (state, action: PayloadAction<FirebaseAuthTypes.ConfirmationResult>) => {
       state.confirm = action.payload;
     },
-    setUserData: (state, action: PayloadAction<UserDataType>) => {
+    setUserData: (state, action: PayloadAction<UserDataType | null>) => {
       state.userData = action.payload;
     },
   },
