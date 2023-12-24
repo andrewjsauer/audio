@@ -1,6 +1,7 @@
 #import "AppDelegate.h"
-#import "RNFBAppCheckModule.h" // Firebase app check
-#import <Firebase.h> // Firebase setup
+#import "RNFBAppCheckModule.h"
+#import <Firebase.h>
+#import "RNSplashScreen.h"
 
 #import <React/RCTBundleURLProvider.h>
 
@@ -10,12 +11,17 @@
 {
   [RNFBAppCheckModule sharedInstance];
   [FIRApp configure];
+
   self.moduleName = @"audio";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
-  return [super application:application didFinishLaunchingWithOptions:launchOptions];
+  BOOL ret = [super application:application didFinishLaunchingWithOptions:launchOptions];
+  if (ret == YES) {
+    [RNSplashScreen show]; 
+  }
+  return ret;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

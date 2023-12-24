@@ -1,0 +1,63 @@
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { trackScreen } from '@lib/analytics';
+
+import Button from '@components/shared/Button';
+import Layout from '@components/Auth/Layout';
+
+import { useAuthFlow } from '@components/Auth/AuthFlowContext';
+import ButtonURL from '@components/shared/ButtonUrl';
+
+import {
+  ButtonWrapper,
+  Container,
+  FooterContainer,
+  Header,
+  LegalButtonContainer,
+  LegalContainer,
+  LegalText,
+  Subtitle,
+  SubtitleDescription,
+  Title,
+} from './style';
+
+function SignInScreen() {
+  const { t } = useTranslation();
+  const { goToNextStep } = useAuthFlow();
+
+  useEffect(() => {
+    trackScreen('SignInScreen');
+  }, []);
+
+  return (
+    <Layout isHeaderEnabled={false}>
+      <Container>
+        <Header>
+          <Title>{t('auth.signInScreen.title')}</Title>
+          <Subtitle>{t('auth.signInScreen.subtitle')}</Subtitle>
+          <SubtitleDescription>{t('auth.signInScreen.description')}</SubtitleDescription>
+        </Header>
+        <FooterContainer>
+          <LegalContainer>
+            <ButtonWrapper>
+              <Button mode="dark" text={t('auth.signIn')} onPress={goToNextStep} />
+            </ButtonWrapper>
+            <LegalText>{t('auth.signInScreen.terms')}</LegalText>
+            <LegalButtonContainer>
+              <ButtonURL url="https://docs.google.com/document/d/1vvfIdHnZnoNj_hTTqNFcRme5IsuN5DQC6WEHU4wAqA4/edit?usp=sharing">
+                {t('accountScreen.privacy')}
+              </ButtonURL>
+              <LegalText>{t('accountScreen.and')}</LegalText>
+              <ButtonURL url="https://docs.google.com/document/d/1KursDxKfe8pzyC4RI-lldCLcxxPLOkmwLrxIEnL_Kbw/edit?usp=sharing">
+                {t('accountScreen.terms')}
+              </ButtonURL>
+            </LegalButtonContainer>
+          </LegalContainer>
+        </FooterContainer>
+      </Container>
+    </Layout>
+  );
+}
+
+export default SignInScreen;

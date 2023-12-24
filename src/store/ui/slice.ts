@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  initializePartnership,
+  generatePartnership,
   resendCode,
   submitPhoneNumber,
   updateUser,
   verifyCode,
+  deleteRelationship,
 } from '@store/auth/thunks';
 import { signOut } from '@store/app/thunks';
+import { saveUserRecording } from '@store/recording/thunks';
 
 interface UIState {
   notification: {
@@ -63,10 +65,10 @@ export const uiSlice = createSlice({
           type: 'error',
         };
       })
-      .addCase(initializePartnership.rejected, (state) => {
+      .addCase(generatePartnership.rejected, (state) => {
         state.notification = {
           title: 'errors.pleaseTryAgain',
-          description: 'errors.partnershipInitializationFailed',
+          description: 'errors.partnershipGenerationFailed',
           type: 'error',
         };
       })
@@ -74,6 +76,20 @@ export const uiSlice = createSlice({
         state.notification = {
           title: 'errors.pleaseTryAgain',
           description: 'errors.signOutFailed',
+          type: 'error',
+        };
+      })
+      .addCase(saveUserRecording.rejected, (state) => {
+        state.notification = {
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.recordingSaveFailed',
+          type: 'error',
+        };
+      })
+      .addCase(deleteRelationship.rejected, (state) => {
+        state.notification = {
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.deleteRelationshipFailed',
           type: 'error',
         };
       });

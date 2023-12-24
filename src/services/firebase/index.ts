@@ -3,9 +3,7 @@ import { firebase } from '@react-native-firebase/app-check';
 
 import Config from 'react-native-config';
 
-const rnfbProvider = firebase
-  .appCheck()
-  .newReactNativeFirebaseAppCheckProvider();
+const rnfbProvider = firebase.appCheck().newReactNativeFirebaseAppCheckProvider();
 
 rnfbProvider.configure({
   android: {

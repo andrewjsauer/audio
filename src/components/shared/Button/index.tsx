@@ -8,7 +8,7 @@ export interface ButtonProps extends Omit<TouchableOpacityProps, 'children'> {
   hasNotification?: boolean;
   isDisabled?: boolean;
   isLoading?: boolean;
-  mode?: 'light' | 'dark' | 'error';
+  mode?: 'light' | 'dark' | 'error' | 'hidden';
   size?: 'small' | 'medium';
   text?: string;
 }
@@ -33,7 +33,11 @@ function Button({
       {isLoading ? (
         <ActivityIndicator
           size="small"
-          color={theme.colors[mode === 'light' ? 'black' : 'white']}
+          color={
+            theme.colors[
+              mode === 'light' || mode === 'hidden' ? 'black' : 'white'
+            ]
+          }
         />
       ) : (
         <>

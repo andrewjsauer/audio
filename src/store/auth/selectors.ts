@@ -7,14 +7,26 @@ export const selectConfirm = (state) => state.auth.confirm;
 export const selectError = (state) => state.auth.error;
 export const selectIsLoading = (state) => state.auth.isLoading;
 
-export const selectIsUserLoggedIn = createSelector(
-  selectUser,
-  (user) => !!user,
-);
+export const selectIsUserLoggedIn = createSelector(selectUser, (user) => !!user);
+
+export const selectUserId = createSelector(selectUser, (user) => user?.uid);
 
 export const selectIsUserRegistered = createSelector(
   selectUserData,
-  (userData) => !!userData && userData.isRegistered,
+  (userData) => !!userData && !!userData.isRegistered,
 );
 
-export const selectUserId = createSelector(selectUserData, (user) => user?.id);
+export const selectPartnershipId = createSelector(
+  selectUserData,
+  (userData) => !!userData && userData.partnershipId,
+);
+
+export const selectIsPartner = createSelector(
+  selectUserData,
+  (userData) => (!!userData && userData?.isPartner) ?? false,
+);
+
+export const selectIsSubscribed = createSelector(
+  selectUserData,
+  (userData) => (!!userData && userData?.isSubscribed) ?? false,
+);

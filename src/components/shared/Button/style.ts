@@ -1,11 +1,10 @@
-/* eslint-disable no-nested-ternary */
 import styled from 'styled-components/native';
 import { ButtonProps } from './index';
 
 const buttonSizeStyles = {
   small: {
-    width: '140px',
-    height: '40px',
+    width: '200px',
+    height: '48px',
     fontSize: '14px',
   },
   medium: {
@@ -23,6 +22,8 @@ export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
     switch (mode) {
       case 'light':
         return theme.colors.white;
+      case 'hidden':
+        return theme.colors.transparentGray;
       case 'dark':
         return theme.colors.gray;
       case 'error':
@@ -34,17 +35,27 @@ export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
   align-items: center;
   justify-content: center;
   position: relative;
-
-  ${({ size }) => size && buttonSizeStyles[size]};
+  width: ${({ size }) => size && buttonSizeStyles[size].width};
+  height: ${({ size }) => size && buttonSizeStyles[size].height};
 `;
 
 export const ButtonText = styled.Text<ButtonProps>`
-  color: ${({ mode, disabled, theme }) =>
-    disabled
-      ? theme.colors.white
-      : mode === 'light'
-        ? theme.colors.black
-        : theme.colors.white};
+  color: ${({ mode, disabled, theme }) => {
+    if (disabled) return theme.colors.white;
+
+    switch (mode) {
+      case 'light':
+        return theme.colors.black;
+      case 'hidden':
+        return theme.colors.gray;
+      case 'dark':
+        return theme.colors.white;
+      case 'error':
+        return theme.colors.white;
+      default:
+        return theme.colors.black;
+    }
+  }};
   font-family: ${(props) => props.theme.fonts.bold};
   font-size: ${(props) => buttonSizeStyles[props.size ?? 'medium'].fontSize};
 `;

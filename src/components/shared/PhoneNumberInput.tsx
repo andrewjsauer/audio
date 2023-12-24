@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import PhoneNumberInput from 'react-native-phone-number-input';
 import { AsYouType } from 'libphonenumber-js';
@@ -21,6 +22,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito-Bold',
     color: '#000000',
   },
+  inputStyle: {
+    fontSize: 18,
+    fontFamily: 'Nunito-Bold',
+    color: '#000000',
+  },
   codeText: {
     fontSize: 14,
     fontFamily: 'Nunito-Regular',
@@ -37,12 +43,9 @@ type Props = {
   setPhoneNumber: (text: string) => void;
 };
 
-function PhoneNumberInputContainer({
-  phoneInputRef,
-  phoneNumber,
-  setPhoneNumber,
-}: Props) {
+function PhoneNumberInputContainer({ phoneInputRef, phoneNumber, setPhoneNumber }: Props) {
   const [countryCode, setCountryCode] = useState<any>('US');
+  const { t } = useTranslation();
 
   const handlePhoneNumberChange = (number: string) => {
     const formattedNumber = new AsYouType(countryCode).input(number);
@@ -68,6 +71,11 @@ function PhoneNumberInputContainer({
       textContainerStyle={styles.textContainer}
       textInputStyle={styles.textInput}
       value={phoneNumber}
+      textInputProps={{
+        placeholder: `${t('phoneNumber')}`,
+        placeholderTextColor: '#909090',
+        keyboardType: 'phone-pad',
+      }}
     />
   );
 }

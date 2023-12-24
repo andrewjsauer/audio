@@ -16,8 +16,7 @@ export const BaseContainer = styled.View`
   justify-content: center;
 `;
 
-export const AnimatedContainer =
-  Animated.createAnimatedComponent(BaseContainer);
+export const AnimatedContainer = Animated.createAnimatedComponent(BaseContainer);
 
 export const Container = styled.View<TypeProps>`
   flex-direction: row;
@@ -67,7 +66,7 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text<TypeProps>`
-  padding: 4px 24px;
+  padding: 8px 24px;
   color: ${({ type, theme }) => {
     switch (type) {
       case 'error':
@@ -86,4 +85,5 @@ export const CloseButton = styled.TouchableOpacity`
   position: absolute;
   top: 10px;
   right: 10px;
+  z-index: 1;
 `;

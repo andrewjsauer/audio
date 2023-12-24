@@ -31,7 +31,7 @@ function Notification() {
   const dismissNotification = () => {
     Animated.timing(fadeAnim, {
       toValue: 0,
-      duration: 300,
+      duration: 0,
       useNativeDriver: true,
     }).start(() => {
       dispatch(hideNotification());

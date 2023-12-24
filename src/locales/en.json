@@ -3,6 +3,8 @@
   "success": "Success!",
   "submit": "Submit",
   "retry": "Retry",
+  "you": "You",
+  "phoneNumber": "Phone Number",
   "permissions": {
     "notifications": {
       "title": "Know when {{ name }} answers...",
@@ -30,14 +32,121 @@
     "birthdayEmpty": "Birthday cannot be empty",
     "colorEmpty": "Color cannot be empty",
     "userUpdateFailed": "Something went wrong when updating your user",
-    "partnershipInitializationFailed": "Something went wrong when initializing your partnership"
+    "partnershipGenerationFailed": "Something went wrong when initializing your partnership",
+    "initializeSession": "Something went wrong when initializing your user",
+    "errorPurchasing": "Error Purchasing",
+    "recordingSaveFailed": "Something went wrong when saving your recording",
+    "historyAPIError": "Something went wrong when fetching your history",
+    "initSessionAPIError": "Something went wrong when initializing your session",
+    "purchaseError": "Something went wrong when purchasing your subscription",
+    "restoreError": "Something went wrong when restoring your subscription",
+    "fetchPartnerDataAPIError": "Something went wrong when fetching your partner's data",
+    "fetchPartnershipDataAPIError": "Something went wrong when fetching your partnership data",
+    "fetchQuestionAPIError": "Something went wrong when fetching your question",
+    "audioPlayBackError": "Something went wrong when playing your audio. Please try again",
+    "deleteRelationshipFailed": "Something went wrong when deleting your relationship"
+  },
+  "browserScreen": {
+    "title": "Browser"
+  },
+  "accountScreen": {
+    "title": "Account Settings",
+    "yourName": "Your First Name",
+    "yourColor": "Your Color",
+    "yourPartnerName": "Your Partner's Name",
+    "yourPartnerColor": "Your Partner's Color",
+    "signOut": "Sign Out",
+    "deleteAccount": "End Relationship and Delete Accounts",
+    "and": " and ",
+    "legal": "Daily Qs from SAUERAPPLE LLC",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "deleteAccountModal": {
+      "title": "Are you sure you want to end this relationship?",
+      "description": "This will delete your account and your partner's account. You will no longer be able to access your history or recordings.",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "colorScreen": {
+      "title": "Change your color",
+      "success": "Your color has been updated!"
+    },
+    "nameScreen": {
+      "title": "Change your name",
+      "submitButton": "Save",
+      "placeholder": "Type a new name",
+      "success": "Your name has been updated!"
+    }
+  },
+  "questionScreen": {
+    "nonSubscriberScreen": {
+      "default": {
+        "text": "Whats the best date you two have been on together?"
+      },
+      "notification": {
+        "title": "Oops! Your subscription has expired...",
+        "description": "Please fix your payment to continue using the app!",
+        "restoreButtonText": "Restore Purchases",
+        "updatePaymentButtonText": "Subscribe"
+      }
+    },
+    "subscriberScreen": {
+      "redo": "Redo",
+      "submit": "Submit",
+      "timeRemaining": "{{ time }} remaining...",
+      "lock": {
+        "title": "{{ name }} answered",
+        "description": "Record your answer to hear it!"
+      },
+      "pendingRecord": {
+        "title": "{{ name }} has not yet answered"
+      },
+      "record": {
+        "title": "Tap to record your answer"
+      },
+      "play": {
+        "title": "{{ name }} answered",
+        "description": "{{ date }} at {{ time }}"
+      },
+      "audioPermissions": {
+        "title": "Allow permissions to record",
+        "description": "You must allow permissions to record your answer",
+        "buttonText": "Allow"
+      }
+    }
+  },
+  "trialScreen": {
+    "title": "Okay, you're all set!",
+    "subTitle": "Start your 30-day trial",
+    "benefit1": "First 30 days",
+    "free": "free",
+    "benefit2": "Monthly per couple",
+    "benefit2Description": "Starting {{ date }}",
+    "price": "$17.99",
+    "footer": {
+      "title": "Cancel Anytime. Try it out!",
+      "description": "Your treat! You'll be paying $17.99 month for both you and your partner. Try it for free this month. Cancel anytime.",
+      "buttonText": "Start Free Trial",
+      "restoreButtonText": "Restore Purchases"
+    }
+  },
+  "historyScreen": {
+    "title": "History",
+    "noResults": "Past recordings will show up here...\n\n You’ll only be able to listen to recordings where you both answered the question!",
+    "status": {
+      "bothAnswered": "You both answered",
+      "partnerAnswered": "{{ name }} answered, but you didn't",
+      "userAnswered": "You answered, but {{ name }} didn't",
+      "bothDidNotAnswer": "Neither of you answered"
+    }
   },
   "auth": {
     "signInScreen": {
-      "title": "You First",
+      "title": "Daily Qs",
       "subtitle": "Couples Edition",
       "description": "Reveal each others’ answers to\n daily personalized questions",
-      "buttonText": "Get Code"
+      "buttonText": "Get Code",
+      "terms": "By signing up, you agree to our"
     },
     "phoneNumberScreen": {
       "title": "Welcome! Sign In to get started",

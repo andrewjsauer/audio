@@ -1,6 +1,19 @@
 /* eslint-disable no-shadow */
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
+export enum RootScreens {
+  AuthStack = 'AuthStack',
+  AppStack = 'AppStack',
+}
+
+export enum AppScreens {
+  QuestionScreen = 'QuestionScreen',
+  AccountScreen = 'AccountScreen',
+  HistoryScreen = 'HistoryScreen',
+  TrialScreen = 'TrialScreen',
+  BrowserScreen = 'BrowserScreen',
+}
+
 export enum AuthScreens {
   SignInScreen = 'SignInScreen',
   PhoneNumberStep = 'PhoneNumberScreen',
@@ -12,22 +25,55 @@ export enum AuthScreens {
   InviteStep = 'InviteScreen',
 }
 
+export enum QuestionScreens {
+  QuestionSubscriberScreen = 'QuestionSubscriberScreen',
+  QuestionNonSubscriberScreen = 'QuestionNonSubscriberScreen',
+  AccountSettingsScreen = 'AccountSettingsScreen',
+}
+
+export enum ModalScreens {
+  RecordUserModal = 'RecordUserModal',
+  PlayUserModal = 'PlayUserModal',
+}
+
+export enum HistoryScreens {
+  HistoryScreen = 'QuestionSubscriberScreen',
+  PlayUserModal = 'PlayUserModal',
+}
+
+export enum AccountScreens {
+  SettingsScreen = 'SettingsScreen',
+  ColorScreen = 'ColorScreen',
+  NameScreen = 'NameScreen',
+}
+
 export type UserDataType = {
   birthDate?: Date;
   color?: string;
   createdAt?: FirebaseFirestoreTypes.Timestamp;
+  deviceIds?: FirebaseFirestoreTypes.Timestamp;
   id?: string;
-  isRegistered: boolean;
+  isRegistered?: boolean;
   lastActiveAt?: FirebaseFirestoreTypes.Timestamp;
   name?: string;
   partnershipId?: string;
   phoneNumber?: string;
+  isSubscribed?: boolean;
 };
 
 export type PartnershipDataType = {
   id?: string;
-  startDate: Date;
-  type: string;
+  startDate?: Date;
+  type?: string;
+  createdAt?: FirebaseFirestoreTypes.Timestamp;
+  latestQuestionId?: string;
+};
+
+export type PartnershipUserDataType = {
+  id?: string;
+  partnershipId?: string;
+  userId?: string;
+  otherUserId?: string;
   createdAt: FirebaseFirestoreTypes.Timestamp;
 };
 
@@ -47,4 +93,72 @@ export type PartnerDetailsType = {
 export type PartnershipDetailsType = {
   startDate?: Date;
   type?: string;
+};
+
+export type QuestionType = {
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  id: string;
+  partnershipId: string;
+  text: string;
+};
+
+export enum UserActionStatusType {
+  Lock = 'Lock',
+  PendingRecord = 'PendingRecord',
+  Play = 'Play',
+  Record = 'Record',
+}
+
+export enum ReactionType {
+  Love = 'love',
+  Laugh = 'laugh',
+  Cute = 'cute',
+  Fire = 'fire',
+}
+
+export enum ReactionTypeIcons {
+  love = '❤️',
+  laugh = '😂',
+  cute = '🥹',
+  fire = '🔥',
+}
+
+export type RecordingType = {
+  id: string;
+  userId: string;
+  questionId: string;
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  duration: string;
+  audioUrl: string;
+  partnershipId: string;
+  didLikeQuestion: boolean | null;
+  feedbackText: string | null;
+  reaction: ReactionType[] | null;
+};
+
+export type HistoryType = {
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  id: string;
+  partnerAudioUrl: string | null;
+  partnerColor: string;
+  partnerDuration: string | null;
+  partnerReactionToUser: ReactionType | null;
+  partnerRecordingId: string | null;
+  partnershipTextKey: string;
+  partnerStatus: UserActionStatusType;
+  text: string;
+  userAudioUrl: string | null;
+  userColor: string;
+  userDuration: string | null;
+  userReactionToPartner: ReactionType | null;
+  userRecordingId: string | null;
+  userStatus: UserActionStatusType;
+};
+
+export type ListeningType = {
+  id: string;
+  recordingId: string;
+  userId: string;
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  reaction: ReactionType;
 };

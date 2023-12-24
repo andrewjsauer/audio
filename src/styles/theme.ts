@@ -1,13 +1,17 @@
 const theme = {
   colors: {
     black: '#000000',
+    blue: '#2196F3',
+    error: '#DD5C42',
     gray: '#404040',
     lightGray: '#909090',
+    lighterGray: '#D9D9D9',
+    play: '#1B6470',
+    record: '#DC2323',
     red: '#D32F2F',
+    success: '#358A57',
+    transparentGray: '#F1F1F1',
     white: '#FFFFFF',
-    error: '#DD5C42',
-    success: '#4CAF50',
-    blue: '#2196F3',
   },
   fonts: {
     regular: 'Nunito-Regular',
@@ -28,12 +32,15 @@ const theme = {
     semiBoldItalic: 'Nunito-SemiBoldItalic',
   },
   fontSizes: {
+    xsmall: '12px',
     small: '14px',
     regular: '16px',
     medium: '18px',
     large: '20px',
     xlarge: '24px',
-    logo: '44px',
+    xxlarge: '28px',
+    question: '30px',
+    logo: '50px',
   },
 };
 
