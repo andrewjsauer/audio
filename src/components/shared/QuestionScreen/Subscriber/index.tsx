@@ -68,8 +68,7 @@ function SubscriberScreen() {
 
   useEffect(() => {
     trackScreen('SubscriberScreen');
-
-    if (!partnershipData) dispatch(fetchPartnership(userData?.partnershipId));
+    if (!partnershipData) dispatch(fetchPartnership(userData.partnershipId));
   }, []);
 
   useEffect(() => {

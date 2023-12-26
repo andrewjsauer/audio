@@ -95,12 +95,12 @@ export const generatePartnership = createAsyncThunk(
       const { data } = await functions().httpsCallable('generatePartnership')({
         userDetails: {
           ...userDetails,
-          birthDate: firestore.Timestamp.fromDate(userDetails.birthDate),
+          birthDate: firestore.Timestamp.fromDate(userDetails.birthDate as Date),
         },
         partnerDetails,
         partnershipDetails: {
           ...partnershipDetails,
-          birthDate: firestore.Timestamp.fromDate(partnershipDetails.startDate),
+          startDate: firestore.Timestamp.fromDate(partnershipDetails.startDate as Date),
         },
       });
 
@@ -146,7 +146,7 @@ export const updateNewUser = createAsyncThunk(
   async ({ id, userDetails, tempId }: UpdateUserArgs, { rejectWithValue }) => {
     const userPayload = {
       ...userDetails,
-      birthDate: firestore.Timestamp.fromDate(userDetails.birthDate),
+      birthDate: firestore.Timestamp.fromDate(userDetails.birthDate as Date),
     };
 
     try {

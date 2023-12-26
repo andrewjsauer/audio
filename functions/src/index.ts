@@ -3,6 +3,7 @@ import * as admin from 'firebase-admin';
 import { defineSecret } from 'firebase-functions/params';
 
 import { v4 as uuidv4 } from 'uuid';
+import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 import { OpenAI } from 'openai';
 
 admin.initializeApp({
@@ -37,46 +38,25 @@ const relationshipTypeMap: { [key in RelationshipType]: string } = {
   married: 'Married',
 };
 
-function calculateDuration(startDate: any) {
-  const now = new Date();
-  let start;
-
-  if (typeof startDate?.toDate === 'function') {
-    start = startDate.toDate();
-  } else {
-    start = new Date(startDate.seconds * 1000);
-  }
-
-  if (Number.isNaN(start.getTime())) {
-    functions.logger.error(`Invalid date: ${startDate}`);
+function calculateDuration(startDate: FirebaseFirestore.Timestamp): string {
+  if (!startDate || typeof startDate.toDate !== 'function') {
+    functions.logger.error(`Invalid date: ${JSON.stringify(startDate)}`);
     return 'some amount of time';
   }
 
-  let years = now.getFullYear() - start.getFullYear();
-  let months = now.getMonth() - start.getMonth();
-  let days = now.getDate() - start.getDate();
+  const start = startDate.toDate();
+  const now = new Date();
 
-  if (days < 0) {
-    months -= 1;
-    days += new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate();
-  }
+  const years = differenceInYears(now, start);
+  if (years > 0) return `${years} year${years > 1 ? 's' : ''}`;
 
-  if (months < 0) {
-    years -= 1;
-    months += 12;
-  }
+  const months = differenceInMonths(now, start);
+  if (months > 0) return `${months} month${months !== 1 ? 's' : ''}`;
 
-  if (years > 0) {
-    return `${years} year${years > 1 ? 's' : ''}`;
-  }
-  if (months > 0) {
-    return `${months} month${months !== 1 ? 's' : ''}`;
-  }
-  if (days > 0) {
-    return `${days} day${days !== 1 ? 's' : ''}`;
-  }
+  const days = differenceInDays(now, start);
+  if (days > 0) return `${days} day${days !== 1 ? 's' : ''}`;
 
-  return 'Same day';
+  return 'same day';
 }
 
 exports.generateQuestion = functions
@@ -178,7 +158,7 @@ exports.generateQuestion = functions
       id: questionId,
       partnershipId: partnershipData.id,
       text: questionText,
-      createdAt: admin.firestore.Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 
     try {
@@ -666,10 +646,6 @@ async function getPartnerIdByPhoneNumber(phoneNumber: string) {
   return uuidv4();
 }
 
-const convertTimestampToISO = (timestamp: string | Date | any) => {
-  return timestamp ? timestamp.toDate().toISOString() : new Date().toISOString();
-};
-
 exports.generatePartnership = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
@@ -688,9 +664,9 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     const partnershipRef = admin.firestore().collection('partnership').doc(partnershipId);
     const partnershipData = {
       id: partnershipId,
-      startDate: admin.firestore.Timestamp.fromDate(new Date(startDate)),
+      startDate,
       type,
-      createdAt: admin.firestore.Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     batch.set(partnershipRef, partnershipData, { merge: true });
 
@@ -707,7 +683,7 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
         partnershipId,
         userId,
         otherUserId: partnerId,
-        createdAt: admin.firestore.Timestamp.now(),
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
       },
       { merge: true },
     );
@@ -724,7 +700,7 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
         partnershipId,
         userId: partnerId,
         otherUserId: userId,
-        createdAt: admin.firestore.Timestamp.now(),
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
       },
       { merge: true },
     );
@@ -733,11 +709,11 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     const userPayload = {
       ...userDetails,
       birthDate: admin.firestore.Timestamp.fromDate(new Date(userDetails.birthDate)),
-      createdAt: admin.firestore.Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
       id: userId,
       isPartner: false,
       isRegistered: true,
-      lastActiveAt: admin.firestore.Timestamp.now(),
+      lastActiveAt: admin.firestore.FieldValue.serverTimestamp(),
       partnershipId,
       isSubscribed: false,
     };
@@ -747,11 +723,11 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     const partnerPayload = {
       ...partnerDetails,
       birthDate: null,
-      createdAt: admin.firestore.Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
       id: partnerId,
       isPartner: true,
       isRegistered: false,
-      lastActiveAt: admin.firestore.Timestamp.now(),
+      lastActiveAt: admin.firestore.FieldValue.serverTimestamp(),
       partnershipId,
       isSubscribed: false,
     };
@@ -768,17 +744,12 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     return {
       userPayload: {
         ...userPayload,
-        birthDate: convertTimestampToISO(userPayload.birthDate),
-        createdAt: convertTimestampToISO(userPayload.createdAt),
       },
       partnerPayload: {
         ...partnerPayload,
-        createdAt: convertTimestampToISO(partnerPayload.createdAt),
       },
       partnershipPayload: {
         ...partnershipData,
-        createdAt: convertTimestampToISO(partnershipData.createdAt),
-        startDate: convertTimestampToISO(partnershipData.startDate),
       },
     };
   } catch (error: unknown) {
