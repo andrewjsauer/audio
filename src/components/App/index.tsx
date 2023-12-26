@@ -29,11 +29,10 @@ import QuestionScreen from '@components/shared/QuestionScreen';
 import TrialScreen from '@components/shared/TrialScreen';
 
 export type AppStackParamList = {
-  [AppScreens.AccountScreen]: undefined;
-  [AppScreens.BrowserScreen]: undefined;
-  [AppScreens.HistoryScreen]: undefined;
-  [AppScreens.QuestionScreen]: undefined;
-  [AppScreens.TrialScreen]: undefined;
+  [AppScreens.AccountScreen]: typeof AccountScreen;
+  [AppScreens.HistoryScreen]: typeof HistoryScreen;
+  [AppScreens.QuestionScreen]: typeof QuestionScreen;
+  [AppScreens.TrialScreen]: typeof TrialScreen;
 };
 
 const Stack = createStackNavigator<AppStackParamList>();

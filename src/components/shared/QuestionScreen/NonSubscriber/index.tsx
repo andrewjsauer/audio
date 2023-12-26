@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import firestore from '@react-native-firebase/firestore';
 
 import { trackScreen } from '@lib/analytics';
-import { UserActionStatusType } from '@lib/types';
+import { QuestionStatusType } from '@lib/types';
 
 import { selectUserData } from '@store/auth/selectors';
 import { selectPartnerData } from '@store/partnership/selectors';
@@ -35,25 +35,25 @@ function NonSubscribedScreen() {
           partnerRecording={{
             id: 'partnerRecordingId',
             userId: 'partnerId',
-            createdAt: firestore.FieldValue.serverTimestamp(),
+            createdAt: firestore.Timestamp.fromDate(new Date()),
             partnershipId: 'partnershipId',
             audioUrl: '',
             duration: '10',
           }}
-          partnerStatus={UserActionStatusType.PendingRecord}
+          partnerStatus={QuestionStatusType.PendingRecord}
           text={t('questionScreen.nonSubscriberScreen.default.text')}
           timeRemaining="22h 6m 31s"
           user={userData}
           userReactionToPartner={null}
           userRecording={{
             userId: 'userId',
-            createdAt: firestore.FieldValue.serverTimestamp(),
+            createdAt: firestore.Timestamp.fromDate(new Date()),
             partnershipId: 'partnershipId',
             audioUrl: '',
             duration: '10',
             id: 'userRecordingId',
           }}
-          userStatus={UserActionStatusType.PendingRecord}
+          userStatus={QuestionStatusType.PendingRecord}
         />
         <BlurredBackground
           blurType="light"

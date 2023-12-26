@@ -13,7 +13,7 @@ export const selectUserId = createSelector(selectUser, (user) => user?.uid);
 
 export const selectIsUserRegistered = createSelector(
   selectUserData,
-  (userData) => !!userData && !!userData.isRegistered,
+  (userData) => !!userData && userData.isRegistered,
 );
 
 export const selectPartnershipId = createSelector(
@@ -23,10 +23,10 @@ export const selectPartnershipId = createSelector(
 
 export const selectIsPartner = createSelector(
   selectUserData,
-  (userData) => (!!userData && userData?.isPartner) ?? false,
+  (userData) => (!!userData && userData.isPartner) ?? false,
 );
 
 export const selectIsSubscribed = createSelector(
   selectUserData,
-  (userData) => (!!userData && userData?.isSubscribed) ?? false,
+  (userData) => (!!userData && userData.isSubscribed) ?? false,
 );

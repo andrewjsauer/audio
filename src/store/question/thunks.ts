@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import functions from '@react-native-firebase/functions';
+import { startOfDay } from 'date-fns';
 
 import { PartnershipDataType, UserDataType, QuestionType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
@@ -18,13 +19,8 @@ export const fetchLatestQuestion = createAsyncThunk<QuestionType, FetchLatestQue
     { partnershipData, partnerData, userData }: FetchLatestQuestionArgs,
     { rejectWithValue },
   ) => {
-    console.log(`TEST!!!! partnership: ${JSON.stringify(partnershipData)}`);
-    console.log(`partner: ${JSON.stringify(partnerData)}`);
-    console.log(`user: ${JSON.stringify(userData)}`);
-
     try {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const today = startOfDay(new Date());
 
       const snapshot = await firestore()
         .collection('questions')

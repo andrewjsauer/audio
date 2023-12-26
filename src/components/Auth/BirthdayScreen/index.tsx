@@ -27,7 +27,7 @@ function BirthdayScreen() {
 
   const { goToPreviousStep, goToNextStep, userDetails, handleUserDetails } = useAuthFlow();
 
-  const birthday = userDetails.birthDate ? new Date(userDetails.birthDate) : new Date();
+  const birthday = userDetails.birthDate || new Date();
 
   const handleSubmit = async () => {
     if (!birthday) {

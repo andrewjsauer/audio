@@ -102,7 +102,7 @@ export type QuestionType = {
   text: string;
 };
 
-export enum UserActionStatusType {
+export enum QuestionStatusType {
   Lock = 'Lock',
   PendingRecord = 'PendingRecord',
   Play = 'Play',
@@ -145,14 +145,14 @@ export type HistoryType = {
   partnerReactionToUser: ReactionType | null;
   partnerRecordingId: string | null;
   partnershipTextKey: string;
-  partnerStatus: UserActionStatusType;
+  partnerStatus: QuestionStatusType;
   text: string;
   userAudioUrl: string | null;
   userColor: string;
   userDuration: string | null;
   userReactionToPartner: ReactionType | null;
   userRecordingId: string | null;
-  userStatus: UserActionStatusType;
+  userStatus: QuestionStatusType;
 };
 
 export type ListeningType = {

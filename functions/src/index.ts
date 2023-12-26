@@ -396,10 +396,7 @@ exports.updateNewUser = functions.https.onCall(async (data, context) => {
   const db = admin.firestore();
   const batch = db.batch();
 
-  let userPayload = {
-    ...userDetails,
-    birthDate: admin.firestore.Timestamp.fromDate(new Date(userDetails.birthDate)),
-  };
+  let userPayload = { ...userDetails };
 
   try {
     const usersCollection = db.collection('users');

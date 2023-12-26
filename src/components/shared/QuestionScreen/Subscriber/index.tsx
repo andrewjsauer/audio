@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { isBefore, startOfDay } from 'date-fns';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 import { selectUserData } from '@store/auth/selectors';
 import {
@@ -39,6 +41,13 @@ import Layout from '../Layout';
 import Question from '../QuestionView';
 import { Container } from './style';
 
+const isQuestionExpired = (question: QuestionType) => {
+  const today = startOfDay(new Date());
+
+  const questionCreatedAt = question.createdAt.toDate();
+  return isBefore(questionCreatedAt, today);
+};
+
 function SubscriberScreen() {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -64,20 +73,6 @@ function SubscriberScreen() {
   }, []);
 
   useEffect(() => {
-    const isQuestionExpired = (question: QuestionType) => {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      let questionCreatedAt;
-      const { createdAt } = question;
-
-      if (typeof createdAt === 'function') {
-        questionCreatedAt = createdAt.toDate();
-      } else questionCreatedAt = new Date(createdAt.seconds * 1000);
-
-      return questionCreatedAt < today;
-    };
-
     if (
       (!currentQuestion || isQuestionExpired(currentQuestion)) &&
       partnershipData &&

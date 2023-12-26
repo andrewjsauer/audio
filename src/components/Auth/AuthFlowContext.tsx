@@ -1,11 +1,9 @@
-import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { AppState } from 'react-native';
 
 import { selectUserData, selectUserId, selectIsPartner } from '@store/auth/selectors';
 import { generatePartnership, updateNewUser } from '@store/auth/thunks';
-import { signOut } from '@store/app/thunks';
 import { AppDispatch } from '@store/index';
 
 import {
@@ -16,7 +14,6 @@ import {
 } from '@lib/types';
 
 import { trackEvent } from '@lib/analytics';
-import { set } from 'date-fns';
 
 interface AuthFlowContextProps {
   currentStep: number;
@@ -56,30 +53,6 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
   const [partnerDetails, setPartnerDetails] = useState<PartnerDetailsType>({});
   const [partnershipDetails, setPartnershipDetails] = useState<PartnershipDetailsType>({});
   const [currentStep, setCurrentStep] = useState(1);
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', (nextAppState) => {
-      if (nextAppState.match(/inactive|background/)) {
-        dispatch(
-          signOut({
-            userId,
-            isDelete: false,
-          }),
-        );
-
-        setCurrentStep(1);
-        setUserDetails({});
-        setPartnerDetails({});
-        setPartnershipDetails({});
-
-        navigation.navigate(Steps.SignInScreen);
-      }
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, []);
 
   const steps = [
     Steps.SignInScreen,

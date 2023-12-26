@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import firebase, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { format, isToday } from 'date-fns';
 
-import { formatDate, formatTime } from '@lib/dateUtils';
-import { ReactionTypeIcons, UserActionStatusType as StatusTypes, ReactionType } from '@lib/types';
+import { ReactionTypeIcons, QuestionStatusType as StatusTypes, ReactionType } from '@lib/types';
 
 import PlayIcon from '@assets/icons/play.svg';
 import QuestionIcon from '@assets/icons/help.svg';
@@ -20,7 +20,7 @@ import {
   ReactionIcon,
 } from './style';
 
-type UserActionProps = {
+type QuestionRowProps = {
   color: string;
   createdAt: FirebaseFirestoreTypes.Timestamp | undefined;
   isPartner?: boolean;
@@ -31,7 +31,7 @@ type UserActionProps = {
   partnerColor: string;
 };
 
-function UserAction({
+function QuestionRow({
   color,
   createdAt,
   isPartner = false,
@@ -40,7 +40,7 @@ function UserAction({
   reaction,
   status,
   partnerColor,
-}: UserActionProps) {
+}: QuestionRowProps) {
   const { t } = useTranslation();
 
   const statusOptions = useMemo(() => {
@@ -59,15 +59,21 @@ function UserAction({
         }),
         description: '',
       },
-      [StatusTypes.Play]: {
-        icon: PlayIcon,
-        title: t('questionScreen.subscriberScreen.play.title', {
-          name: isPartner ? name : t('you'),
-        }),
-        description: t('questionScreen.subscriberScreen.play.description', {
-          date: formatDate(createdAt),
-          time: formatTime(createdAt),
-        }),
+      [StatusTypes.Play]: () => {
+        const dateObject = createdAt.toDate();
+
+        const formattedDate = isToday(dateObject) ? t('today') : format(dateObject, 'PP');
+        const formattedTime = format(dateObject, 'p');
+        return {
+          icon: PlayIcon,
+          title: t('questionScreen.subscriberScreen.play.title', {
+            name: isPartner ? name : t('you'),
+          }),
+          description: t('questionScreen.subscriberScreen.play.description', {
+            date: formattedDate,
+            time: formattedTime,
+          }),
+        };
       },
       [StatusTypes.Record]: {
         icon: MicIcon,
@@ -100,4 +106,4 @@ function UserAction({
   );
 }
 
-export default UserAction;
+export default QuestionRow;

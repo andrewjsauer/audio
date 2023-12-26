@@ -2,12 +2,17 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { format, isToday } from 'date-fns';
 
 import LoadingView from '@components/shared/LoadingView';
 import ErrorView from '@components/shared/ErrorView';
 
-import { HistoryScreens, HistoryType, UserActionStatusType as StatusTypes, ReactionTypeIcons } from '@lib/types';
-import { formatDate } from '@lib/dateUtils';
+import {
+  HistoryScreens,
+  HistoryType,
+  QuestionStatusType as StatusTypes,
+  ReactionTypeIcons,
+} from '@lib/types';
 
 import PlayIcon from '@assets/icons/play.svg';
 import QuestionIcon from '@assets/icons/help.svg';
@@ -30,7 +35,7 @@ import {
   ReactionIcon,
 } from './style';
 
-const statusIcons = () => ({
+const statusIcons = {
   [StatusTypes.Lock]: {
     icon: LockIcon,
   },
@@ -43,7 +48,7 @@ const statusIcons = () => ({
   [StatusTypes.Record]: {
     icon: MicIcon,
   },
-});
+};
 
 function HistoryScreen({
   error,
@@ -115,12 +120,15 @@ function HistoryScreen({
   }: {
     item: HistoryType;
   }) => {
-    const { icon: UserIcon } = statusIcons()[userStatus];
-    const { icon: PartnerIcon } = statusIcons()[partnerStatus];
+    const { icon: UserIcon } = statusIcons[userStatus];
+    const { icon: PartnerIcon } = statusIcons[partnerStatus];
+
+    const date = createdAt.toDate();
+    const formatDate = isToday(date) ? t('today') : format(date, 'PP');
     return (
       <ItemContainer key={id}>
         <ItemQuestionContainer>
-          <ItemDate>{formatDate(createdAt)}</ItemDate>
+          <ItemDate>{formatDate}</ItemDate>
           <ItemQuestionText numberOfLines={2} ellipsizeMode="tail">
             {text}
           </ItemQuestionText>
@@ -133,7 +141,9 @@ function HistoryScreen({
         <ItemIconContainer>
           <IconButton
             color={partnerColor}
-            disabled={partnerStatus === StatusTypes.PendingRecord || partnerStatus === StatusTypes.Lock}
+            disabled={
+              partnerStatus === StatusTypes.PendingRecord || partnerStatus === StatusTypes.Lock
+            }
             onPress={() =>
               navigation.navigate(HistoryScreens.PlayUserModal, {
                 audioUrl: partnerAudioUrl,
@@ -185,7 +195,13 @@ function HistoryScreen({
   return (
     <Container>
       <FlatList data={questions} renderItem={renderHistoryItem} keyExtractor={(item) => item.id} />
-      {isBlurred && <BlurredBackground blurType="light" blurAmount={8} reducedTransparencyFallbackColor="white" />}
+      {isBlurred && (
+        <BlurredBackground
+          blurType="light"
+          blurAmount={8}
+          reducedTransparencyFallbackColor="white"
+        />
+      )}
     </Container>
   );
 }

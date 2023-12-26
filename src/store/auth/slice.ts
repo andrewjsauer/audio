@@ -123,10 +123,7 @@ const authSlice = createSlice({
       })
       .addCase(updateNewUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.userData = {
-          ...state.userData,
-          ...action.payload,
-        } as UserDataType;
+        state.userData = action.payload;
       })
       .addCase(updateNewUser.rejected, (state) => {
         state.isLoading = false;
@@ -143,7 +140,7 @@ const authSlice = createSlice({
       .addCase(purchaseProduct.fulfilled, (state, action) => {
         state.userData = {
           ...state.userData,
-          ...action.payload,
+          isSubscribed: action.payload,
         } as UserDataType;
       });
   },
