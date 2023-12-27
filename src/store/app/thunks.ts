@@ -5,6 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import analytics from '@react-native-firebase/analytics';
 import crashlytics from '@react-native-firebase/crashlytics';
 import Purchases from 'react-native-purchases';
+import functions from '@react-native-firebase/functions';
 
 import { Platform } from 'react-native';
 import Config from 'react-native-config';
@@ -99,17 +100,10 @@ export const purchaseProduct = createAsyncThunk(
     try {
       await Purchases.purchaseProduct('dq_999_1m_1m0');
 
-      await firestore()
-        .collection('users')
-        .doc(user.uid)
-        .set({ hasSubscribed: true, isSubscribed: true }, { merge: true });
-
-      if (partnerData) {
-        await firestore()
-          .collection('users')
-          .doc(partnerData.id)
-          .set({ hasSubscribed: true, isSubscribed: true }, { merge: true });
-      }
+      await functions().httpsCallable('updatePartnershipPurchase')({
+        partnerId: partnerData.id,
+        userId: user.uid,
+      });
 
       return {
         hasSubscribed: true,

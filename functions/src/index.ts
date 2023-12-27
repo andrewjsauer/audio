@@ -259,6 +259,18 @@ async function updateSubscriptions(userId: string, hasAccess: boolean) {
     const userDocRef = db.collection('users').doc(userId);
     const partnerDocRef = db.collection('users').doc(partnerId);
 
+    const userDoc = await userDocRef.get();
+    if (!userDoc.exists) {
+      functions.logger.error(`User document with ID ${userId} does not exist`);
+      return;
+    }
+
+    const partnerDoc = await partnerDocRef.get();
+    if (!partnerDoc.exists) {
+      functions.logger.error(`Partner document with ID ${partnerId} does not exist`);
+      return;
+    }
+
     batch.set(userDocRef, { isSubscribed: hasAccess }, { merge: true });
     batch.set(partnerDocRef, { isSubscribed: hasAccess }, { merge: true });
 
@@ -367,6 +379,59 @@ exports.handleSubscriptionEvents = functions.firestore
     }
   });
 
+exports.updatePartnershipPurchase = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+  }
+
+  const { userId, partnerId } = data;
+  const db = admin.firestore();
+  const batch = db.batch();
+
+  try {
+    batch.set(
+      db.collection('users').doc(userId),
+      {
+        hasSubscribed: true,
+        isSubscribed: true,
+      },
+      { merge: true },
+    );
+
+    batch.set(
+      db.collection('users').doc(partnerId),
+      {
+        hasSubscribed: true,
+        isSubscribed: true,
+      },
+      { merge: true },
+    );
+
+    await batch.commit();
+    return null;
+  } catch (error: unknown) {
+    const e = error as {
+      response?: { status?: string; data?: object };
+      message?: string;
+    };
+
+    if (e.response) {
+      functions.logger.error(`Error status ${e.response.status}`);
+      functions.logger.error(`Error data ${JSON.stringify(e.response.data)}`);
+
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error updating user data: ${e.response.data}`,
+        e.response.data,
+      );
+    } else {
+      functions.logger.error(`Error message ${error}`);
+
+      throw new functions.https.HttpsError('unknown', `Error updating user data: ${error}`, error);
+    }
+  }
+});
+
 exports.updateNewUser = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
@@ -385,13 +450,14 @@ exports.updateNewUser = functions.https.onCall(async (data, context) => {
 
     if (tempDoc.exists) {
       const prevData = tempDoc.data();
-      const { isSubscribed } = prevData as any;
+      const { isSubscribed, hasSubscribed } = prevData as any;
 
       const newUserRef = usersCollection.doc(id);
       userPayload = {
         ...tempDoc.data(),
         ...userPayload,
         isSubscribed,
+        hasSubscribed,
         id,
       };
 
