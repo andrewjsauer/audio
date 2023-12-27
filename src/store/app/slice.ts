@@ -5,7 +5,7 @@ import { signOut, restorePurchases, purchaseProduct, initializeSession } from '.
 export interface AppState {
   error: string | undefined | null;
   isLoading: boolean;
-  isPreviouslySubscribed: boolean;
+  isPurchasing: boolean;
   lastFailedAction: object | null;
   transactionError: string | undefined | null;
 }
@@ -13,7 +13,7 @@ export interface AppState {
 const initialState: AppState = {
   error: null,
   isLoading: false,
-  isPreviouslySubscribed: false,
+  isPurchasing: false,
   lastFailedAction: null,
   transactionError: null,
 };
@@ -25,15 +25,14 @@ const appSlice = createSlice({
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
     },
-    setIsPreviouslySubscribed: (state, action: PayloadAction<boolean>) => {
-      state.isPreviouslySubscribed = action.payload;
+    setTransactionError: (state, action: PayloadAction<string | null>) => {
+      state.transactionError = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(signOut.fulfilled, (state) => {
       state.error = null;
       state.isLoading = false;
-      state.isPreviouslySubscribed = false;
       state.lastFailedAction = null;
       state.transactionError = null;
     });
@@ -44,8 +43,7 @@ const appSlice = createSlice({
     builder.addCase(signOut.rejected, (state) => {
       state.isLoading = false;
     });
-    builder.addCase(initializeSession.fulfilled, (state, action) => {
-      state.isPreviouslySubscribed = action.payload;
+    builder.addCase(initializeSession.fulfilled, (state) => {
       state.isLoading = false;
     });
     builder.addCase(initializeSession.pending, (state) => {
@@ -63,29 +61,28 @@ const appSlice = createSlice({
     });
     builder.addCase(purchaseProduct.pending, (state) => {
       state.transactionError = null;
-      state.isLoading = true;
+      state.isPurchasing = true;
     });
     builder.addCase(purchaseProduct.rejected, (state) => {
       state.transactionError = 'errors.purchaseError';
-      state.isLoading = false;
+      state.isPurchasing = false;
     });
-    builder.addCase(purchaseProduct.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isPreviouslySubscribed = action.payload;
+    builder.addCase(purchaseProduct.fulfilled, (state) => {
+      state.isPurchasing = false;
     });
     builder.addCase(restorePurchases.pending, (state) => {
       state.transactionError = null;
-      state.isLoading = true;
+      state.isPurchasing = true;
     });
     builder.addCase(restorePurchases.rejected, (state) => {
       state.transactionError = 'errors.restoreError';
-      state.isLoading = false;
+      state.isPurchasing = false;
     });
     builder.addCase(restorePurchases.fulfilled, (state) => {
-      state.isLoading = false;
+      state.isPurchasing = false;
     });
   },
 });
 
-export const { setError, setIsPreviouslySubscribed } = appSlice.actions;
+export const { setError, setTransactionError } = appSlice.actions;
 export default appSlice.reducer;

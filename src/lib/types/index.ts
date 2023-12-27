@@ -52,13 +52,14 @@ export type UserDataType = {
   color?: string;
   createdAt?: FirebaseFirestoreTypes.Timestamp;
   deviceIds?: FirebaseFirestoreTypes.Timestamp;
+  hasSubscribed?: boolean;
   id?: string;
   isRegistered?: boolean;
+  isSubscribed?: boolean;
   lastActiveAt?: FirebaseFirestoreTypes.Timestamp;
   name?: string;
   partnershipId?: string;
   phoneNumber?: string;
-  isSubscribed?: boolean;
 };
 
 export type PartnershipDataType = {
@@ -96,13 +97,13 @@ export type PartnershipDetailsType = {
 };
 
 export type QuestionType = {
-  createdAt: FirebaseFirestoreTypes.Timestamp;
+  createdAt: FirebaseFirestoreTypes.Timestamp | Date;
   id: string;
   partnershipId: string;
   text: string;
 };
 
-export enum UserActionStatusType {
+export enum QuestionStatusType {
   Lock = 'Lock',
   PendingRecord = 'PendingRecord',
   Play = 'Play',
@@ -124,16 +125,16 @@ export enum ReactionTypeIcons {
 }
 
 export type RecordingType = {
-  id: string;
-  userId: string;
-  questionId: string;
-  createdAt: FirebaseFirestoreTypes.Timestamp;
-  duration: string;
   audioUrl: string;
-  partnershipId: string;
+  createdAt: FirebaseFirestoreTypes.Timestamp;
   didLikeQuestion: boolean | null;
+  duration: string;
   feedbackText: string | null;
+  id: string;
+  partnershipId: string;
+  questionId: string;
   reaction: ReactionType[] | null;
+  userId: string;
 };
 
 export type HistoryType = {
@@ -145,14 +146,14 @@ export type HistoryType = {
   partnerReactionToUser: ReactionType | null;
   partnerRecordingId: string | null;
   partnershipTextKey: string;
-  partnerStatus: UserActionStatusType;
+  partnerStatus: QuestionStatusType;
   text: string;
   userAudioUrl: string | null;
   userColor: string;
   userDuration: string | null;
   userReactionToPartner: ReactionType | null;
   userRecordingId: string | null;
-  userStatus: UserActionStatusType;
+  userStatus: QuestionStatusType;
 };
 
 export type ListeningType = {

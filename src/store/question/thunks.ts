@@ -1,7 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import functions from '@react-native-firebase/functions';
+import { startOfDay } from 'date-fns';
 
 import { PartnershipDataType, UserDataType, QuestionType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
@@ -18,13 +20,8 @@ export const fetchLatestQuestion = createAsyncThunk<QuestionType, FetchLatestQue
     { partnershipData, partnerData, userData }: FetchLatestQuestionArgs,
     { rejectWithValue },
   ) => {
-    console.log(`TEST!!!! partnership: ${JSON.stringify(partnershipData)}`);
-    console.log(`partner: ${JSON.stringify(partnerData)}`);
-    console.log(`user: ${JSON.stringify(userData)}`);
-
     try {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const today = startOfDay(new Date());
 
       const snapshot = await firestore()
         .collection('questions')
@@ -36,33 +33,47 @@ export const fetchLatestQuestion = createAsyncThunk<QuestionType, FetchLatestQue
       if (snapshot.empty) {
         trackEvent('question_not_found');
 
-        const generateQuestionResponse = await functions().httpsCallable('generateQuestion')({
+        const { data } = await functions().httpsCallable('generateQuestion')({
           partnershipData,
           partnerData,
           userData,
         });
 
-        return generateQuestionResponse.data;
+        const question = {
+          ...data,
+          createdAt: new Date(data.createdAt._seconds * 1000),
+        };
+
+        return question;
       }
 
-      const latestQuestion = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }))[0];
+      const latestQuestion = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+          id: doc.id,
+          createdAt: new Date(data.createdAt._seconds * 1000),
+        };
+      })[0];
 
-      if (latestQuestion.createdAt.toDate() >= today) {
+      if (latestQuestion.createdAt >= today) {
         trackEvent('question_within_date_limit');
         return latestQuestion;
       }
 
       trackEvent('question_out_of_date');
-      const generateQuestionResponse = await functions().httpsCallable('generateQuestion')({
+      const { data } = await functions().httpsCallable('generateQuestion')({
         partnershipData,
         partnerData,
         userData,
       });
 
-      return generateQuestionResponse.data;
+      const question = {
+        ...data,
+        createdAt: new Date(data.createdAt._seconds * 1000),
+      };
+
+      return question;
     } catch (error) {
       crashlytics().recordError(error);
       trackEvent('question_fetch_error', { error: error.message });

@@ -1,23 +1,20 @@
 import { createSelector } from 'reselect';
-import { UserActionStatusType } from '@lib/types';
+import { QuestionStatusType } from '@lib/types';
 
 export const selectIsLoading = (state) => state.recording.isLoading;
 export const selectUserRecording = (state) => state.recording.userRecording;
-export const selectPartnerRecording = (state) =>
-  state.recording.partnerRecording;
-export const selectPartnerReactionToUser = (state) =>
-  state.recording.partnerReactionToUser;
-export const selectUserReactionToPartner = (state) =>
-  state.recording.userReactionToPartner;
+export const selectPartnerRecording = (state) => state.recording.partnerRecording;
+export const selectPartnerReactionToUser = (state) => state.recording.partnerReactionToUser;
+export const selectUserReactionToPartner = (state) => state.recording.userReactionToPartner;
 
 export const selectUserRecordingStatus = createSelector(
   selectPartnerRecording,
   selectUserRecording,
   (partnerRecording, userRecording) => {
-    if (!userRecording) return UserActionStatusType.Record;
-    if (partnerRecording && !userRecording) return UserActionStatusType.Record;
+    if (!userRecording) return QuestionStatusType.Record;
+    if (partnerRecording && !userRecording) return QuestionStatusType.Record;
 
-    return UserActionStatusType.Play;
+    return QuestionStatusType.Play;
   },
 );
 
@@ -25,10 +22,10 @@ export const selectPartnerRecordingStatus = createSelector(
   selectPartnerRecording,
   selectUserRecording,
   (partnerRecording, userRecording) => {
-    if (!partnerRecording) return UserActionStatusType.PendingRecord;
-    if (partnerRecording && !userRecording) return UserActionStatusType.Lock;
+    if (!partnerRecording) return QuestionStatusType.PendingRecord;
+    if (partnerRecording && !userRecording) return QuestionStatusType.Lock;
 
-    return UserActionStatusType.Play;
+    return QuestionStatusType.Play;
   },
 );
 

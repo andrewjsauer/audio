@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import { UserDataType, QuestionType, RecordingType, UserActionStatusType } from '@lib/types';
+import { UserDataType, QuestionType, RecordingType, QuestionStatusType } from '@lib/types';
 
 import { trackEvent } from '@lib/analytics';
 
@@ -36,12 +36,12 @@ async function getRecordingData(recordings: RecordingType[], userId: string, par
       partnerReactionToUser,
       partnerRecordingId: partnerRecording.id,
       partnershipTextKey: 'bothAnswered',
-      partnerStatus: UserActionStatusType.Play,
+      partnerStatus: QuestionStatusType.Play,
       userAudioUrl: userRecording.audioUrl,
       userDuration: userRecording.duration,
       userReactionToPartner,
       userRecordingId: userRecording.id,
-      userStatus: UserActionStatusType.Play,
+      userStatus: QuestionStatusType.Play,
     };
   }
 
@@ -54,13 +54,13 @@ async function getRecordingData(recordings: RecordingType[], userId: string, par
       partnerReactionToUser: null,
       partnerRecordingId: partnerRecording.id,
       partnershipTextKey: 'partnerAnswered',
-      partnerStatus: UserActionStatusType.Lock,
+      partnerStatus: QuestionStatusType.Lock,
       userAudioUrl: null,
       userDuration: null,
       userReaction: null,
       userReactionToPartner,
       userRecordingId: null,
-      userStatus: UserActionStatusType.PendingRecord,
+      userStatus: QuestionStatusType.PendingRecord,
     };
   }
 
@@ -72,11 +72,11 @@ async function getRecordingData(recordings: RecordingType[], userId: string, par
       partnerDuration: null,
       partnerRecordingId: null,
       partnershipTextKey: 'userAnswered',
-      partnerStatus: UserActionStatusType.PendingRecord,
+      partnerStatus: QuestionStatusType.PendingRecord,
       userAudioUrl: userRecording.audioUrl,
       userDuration: userRecording.duration,
       userRecordingId: userRecording.id,
-      userStatus: UserActionStatusType.Play,
+      userStatus: QuestionStatusType.Play,
       partnerReactionToUser,
       userReactionToPartner: null,
     };
@@ -88,12 +88,12 @@ async function getRecordingData(recordings: RecordingType[], userId: string, par
     partnerReactionToUser: null,
     partnerRecordingId: null,
     partnershipTextKey: 'bothDidNotAnswer',
-    partnerStatus: UserActionStatusType.PendingRecord,
+    partnerStatus: QuestionStatusType.PendingRecord,
     userAudioUrl: null,
     userDuration: null,
     userReactionToPartner: null,
     userRecordingId: null,
-    userStatus: UserActionStatusType.PendingRecord,
+    userStatus: QuestionStatusType.PendingRecord,
   };
 }
 
@@ -150,7 +150,7 @@ export const fetchHistoryData = createAsyncThunk(
           } = await getRecordingData(recordings, userData.id, partnerData.id);
 
           return {
-            createdAt: question.createdAt,
+            createdAt: new Date(question.createdAt._seconds * 1000),
             id: `${question.id}_${userData.id}`,
             partnerAudioUrl,
             partnerColor: partnerData.color,

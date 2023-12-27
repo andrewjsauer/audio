@@ -92,23 +92,30 @@ export const generatePartnership = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
+      const birthDate = firestore.Timestamp.fromDate(userDetails.birthDate as Date);
+      const startDate = firestore.Timestamp.fromDate(partnershipDetails.startDate as Date);
+
       const { data } = await functions().httpsCallable('generatePartnership')({
         userDetails: {
           ...userDetails,
-          birthDate: userDetails.birthDate.toISOString(),
+          birthDate,
         },
         partnerDetails,
         partnershipDetails: {
           ...partnershipDetails,
-          startDate: partnershipDetails.startDate.toISOString(),
+          startDate,
         },
       });
 
       const { userPayload, partnerPayload, partnershipPayload } = data;
+
       return {
         userData: userPayload,
         partnerData: partnerPayload,
-        partnershipData: partnershipPayload,
+        partnershipData: {
+          ...partnershipPayload,
+          startDate: new Date(partnershipPayload.startDate._seconds * 1000),
+        },
       };
     } catch (error) {
       trackEvent('initialize_partnership_error', { error });
@@ -146,7 +153,7 @@ export const updateNewUser = createAsyncThunk(
   async ({ id, userDetails, tempId }: UpdateUserArgs, { rejectWithValue }) => {
     const userPayload = {
       ...userDetails,
-      birthDate: userDetails.birthDate.toISOString(),
+      birthDate: firestore.Timestamp.fromDate(userDetails.birthDate as Date),
     };
 
     try {

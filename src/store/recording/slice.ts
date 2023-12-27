@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RecordingType, ListeningType } from '@lib/types';
 
+import { fetchLatestQuestion } from '@store/question/thunks';
 import { signOut } from '@store/app/thunks';
 import { saveUserRecording } from './thunks';
 
@@ -56,9 +57,19 @@ const recordingSlice = createSlice({
     builder.addCase(saveUserRecording.rejected, (state) => {
       state.isLoading = false;
     });
+    builder.addCase(fetchLatestQuestion.fulfilled, (state) => {
+      state.partnerReactionToUser = null;
+      state.partnerRecording = null;
+      state.userReactionToPartner = null;
+      state.userRecording = null;
+    });
   },
 });
 
-export const { setUserRecording, setPartnerRecording, setUserReactionToPartner, setPartnerReactionToUser } =
-  recordingSlice.actions;
+export const {
+  setUserRecording,
+  setPartnerRecording,
+  setUserReactionToPartner,
+  setPartnerReactionToUser,
+} = recordingSlice.actions;
 export default recordingSlice.reducer;

@@ -20,6 +20,6 @@ export const QuestionText = styled.Text`
   color: ${(p) => p.theme.colors.black};
 `;
 
-export const ActionViewContainer = styled.View`
+export const QuestionRowContainers = styled.View`
   margin-top: 20px;
 `;

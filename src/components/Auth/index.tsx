@@ -15,14 +15,14 @@ import { AuthScreens as Steps } from '@lib/types';
 import { AuthFlowProvider } from '@components/Auth/AuthFlowContext';
 
 export type RootStackParamList = {
-  [Steps.SignInScreen]: undefined;
-  [Steps.PhoneNumberStep]: undefined;
-  [Steps.UserNameStep]: undefined;
-  [Steps.BirthdayStep]: undefined;
-  [Steps.PartnerNameStep]: undefined;
-  [Steps.RelationshipTypeStep]: undefined;
-  [Steps.RelationshipDateStep]: undefined;
-  [Steps.InviteStep]: undefined;
+  [Steps.SignInScreen]: typeof SignInScreen;
+  [Steps.PhoneNumberStep]: typeof PhoneNumberScreen;
+  [Steps.UserNameStep]: typeof UserNameScreen;
+  [Steps.BirthdayStep]: typeof BirthdayScreen;
+  [Steps.PartnerNameStep]: typeof PartnerNameScreen;
+  [Steps.RelationshipTypeStep]: typeof RelationshipTypeScreen;
+  [Steps.RelationshipDateStep]: typeof RelationshipDateScreen;
+  [Steps.InviteStep]: typeof InviteScreen;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

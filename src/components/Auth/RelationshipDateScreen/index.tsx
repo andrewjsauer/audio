@@ -23,9 +23,7 @@ function RelationshipDateScreen() {
   const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =
     useAuthFlow();
 
-  const relationshipDate = partnershipDetails.startDate
-    ? new Date(partnershipDetails.startDate)
-    : new Date();
+  const relationshipDate = partnershipDetails.startDate || new Date();
 
   const handleSubmit = () => {
     if (!relationshipDate) {

@@ -1,29 +1,27 @@
 import React from 'react';
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
 import {
   UserDataType,
-  UserActionStatusType,
+  QuestionStatusType,
   RecordingType,
   ModalScreens,
   ReactionType,
 } from '@lib/types';
 
-import UserActionView from './UserActionView';
-
-import { ActionViewContainer, Container, QuestionText, TimerText } from './style';
+import QuestionRowView from './QuestionRow';
+import { QuestionRowContainers, Container, QuestionText, TimerText } from './style';
 
 type QuestionViewProps = {
   partner: UserDataType;
   partnerRecording: RecordingType;
-  partnerStatus: UserActionStatusType;
+  partnerStatus: QuestionStatusType;
   text: string;
   timeRemaining: string;
   user: UserDataType;
   userRecording: RecordingType;
-  userStatus: UserActionStatusType;
+  userStatus: QuestionStatusType;
   partnerReactionToUser: ReactionType | null;
   userReactionToPartner: ReactionType | null;
 };
@@ -44,7 +42,7 @@ function QuestionView({
   const navigation = useNavigation();
 
   const handleNavigation = (isPartner: boolean) => {
-    if (isPartner && partnerStatus === UserActionStatusType.Play) {
+    if (isPartner && partnerStatus === QuestionStatusType.Play) {
       navigation.navigate(ModalScreens.PlayUserModal, {
         audioUrl: partnerRecording.audioUrl,
         duration: partnerRecording.duration,
@@ -55,7 +53,7 @@ function QuestionView({
         reaction: userReactionToPartner,
       });
     } else if (!isPartner) {
-      if (userStatus === UserActionStatusType.Play) {
+      if (userStatus === QuestionStatusType.Play) {
         navigation.navigate(ModalScreens.PlayUserModal, {
           audioUrl: userRecording.audioUrl,
           duration: userRecording.duration,
@@ -65,7 +63,7 @@ function QuestionView({
           userId: user.id,
           reaction: partnerReactionToUser,
         });
-      } else if (userStatus === UserActionStatusType.Record) {
+      } else if (userStatus === QuestionStatusType.Record) {
         navigation.navigate(ModalScreens.RecordUserModal);
       }
     }
@@ -79,10 +77,10 @@ function QuestionView({
         })}
       </TimerText>
       <QuestionText>{text}</QuestionText>
-      <ActionViewContainer>
-        <UserActionView
+      <QuestionRowContainers>
+        <QuestionRowView
           color={user?.color as string}
-          createdAt={userRecording?.createdAt as FirebaseFirestoreTypes.Timestamp}
+          createdAt={userRecording?.createdAt}
           key={`user_${user?.id}`}
           name={user?.name as string}
           onPress={() => handleNavigation(false)}
@@ -90,9 +88,9 @@ function QuestionView({
           reaction={partnerReactionToUser}
           partnerColor={partner?.color as string}
         />
-        <UserActionView
+        <QuestionRowView
           color={partner?.color as string}
-          createdAt={partnerRecording?.createdAt as FirebaseFirestoreTypes.Timestamp}
+          createdAt={partnerRecording?.createdAt}
           isPartner
           key={`partner_${partner?.id}`}
           name={partner?.name as string}
@@ -101,7 +99,7 @@ function QuestionView({
           reaction={userReactionToPartner}
           partnerColor={user?.color as string}
         />
-      </ActionViewContainer>
+      </QuestionRowContainers>
     </Container>
   );
 }

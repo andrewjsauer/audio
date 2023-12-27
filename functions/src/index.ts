@@ -3,6 +3,7 @@ import * as admin from 'firebase-admin';
 import { defineSecret } from 'firebase-functions/params';
 
 import { v4 as uuidv4 } from 'uuid';
+import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 import { OpenAI } from 'openai';
 
 admin.initializeApp({
@@ -37,46 +38,25 @@ const relationshipTypeMap: { [key in RelationshipType]: string } = {
   married: 'Married',
 };
 
-function calculateDuration(startDate: any) {
-  const now = new Date();
-  let start;
-
-  if (typeof startDate?.toDate === 'function') {
-    start = startDate.toDate();
-  } else {
-    start = new Date(startDate.seconds * 1000);
-  }
-
-  if (Number.isNaN(start.getTime())) {
-    functions.logger.error(`Invalid date: ${startDate}`);
+function calculateDuration(startDate: FirebaseFirestore.Timestamp): string {
+  if (!startDate || typeof startDate.toDate !== 'function') {
+    functions.logger.error(`Invalid date: ${JSON.stringify(startDate)}`);
     return 'some amount of time';
   }
 
-  let years = now.getFullYear() - start.getFullYear();
-  let months = now.getMonth() - start.getMonth();
-  let days = now.getDate() - start.getDate();
+  const start = startDate.toDate();
+  const now = new Date();
 
-  if (days < 0) {
-    months -= 1;
-    days += new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate();
-  }
+  const years = differenceInYears(now, start);
+  if (years > 0) return `${years} year${years > 1 ? 's' : ''}`;
 
-  if (months < 0) {
-    years -= 1;
-    months += 12;
-  }
+  const months = differenceInMonths(now, start);
+  if (months > 0) return `${months} month${months !== 1 ? 's' : ''}`;
 
-  if (years > 0) {
-    return `${years} year${years > 1 ? 's' : ''}`;
-  }
-  if (months > 0) {
-    return `${months} month${months !== 1 ? 's' : ''}`;
-  }
-  if (days > 0) {
-    return `${days} day${days !== 1 ? 's' : ''}`;
-  }
+  const days = differenceInDays(now, start);
+  if (days > 0) return `${days} day${days !== 1 ? 's' : ''}`;
 
-  return 'Same day';
+  return 'same day';
 }
 
 exports.generateQuestion = functions
@@ -279,6 +259,18 @@ async function updateSubscriptions(userId: string, hasAccess: boolean) {
     const userDocRef = db.collection('users').doc(userId);
     const partnerDocRef = db.collection('users').doc(partnerId);
 
+    const userDoc = await userDocRef.get();
+    if (!userDoc.exists) {
+      functions.logger.error(`User document with ID ${userId} does not exist`);
+      return;
+    }
+
+    const partnerDoc = await partnerDocRef.get();
+    if (!partnerDoc.exists) {
+      functions.logger.error(`Partner document with ID ${partnerId} does not exist`);
+      return;
+    }
+
     batch.set(userDocRef, { isSubscribed: hasAccess }, { merge: true });
     batch.set(partnerDocRef, { isSubscribed: hasAccess }, { merge: true });
 
@@ -387,6 +379,59 @@ exports.handleSubscriptionEvents = functions.firestore
     }
   });
 
+exports.updatePartnershipPurchase = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+  }
+
+  const { userId, partnerId } = data;
+  const db = admin.firestore();
+  const batch = db.batch();
+
+  try {
+    batch.set(
+      db.collection('users').doc(userId),
+      {
+        hasSubscribed: true,
+        isSubscribed: true,
+      },
+      { merge: true },
+    );
+
+    batch.set(
+      db.collection('users').doc(partnerId),
+      {
+        hasSubscribed: true,
+        isSubscribed: true,
+      },
+      { merge: true },
+    );
+
+    await batch.commit();
+    return null;
+  } catch (error: unknown) {
+    const e = error as {
+      response?: { status?: string; data?: object };
+      message?: string;
+    };
+
+    if (e.response) {
+      functions.logger.error(`Error status ${e.response.status}`);
+      functions.logger.error(`Error data ${JSON.stringify(e.response.data)}`);
+
+      throw new functions.https.HttpsError(
+        'unknown',
+        `Error updating user data: ${e.response.data}`,
+        e.response.data,
+      );
+    } else {
+      functions.logger.error(`Error message ${error}`);
+
+      throw new functions.https.HttpsError('unknown', `Error updating user data: ${error}`, error);
+    }
+  }
+});
+
 exports.updateNewUser = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
@@ -396,10 +441,7 @@ exports.updateNewUser = functions.https.onCall(async (data, context) => {
   const db = admin.firestore();
   const batch = db.batch();
 
-  let userPayload = {
-    ...userDetails,
-    birthDate: admin.firestore.Timestamp.fromDate(new Date(userDetails.birthDate)),
-  };
+  let userPayload = { ...userDetails };
 
   try {
     const usersCollection = db.collection('users');
@@ -408,13 +450,14 @@ exports.updateNewUser = functions.https.onCall(async (data, context) => {
 
     if (tempDoc.exists) {
       const prevData = tempDoc.data();
-      const { isSubscribed } = prevData as any;
+      const { isSubscribed, hasSubscribed } = prevData as any;
 
       const newUserRef = usersCollection.doc(id);
       userPayload = {
         ...tempDoc.data(),
         ...userPayload,
         isSubscribed,
+        hasSubscribed,
         id,
       };
 
@@ -669,10 +712,6 @@ async function getPartnerIdByPhoneNumber(phoneNumber: string) {
   return uuidv4();
 }
 
-const convertTimestampToISO = (timestamp: string | Date | any) => {
-  return timestamp ? timestamp.toDate().toISOString() : new Date().toISOString();
-};
-
 exports.generatePartnership = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
@@ -691,9 +730,9 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     const partnershipRef = admin.firestore().collection('partnership').doc(partnershipId);
     const partnershipData = {
       id: partnershipId,
-      startDate: admin.firestore.Timestamp.fromDate(new Date(startDate)),
+      startDate,
       type,
-      createdAt: admin.firestore.Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     batch.set(partnershipRef, partnershipData, { merge: true });
 
@@ -710,7 +749,7 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
         partnershipId,
         userId,
         otherUserId: partnerId,
-        createdAt: admin.firestore.Timestamp.now(),
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
       },
       { merge: true },
     );
@@ -727,7 +766,7 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
         partnershipId,
         userId: partnerId,
         otherUserId: userId,
-        createdAt: admin.firestore.Timestamp.now(),
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
       },
       { merge: true },
     );
@@ -735,14 +774,14 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     const userRef = admin.firestore().collection('users').doc(userId);
     const userPayload = {
       ...userDetails,
-      birthDate: admin.firestore.Timestamp.fromDate(new Date(userDetails.birthDate)),
-      createdAt: admin.firestore.Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
       id: userId,
       isPartner: false,
       isRegistered: true,
-      lastActiveAt: admin.firestore.Timestamp.now(),
+      lastActiveAt: admin.firestore.FieldValue.serverTimestamp(),
       partnershipId,
       isSubscribed: false,
+      hasSubscribed: false,
     };
     batch.set(userRef, userPayload, { merge: true });
 
@@ -750,20 +789,21 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     const partnerPayload = {
       ...partnerDetails,
       birthDate: null,
-      createdAt: admin.firestore.Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
       id: partnerId,
       isPartner: true,
       isRegistered: false,
-      lastActiveAt: admin.firestore.Timestamp.now(),
+      lastActiveAt: admin.firestore.FieldValue.serverTimestamp(),
       partnershipId,
       isSubscribed: false,
+      hasSubscribed: false,
     };
     batch.set(partnerRef, partnerPayload, { merge: true });
 
     const smsRef = admin.firestore().collection('sms').doc();
     batch.set(smsRef, {
       to: partnerDetails.phoneNumber,
-      body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join 'Daily Qs.' Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: [link] 😊`,
+      body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join Daily Qs. Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: [link] 😊`,
     });
 
     await batch.commit();
@@ -771,17 +811,12 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     return {
       userPayload: {
         ...userPayload,
-        birthDate: convertTimestampToISO(userPayload.birthDate),
-        createdAt: convertTimestampToISO(userPayload.createdAt),
       },
       partnerPayload: {
         ...partnerPayload,
-        createdAt: convertTimestampToISO(partnerPayload.createdAt),
       },
       partnershipPayload: {
         ...partnershipData,
-        createdAt: convertTimestampToISO(partnershipData.createdAt),
-        startDate: convertTimestampToISO(partnershipData.startDate),
       },
     };
   } catch (error: unknown) {

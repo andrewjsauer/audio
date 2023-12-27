@@ -14,7 +14,7 @@ export const Header = styled.View`
 
 export const Footer = styled.View`
   align-items: center;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 `;
 
 export const Title = styled.Text`

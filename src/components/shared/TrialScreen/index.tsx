@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 
 import { trackEvent } from '@lib/analytics';
 
 import { AppDispatch } from '@store/index';
 import { restorePurchases, purchaseProduct } from '@store/app/thunks';
-import { selectIsLoading } from '@store/app/selectors';
+import { selectIsPurchasing } from '@store/app/selectors';
 import { selectUser } from '@store/auth/selectors';
 import { selectPartnerData } from '@store/partnership/selectors';
 
@@ -31,13 +31,13 @@ import {
   Benefit2Container,
 } from './style';
 
-function TrailScreen() {
+function TrialScreen() {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
 
-  const user = useSelector(selectUser);
-  const isLoading = useSelector(selectIsLoading);
+  const isPurchasing = useSelector(selectIsPurchasing);
   const partnerData = useSelector(selectPartnerData);
+  const user = useSelector(selectUser);
 
   const handlePurchase = () => {
     trackEvent('start_trial_button_clicked');
@@ -46,11 +46,10 @@ function TrailScreen() {
 
   const handleRestorePurchases = () => {
     trackEvent('restore_purchases_button_clicked');
-    dispatch(restorePurchases(user));
+    dispatch(restorePurchases());
   };
 
-  const date30DaysFromNow = new Date();
-  date30DaysFromNow.setDate(date30DaysFromNow.getDate() + 30);
+  const date30DaysFromNow = addDays(new Date(), 30);
   return (
     <Container>
       <Header>
@@ -74,12 +73,12 @@ function TrailScreen() {
         <FooterTitle>{t('trialScreen.footer.title')}</FooterTitle>
         <FooterSubTitle>{t('trialScreen.footer.description')}</FooterSubTitle>
         <Button
-          isLoading={isLoading}
+          isLoading={isPurchasing}
           onPress={handlePurchase}
           text={t('trialScreen.footer.buttonText')}
           mode="dark"
         />
-        <RestoreButton onPress={handleRestorePurchases} disabled={isLoading}>
+        <RestoreButton onPress={handleRestorePurchases} disabled={isPurchasing}>
           <RestoreButtonText>{t('trialScreen.footer.restoreButtonText')}</RestoreButtonText>
         </RestoreButton>
       </Footer>
@@ -87,4 +86,4 @@ function TrailScreen() {
   );
 }
 
-export default TrailScreen;
+export default TrialScreen;

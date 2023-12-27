@@ -36,6 +36,7 @@ const historySlice = createSlice({
         state.isLoading = true;
         state.error = null;
         state.lastFailedAction = null;
+        state.questions = [];
       })
       .addCase(fetchHistoryData.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -52,9 +53,7 @@ const historySlice = createSlice({
       .addCase(saveListeningReaction.fulfilled, (state, action) => {
         const { questionId, reaction } = action.payload;
 
-        const questionIndex = state.questions.findIndex(
-          (q) => q.id === questionId,
-        );
+        const questionIndex = state.questions.findIndex((q) => q.id === questionId);
 
         if (questionIndex !== -1) {
           state.questions[questionIndex].userReactionToPartner = reaction;

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { isBefore, startOfDay, addDays } from 'date-fns';
 
 import { selectUserData } from '@store/auth/selectors';
 import {
@@ -39,6 +40,11 @@ import Layout from '../Layout';
 import Question from '../QuestionView';
 import { Container } from './style';
 
+const isQuestionExpired = (question: QuestionType) => {
+  const today = startOfDay(new Date());
+  return isBefore(question.createdAt, today);
+};
+
 function SubscriberScreen() {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -59,25 +65,10 @@ function SubscriberScreen() {
 
   useEffect(() => {
     trackScreen('SubscriberScreen');
-
-    if (!partnershipData) dispatch(fetchPartnership(userData?.partnershipId));
+    if (!partnershipData) dispatch(fetchPartnership(userData.partnershipId));
   }, []);
 
   useEffect(() => {
-    const isQuestionExpired = (question: QuestionType) => {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      let questionCreatedAt;
-      const { createdAt } = question;
-
-      if (typeof createdAt === 'function') {
-        questionCreatedAt = createdAt.toDate();
-      } else questionCreatedAt = new Date(createdAt.seconds * 1000);
-
-      return questionCreatedAt < today;
-    };
-
     if (
       (!currentQuestion || isQuestionExpired(currentQuestion)) &&
       partnershipData &&

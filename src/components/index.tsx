@@ -13,9 +13,9 @@ import AppStack from '@components/App';
 import BrowserScreen from '@components/shared/BrowserScreen';
 
 export type RootStackParamList = {
-  [RootScreens.AuthStack]: undefined;
-  [RootScreens.AppStack]: undefined;
-  [AppScreens.BrowserScreen]: undefined;
+  [RootScreens.AuthStack]: typeof AuthStack;
+  [RootScreens.AppStack]: typeof AppStack;
+  [AppScreens.BrowserScreen]: typeof BrowserScreen;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -41,10 +41,7 @@ function App(): JSX.Element {
         <Stack.Screen
           component={AuthStack}
           name={RootScreens.AuthStack}
-          options={{
-            headerShown: false,
-            animationTypeForReplace: !isUserLoggedIn ? 'pop' : 'push',
-          }}
+          options={{ headerShown: false }}
         />
       )}
       <Stack.Screen

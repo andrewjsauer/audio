@@ -5,6 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import analytics from '@react-native-firebase/analytics';
 import crashlytics from '@react-native-firebase/crashlytics';
 import Purchases from 'react-native-purchases';
+import functions from '@react-native-firebase/functions';
 
 import { Platform } from 'react-native';
 import Config from 'react-native-config';
@@ -74,16 +75,7 @@ export const initializeSession = createAsyncThunk(
         $firebaseAppInstanceId: appInstanceId,
       });
 
-      const customerUserDocRef = firestore().collection('customers').doc(user.uid);
-      const customerUserDoc = await customerUserDocRef.get();
-
-      if (customerUserDoc.exists) {
-        trackEvent('customer_user_found');
-        return true;
-      }
-
-      trackEvent('customer_user_not_found');
-      return false;
+      return null;
     } catch (error) {
       crashlytics().log('Error initializing session');
       trackEvent('error_initializing_session', { error });
@@ -106,33 +98,21 @@ export const purchaseProduct = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      await Purchases.purchaseProduct('yf_1799_1m_1m0');
+      await Purchases.purchaseProduct('dq_999_1m_1m0');
 
-      await firestore()
-        .collection('users')
-        .doc(user.uid)
-        .set({ isSubscribed: true }, { merge: true });
+      await functions().httpsCallable('updatePartnershipPurchase')({
+        partnerId: partnerData.id,
+        userId: user.uid,
+      });
 
-      if (partnerData) {
-        await firestore()
-          .collection('users')
-          .doc(partnerData.id)
-          .set({ isSubscribed: true }, { merge: true });
-      }
-
-      const customerUserDocRef = firestore().collection('customers').doc(user.uid);
-      const customerUserDoc = await customerUserDocRef.get();
-
-      if (customerUserDoc.exists) {
-        trackEvent('customer_user_found');
-        return true;
-      }
-
-      return false;
+      return {
+        hasSubscribed: true,
+        isSubscribed: true,
+      };
     } catch (error: any) {
       if (error.userCancelled) {
         trackEvent('user_cancelled_purchasing_product');
-        return false;
+        return null;
       }
 
       crashlytics().log('Error purchasing product');
@@ -151,8 +131,6 @@ export const restorePurchases = createAsyncThunk(
 
       return null;
     } catch (error: any) {
-      console.log('Error restoring purchases', error);
-
       if (error.userCancelled) {
         trackEvent('user_cancelled_restoring_purchases');
         return null;

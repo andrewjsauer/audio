@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import { format } from 'date-fns';
 
 import { trackEvent, trackScreen } from '@lib/analytics';
 import { ReactionType } from '@lib/types';
@@ -29,7 +30,7 @@ import {
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
-const formatTime = (milliseconds: number): string => {
+const formatTime = (milliseconds: number) => {
   if (Number.isNaN(milliseconds) || milliseconds < 0) {
     return '00m 00s';
   }

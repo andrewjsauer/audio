@@ -4,6 +4,7 @@
   "submit": "Submit",
   "retry": "Retry",
   "you": "You",
+  "today": "Today",
   "phoneNumber": "Phone Number",
   "permissions": {
     "notifications": {
@@ -122,10 +123,10 @@
     "free": "free",
     "benefit2": "Monthly per couple",
     "benefit2Description": "Starting {{ date }}",
-    "price": "$17.99",
+    "price": "$9.99",
     "footer": {
       "title": "Cancel Anytime. Try it out!",
-      "description": "Your treat! You'll be paying $17.99 month for both you and your partner. Try it for free this month. Cancel anytime.",
+      "description": "Your treat! You'll be paying $9.99 month for both you and your partner. Try it for free this month. Cancel anytime.",
       "buttonText": "Start Free Trial",
       "restoreButtonText": "Restore Purchases"
     }

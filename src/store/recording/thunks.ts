@@ -1,10 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import storage from '@react-native-firebase/storage';
 import functions from '@react-native-firebase/functions';
 
-import { UserDataType } from '@lib/types';
+import { UserDataType, RecordingType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
 
 type saveUserRecordingArgs = {
@@ -45,17 +46,17 @@ export const saveUserRecording = createAsyncThunk(
           async () => {
             try {
               const audioUrl = await uploadTask.snapshot.ref.getDownloadURL();
-              const recordingData = {
-                id: recordingId,
-                userId,
-                questionId,
-                createdAt: firestore.FieldValue.serverTimestamp(),
-                duration,
+              const recordingData: RecordingType = {
                 audioUrl,
-                partnershipId,
+                createdAt: firestore.Timestamp.now(),
                 didLikeQuestion: null,
+                duration,
                 feedbackText: null,
+                id: recordingId,
+                partnershipId,
+                questionId,
                 reaction: [],
+                userId,
               };
 
               await firestore()
@@ -76,7 +77,10 @@ export const saveUserRecording = createAsyncThunk(
                 });
               }
 
-              resolve(recordingData);
+              resolve({
+                ...recordingData,
+                createdAt: new Date(recordingData.createdAt._seconds * 1000),
+              });
             } catch (error) {
               crashlytics().recordError(error);
               trackEvent('save_recording_error', { error: error.message });
