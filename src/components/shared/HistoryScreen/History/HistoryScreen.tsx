@@ -88,6 +88,8 @@ function HistoryScreen({
     );
   }
 
+  console.log('TESTESTESTESTEST', questions);
+
   if (!questions?.length) {
     return (
       <Container>
@@ -123,8 +125,7 @@ function HistoryScreen({
     const { icon: UserIcon } = statusIcons[userStatus];
     const { icon: PartnerIcon } = statusIcons[partnerStatus];
 
-    const date = createdAt.toDate();
-    const formatDate = isToday(date) ? t('today') : format(date, 'PP');
+    const formatDate = isToday(createdAt) ? t('today') : format(createdAt, 'PP');
     return (
       <ItemContainer key={id}>
         <ItemQuestionContainer>

@@ -150,7 +150,7 @@ export const fetchHistoryData = createAsyncThunk(
           } = await getRecordingData(recordings, userData.id, partnerData.id);
 
           return {
-            createdAt: question.createdAt,
+            createdAt: new Date(question.createdAt._seconds * 1000),
             id: `${question.id}_${userData.id}`,
             partnerAudioUrl,
             partnerColor: partnerData.color,

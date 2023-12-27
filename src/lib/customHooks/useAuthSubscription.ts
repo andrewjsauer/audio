@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from 'react-native';
 
@@ -27,19 +27,6 @@ function useAuthStateListener() {
       dispatch(setUser(user));
     }
   }
-
-  const handleUpdateLastActiveAt = useCallback(() => {
-    if (userId) {
-      dispatch(
-        updateUser({
-          id: userId,
-          userDetails: {
-            lastActiveAt: firestore.FieldValue.serverTimestamp(),
-          },
-        }),
-      );
-    }
-  }, [userId, dispatch]);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -79,14 +66,23 @@ function useAuthStateListener() {
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState.match(/inactive|background/)) {
-        handleUpdateLastActiveAt();
+        if (userId) {
+          dispatch(
+            updateUser({
+              id: userId,
+              userDetails: {
+                lastActiveAt: firestore.FieldValue.serverTimestamp(),
+              },
+            }),
+          );
+        }
       }
     });
 
     return () => {
       subscription.remove();
     };
-  }, [handleUpdateLastActiveAt]);
+  }, [userId]);
 }
 
 export default useAuthStateListener;

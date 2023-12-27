@@ -30,3 +30,8 @@ export const selectIsSubscribed = createSelector(
   selectUserData,
   (userData) => (!!userData && userData.isSubscribed) ?? false,
 );
+
+export const selectHasSubscribed = createSelector(
+  selectUserData,
+  (userData) => (!!userData && userData.hasSubscribed) ?? false,
+);

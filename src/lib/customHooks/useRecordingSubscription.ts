@@ -30,7 +30,12 @@ const useRecordingSubscription = ({
         .onSnapshot((snapshot) => {
           if (snapshot && !snapshot.empty) {
             const latestRecording = snapshot.docs[0].data() as RecordingType;
-            dispatch(setUserRecording(latestRecording));
+            const payload = {
+              ...latestRecording,
+              createdAt: new Date(latestRecording.createdAt._seconds * 1000),
+            };
+
+            dispatch(setUserRecording(payload));
           } else if (snapshot && snapshot.empty) {
             dispatch(setUserRecording(null));
           }
@@ -45,7 +50,12 @@ const useRecordingSubscription = ({
         .onSnapshot((snapshot) => {
           if (snapshot && !snapshot.empty) {
             const latestRecording = snapshot.docs[0].data() as RecordingType;
-            dispatch(setPartnerRecording(latestRecording));
+            const payload = {
+              ...latestRecording,
+              createdAt: new Date(),
+            };
+
+            dispatch(setPartnerRecording(payload));
           } else if (snapshot && snapshot.empty) {
             dispatch(setPartnerRecording(null));
           }

@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { format, isToday } from 'date-fns';
+import { format, isToday, isValid } from 'date-fns';
 
 import { ReactionTypeIcons, QuestionStatusType as StatusTypes, ReactionType } from '@lib/types';
 
@@ -22,7 +21,7 @@ import {
 
 type QuestionRowProps = {
   color: string;
-  createdAt: FirebaseFirestoreTypes.Timestamp | undefined;
+  createdAt: Date | number | null;
   isPartner?: boolean;
   name: string;
   onPress: () => void;
@@ -30,6 +29,38 @@ type QuestionRowProps = {
   status: StatusTypes;
   partnerColor: string;
 };
+
+function getStatusOptions(status, createdAt, name, isPartner, t) {
+  const validDate = createdAt && isValid(new Date(createdAt));
+  const formattedDate = validDate ? format(new Date(createdAt), 'PP') : '';
+  const formattedTime = validDate ? format(new Date(createdAt), 'p') : '';
+
+  return {
+    [StatusTypes.Lock]: {
+      icon: LockIcon,
+      title: t('questionScreen.subscriberScreen.lock.title', { name }),
+      description: t('questionScreen.subscriberScreen.lock.description'),
+    },
+    [StatusTypes.PendingRecord]: {
+      icon: QuestionIcon,
+      title: t('questionScreen.subscriberScreen.pendingRecord.title', { name }),
+      description: '',
+    },
+    [StatusTypes.Play]: {
+      icon: PlayIcon,
+      title: t('questionScreen.subscriberScreen.play.title', { name: isPartner ? name : t('you') }),
+      description: t('questionScreen.subscriberScreen.play.description', {
+        date: validDate && isToday(new Date(createdAt)) ? t('today') : formattedDate,
+        time: formattedTime,
+      }),
+    },
+    [StatusTypes.Record]: {
+      icon: MicIcon,
+      title: t('questionScreen.subscriberScreen.record.title'),
+      description: '',
+    },
+  }[status];
+}
 
 function QuestionRow({
   color,
@@ -43,47 +74,11 @@ function QuestionRow({
 }: QuestionRowProps) {
   const { t } = useTranslation();
 
-  const statusOptions = useMemo(() => {
-    return {
-      [StatusTypes.Lock]: {
-        icon: LockIcon,
-        title: t('questionScreen.subscriberScreen.lock.title', {
-          name,
-        }),
-        description: t('questionScreen.subscriberScreen.lock.description'),
-      },
-      [StatusTypes.PendingRecord]: {
-        icon: QuestionIcon,
-        title: t('questionScreen.subscriberScreen.pendingRecord.title', {
-          name,
-        }),
-        description: '',
-      },
-      [StatusTypes.Play]: () => {
-        const dateObject = createdAt.toDate();
-
-        const formattedDate = isToday(dateObject) ? t('today') : format(dateObject, 'PP');
-        const formattedTime = format(dateObject, 'p');
-        return {
-          icon: PlayIcon,
-          title: t('questionScreen.subscriberScreen.play.title', {
-            name: isPartner ? name : t('you'),
-          }),
-          description: t('questionScreen.subscriberScreen.play.description', {
-            date: formattedDate,
-            time: formattedTime,
-          }),
-        };
-      },
-      [StatusTypes.Record]: {
-        icon: MicIcon,
-        title: t('questionScreen.subscriberScreen.record.title'),
-        description: '',
-      },
-    };
-  }, [status]);
-
-  const { icon: Icon, title, description } = statusOptions[status];
+  const {
+    icon: Icon,
+    title,
+    description,
+  } = getStatusOptions(status, createdAt, name, isPartner, t);
   return (
     <Container>
       <IconButton

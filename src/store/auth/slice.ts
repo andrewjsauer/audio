@@ -140,7 +140,7 @@ const authSlice = createSlice({
       .addCase(purchaseProduct.fulfilled, (state, action) => {
         state.userData = {
           ...state.userData,
-          isSubscribed: action.payload,
+          ...action.payload,
         } as UserDataType;
       });
   },

@@ -4,15 +4,16 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 
+import { selectHasSubscribed } from '@store/auth/selectors';
 import {
   selectError,
   selectIsLoading,
-  selectIsPreviouslySubscribed,
   selectLastFailedAction,
   selectTransactionError,
 } from '@store/app/selectors';
 
 import { initializeSession } from '@store/app/thunks';
+import { setTransactionError } from '@store/app/slice';
 
 import { AppDispatch } from '@store/index';
 
@@ -43,7 +44,7 @@ function App(): JSX.Element {
 
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
-  const isPreviouslySubscribed = useSelector(selectIsPreviouslySubscribed);
+  const hasPreviouslySubscribed = useSelector(selectHasSubscribed);
   const transactionError = useSelector(selectTransactionError);
   const lastFailedAction = useSelector(selectLastFailedAction);
 
@@ -52,6 +53,7 @@ function App(): JSX.Element {
   useEffect(() => {
     if (transactionError) {
       Alert.alert(t('errors.errorPurchasing'), t(transactionError));
+      dispatch(setTransactionError(null));
     }
   }, [transactionError]);
 
@@ -75,7 +77,7 @@ function App(): JSX.Element {
 
   return (
     <Stack.Navigator>
-      {isPreviouslySubscribed ? (
+      {hasPreviouslySubscribed ? (
         <>
           <Stack.Screen
             component={QuestionScreen}

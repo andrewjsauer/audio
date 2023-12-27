@@ -158,7 +158,7 @@ exports.generateQuestion = functions
       id: questionId,
       partnershipId: partnershipData.id,
       text: questionText,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: admin.firestore.Timestamp.now(),
     };
 
     try {
@@ -708,7 +708,6 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     const userRef = admin.firestore().collection('users').doc(userId);
     const userPayload = {
       ...userDetails,
-      birthDate: admin.firestore.Timestamp.fromDate(new Date(userDetails.birthDate)),
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       id: userId,
       isPartner: false,
@@ -716,6 +715,7 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
       lastActiveAt: admin.firestore.FieldValue.serverTimestamp(),
       partnershipId,
       isSubscribed: false,
+      hasSubscribed: false,
     };
     batch.set(userRef, userPayload, { merge: true });
 
@@ -730,13 +730,14 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
       lastActiveAt: admin.firestore.FieldValue.serverTimestamp(),
       partnershipId,
       isSubscribed: false,
+      hasSubscribed: false,
     };
     batch.set(partnerRef, partnerPayload, { merge: true });
 
     const smsRef = admin.firestore().collection('sms').doc();
     batch.set(smsRef, {
       to: partnerDetails.phoneNumber,
-      body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join 'Daily Qs.' Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: [link] 😊`,
+      body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join Daily Qs. Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: [link] 😊`,
     });
 
     await batch.commit();
