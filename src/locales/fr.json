@@ -142,7 +142,8 @@
       "partnerAnswered": "{{ name }} a répondu, mais pas vous",
       "userAnswered": "Vous avez répondu, mais pas {{ name }}",
       "bothDidNotAnswer": "Aucun de vous n'a répondu"
-    }
+    },
+    "buttonText": "Voir l'Historique"
   },
   "auth": {
     "signInScreen": {

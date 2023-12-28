@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { trackEvent } from '@lib/analytics';
 import { AppScreens } from '@lib/types';
@@ -19,6 +20,7 @@ function Layout({
 }) {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const handleNavigateToSettings = () => {
     trackEvent('settings_button_clicked');
@@ -38,7 +40,7 @@ function Layout({
       {children}
       <HistoryButtonContainer>
         <Button
-          text="View History"
+          text={t('historyScreen.buttonText')}
           size="small"
           mode="hidden"
           isLoading={isLoading}

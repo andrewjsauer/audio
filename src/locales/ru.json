@@ -142,7 +142,8 @@
       "partnerAnswered": "{{ name }} ответил(а), но вы нет",
       "userAnswered": "Вы ответили, но {{ name }} нет",
       "bothDidNotAnswer": "Ни один из вас не ответил"
-    }
+    },
+    "buttonText": "Просмотреть историю"
   },
   "auth": {
     "signInScreen": {

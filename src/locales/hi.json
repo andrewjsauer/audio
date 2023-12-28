@@ -142,7 +142,8 @@
       "partnerAnswered": "{{ name }} ने जवाब दिया, लेकिन आपने नहीं",
       "userAnswered": "आपने जवाब दिया, लेकिन {{ name }} ने नहीं",
       "bothDidNotAnswer": "आप दोनों में से किसी ने जवाब नहीं दिया"
-    }
+    },
+    "buttonText": "इतिहास देखें"
   },
   "auth": {
     "signInScreen": {

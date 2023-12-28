@@ -125,7 +125,8 @@
       "partnerAnswered": "{{ name }} أجاب، ولكنك لم تفعل",
       "userAnswered": "أجبت، ولكن {{ name }} لم يفعل",
       "bothDidNotAnswer": "لم يجب أي منكما"
-    }
+    },
+    "buttonText": "عرض السجل"
   },
   "auth": {
     "signInScreen": {

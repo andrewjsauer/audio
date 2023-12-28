@@ -142,7 +142,8 @@
       "partnerAnswered": "{{ name }}님이 답변했지만 당신은 하지 않았습니다",
       "userAnswered": "당신이 답변했지만 {{ name }}님은 하지 않았습니다",
       "bothDidNotAnswer": "둘 다 답변하지 않았습니다"
-    }
+    },
+    "buttonText": "기록 보기"
   },
   "auth": {
     "signInScreen": {

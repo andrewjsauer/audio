@@ -126,7 +126,8 @@
       "partnerAnswered": "{{ name }}は答えましたが、あなたは答えていません",
       "userAnswered": "あなたは答えましたが、{{ name }}は答えていません",
       "bothDidNotAnswer": "どちらも答えていません"
-    }
+    },
+    "buttonText": "履歴を見る"
   },
   "auth": {
     "signInScreen": {

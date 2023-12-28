@@ -142,7 +142,8 @@
       "partnerAnswered": "{{ name }} hat geantwortet, aber du nicht",
       "userAnswered": "Du hast geantwortet, aber {{ name }} nicht",
       "bothDidNotAnswer": "Keiner von euch hat geantwortet"
-    }
+    },
+    "buttonText": "Verlauf ansehen"
   },
   "auth": {
     "signInScreen": {

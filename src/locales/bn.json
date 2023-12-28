@@ -128,7 +128,8 @@
       "partnerAnswered": "{{ name }} উত্তর দিয়েছে, কিন্তু আপনি দেননি",
       "userAnswered": "আপনি উত্তর দিয়েছেন, কিন্তু {{ name }} দেয়নি",
       "bothDidNotAnswer": "আপনারা দুজনেই উত্তর দেননি"
-    }
+    },
+    "buttonText": "ইতিহাস দেখুন"
   },
   "auth": {
     "signInScreen": {

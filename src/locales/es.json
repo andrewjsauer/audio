@@ -142,7 +142,8 @@
       "partnerAnswered": "{{ name }} respondió, pero tú no",
       "userAnswered": "Tú respondiste, pero {{ name }} no",
       "bothDidNotAnswer": "Ninguno de los dos respondió"
-    }
+    },
+    "buttonText": "Ver Historial"
   },
   "auth": {
     "signInScreen": {

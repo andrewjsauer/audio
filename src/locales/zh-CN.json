@@ -125,7 +125,8 @@
       "partnerAnswered": "{{ name }} 回答了，但你没有",
       "userAnswered": "你回答了，但 {{ name }} 没有",
       "bothDidNotAnswer": "你们两个都没有回答"
-    }
+    },
+    "buttonText": "查看历史"
   },
   "auth": {
     "signInScreen": {

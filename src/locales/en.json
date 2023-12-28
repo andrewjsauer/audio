@@ -142,7 +142,8 @@
       "partnerAnswered": "{{ name }} answered, but you didn't",
       "userAnswered": "You answered, but {{ name }} didn't",
       "bothDidNotAnswer": "Neither of you answered"
-    }
+    },
+    "buttonText": "View History"
   },
   "auth": {
     "signInScreen": {

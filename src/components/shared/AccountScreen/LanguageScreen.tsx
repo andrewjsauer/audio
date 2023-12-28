@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import i18n from 'i18next';
 
@@ -24,15 +24,19 @@ export const languageMap: { [key: string]: string } = {
 };
 
 function LanguageScreen() {
+  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+
   const handleLanguageChange = (languageCode: string) => {
+    setSelectedLanguage(languageCode);
     changeLanguage(languageCode);
+
     trackEvent('language_change', { language: languageCode });
   };
 
   return (
     <Layout titleKey="accountScreen.languageScreen.title" screen="language_account_screen">
       <Picker
-        selectedValue={i18n.language}
+        selectedValue={selectedLanguage}
         onValueChange={(itemValue) => handleLanguageChange(itemValue)}
         mode="dropdown"
       >

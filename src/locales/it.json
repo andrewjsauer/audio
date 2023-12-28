@@ -142,7 +142,8 @@
       "partnerAnswered": "{{ name }} ha risposto, ma tu no",
       "userAnswered": "Tu hai risposto, ma {{ name }} no",
       "bothDidNotAnswer": "Nessuno di voi ha risposto"
-    }
+    },
+    "buttonText": "Visualizza Cronologia"
   },
   "auth": {
     "signInScreen": {
