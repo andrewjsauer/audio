@@ -7,11 +7,13 @@ import { AccountScreens } from '@lib/types';
 import SettingsScreen from './SettingsScreen';
 import ColorScreen from './ColorScreen';
 import NameScreen from './NameScreen';
+import LanguageScreen from './LanguageScreen';
 
 export type AccountStackParamList = {
   [AccountScreens.SettingsScreen]: typeof SettingsScreen;
   [AccountScreens.ColorScreen]: typeof SettingsScreen;
   [AccountScreens.NameScreen]: typeof SettingsScreen;
+  [AccountScreens.LanguageScreen]: typeof LanguageScreen;
 };
 
 const Stack = createStackNavigator<AccountStackParamList>();
@@ -36,6 +38,11 @@ function AccountScreenContainer() {
       <Stack.Screen
         component={NameScreen}
         name={AccountScreens.NameScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={LanguageScreen}
+        name={AccountScreens.LanguageScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

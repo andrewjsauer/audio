@@ -1,0 +1,231 @@
+{
+  "next": "अगला",
+  "retry": "पुनः प्रयास करें",
+  "you": "आप",
+  "today": "आज",
+  "phoneNumber": "फोन नंबर",
+  "permissions": {
+    "notifications": {
+      "title": "{{ name }} के जवाब आने पर जानें...",
+      "titleNameBackup": "जब आपके साथी जवाब दें तब जानें...",
+      "description": "प्रश्नों और उत्तरों के लिए सूचनाएं प्राप्त करें",
+      "buttonText": "अनुमति दें"
+    }
+  },
+  "errors": {
+    "tryAgain": "पुनः प्रयास करें",
+    "pleaseTryAgain": "कृपया पुनः प्रयास करे",
+    "whoops": "उफ़! लगता है कि कोई त्रुटि हुई है",
+    "verificationCodeEmpty": "सत्यापन कोड खाली नहीं हो सकता",
+    "invalidAPICode": "सत्यापन कोड जमा करते समय कुछ गलत हो गया",
+    "phoneNumberEmpty": "फोन नंबर खाली नहीं हो सकता",
+    "phoneNumberInvalid": "फोन नंबर अमान्य है",
+    "phoneNumberAPIError": "फोन नंबर जमा करते समय कुछ गलत हो गया",
+    "resendingVerificationCodeFailed": "सत्यापन कोड पुन: भेजते समय कुछ गलत हो गया",
+    "registrationCheckFailed": "पंजीकरण जांचते समय कुछ गलत हो गया",
+    "invitePartnerAPIError": "साथी को आमंत्रण भेजते समय कुछ गलत हो गया",
+    "partnerNameEmpty": "साथी का नाम खाली नहीं हो सकता",
+    "relationshipDateEmpty": "संबंध तिथि खाली नहीं हो सकती",
+    "relationshipTypeEmpty": "संबंध स्थिति खाली नहीं हो सकती",
+    "userNameEmpty": "आपका नाम खाली नहीं हो सकता",
+    "birthdayEmpty": "जन्मदिन खाली नहीं हो सकता",
+    "colorEmpty": "रंग खाली नहीं हो सकता",
+    "userUpdateFailed": "आपके उपयोगकर्ता को अपडेट करते समय कुछ गलत हो गया",
+    "partnershipGenerationFailed": "संबंध आरंभ करते समय कुछ गलत हो गया",
+    "initializeSession": "उपयोगकर्ता आरंभ करते समय कुछ गलत हो गया",
+    "errorPurchasing": "खरीददारी में त्रुटि",
+    "recordingSaveFailed": "आपकी रिकॉर्डिंग सहेजते समय कुछ गलत हो गया",
+    "historyAPIError": "आपका इतिहास प्राप्त करते समय कुछ गलत हो गया",
+    "initSessionAPIError": "आपका सत्र आरंभ करते समय कुछ गलत हो गया",
+    "purchaseError": "सदस्यता खरीदते समय कुछ गलत हो गया",
+    "restoreError": "सदस्यता पुनःस्थापित करते समय कुछ गलत हो गया",
+    "fetchPartnerDataAPIError": "साथी का डेटा प्राप्त करते समय कुछ गलत हो गया",
+    "fetchPartnershipDataAPIError": "संबंध का डेटा प्राप्त करते समय कुछ गलत हो गया",
+    "fetchQuestionAPIError": "प्रश्न प्राप्त करते समय कुछ गलत हो गया",
+    "audioPlayBackError": "आपकी ऑडियो चलाते समय कुछ गलत हो गया। कृपया पुनः प्रयास करें",
+    "deleteRelationshipFailed": "आपके संबंध को हटाते समय कुछ गलत हो गया",
+    "partnerAlreadyInUse": "यह फोन नंबर पहले से ही उपयोग में है"
+  },
+  "browserScreen": {
+    "title": "ब्राउज़र"
+  },
+  "accountScreen": {
+    "title": "खाता सेटिंग्स",
+    "yourName": "आपका पहला नाम",
+    "yourColor": "आपका रंग",
+    "yourPartnerName": "आपके साथी का नाम",
+    "yourPartnerColor": "आपके साथी का रंग",
+    "signOut": "साइन आउट",
+    "deleteAccount": "संबंध समाप्त करें और खाते हटाएं",
+    "and": " और ",
+    "legal": "सॉयरऐप्पल लीएलसी से दैनिक प्रश्न",
+    "terms": "नियम एवं शर्तें",
+    "privacy": "गोपनीयता नीति",
+    "deleteAccountModal": {
+      "title": "क्या आप सच में यह संबंध समाप्त करना चाहते हैं?",
+      "description": "इससे आपका खाता और आपके साथी का खाता हट जाएगा। आप अपना इतिहास या रिकॉर्डिंग नहीं देख पाएंगे।",
+      "cancel": "रद्द करें",
+      "delete": "हटाएँ"
+    },
+    "colorScreen": {
+      "title": "अपना रंग बदलें",
+      "success": "आपका रंग अपडेट कर दिया गया है!"
+    },
+    "nameScreen": {
+      "title": "अपना नाम बदलें",
+      "submitButton": "सेव करें",
+      "placeholder": "नया नाम लिखें",
+      "success": "आपका नाम अपडेट कर दिया गया है!"
+    }
+  },
+  "questionScreen": {
+    "nonSubscriberScreen": {
+      "default": {
+        "text": "आप दोनों की सबसे अच्छी डेट कौन सी थी?"
+      },
+      "notification": {
+        "title": "ओहो! आपकी सदस्यता समाप्त हो गई है...",
+        "description": "एप का उपयोग जारी रखने के लिए कृपया अपने भुगतान को ठीक करें!",
+        "restoreButtonText": "खरीदारी पुनःस्थापित करें",
+        "updatePaymentButtonText": "सब्सक्राइब करें"
+      }
+    },
+    "subscriberScreen": {
+      "redo": "पुनः करें",
+      "submit": "जमा करें",
+      "timeRemaining": "{{ time }} शेष...",
+      "lock": {
+        "title": "{{ name }} ने जवाब दिया",
+        "description": "इसे सुनने के लिए अपना जवाब रिकॉर्ड करें!"
+      },
+      "pendingRecord": {
+        "title": "{{ name }} ने अभी तक जवाब नहीं दिया है"
+      },
+      "record": {
+        "title": "अपना जवाब रिकॉर्ड करने के लिए टैप करें"
+      },
+      "play": {
+        "title": "{{ name }} ने जवाब दिया",
+        "description": "{{ date }} को {{ time }}"
+      },
+      "audioPermissions": {
+        "title": "रिकॉर्ड करने की अनुमति दें",
+        "description": "आपको अपना जवाब रिकॉर्ड करने के लिए अनुमति देनी होगी",
+        "buttonText": "अनुमति दें"
+      }
+    }
+  },
+  "trialScreen": {
+    "title": "ठीक है, आप तैयार हैं!",
+    "subTitle": "अपना 30-दिवसीय परीक्षण शुरू करें",
+    "benefit1": "प्रथम 30 दिन",
+    "free": "मुक्त",
+    "benefit2": "महीने के हिसाब से प्रति जोड़ा",
+    "benefit2Description": "{{ date }} से शुरू करके",
+    "price": "$9.99",
+    "footer": {
+      "title": "कभी भी रद्द करें। इसे आजमाएं!",
+      "description": "आप दोनों के लिए $9.99 प्रति महीना खर्च होगा। इस महीने मुक्त में आजमाएं। किसी भी समय रद्द कर सकते हैं।",
+      "buttonText": "निशुल्क परीक्षण शुरू करें",
+      "restoreButtonText": "खरीदारी पुनःस्थापित करें"
+    }
+  },
+  "historyScreen": {
+    "title": "इतिहास",
+    "noResults": "अतीत की रिकॉर्डिंग यहाँ दिखेगी...\n\n आप केवल उन रिकॉर्डिंग्स को सुन पाएंगे जिसमे आप दोनों ने प्रश्न का उत्तर दिया हो!",
+    "status": {
+      "bothAnswered": "आप दोनों ने जवाब दिया",
+      "partnerAnswered": "{{ name }} ने जवाब दिया, लेकिन आपने नहीं",
+      "userAnswered": "आपने जवाब दिया, लेकिन {{ name }} ने नहीं",
+      "bothDidNotAnswer": "आप दोनों में से किसी ने जवाब नहीं दिया"
+    }
+  },
+  "auth": {
+    "signInScreen": {
+      "title": "दैनिक प्रश्न",
+      "subtitle": "जोड़ों का संस्करण",
+      "description": "रोज़ के व्यक्तिगत प्रश्नों के उत्तरों का पता लगाएं",
+      "buttonText": "कोड प्राप्त करें",
+      "terms": "साइन अप करके, आप हमारी सहमति देते हैं"
+    },
+    "phoneNumberScreen": {
+      "title": "स्वागत है! शुरू करने के लिए साइन इन करें",
+      "inputTitle": "साइन इन *",
+      "inputDescription": "साइन इन करने के लिए, सत्यापन कोड के लिए अपना फोन नंबर टाइप करें।"
+    },
+    "verificationCodeScreen": {
+      "title": "आपका लॉगिन कोड आपके नंबर पर भेजा गया था।",
+      "inputTitle": "सत्यापन कोड *",
+      "inputDescriptionP1": "कोड प्राप्त नहीं हुआ? ",
+      "inputDescriptionP2": "यहाँ टैप करें ",
+      "inputDescriptionP3": "फिर से भेजने के लिए ",
+      "inputDescriptionP4": " सेकंड्स",
+      "buttonText": "सत्यापित करें"
+    },
+    "partnerDetails": {
+      "nameScreen": {
+        "title": "ठीक है, समय आ गया है कि आप अपने साथी को आमंत्रित करें! आपके साथी का नाम क्या है?",
+        "inputTitle": "आपके साथी का नाम *",
+        "inputPlaceholder": "साथी का पहला नाम",
+        "inputDescription": "अपने साथी का पहला नाम या उपनाम डालें जो आप दोनों उपयोग करते हैं।"
+      },
+      "relationshipTypeScreen": {
+        "title": "आपके और आपके साथी का संबंध क्या है?",
+        "types": [
+          { "stillGettingToKnowEachOther": "अभी एक दूसरे को जान रहे हैं" },
+          { "dating": "डेटिंग" },
+          { "inARelationship": "एक संबंध में" },
+          { "engaged": "सगाई कर ली है" },
+          { "domesticPartnership": "घरेलू साझीदारी" },
+          { "cohabiting": "सहवास कर रहे हैं" },
+          { "longDistanceRelationship": "दूरी का संबंध" },
+          { "consensualNonMonogamousRelationship": "सहमति से अनेक साझीदारी संबंध" },
+          { "inAnOpenRelationship": "खुले संबंध में" },
+          { "married": "विवाहित" }
+        ]
+      },
+      "relationshipDateScreen": {
+        "title": "आप दोनों ने एक दूसरे को जानना कब शुरू किया?",
+        "inputTitle": "संबंध की शुरुआत *",
+        "inputDescription": "संबंध की उम्र जानने से आपका अनुभव कस्टमाइज़ होता है"
+      },
+      "invitePartnerScreen": {
+        "title": "यह ऐप सिर्फ आपके साथी के साथ काम करता है। अपने साथी को आमंत्रण भेजें!",
+        "inputTitle": "आपके साथी का फोन नंबर",
+        "inputPlaceholder": "साथी का फोन नंबर",
+        "inputDescription": "सबमिट करके, मैं पुष्टि करता हूँ कि मैंने अपने साथी की सहमति प्राप्त की है उन्हें एसएमएस आमंत्रण भेजने के लिए",
+        "sendInvite": "आमंत्रण भेजें"
+      }
+    },
+    "userDetails": {
+      "userNameScreen": {
+        "title": "अपना पसंदीदा रंग और नाम चुनें ताकि आपके साथी आपको पहचान सकें।",
+        "inputTitle": "आपका नाम ",
+        "inputPlaceholder": "पहला नाम",
+        "inputDescription": "अपना पहला नाम या एक नाम उपयोग करें जो आपके साथी पहचानेंगे।"
+      },
+      "birthdayScreen": {
+        "title": "हमें आपके लिए बेहतर तरह से प्रश्नों को तैयार करने के लिए अपना जन्मदिन जोड़ें।",
+        "inputTitle": "जन्म तिथि",
+        "inputDescription": "आपकी उम्र जानने से आपका अनुभव कस्टमाइज़ होता है"
+      }
+    },
+    "signIn": "साइन इन",
+    "enterPhone": "अपना फोन नंबर दर्ज करें",
+    "getCode": "कोड प्राप्त करें",
+    "enterCode": "कोड दर्ज करें",
+    "verify": "सत्यापित करें",
+    "enterName": "अपना पूरा नाम दर्ज करें",
+    "chooseColor": "अपना पसंदीदा रंग चुनें",
+    "enterBirthday": "अपना जन्मदिन दर्ज करें",
+    "partnerPhone": "आपके साथी का फोन नंबर",
+    "sendInvite": "आमंत्रण भेजें",
+    "single": "एकल",
+    "inARelationship": "एक संबंध में",
+    "engaged": "सगाई कर ली है",
+    "married": "विवाहित",
+    "domesticPartnership": "घरेलू साझीदारी",
+    "polyamorous": "बहुल प्रेम (जल्द आ रहा है!)",
+    "relationshipStatus": "आपकी संबंध स्थिति क्या है?"
+  }
+}

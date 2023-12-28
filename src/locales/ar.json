@@ -1,0 +1,214 @@
+{
+  "next": "التالي",
+  "retry": "أعد المحاولة",
+  "you": "أنت",
+  "today": "اليوم",
+  "phoneNumber": "رقم الهاتف",
+  "permissions": {
+    "notifications": {
+      "title": "اعرف متى يجيب {{ name }}...",
+      "titleNameBackup": "اعرف عندما يجيب شريكك...",
+      "description": "احصل على إشعارات للأسئلة والأجوبة",
+      "buttonText": "السماح"
+    }
+  },
+  "errors": {
+    "tryAgain": "حاول مرة أخرى",
+    "pleaseTryAgain": "الرجاء المحاولة مرة أخرى",
+    "whoops": "عذرًا! يبدو أنه حدث خطأ",
+    "verificationCodeEmpty": "لا يمكن أن يكون رمز التحقق فارغًا",
+    "invalidAPICode": "حدث خطأ ما عند إرسال رمز التحقق الخاص بك",
+    "phoneNumberEmpty": "لا يمكن أن يكون رقم الهاتف فارغًا",
+    "phoneNumberInvalid": "رقم الهاتف غير صحيح",
+    "phoneNumberAPIError": "حدث خطأ ما عند إرسال رقم الهاتف الخاص بك",
+    "resendingVerificationCodeFailed": "حدث خطأ ما عند إعادة إرسال رمز التحقق الخاص بك",
+    "registrationCheckFailed": "حدث خطأ ما عند التحقق من تسجيلك",
+    "invitePartnerAPIError": "حدث خطأ ما عند دعوة شريكك",
+    "partnerNameEmpty": "لا يمكن أن يكون اسم الشريك فارغًا",
+    "relationshipDateEmpty": "لا يمكن أن يكون تاريخ العلاقة فارغًا",
+    "relationshipTypeEmpty": "لا يمكن أن يكون وضع العلاقة فارغًا",
+    "userNameEmpty": "لا يمكن أن يكون اسمك فارغًا",
+    "birthdayEmpty": "لا يمكن أن يكون تاريخ الميلاد فارغًا",
+    "colorEmpty": "لا يمكن أن يكون اللون فارغًا",
+    "userUpdateFailed": "حدث خطأ ما عند تحديث بيانات المستخدم",
+    "partnershipGenerationFailed": "حدث خطأ ما عند تهيئة شراكتك",
+    "initializeSession": "حدث خطأ ما عند تهيئة بيانات المستخدم الخاص بك",
+    "errorPurchasing": "خطأ في الشراء",
+    "recordingSaveFailed": "حدث خطأ ما عند حفظ التسجيل الخاص بك",
+    "historyAPIError": "حدث خطأ ما عند جلب سجلك",
+    "initSessionAPIError": "حدث خطأ ما عند تهيئة جلستك",
+    "purchaseError": "حدث خطأ ما عند شراء الاشتراك الخاص بك",
+    "restoreError": "حدث خطأ ما عند استعادة اشتراكك",
+    "fetchPartnerDataAPIError": "حدث خطأ ما عند جلب بيانات شريكك",
+    "fetchPartnershipDataAPIError": "حدث خطأ ما عند جلب بيانات الشراكة الخاصة بك",
+    "fetchQuestionAPIError": "حدث خطأ ما أثناء جلب سؤالك",
+    "audioPlayBackError": "حدث خطأ ما عند تشغيل تسجيلك الصوتي. الرجاء المحاولة مرة أخرى",
+    "deleteRelationshipFailed": "حدث خطأ ما أثناء حذف علاقتك",
+    "partnerAlreadyInUse": "هذا الرقم مستخدم بالفعل"
+  },
+  "browserScreen": { "title": "المتصفح" },
+  "accountScreen": {
+    "title": "إعدادات الحساب",
+    "yourName": "اسمك الأول",
+    "yourColor": "لونك",
+    "yourPartnerName": "اسم شريكك",
+    "yourPartnerColor": "لون شريكك",
+    "signOut": "تسجيل الخروج",
+    "deleteAccount": "إنهاء العلاقة وحذف الحسابات",
+    "and": " و ",
+    "legal": "أسئلة اليومية من SAUERAPPLE LLC",
+    "terms": "الشروط والأحكام",
+    "privacy": "سياسة الخصوصية",
+    "deleteAccountModal": {
+      "title": "هل أنت متأكد أنك تريد إنهاء هذه العلاقة؟",
+      "description": "سيتم حذف حسابك وحساب شريكك. لن تتمكن من الوصول إلى سجلك أو تسجيلاتك.",
+      "cancel": "إلغاء",
+      "delete": "حذف"
+    },
+    "colorScreen": { "title": "غير لونك", "success": "تم تحديث لونك بنجاح!" },
+    "nameScreen": {
+      "title": "غير اسمك",
+      "submitButton": "حفظ",
+      "placeholder": "اكتب اسمًا جديدًا",
+      "success": "تم تحديث اسمك بنجاح!"
+    }
+  },
+  "questionScreen": {
+    "nonSubscriberScreen": {
+      "default": { "text": "ما هو أفضل موعد قضيتماه معًا؟" },
+      "notification": {
+        "title": "عذرًا! الاشتراك الخاص بك قد انتهى...",
+        "description": "الرجاء تحديث طريقة الدفع لمتابعة استخدام التطبيق!",
+        "restoreButtonText": "استعادة الشراء",
+        "updatePaymentButtonText": "اشترك"
+      }
+    },
+    "subscriberScreen": {
+      "redo": "إعادة",
+      "submit": "إرسال",
+      "timeRemaining": "{{ time }} متبقية...",
+      "lock": { "title": "أجاب {{ name }}", "description": "سجل إجابتك للاستماع إليها!" },
+      "pendingRecord": { "title": "{{ name }} لم يجب بعد" },
+      "record": { "title": "اضغط لتسجيل إجابتك" },
+      "play": { "title": "أجاب {{ name }}", "description": "{{ date }} في {{ time }}" },
+      "audioPermissions": {
+        "title": "السماح بأذونات التسجيل",
+        "description": "يجب السماح بالأذونات لتسجيل إجابتك",
+        "buttonText": "السماح"
+      }
+    }
+  },
+  "trialScreen": {
+    "title": "حسنًا، كل شيء جاهز!",
+    "subTitle": "ابدأ تجربتك لمدة 30 يومًا",
+    "benefit1": "أول 30 يومًا",
+    "free": "مجانًا",
+    "benefit2": "شهريًا لكل زوج",
+    "benefit2Description": "ابتداءً من {{ date }}",
+    "price": "$9.99",
+    "footer": {
+      "title": "إلغاء في أي وقت. جرب الآن!",
+      "description": "على حسابك! ستدفع $9.99 شهريًا لك ولشريكك. جربه مجانًا هذا الشهر. يمكن إلغاء الاشتراك في أي وقت.",
+      "buttonText": "ابدأ التجربة المجانية",
+      "restoreButtonText": "استعادة الشراء"
+    }
+  },
+  "historyScreen": {
+    "title": "السجل",
+    "noResults": "سيظهر هنا التسجيلات السابقة...\n\n ستتمكن فقط من الاستماع إلى التسجيلات التي أجاب فيها كليكما على السؤال!",
+    "status": {
+      "bothAnswered": "كلاكما أجاب",
+      "partnerAnswered": "{{ name }} أجاب، ولكنك لم تفعل",
+      "userAnswered": "أجبت، ولكن {{ name }} لم يفعل",
+      "bothDidNotAnswer": "لم يجب أي منكما"
+    }
+  },
+  "auth": {
+    "signInScreen": {
+      "title": "أسئلة اليومية",
+      "subtitle": "نسخة الأزواج",
+      "description": "كشف إجابات بعضكما لأسئلة يومية مخصصة",
+      "buttonText": "احصل على الرمز",
+      "terms": "من خلال التسجيل، فإنك توافق على"
+    },
+    "phoneNumberScreen": {
+      "title": "أهلا بك! سجل دخولك للبدء",
+      "inputTitle": "تسجيل الدخول *",
+      "inputDescription": "لتسجيل الدخول، اكتب رقم هاتفك للحصول على رمز التحقق."
+    },
+    "verificationCodeScreen": {
+      "title": "تم إرسال رمز الدخول إلى رقمك.",
+      "inputTitle": "رمز التحقق *",
+      "inputDescriptionP1": "لم تتلقى رمزك؟ ",
+      "inputDescriptionP2": "اضغط هنا ",
+      "inputDescriptionP3": "لإعادة الإرسال خلال ",
+      "inputDescriptionP4": " ثانية/ثواني",
+      "buttonText": "تحقق"
+    },
+    "partnerDetails": {
+      "nameScreen": {
+        "title": "حسنًا، حان وقت دعوة شريكك! ما اسم شريكك؟",
+        "inputTitle": "اسم شريكك *",
+        "inputPlaceholder": "الاسم الأول للشريك",
+        "inputDescription": "أدخل الاسم الأول لشريكك أو لقب تستخدمانه."
+      },
+      "relationshipTypeScreen": {
+        "title": "ما هو وضع علاقتك مع شريكك؟",
+        "types": [
+          { "stillGettingToKnowEachOther": "ما زلنا نتعرف على بعضنا البعض" },
+          { "dating": "مواعدة" },
+          { "inARelationship": "في علاقة" },
+          { "engaged": "مخطوبون" },
+          { "domesticPartnership": "الشراكة المنزلية" },
+          { "cohabiting": "مقيمون معًا" },
+          { "longDistanceRelationship": "علاقة عن بُعد" },
+          { "consensualNonMonogamousRelationship": "علاقة غير أحادية الزواج بالتراضي" },
+          { "inAnOpenRelationship": "علاقة مفتوحة" },
+          { "married": "متزوجون" }
+        ]
+      },
+      "relationshipDateScreen": {
+        "title": "متى بدأتما بالتعرف على بعضكما البعض؟",
+        "inputTitle": "بداية العلاقة *",
+        "inputDescription": "معرفة عمر العلاقة يساعد على تخصيص تجربتك"
+      },
+      "invitePartnerScreen": {
+        "title": "هذا التطبيق يعمل فقط مع الشريك. أرسل دعوة لشريكك!",
+        "inputTitle": "رقم هاتف شريكك",
+        "inputPlaceholder": "رقم هاتف الشريك",
+        "inputDescription": "عند التقديم، أكدت أنني حصلت على موافقة شريكي لإرسال دعوة نصية لهم",
+        "sendInvite": "إرسال الدعوة"
+      }
+    },
+    "userDetails": {
+      "userNameScreen": {
+        "title": "اختر لونك المفضل واسمك حتى يتعرف عليك شريكك.",
+        "inputTitle": "اسمك ",
+        "inputPlaceholder": "الاسم الأول",
+        "inputDescription": "استخدم اسمك الأول أو الاسم الذي يتعرف به شريكك عليك"
+      },
+      "birthdayScreen": {
+        "title": "أضف تاريخ ميلادك لنتمكن من تخصيص الأسئلة لك بشكل أفضل.",
+        "inputTitle": "تاريخ الولادة",
+        "inputDescription": "معرفة عمرك يساعد على تخصيص تجربتك"
+      }
+    },
+    "signIn": "تسجيل الدخول",
+    "enterPhone": "أدخل رقم هاتفك",
+    "getCode": "احصل على الرمز",
+    "enterCode": "أدخل الرمز",
+    "verify": "تحقق",
+    "enterName": "أدخل اسمك الكامل",
+    "chooseColor": "اختر لونك المفضل",
+    "enterBirthday": "أدخل تاريخ ميلادك",
+    "partnerPhone": "رقم هاتف شريكك",
+    "sendInvite": "إرسال الدعوة",
+    "single": "أعزب",
+    "inARelationship": "في علاقة",
+    "engaged": "مخطوب",
+    "married": "متزوج",
+    "domesticPartnership": "شراكة منزلية",
+    "polyamorous": "متعدد العلاقات (قريبًا!)",
+    "relationshipStatus": "ما هو وضع علاقتك؟"
+  }
+}

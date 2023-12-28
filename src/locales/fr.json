@@ -1,0 +1,234 @@
+{
+  "next": "Suivant",
+  "retry": "Réessayer",
+  "you": "Vous",
+  "today": "Aujourd'hui",
+  "phoneNumber": "Numéro de Téléphone",
+  "permissions": {
+    "notifications": {
+      "title": "Sachez quand {{ name }} répond...",
+      "titleNameBackup": "Sachez quand votre partenaire répond...",
+      "description": "Recevez des notifications pour les questions et réponses",
+      "buttonText": "Autoriser"
+    }
+  },
+  "errors": {
+    "tryAgain": "Réessayer",
+    "pleaseTryAgain": "Veuillez Réessayer",
+    "whoops": "Oups ! On dirait qu'il y a eu une erreur",
+    "verificationCodeEmpty": "Le code de vérification ne peut pas être vide",
+    "invalidAPICode": "Une erreur s'est produite lors de la soumission de votre code de vérification",
+    "phoneNumberEmpty": "Le numéro de téléphone ne peut pas être vide",
+    "phoneNumberInvalid": "Le numéro de téléphone est invalide",
+    "phoneNumberAPIError": "Une erreur s'est produite lors de la soumission de votre numéro de téléphone",
+    "resendingVerificationCodeFailed": "Une erreur s'est produite lors du renvoi de votre code de vérification",
+    "registrationCheckFailed": "Une erreur s'est produite lors de la vérification de votre inscription",
+    "invitePartnerAPIError": "Une erreur s'est produite lors de l'invitation de votre partenaire",
+    "partnerNameEmpty": "Le nom du partenaire ne peut pas être vide",
+    "relationshipDateEmpty": "La date de début de relation ne peut pas être vide",
+    "relationshipTypeEmpty": "Le statut de la relation ne peut pas être vide",
+    "userNameEmpty": "Votre nom ne peut pas être vide",
+    "birthdayEmpty": "La date de naissance ne peut pas être vide",
+    "colorEmpty": "La couleur ne peut pas être vide",
+    "userUpdateFailed": "Une erreur s'est produite lors de la mise à jour de votre utilisateur",
+    "partnershipGenerationFailed": "Une erreur s'est produite lors de l'initialisation de votre partenariat",
+    "initializeSession": "Une erreur s'est produite lors de l'initialisation de votre utilisateur",
+    "errorPurchasing": "Erreur d'achat",
+    "recordingSaveFailed": "Une erreur s'est produite lors de l'enregistrement de votre enregistrement",
+    "historyAPIError": "Une erreur s'est produite lors de la récupération de votre historique",
+    "initSessionAPIError": "Une erreur s'est produite lors de l'initialisation de votre session",
+    "purchaseError": "Une erreur s'est produite lors de l'achat de votre abonnement",
+    "restoreError": "Une erreur s'est produite lors de la restauration de votre abonnement",
+    "fetchPartnerDataAPIError": "Une erreur s'est produite lors de la récupération des données de votre partenaire",
+    "fetchPartnershipDataAPIError": "Une erreur s'est produite lors de la récupération des données de votre partenariat",
+    "fetchQuestionAPIError": "Une erreur s'est produite lors de la récupération de votre question",
+    "audioPlayBackError": "Une erreur s'est produite lors de la lecture de votre audio. Veuillez réessayer",
+    "deleteRelationshipFailed": "Une erreur s'est produite lors de la suppression de votre relation",
+    "partnerAlreadyInUse": "Ce numéro de téléphone est déjà utilisé"
+  },
+  "browserScreen": {
+    "title": "Navigateur"
+  },
+  "accountScreen": {
+    "title": "Paramètres du Compte",
+    "yourName": "Votre Prénom",
+    "yourColor": "Votre Couleur",
+    "yourPartnerName": "Le nom de votre Partenaire",
+    "yourPartnerColor": "La couleur de votre Partenaire",
+    "signOut": "Déconnexion",
+    "deleteAccount": "Fin de la Relation et Suppression des Comptes",
+    "and": " et ",
+    "legal": "Questions quotidiennes de SAUERAPPLE LLC",
+    "terms": "Conditions Générales",
+    "privacy": "Politique de Confidentialité",
+    "language": "Langue",
+    "deleteAccountModal": {
+      "title": "Êtes-vous sûr de vouloir mettre fin à cette relation ?",
+      "description": "Cela supprimera votre compte et celui de votre partenaire. Vous ne pourrez plus accéder à votre historique ou à vos enregistrements.",
+      "cancel": "Annuler",
+      "delete": "Supprimer"
+    },
+    "colorScreen": {
+      "title": "Changez votre couleur",
+      "success": "Votre couleur a été mise à jour !"
+    },
+    "nameScreen": {
+      "title": "Changez votre nom",
+      "submitButton": "Enregistrer",
+      "placeholder": "Tapez un nouveau nom",
+      "success": "Votre nom a été mis à jour !"
+    }
+  },
+  "questionScreen": {
+    "nonSubscriberScreen": {
+      "default": {
+        "text": "Quel est le meilleur rendez-vous auquel vous avez été ensemble ?"
+      },
+      "notification": {
+        "title": "Oups ! Votre abonnement a expiré...",
+        "description": "Veuillez régler votre paiement pour continuer à utiliser l'application !",
+        "restoreButtonText": "Restaurer les Achats",
+        "updatePaymentButtonText": "S'abonner"
+      }
+    },
+    "subscriberScreen": {
+      "redo": "Refaire",
+      "submit": "Soumettre",
+      "timeRemaining": "{{ time }} restant...",
+      "lock": {
+        "title": "{{ name }} a répondu",
+        "description": "Enregistrez votre réponse pour l'entendre !"
+      },
+      "pendingRecord": {
+        "title": "{{ name }} n'a pas encore répondu"
+      },
+      "record": {
+        "title": "Appuyez pour enregistrer votre réponse"
+      },
+      "play": {
+        "title": "{{ name }} a répondu",
+        "description": "{{ date }} à {{ time }}"
+      },
+      "audioPermissions": {
+        "title": "Autoriser les permissions d'enregistrement",
+        "description": "Vous devez autoriser les permissions pour enregistrer votre réponse",
+        "buttonText": "Autoriser"
+      }
+    }
+  },
+  "trialScreen": {
+    "title": "C'est bon, vous êtes prêt !",
+    "subTitle": "Commencez votre essai de 30 jours",
+    "benefit1": "Premiers 30 jours",
+    "free": "gratuit",
+    "benefit2": "Mensuel par couple",
+    "benefit2Description": "À partir du {{ date }}",
+    "price": "9,99 $",
+    "footer": {
+      "title": "Annulation à tout moment. Essayez-le !",
+      "description": "C'est pour vous ! Vous payerez 9,99 $ par mois pour vous et votre partenaire. Essayez gratuitement ce mois-ci. Annulation à tout moment.",
+      "buttonText": "Commencer l'Essai Gratuit",
+      "restoreButtonText": "Restaurer les Achats"
+    }
+  },
+  "historyScreen": {
+    "title": "Historique",
+    "noResults": "Les enregistrements passés apparaîtront ici...\n\n Vous ne pourrez écouter que les enregistrements auxquels vous avez tous les deux répondu !",
+    "status": {
+      "bothAnswered": "Vous avez tous les deux répondu",
+      "partnerAnswered": "{{ name }} a répondu, mais pas vous",
+      "userAnswered": "Vous avez répondu, mais pas {{ name }}",
+      "bothDidNotAnswer": "Aucun de vous n'a répondu"
+    }
+  },
+  "auth": {
+    "signInScreen": {
+      "title": "Q’s Quotidiennes",
+      "subtitle": "Édition Couple",
+      "description": "Découvrez vos réponses mutuelles à\n des questions quotidiennes personnalisées",
+      "buttonText": "Obtenir le Code",
+      "terms": "En vous inscrivant, vous acceptez nos"
+    },
+    "phoneNumberScreen": {
+      "title": "Bienvenue ! Connectez-vous pour commencer",
+      "inputTitle": "Connexion *",
+      "inputDescription": "Pour vous connecter, saisissez votre numéro de téléphone pour recevoir un code de vérification."
+    },
+    "verificationCodeScreen": {
+      "title": "Votre code de connexion a été envoyé à votre numéro.",
+      "inputTitle": "Code de Vérification *",
+      "inputDescriptionP1": "Vous n'avez pas reçu votre code ? ",
+      "inputDescriptionP2": "Appuyez ici ",
+      "inputDescriptionP3": "pour renvoyer dans ",
+      "inputDescriptionP4": " secs",
+      "buttonText": "Vérifier"
+    },
+    "partnerDetails": {
+      "nameScreen": {
+        "title": "Bon, il est temps d'inviter votre partenaire ! Quel est le nom de votre partenaire ?",
+        "inputTitle": "Le nom de votre Partenaire *",
+        "inputPlaceholder": "Prénom du partenaire",
+        "inputDescription": "Entrez le prénom ou un surnom utilisé par vous deux de votre partenaire."
+      },
+      "relationshipTypeScreen": {
+        "title": "Quel est votre statut de relation avec votre partenaire ?",
+        "types": [
+          { "stillGettingToKnowEachOther": "On fait encore connaissance" },
+          { "dating": "En couple" },
+          { "inARelationship": "En relation" },
+          { "engaged": "Fiancé(e)" },
+          { "domesticPartnership": "Partenariat domestique" },
+          { "cohabiting": "Cohabitation" },
+          { "longDistanceRelationship": "Relation à distance" },
+          {
+            "consensualNonMonogamousRelationship": "Relation non monogame consensuelle"
+          },
+          { "inAnOpenRelationship": "Relation libre" },
+          { "married": "Marié(e)" }
+        ]
+      },
+      "relationshipDateScreen": {
+        "title": "Quand avez-vous commencé à vous connaître ?",
+        "inputTitle": "Début de la Relation *",
+        "inputDescription": "Connaître l'âge de la relation aide à personnaliser votre expérience"
+      },
+      "invitePartnerScreen": {
+        "title": "Cette application ne fonctionne qu'avec votre partenaire. Envoyez l'invitation à votre partenaire !",
+        "inputTitle": "Numéro de Téléphone de votre Partenaire",
+        "inputPlaceholder": "Numéro de téléphone du partenaire",
+        "inputDescription": "En soumettant, je confirme que j'ai obtenu le consentement de mon partenaire pour lui envoyer une invitation par SMS",
+        "sendInvite": "Envoyer l'invitation"
+      }
+    },
+    "userDetails": {
+      "userNameScreen": {
+        "title": "Choisissez votre couleur et nom préférés pour que votre partenaire puisse vous reconnaître.",
+        "inputTitle": "Votre Nom *",
+        "inputPlaceholder": "Prénom",
+        "inputDescription": "Utilisez votre prénom ou un nom que votre partenaire reconnaîtra"
+      },
+      "birthdayScreen": {
+        "title": "Ajoutez votre date de naissance pour que nous puissions mieux personnaliser les questions pour vous.",
+        "inputTitle": "Date de Naissance*",
+        "inputDescription": "Connaître votre âge aide à personnaliser votre expérience"
+      }
+    },
+    "signIn": "Se Connecter",
+    "enterPhone": "Entrez votre numéro de téléphone",
+    "getCode": "Obtenir le Code",
+    "enterCode": "Entrez le code",
+    "verify": "Vérifier",
+    "enterName": "Entrez votre nom complet",
+    "chooseColor": "Choisissez votre couleur préférée",
+    "enterBirthday": "Entrez votre date de naissance",
+    "partnerPhone": "Numéro de téléphone de votre partenaire",
+    "sendInvite": "Envoyer l'invitation",
+    "single": "Célibataire",
+    "inARelationship": "En relation",
+    "engaged": "Fiancé(e)",
+    "married": "Marié(e)",
+    "domesticPartnership": "Partenariat domestique",
+    "polyamorous": "Polyamoureux(se) (Prochainement !)",
+    "relationshipStatus": "Quel est votre statut de relation ?"
+  }
+}

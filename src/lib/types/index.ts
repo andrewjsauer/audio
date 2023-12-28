@@ -45,6 +45,7 @@ export enum AccountScreens {
   SettingsScreen = 'SettingsScreen',
   ColorScreen = 'ColorScreen',
   NameScreen = 'NameScreen',
+  LanguageScreen = 'LanguageScreen',
 }
 
 export type UserDataType = {

@@ -1,0 +1,214 @@
+{
+  "next": "下一步",
+  "retry": "重试",
+  "you": "你",
+  "today": "今天",
+  "phoneNumber": "电话号码",
+  "permissions": {
+    "notifications": {
+      "title": "当{{ name }}回答时通知你...",
+      "titleNameBackup": "当你的伴侣回答时通知你...",
+      "description": "获取问题与回答的通知",
+      "buttonText": "允许"
+    }
+  },
+  "errors": {
+    "tryAgain": "再试一次",
+    "pleaseTryAgain": "请再试一次",
+    "whoops": "哎呀！看起来出错了",
+    "verificationCodeEmpty": "验证码不能为空",
+    "invalidAPICode": "提交验证码时出了些问题",
+    "phoneNumberEmpty": "电话号码不能为空",
+    "phoneNumberInvalid": "电话号码无效",
+    "phoneNumberAPIError": "提交电话号码时出了些问题",
+    "resendingVerificationCodeFailed": "重新发送验证码时出了些问题",
+    "registrationCheckFailed": "检查注册时出了些问题",
+    "invitePartnerAPIError": "邀请伴侣时出了些问题",
+    "partnerNameEmpty": "伴侣的名字不能为空",
+    "relationshipDateEmpty": "关系日期不能为空",
+    "relationshipTypeEmpty": "关系状态不能为空",
+    "userNameEmpty": "你的名字不能为空",
+    "birthdayEmpty": "生日不能为空",
+    "colorEmpty": "颜色不能为空",
+    "userUpdateFailed": "更新用户时出了些问题",
+    "partnershipGenerationFailed": "初始化伙伴关系时出了些问题",
+    "initializeSession": "初始化用户时出了些问题",
+    "errorPurchasing": "购买错误",
+    "recordingSaveFailed": "保存录音时出了些问题",
+    "historyAPIError": "获取历史记录时出了些问题",
+    "initSessionAPIError": "初始化会话时出了些问题",
+    "purchaseError": "购买订阅时出了些问题",
+    "restoreError": "恢复订阅时出了些问题",
+    "fetchPartnerDataAPIError": "获取伴侣数据时出了些问题",
+    "fetchPartnershipDataAPIError": "获取伙伴关系数据时出了些问题",
+    "fetchQuestionAPIError": "获取问题时出了些问题",
+    "audioPlayBackError": "播放音频时出了些问题，请再试一次",
+    "deleteRelationshipFailed": "删除关系时出了些问题",
+    "partnerAlreadyInUse": "这个电话号码已经在使用中"
+  },
+  "browserScreen": { "title": "浏览器" },
+  "accountScreen": {
+    "title": "账户设置",
+    "yourName": "你的名字",
+    "yourColor": "你的颜色",
+    "yourPartnerName": "你伴侣的名字",
+    "yourPartnerColor": "你伴侣的颜色",
+    "signOut": "登出",
+    "deleteAccount": "结束关系并删除账户",
+    "and": " 和 ",
+    "legal": "SAUERAPPLE LLC提供的每日问答",
+    "terms": "条款与条件",
+    "privacy": "隐私政策",
+    "deleteAccountModal": {
+      "title": "你确定要结束这段关系吗？",
+      "description": "这将会删除你和你伴侣的账户。你们将无法再访问历史记录或录音。",
+      "cancel": "取消",
+      "delete": "删除"
+    },
+    "colorScreen": { "title": "更改你的颜色", "success": "你的颜色已更新！" },
+    "nameScreen": {
+      "title": "更改你的名字",
+      "submitButton": "保存",
+      "placeholder": "输入一个新名字",
+      "success": "你的名字已更新！"
+    }
+  },
+  "questionScreen": {
+    "nonSubscriberScreen": {
+      "default": { "text": "你们一起去过的最好的约会是什么？" },
+      "notification": {
+        "title": "哎呀！你的订阅已过期...",
+        "description": "请修正你的支付信息以继续使用应用！",
+        "restoreButtonText": "恢复购买",
+        "updatePaymentButtonText": "订阅"
+      }
+    },
+    "subscriberScreen": {
+      "redo": "重做",
+      "submit": "提交",
+      "timeRemaining": "{{ time }} 剩余...",
+      "lock": { "title": "{{ name }} 已回答", "description": "录下你的回答以听取！" },
+      "pendingRecord": { "title": "{{ name }} 还未回答" },
+      "record": { "title": "点击录下你的回答" },
+      "play": { "title": "{{ name }} 已回答", "description": "{{ date }} 在 {{ time }}" },
+      "audioPermissions": {
+        "title": "允许录音权限",
+        "description": "你必须允许录音权限以录下你的回答",
+        "buttonText": "允许"
+      }
+    }
+  },
+  "trialScreen": {
+    "title": "好的，你已准备好了！",
+    "subTitle": "开始你的30天试用",
+    "benefit1": "前30天",
+    "free": "免费",
+    "benefit2": "每月每对情侣",
+    "benefit2Description": "从 {{ date }} 开始",
+    "price": "¥9.99",
+    "footer": {
+      "title": "随时取消。尝试一下！",
+      "description": "你的款待！你将为你和你的伴侣支付每月¥9.99。这个月免费试用。随时取消。",
+      "buttonText": "开始免费试用",
+      "restoreButtonText": "恢复购买"
+    }
+  },
+  "historyScreen": {
+    "title": "历史",
+    "noResults": "过去的录音会显示在这里...\n\n 只有当你们俩都回答了问题时你才能听到录音！",
+    "status": {
+      "bothAnswered": "你们两个都回答了",
+      "partnerAnswered": "{{ name }} 回答了，但你没有",
+      "userAnswered": "你回答了，但 {{ name }} 没有",
+      "bothDidNotAnswer": "你们两个都没有回答"
+    }
+  },
+  "auth": {
+    "signInScreen": {
+      "title": "每日问答",
+      "subtitle": "情侣版",
+      "description": "揭示对方对每日个性化问题的回答",
+      "buttonText": "获取验证码",
+      "terms": "通过注册，你同意我们的"
+    },
+    "phoneNumberScreen": {
+      "title": "欢迎！登录以开始",
+      "inputTitle": "登录 *",
+      "inputDescription": "登录时，请输入你的电话号码以获取验证码。"
+    },
+    "verificationCodeScreen": {
+      "title": "你的登录验证码已发送到你的号码。",
+      "inputTitle": "验证码 *",
+      "inputDescriptionP1": "没有收到你的验证码？",
+      "inputDescriptionP2": "点击这里",
+      "inputDescriptionP3": "重新发送",
+      "inputDescriptionP4": "秒",
+      "buttonText": "验证"
+    },
+    "partnerDetails": {
+      "nameScreen": {
+        "title": "好的，是时候邀请你的伴侣了！你伴侣的名字是什么？",
+        "inputTitle": "你伴侣的名字 *",
+        "inputPlaceholder": "伴侣的名字",
+        "inputDescription": "输入你伴侣的名字或你们共同使用的昵称。"
+      },
+      "relationshipTypeScreen": {
+        "title": "你和你伴侣的关系状态是什么？",
+        "types": [
+          { "stillGettingToKnowEachOther": "仍在相互了解" },
+          { "dating": "约会" },
+          { "inARelationship": "恋爱中" },
+          { "engaged": "已订婚" },
+          { "domesticPartnership": "同居伴侣" },
+          { "cohabiting": "共同居住" },
+          { "longDistanceRelationship": "异地恋" },
+          { "consensualNonMonogamousRelationship": "共识的非一夫一妻制关系" },
+          { "inAnOpenRelationship": "开放式关系" },
+          { "married": "已婚" }
+        ]
+      },
+      "relationshipDateScreen": {
+        "title": "你们何时开始相互了解？",
+        "inputTitle": "开始关系 *",
+        "inputDescription": "了解关系的年龄有助于定制你的体验"
+      },
+      "invitePartnerScreen": {
+        "title": "这个应用只有与你的伴侣一起使用才有效。发送邀请给你的伴侣！",
+        "inputTitle": "你伴侣的电话号码",
+        "inputPlaceholder": "伴侣的电话号码",
+        "inputDescription": "提交即表示我已确认我已获得伴侣的同意，向他们发送短信邀请",
+        "sendInvite": "发送邀请"
+      }
+    },
+    "userDetails": {
+      "userNameScreen": {
+        "title": "选择你最喜欢的颜色和名字，这样你的伴侣可以认出你。",
+        "inputTitle": "你的名字 ",
+        "inputPlaceholder": "名字",
+        "inputDescription": "使用你的名字或你伴侣会认出的名字"
+      },
+      "birthdayScreen": {
+        "title": "添加你的生日，这样我们可以更好地定制问题给你。",
+        "inputTitle": "出生日期",
+        "inputDescription": "了解你的年龄有助于定制你的体验"
+      }
+    },
+    "signIn": "登录",
+    "enterPhone": "输入你的电话号码",
+    "getCode": "获取验证码",
+    "enterCode": "输入验证码",
+    "verify": "验证",
+    "enterName": "输入你的全名",
+    "chooseColor": "选择你最喜欢的颜色",
+    "enterBirthday": "输入你的生日",
+    "partnerPhone": "你伴侣的电话号码",
+    "sendInvite": "发送邀请",
+    "single": "单身",
+    "inARelationship": "恋爱中",
+    "engaged": "已订婚",
+    "married": "已婚",
+    "domesticPartnership": "同居伴侣",
+    "polyamorous": "多元恋爱（即将推出！）",
+    "relationshipStatus": "你的关系状态是什么？"
+  }
+}

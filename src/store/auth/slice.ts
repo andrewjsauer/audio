@@ -39,13 +39,13 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<FirebaseAuthTypes.User>) => {
+    setUser: (state, action: PayloadAction<FirebaseAuthTypes.User | null>) => {
       state.user = action.payload;
     },
     setCode: (state, action: PayloadAction<string>) => {
       state.code = action.payload;
     },
-    setConfirm: (state, action: PayloadAction<FirebaseAuthTypes.ConfirmationResult>) => {
+    setConfirm: (state, action: PayloadAction<FirebaseAuthTypes.ConfirmationResult | null>) => {
       state.confirm = action.payload;
     },
     setUserData: (state, action: PayloadAction<UserDataType | null>) => {

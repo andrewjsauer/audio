@@ -121,7 +121,11 @@ export const generatePartnership = createAsyncThunk(
       trackEvent('initialize_partnership_error', { error });
       crashlytics().recordError(error);
 
-      return rejectWithValue(error.message);
+      if (error?.code === 'already-exists') {
+        return rejectWithValue('errors.partnerAlreadyInUse');
+      }
+
+      return rejectWithValue('errors.partnershipGenerationFailed');
     }
   },
 );

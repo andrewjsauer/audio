@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { isBefore, startOfDay, addDays } from 'date-fns';
+import { isBefore, startOfDay } from 'date-fns';
+import i18n from 'i18next';
 
 import { selectUserData } from '@store/auth/selectors';
 import {
@@ -75,7 +76,8 @@ function SubscriberScreen() {
       partnerData &&
       !isLoadingQuestion
     ) {
-      dispatch(fetchLatestQuestion({ partnershipData, partnerData, userData }));
+      const currentLanguage = i18n.language;
+      dispatch(fetchLatestQuestion({ partnershipData, partnerData, userData, currentLanguage }));
     }
   }, [partnershipData, isLoadingQuestion, currentQuestion, partnerData]);
 
