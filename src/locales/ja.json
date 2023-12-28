@@ -1,0 +1,219 @@
+{
+  "next": "次へ",
+  "retry": "再試行",
+  "you": "あなた",
+  "today": "今日",
+  "phoneNumber": "電話番号",
+  "permissions": {
+    "notifications": {
+      "title": "{{ name }}が答えた時に通知...",
+      "titleNameBackup": "パートナーが答えた時に通知...",
+      "description": "質問と回答の通知を受け取る",
+      "buttonText": "許可"
+    }
+  },
+  "errors": {
+    "tryAgain": "再試行",
+    "pleaseTryAgain": "もう一度試してください",
+    "whoops": "おっと！エラーが発生したようです",
+    "verificationCodeEmpty": "認証コードを空にすることはできません",
+    "invalidAPICode": "認証コードの送信時に何か問題が発生しました",
+    "phoneNumberEmpty": "電話番号を空にすることはできません",
+    "phoneNumberInvalid": "電話番号が無効です",
+    "phoneNumberAPIError": "電話番号の送信時に何か問題が発生しました",
+    "resendingVerificationCodeFailed": "認証コードの再送信時に何か問題が発生しました",
+    "registrationCheckFailed": "登録確認時に何か問題が発生しました",
+    "invitePartnerAPIError": "パートナー招待時に何か問題が発生しました",
+    "partnerNameEmpty": "パートナーの名前を空にすることはできません",
+    "relationshipDateEmpty": "関係開始日を空にすることはできません",
+    "relationshipTypeEmpty": "関係状態を空にすることはできません",
+    "userNameEmpty": "あなたの名前を空にすることはできません",
+    "birthdayEmpty": "誕生日を空にすることはできません",
+    "colorEmpty": "色を空にすることはできません",
+    "userUpdateFailed": "ユーザー情報の更新時に何か問題が発生しました",
+    "partnershipGenerationFailed": "パートナーシップ初期化時に何か問題が発生しました",
+    "initializeSession": "ユーザー初期化時に何か問題が発生しました",
+    "errorPurchasing": "購入中にエラーが発生しました",
+    "recordingSaveFailed": "録音の保存時に何か問題が発生しました",
+    "historyAPIError": "履歴の取得時に何か問題が発生しました",
+    "initSessionAPIError": "セッション初期化時に何か問題が発生しました",
+    "purchaseError": "サブスクリプションの購入時に何か問題が発生しました",
+    "restoreError": "サブスクリプションの復元時に何か問題が発生しました",
+    "fetchPartnerDataAPIError": "パートナーのデータ取得時に何か問題が発生しました",
+    "fetchPartnershipDataAPIError": "パートナーシップデータの取得時に何か問題が発生しました",
+    "fetchQuestionAPIError": "質問の取得時に何か問題が発生しました",
+    "audioPlayBackError": "音声の再生時に何か問題が発生しました。もう一度試してください",
+    "deleteRelationshipFailed": "関係の削除時に何か問題が発生しました",
+    "partnerAlreadyInUse": "この電話番号は既に使用中です"
+  },
+  "browserScreen": { "title": "ブラウザ" },
+  "accountScreen": {
+    "title": "アカウント設定",
+    "yourName": "あなたの名前",
+    "yourColor": "あなたの色",
+    "yourPartnerName": "パートナーの名前",
+    "yourPartnerColor": "パートナーの色",
+    "signOut": "サインアウト",
+    "deleteAccount": "関係を終了してアカウントを削除",
+    "and": " と ",
+    "legal": "SAUERAPPLE LLCからの毎日の質問",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー",
+    "language": "優先言語",
+    "deleteAccountModal": {
+      "title": "この関係を終了してもよろしいですか？",
+      "description": "これにより、あなたとパートナーのアカウントが削除されます。履歴や録音にはもうアクセスできなくなります。",
+      "cancel": "キャンセル",
+      "delete": "削除"
+    },
+    "colorScreen": { "title": "色を変更する", "success": "色が更新されました！" },
+    "languageScreen": { "title": "優先言語を変更する" },
+    "nameScreen": {
+      "title": "名前を変更する",
+      "submitButton": "保存",
+      "placeholder": "新しい名前を入力",
+      "success": "名前が更新されました！"
+    }
+  },
+  "questionScreen": {
+    "nonSubscriberScreen": {
+      "default": { "text": "二人で行った一番のデートは何ですか？" },
+      "notification": {
+        "title": "おっと！サブスクリプションが期限切れです...",
+        "description": "アプリを使用し続けるには、お支払いを修正してください！",
+        "restoreButtonText": "購入を復元",
+        "updatePaymentButtonText": "サブスクライブ"
+      }
+    },
+    "subscriberScreen": {
+      "redo": "やり直す",
+      "submit": "送信",
+      "timeRemaining": "{{ time }} 残り...",
+      "lock": {
+        "title": "{{ name }}が答えました",
+        "description": "回答を録音して聞くためにあなたの回答を記録してください！"
+      },
+      "pendingRecord": { "title": "{{ name }}はまだ答えていません" },
+      "record": { "title": "タップして回答を録音する" },
+      "play": { "title": "{{ name }}が答えました", "description": "{{ date }}の{{ time }}に" },
+      "audioPermissions": {
+        "title": "録音のための許可を許可する",
+        "description": "回答を録音するためには、許可を与えなければなりません",
+        "buttonText": "許可"
+      }
+    }
+  },
+  "trialScreen": {
+    "title": "OK, 準備ができました！",
+    "subTitle": "30日間の試用期間を始める",
+    "benefit1": "最初の30日間",
+    "free": "無料",
+    "benefit2": "カップルごとの月額",
+    "benefit2Description": "{{ date }}から開始",
+    "price": "$9.99",
+    "footer": {
+      "title": "いつでもキャンセル可能。試してみてください！",
+      "description": "ごちそうさまです！あなたとあなたのパートナーのために、月々$9.99をお支払いいただきます。今月は無料でお試しいただけます。いつでもキャンセルできます。",
+      "buttonText": "無料トライアルを開始",
+      "restoreButtonText": "購入を復元"
+    }
+  },
+  "historyScreen": {
+    "title": "履歴",
+    "noResults": "過去の録音はここに表示されます...\n\n 両方が質問に答えた録音のみを聴くことができます！",
+    "status": {
+      "bothAnswered": "両方が答えました",
+      "partnerAnswered": "{{ name }}は答えましたが、あなたは答えていません",
+      "userAnswered": "あなたは答えましたが、{{ name }}は答えていません",
+      "bothDidNotAnswer": "どちらも答えていません"
+    }
+  },
+  "auth": {
+    "signInScreen": {
+      "title": "デイリーQ's",
+      "subtitle": "カップルエディション",
+      "description": "毎日のパーソナライズされた質問に対するお互いの回答を明らかにする",
+      "buttonText": "コードを取得",
+      "terms": "サインアップすることで、当社の"
+    },
+    "phoneNumberScreen": {
+      "title": "ようこそ！サインインして始めましょう",
+      "inputTitle": "サインイン*",
+      "inputDescription": "サインインするには、認証コードを受け取るためにあなたの電話番号を入力してください。"
+    },
+    "verificationCodeScreen": {
+      "title": "あなたの番号にログインコードが送信されました。",
+      "inputTitle": "認証コード*",
+      "inputDescriptionP1": "コードを受け取らなかったか？",
+      "inputDescriptionP2": "ここをタップして",
+      "inputDescriptionP3": "秒後に再送信",
+      "inputDescriptionP4": "する",
+      "buttonText": "認証する"
+    },
+    "partnerDetails": {
+      "nameScreen": {
+        "title": "OK、パートナーを招待する時間です！パートナーの名前は何ですか？",
+        "inputTitle": "パートナーの名前*",
+        "inputPlaceholder": "パートナーの名前",
+        "inputDescription": "あなたたちが共に使用するパートナーの名前またはニックネームを入力してください。"
+      },
+      "relationshipTypeScreen": {
+        "title": "パートナーとの関係状態は何ですか？",
+        "types": [
+          { "stillGettingToKnowEachOther": "まだ知り合いです" },
+          { "dating": "デート中" },
+          { "inARelationship": "交際中" },
+          { "engaged": "婚約中" },
+          { "domesticPartnership": "事実婚" },
+          { "cohabiting": "同棲中" },
+          { "longDistanceRelationship": "遠距離恋愛" },
+          { "consensualNonMonogamousRelationship": "合意の上の非一夫一妻関係" },
+          { "inAnOpenRelationship": "オープンな関係中" },
+          { "married": "既婚" }
+        ]
+      },
+      "relationshipDateScreen": {
+        "title": "いつからお互いのことを知り始めましたか？",
+        "inputTitle": "関係の始まり*",
+        "inputDescription": "関係の年齢を知ることで、あなたの体験をカスタマイズするのに役立ちます"
+      },
+      "invitePartnerScreen": {
+        "title": "このアプリはパートナーと一緒にしか使えません。パートナーに招待状を送りましょう！",
+        "inputTitle": "パートナーの電話番号",
+        "inputPlaceholder": "パートナーの電話番号",
+        "inputDescription": "提出することで、私はパートナーにSMS招待を送ることに同意したことを確認しました",
+        "sendInvite": "招待を送る"
+      }
+    },
+    "userDetails": {
+      "userNameScreen": {
+        "title": "あなたが好きな色と名前を選んで、あなたのパートナーにあなたを認識させましょう。",
+        "inputTitle": "あなたの名前*",
+        "inputPlaceholder": "名前",
+        "inputDescription": "あなたのファーストネームまたはパートナーが認識する名前を使用してください"
+      },
+      "birthdayScreen": {
+        "title": "あなたの誕生日を追加して、よりパーソナライズされた質問をご提供します。",
+        "inputTitle": "生年月日*",
+        "inputDescription": "あなたの年齢を知ることで、あなたの体験をカスタマイズするのに役立ちます"
+      }
+    },
+    "signIn": "サインイン",
+    "enterPhone": "あなたの電話番号を入力してください",
+    "getCode": "コードを取得",
+    "enterCode": "コードを入力してください",
+    "verify": "認証する",
+    "enterName": "フルネームを入力してください",
+    "chooseColor": "好きな色を選んでください",
+    "enterBirthday": "誕生日を入力してください",
+    "partnerPhone": "パートナーの電話番号",
+    "sendInvite": "招待を送る",
+    "single": "独身",
+    "inARelationship": "交際中",
+    "engaged": "婚約中",
+    "married": "既婚",
+    "domesticPartnership": "事実婚",
+    "polyamorous": "ポリアモリー（近日公開！）",
+    "relationshipStatus": "あなたの関係状態は何ですか？"
+  }
+}

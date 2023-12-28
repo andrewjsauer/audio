@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { defineSecret } from 'firebase-functions/params';
@@ -38,13 +39,23 @@ const relationshipTypeMap: { [key in RelationshipType]: string } = {
   married: 'Married',
 };
 
-function calculateDuration(startDate: FirebaseFirestore.Timestamp): string {
-  if (!startDate || typeof startDate.toDate !== 'function') {
+function calculateDuration(startDate: FirebaseFirestore.Timestamp | Date | any): string {
+  if (!startDate) {
     functions.logger.error(`Invalid date: ${JSON.stringify(startDate)}`);
     return 'some amount of time';
   }
 
-  const start = startDate.toDate();
+  let start = startDate;
+  if (startDate instanceof Date) {
+    start = startDate;
+  } else if (startDate._seconds) {
+    start = new Date(startDate._seconds * 1000);
+  } else if (startDate instanceof admin.firestore.Timestamp) {
+    start = startDate.toDate();
+  }
+
+  functions.logger.info(`Start date: ${start}`);
+
   const now = new Date();
 
   const years = differenceInYears(now, start);
@@ -120,15 +131,11 @@ exports.generateQuestion = functions
 
       const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
       const randomTimeFrame = timeFrames[Math.floor(Math.random() * timeFrames.length)];
-
       const promptLanguage =
         usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
-      let prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} for ${userName} and ${partnerName} who are ${relationshipType} and have been together for ${relationshipDuration}.`;
-      const systemPrompt = `As a couples expert, suggest a question that encourages ${userName} and ${partnerName} to explore new dimensions of their relationship, foster understanding, or share a meaningful moment.`;
 
-      if (usersLanguage !== 'en') {
-        prompt = `Craft a ${randomAdjective} question in Spanish (90 characters max) about their ${randomTimeFrame} for ${userName} and ${partnerName} who are ${relationshipType} and have been together for ${relationshipDuration}.`;
-      }
+      const prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} for ${userName} and ${partnerName} who are ${relationshipType} and have been together for ${relationshipDuration}.`;
+      const systemPrompt = `As a couples expert, suggest a question that encourages ${userName} and ${partnerName} to explore new dimensions of their relationship, foster understanding, or share a meaningful moment.`;
 
       functions.logger.info(`Prompt: ${prompt}`);
 

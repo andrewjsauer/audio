@@ -61,6 +61,7 @@
     "legal": "Preguntas diarias de SAUERAPPLE LLC",
     "terms": "Términos y Condiciones",
     "privacy": "Política de Privacidad",
+    "language": "Idioma Preferido",
     "deleteAccountModal": {
       "title": "¿Estás seguro de que deseas terminar esta relación?",
       "description": "Esto eliminará tu cuenta y la cuenta de tu pareja. Ya no podrás acceder a tu historial o grabaciones.",
@@ -70,6 +71,9 @@
     "colorScreen": {
       "title": "Cambiar tu color",
       "success": "¡Tu color ha sido actualizado!"
+    },
+    "languageScreen": {
+      "title": "Cambia tu idioma preferido"
     },
     "nameScreen": {
       "title": "Cambiar tu nombre",

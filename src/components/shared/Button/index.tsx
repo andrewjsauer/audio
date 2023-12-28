@@ -25,19 +25,11 @@ function Button({
   const theme = useTheme();
 
   return (
-    <ButtonContainer
-      disabled={isLoading || isDisabled}
-      mode={mode}
-      size={size}
-      {...props}>
+    <ButtonContainer disabled={isLoading || isDisabled} mode={mode} size={size} {...props}>
       {isLoading ? (
         <ActivityIndicator
           size="small"
-          color={
-            theme.colors[
-              mode === 'light' || mode === 'hidden' ? 'black' : 'white'
-            ]
-          }
+          color={theme.colors[mode === 'light' || mode === 'hidden' ? 'black' : 'white']}
         />
       ) : (
         <>

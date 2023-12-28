@@ -29,9 +29,6 @@ function App(): JSX.Element {
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
   const isUserAlreadyRegistered = useSelector(selectIsUserRegistered);
 
-  console.log('isUserAlreadyRegistered', isUserAlreadyRegistered);
-  console.log('isUserLoggedIn', isUserLoggedIn);
-
   return (
     <Stack.Navigator>
       {isUserLoggedIn && isUserAlreadyRegistered ? (

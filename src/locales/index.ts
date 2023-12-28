@@ -14,9 +14,9 @@ import pt from './pt.json'; // Portuguese
 import ru from './ru.json'; // Russian
 import fr from './fr.json'; // French
 import de from './de.json'; // German
-// import ja from './ja.json';       // Japanese
-// import ko from './ko.json';       // Korean
-// import it from './it.json';       // Italian
+import ja from './ja.json'; // Japanese
+import ko from './ko.json'; // Korean
+import it from './it.json'; // Italian
 
 const resources = {
   en: { translation: en },
@@ -29,9 +29,9 @@ const resources = {
   ru: { translation: ru },
   fr: { translation: fr },
   de: { translation: de },
-  // ja: { translation: ja },
-  // ko: { translation: ko },
-  // it: { translation: it },
+  ja: { translation: ja },
+  ko: { translation: ko },
+  it: { translation: it },
 };
 
 export const changeLanguage = async (language: string) => {

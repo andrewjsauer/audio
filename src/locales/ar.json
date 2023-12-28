@@ -59,6 +59,7 @@
     "legal": "أسئلة اليومية من SAUERAPPLE LLC",
     "terms": "الشروط والأحكام",
     "privacy": "سياسة الخصوصية",
+    "language": "اللغة المفضلة",
     "deleteAccountModal": {
       "title": "هل أنت متأكد أنك تريد إنهاء هذه العلاقة؟",
       "description": "سيتم حذف حسابك وحساب شريكك. لن تتمكن من الوصول إلى سجلك أو تسجيلاتك.",
@@ -66,6 +67,9 @@
       "delete": "حذف"
     },
     "colorScreen": { "title": "غير لونك", "success": "تم تحديث لونك بنجاح!" },
+    "languageScreen": {
+      "title": "غيّر لغتك المفضلة"
+    },
     "nameScreen": {
       "title": "غير اسمك",
       "submitButton": "حفظ",

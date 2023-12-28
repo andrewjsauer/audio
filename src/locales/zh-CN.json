@@ -59,6 +59,7 @@
     "legal": "SAUERAPPLE LLC提供的每日问答",
     "terms": "条款与条件",
     "privacy": "隐私政策",
+    "language": "首选语言",
     "deleteAccountModal": {
       "title": "你确定要结束这段关系吗？",
       "description": "这将会删除你和你伴侣的账户。你们将无法再访问历史记录或录音。",
@@ -66,6 +67,9 @@
       "delete": "删除"
     },
     "colorScreen": { "title": "更改你的颜色", "success": "你的颜色已更新！" },
+    "languageScreen": {
+      "title": "更改您的首选语言"
+    },
     "nameScreen": {
       "title": "更改你的名字",
       "submitButton": "保存",

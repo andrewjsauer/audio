@@ -15,12 +15,7 @@ function FallbackScreen({ resetState }: Props) {
     <Layout>
       <Container>
         <Message>{t('errors.whoops')}</Message>
-        <Button
-          mode="dark"
-          size="small"
-          onPress={resetState}
-          text={t('errors.tryAgain')}
-        />
+        <Button size="small" onPress={resetState} text={t('errors.tryAgain')} />
       </Container>
     </Layout>
   );

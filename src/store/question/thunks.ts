@@ -22,6 +22,13 @@ export const fetchLatestQuestion = createAsyncThunk<QuestionType, FetchLatestQue
     { rejectWithValue },
   ) => {
     try {
+      const parternshipPayload = {
+        ...partnershipData,
+        startDate: partnershipData.startDate?._seconds
+          ? new Date(partnershipData.startDate._seconds * 1000)
+          : partnershipData.startDate,
+      };
+
       const today = startOfDay(new Date());
 
       const snapshot = await firestore()
@@ -36,7 +43,7 @@ export const fetchLatestQuestion = createAsyncThunk<QuestionType, FetchLatestQue
 
         const { data } = await functions().httpsCallable('generateQuestion')({
           partnerData,
-          partnershipData,
+          partnershipData: parternshipPayload,
           userData,
           usersLanguage: currentLanguage,
         });
@@ -65,9 +72,10 @@ export const fetchLatestQuestion = createAsyncThunk<QuestionType, FetchLatestQue
 
       trackEvent('question_out_of_date');
       const { data } = await functions().httpsCallable('generateQuestion')({
-        partnershipData,
+        partnershipData: parternshipPayload,
         partnerData,
         userData,
+        usersLanguage: currentLanguage,
       });
 
       const question = {

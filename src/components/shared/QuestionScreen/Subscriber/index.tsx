@@ -63,6 +63,7 @@ function SubscriberScreen() {
   const userRecording = useSelector(selectUserRecording);
   const userReactionToPartner = useSelector(selectUserReactionToPartnerType);
   const partnerReactionToUser = useSelector(selectPartnerReactionToUserType);
+  const currentLanguage = i18n.language;
 
   useEffect(() => {
     trackScreen('SubscriberScreen');
@@ -76,7 +77,6 @@ function SubscriberScreen() {
       partnerData &&
       !isLoadingQuestion
     ) {
-      const currentLanguage = i18n.language;
       dispatch(fetchLatestQuestion({ partnershipData, partnerData, userData, currentLanguage }));
     }
   }, [partnershipData, isLoadingQuestion, currentQuestion, partnerData]);
