@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { isBefore, startOfDay, addDays } from 'date-fns';
+import { isBefore, startOfDay } from 'date-fns';
+import i18n from 'i18next';
 
 import { selectUserData } from '@store/auth/selectors';
 import {
@@ -62,6 +63,7 @@ function SubscriberScreen() {
   const userRecording = useSelector(selectUserRecording);
   const userReactionToPartner = useSelector(selectUserReactionToPartnerType);
   const partnerReactionToUser = useSelector(selectPartnerReactionToUserType);
+  const currentLanguage = i18n.language;
 
   useEffect(() => {
     trackScreen('SubscriberScreen');
@@ -75,7 +77,7 @@ function SubscriberScreen() {
       partnerData &&
       !isLoadingQuestion
     ) {
-      dispatch(fetchLatestQuestion({ partnershipData, partnerData, userData }));
+      dispatch(fetchLatestQuestion({ partnershipData, partnerData, userData, currentLanguage }));
     }
   }, [partnershipData, isLoadingQuestion, currentQuestion, partnerData]);
 

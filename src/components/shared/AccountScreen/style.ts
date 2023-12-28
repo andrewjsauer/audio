@@ -131,3 +131,10 @@ export const KeyboardAvoidingView = styled.KeyboardAvoidingView`
   justify-content: center;
   align-items: center;
 `;
+
+export const languageContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+`;

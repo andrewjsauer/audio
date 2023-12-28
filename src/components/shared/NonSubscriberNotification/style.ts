@@ -32,11 +32,11 @@ export const Button = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   margin-right: 12px;
-  min-width: 120px;
+  width: 150px;
+  padding: 6px 0;
 `;
 
 export const ButtonText = styled.Text`
-  padding: 6px 18px;
   color: ${(p) => p.theme.colors.success};
   font-family: ${(props) => props.theme.fonts.bold};
   font-size: ${(props) => props.theme.fontSizes.small};

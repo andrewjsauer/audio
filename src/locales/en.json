@@ -1,7 +1,5 @@
 {
   "next": "Next",
-  "success": "Success!",
-  "submit": "Submit",
   "retry": "Retry",
   "you": "You",
   "today": "Today",
@@ -45,7 +43,8 @@
     "fetchPartnershipDataAPIError": "Something went wrong when fetching your partnership data",
     "fetchQuestionAPIError": "Something went wrong when fetching your question",
     "audioPlayBackError": "Something went wrong when playing your audio. Please try again",
-    "deleteRelationshipFailed": "Something went wrong when deleting your relationship"
+    "deleteRelationshipFailed": "Something went wrong when deleting your relationship",
+    "partnerAlreadyInUse": "This phone number is already in use"
   },
   "browserScreen": {
     "title": "Browser"
@@ -59,9 +58,10 @@
     "signOut": "Sign Out",
     "deleteAccount": "End Relationship and Delete Accounts",
     "and": " and ",
-    "legal": "Daily Qs from SAUERAPPLE LLC",
+    "legal": "Daily Q’s from SAUERAPPLE LLC",
     "terms": "Terms & Conditions",
     "privacy": "Privacy Policy",
+    "language": "Preferred Language",
     "deleteAccountModal": {
       "title": "Are you sure you want to end this relationship?",
       "description": "This will delete your account and your partner's account. You will no longer be able to access your history or recordings.",
@@ -71,6 +71,9 @@
     "colorScreen": {
       "title": "Change your color",
       "success": "Your color has been updated!"
+    },
+    "languageScreen": {
+      "title": "Change your preferred language"
     },
     "nameScreen": {
       "title": "Change your name",
@@ -139,11 +142,12 @@
       "partnerAnswered": "{{ name }} answered, but you didn't",
       "userAnswered": "You answered, but {{ name }} didn't",
       "bothDidNotAnswer": "Neither of you answered"
-    }
+    },
+    "buttonText": "View History"
   },
   "auth": {
     "signInScreen": {
-      "title": "Daily Qs",
+      "title": "Daily Q’s",
       "subtitle": "Couples Edition",
       "description": "Reveal each others’ answers to\n daily personalized questions",
       "buttonText": "Get Code",

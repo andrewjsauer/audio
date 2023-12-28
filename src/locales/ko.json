@@ -1,0 +1,238 @@
+{
+  "next": "다음",
+  "retry": "재시도",
+  "you": "당신",
+  "today": "오늘",
+  "phoneNumber": "전화번호",
+  "permissions": {
+    "notifications": {
+      "title": "{{ name }}님이 답변할 때 알림 받기...",
+      "titleNameBackup": "파트너가 답변할 때 알림 받기...",
+      "description": "질문과 답변에 대한 알림 받기",
+      "buttonText": "허용"
+    }
+  },
+  "errors": {
+    "tryAgain": "다시 시도",
+    "pleaseTryAgain": "다시 시도해 주세요",
+    "whoops": "이런! 오류가 발생한 것 같습니다",
+    "verificationCodeEmpty": "인증 코드를 비워둘 수 없습니다",
+    "invalidAPICode": "인증 코드를 제출하는 도중 문제가 발생했습니다",
+    "phoneNumberEmpty": "전화번호를 비워둘 수 없습니다",
+    "phoneNumberInvalid": "전화번호가 유효하지 않습니다",
+    "phoneNumberAPIError": "전화번호를 제출하는 도중 문제가 발생했습니다",
+    "resendingVerificationCodeFailed": "인증 코드를 다시 보내는 데 실패했습니다",
+    "registrationCheckFailed": "등록을 확인하는 도중 문제가 발생했습니다",
+    "invitePartnerAPIError": "파트너를 초대하는 도중 문제가 발생했습니다",
+    "partnerNameEmpty": "파트너의 이름을 비워둘 수 없습니다",
+    "relationshipDateEmpty": "관계 시작 날짜를 비워둘 수 없습니다",
+    "relationshipTypeEmpty": "관계 상태를 비워둘 수 없습니다",
+    "userNameEmpty": "당신의 이름을 비워둘 수 없습니다",
+    "birthdayEmpty": "생일을 비워둘 수 없습니다",
+    "colorEmpty": "색상을 비워둘 수 없습니다",
+    "userUpdateFailed": "사용자 업데이트 중 문제가 발생했습니다",
+    "partnershipGenerationFailed": "파트너십을 초기화하는 도중 문제가 발생했습니다",
+    "initializeSession": "사용자 세션을 초기화하는 도중 문제가 발생했습니다",
+    "errorPurchasing": "구매 중 오류 발생",
+    "recordingSaveFailed": "녹음을 저장하는 도중 문제가 발생했습니다",
+    "historyAPIError": "기록을 가져오는 도중 문제가 발생했습니다",
+    "initSessionAPIError": "세션을 초기화하는 도중 문제가 발생했습니다",
+    "purchaseError": "구독을 구매하는 도중 문제가 발생했습니다",
+    "restoreError": "구독을 복구하는 도중 문제가 발생했습니다",
+    "fetchPartnerDataAPIError": "파트너의 데이터를 가져오는 도중 문제가 발생했습니다",
+    "fetchPartnershipDataAPIError": "파트너십 데이터를 가져오는 도중 문제가 발생했습니다",
+    "fetchQuestionAPIError": "질문을 가져오는 도중 문제가 발생했습니다",
+    "audioPlayBackError": "오디오 재생 중 문제가 발생했습니다. 다시 시도해 주세요",
+    "deleteRelationshipFailed": "관계를 삭제하는 중 문제가 발생했습니다",
+    "partnerAlreadyInUse": "이 전화번호는 이미 사용 중입니다"
+  },
+  "browserScreen": {
+    "title": "브라우저"
+  },
+  "accountScreen": {
+    "title": "계정 설정",
+    "yourName": "당신의 이름",
+    "yourColor": "당신의 색상",
+    "yourPartnerName": "파트너의 이름",
+    "yourPartnerColor": "파트너의 색상",
+    "signOut": "로그아웃",
+    "deleteAccount": "관계를 종료하고 계정 삭제",
+    "and": " 그리고 ",
+    "legal": "SAUERAPPLE LLC의 Daily Q's",
+    "terms": "이용 약관",
+    "privacy": "개인정보 처리방침",
+    "language": "선호하는 언어",
+    "deleteAccountModal": {
+      "title": "정말 이 관계를 종료하시겠습니까?",
+      "description": "이 작업은 당신과 파트너의 계정을 삭제합니다. 더 이상 기록이나 녹음에 접근할 수 없게 됩니다.",
+      "cancel": "취소",
+      "delete": "삭제"
+    },
+    "colorScreen": {
+      "title": "색상 변경",
+      "success": "색상이 업데이트 되었습니다!"
+    },
+    "languageScreen": {
+      "title": "선호하는 언어 변경"
+    },
+    "nameScreen": {
+      "title": "이름 변경",
+      "submitButton": "저장",
+      "placeholder": "새 이름 입력",
+      "success": "이름이 업데이트 되었습니다!"
+    }
+  },
+  "questionScreen": {
+    "nonSubscriberScreen": {
+      "default": {
+        "text": "여러분이 함께한 최고의 데이트는 무엇이었나요?"
+      },
+      "notification": {
+        "title": "이런! 구독이 만료되었습니다...",
+        "description": "앱 사용을 계속하려면 결제를 수정해 주세요!",
+        "restoreButtonText": "구매 복구",
+        "updatePaymentButtonText": "구독하기"
+      }
+    },
+    "subscriberScreen": {
+      "redo": "다시하기",
+      "submit": "제출하기",
+      "timeRemaining": "{{ time }} 남음...",
+      "lock": {
+        "title": "{{ name }}님이 답변했습니다",
+        "description": "듣기 위해 답변을 녹음하세요!"
+      },
+      "pendingRecord": {
+        "title": "{{ name }}님이 아직 답변하지 않았습니다"
+      },
+      "record": {
+        "title": "답변 녹음을 위해 탭하세요"
+      },
+      "play": {
+        "title": "{{ name }}님이 답변했습니다",
+        "description": "{{ date }}에 {{ time }}"
+      },
+      "audioPermissions": {
+        "title": "녹음을 위한 권한 허용",
+        "description": "답변을 녹음하려면 권한을 허용해야 합니다",
+        "buttonText": "허용"
+      }
+    }
+  },
+  "trialScreen": {
+    "title": "좋아요, 모든 준비가 완료되었습니다!",
+    "subTitle": "30일 체험 시작하기",
+    "benefit1": "처음 30일은",
+    "free": "무료",
+    "benefit2": "커플당 월",
+    "benefit2Description": "{{ date }}부터 시작",
+    "price": "$9.99",
+    "footer": {
+      "title": "언제든지 취소 가능. 시도해 보세요!",
+      "description": "당신의 혜택입니다! 당신과 파트너 모두를 위해 월 $9.99를 지불하게 됩니다. 이번 달은 무료로 체험해 보세요. 언제든지 취소 가능합니다.",
+      "buttonText": "무료 체험 시작",
+      "restoreButtonText": "구매 복구"
+    }
+  },
+  "historyScreen": {
+    "title": "기록",
+    "noResults": "이전 녹음이 여기에 표시됩니다...\n\n 질문에 둘 다 답변했을 때만 녹음을 들을 수 있습니다!",
+    "status": {
+      "bothAnswered": "둘 다 답변했습니다",
+      "partnerAnswered": "{{ name }}님이 답변했지만 당신은 하지 않았습니다",
+      "userAnswered": "당신이 답변했지만 {{ name }}님은 하지 않았습니다",
+      "bothDidNotAnswer": "둘 다 답변하지 않았습니다"
+    },
+    "buttonText": "기록 보기"
+  },
+  "auth": {
+    "signInScreen": {
+      "title": "Daily Q's",
+      "subtitle": "커플용",
+      "description": "매일 맞춤형 질문에 대한 서로의 답변을 공개하세요",
+      "buttonText": "코드 받기",
+      "terms": "가입함으로써 당사의 이용 약관에 동의합니다"
+    },
+    "phoneNumberScreen": {
+      "title": "환영합니다! 시작하기 위해 로그인하세요",
+      "inputTitle": "로그인 *",
+      "inputDescription": "로그인하려면 인증 코드를 받기 위해 전화번호를 입력하세요."
+    },
+    "verificationCodeScreen": {
+      "title": "로그인 코드가 전화번호로 전송되었습니다.",
+      "inputTitle": "인증 코드 *",
+      "inputDescriptionP1": "코드를 받지 못하셨나요? ",
+      "inputDescriptionP2": "여기를 탭하세요 ",
+      "inputDescriptionP3": "초 후 재전송 ",
+      "inputDescriptionP4": "",
+      "buttonText": "인증"
+    },
+    "partnerDetails": {
+      "nameScreen": {
+        "title": "좋아요, 이제 파트너를 초대할 시간입니다! 파트너의 이름은 무엇인가요?",
+        "inputTitle": "파트너의 이름 *",
+        "inputPlaceholder": "파트너의 이름",
+        "inputDescription": "파트너의 이름 또는 둘 다 사용하는 별명을 입력하세요."
+      },
+      "relationshipTypeScreen": {
+        "title": "파트너와의 관계 상태는 무엇인가요?",
+        "types": [
+          { "stillGettingToKnowEachOther": "아직 서로 알아가는 중" },
+          { "dating": "데이팅 중" },
+          { "inARelationship": "연애 중" },
+          { "engaged": "약혼함" },
+          { "domesticPartnership": "사실혼" },
+          { "cohabiting": "동거 중" },
+          { "longDistanceRelationship": "장거리 연애" },
+          {
+            "consensualNonMonogamousRelationship": "합의에 의한 비모노가미 관계"
+          },
+          { "inAnOpenRelationship": "개방적인 관계" },
+          { "married": "기혼" }
+        ]
+      },
+      "relationshipDateScreen": {
+        "title": "서로 알아가기 시작한 시기는 언제인가요?",
+        "inputTitle": "관계 시작 *",
+        "inputDescription": "관계의 시작 시기를 알면 맞춤형 경험을 제공하는 데 도움이 됩니다"
+      },
+      "invitePartnerScreen": {
+        "title": "이 앱은 파트너와 함께 사용해야만 합니다. 초대장을 파트너에게 보내세요!",
+        "inputTitle": "파트너의 전화번호",
+        "inputPlaceholder": "파트너의 전화번호",
+        "inputDescription": "제출함으로써, 파트너에게 SMS 초대장을 보내는 데 동의했다는 것을 확인합니다",
+        "sendInvite": "초대 보내기"
+      }
+    },
+    "userDetails": {
+      "userNameScreen": {
+        "title": "파트너가 알아볼 수 있도록 좋아하는 색상과 이름을 선택하세요.",
+        "inputTitle": "당신의 이름 *",
+        "inputPlaceholder": "이름",
+        "inputDescription": "파트너가 알아볼 수 있는 이름 또는 이름을 사용하세요"
+      },
+      "birthdayScreen": {
+        "title": "생일을 추가해서 더 맞춤화된 질문을 받아보세요.",
+        "inputTitle": "생년월일*",
+        "inputDescription": "나이를 알면 맞춤형 경험을 제공하는 데 도움이 됩니다"
+      }
+    },
+    "signIn": "로그인",
+    "enterPhone": "전화번호 입력",
+    "getCode": "코드 받기",
+    "enterCode": "코드 입력",
+    "verify": "인증",
+    "enterName": "전체 이름 입력",
+    "chooseColor": "좋아하는 색상 선택",
+    "enterBirthday": "생일 입력",
+    "partnerPhone": "파트너의 전화번호",
+    "sendInvite": "초대 보내기",
+    "single": "솔로",
+    "inARelationship": "연애 중",
+    "engaged": "약혼함",
+    "married": "기혼",
+    "domesticPartnership": "사실혼",
+    "polyamorous": "다자연애 (곧 출시 예정!)",
+    "relationshipStatus": "당신의 관계 상태는 무엇인가요?"
+  }
+}

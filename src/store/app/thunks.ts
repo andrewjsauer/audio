@@ -39,7 +39,9 @@ export const signOut = createAsyncThunk(
         );
       }
 
-      if (auth().currentUser) {
+      const { currentUser } = auth();
+
+      if (currentUser) {
         await auth().signOut();
       }
 

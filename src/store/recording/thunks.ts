@@ -73,7 +73,7 @@ export const saveUserRecording = createAsyncThunk(
               } else {
                 await functions().httpsCallable('sendSMS')({
                   phoneNumber: partnerData.phoneNumber,
-                  body: `${userData.name} recorded todays question on Daily Qs! Download the app to listen to their answer. Link: https://dailyqs.app/download`,
+                  body: `${userData.name} recorded todays question on Daily Q’s! Download the app to listen to their answer. Link: https://dailyqs.app/download`,
                 });
               }
 

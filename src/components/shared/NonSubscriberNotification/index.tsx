@@ -1,12 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { View } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 
 import { trackEvent } from '@lib/analytics';
 
 import { AppDispatch } from '@store/index';
 import { selectUser } from '@store/auth/selectors';
+import { selectIsPurchasing } from '@store/app/selectors';
 import { selectPartnerData } from '@store/partnership/selectors';
 import { restorePurchases, purchaseProduct } from '@store/app/thunks';
 
@@ -18,6 +19,7 @@ function Notification() {
 
   const user = useSelector(selectUser);
   const partnerData = useSelector(selectPartnerData);
+  const isLoading = useSelector(selectIsPurchasing);
 
   const handleRestorePurchases = () => {
     trackEvent('restore_purchases_button_clicked');
@@ -38,15 +40,23 @@ function Notification() {
         </Description>
       </View>
       <ButtonWrapper>
-        <Button onPress={handleRestorePurchases}>
-          <ButtonText>
-            {t('questionScreen.nonSubscriberScreen.notification.restoreButtonText')}
-          </ButtonText>
+        <Button onPress={handleUpdatePayment} disabled={isLoading}>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#000" />
+          ) : (
+            <ButtonText>
+              {t('questionScreen.nonSubscriberScreen.notification.updatePaymentButtonText')}
+            </ButtonText>
+          )}
         </Button>
-        <Button onPress={handleUpdatePayment}>
-          <ButtonText>
-            {t('questionScreen.nonSubscriberScreen.notification.updatePaymentButtonText')}
-          </ButtonText>
+        <Button onPress={handleRestorePurchases} disabled={isLoading}>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#000" />
+          ) : (
+            <ButtonText>
+              {t('questionScreen.nonSubscriberScreen.notification.restoreButtonText')}
+            </ButtonText>
+          )}
         </Button>
       </ButtonWrapper>
     </Container>

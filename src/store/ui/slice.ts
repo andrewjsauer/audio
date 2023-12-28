@@ -65,10 +65,10 @@ export const uiSlice = createSlice({
           type: 'error',
         };
       })
-      .addCase(generatePartnership.rejected, (state) => {
+      .addCase(generatePartnership.rejected, (state, action) => {
         state.notification = {
           title: 'errors.pleaseTryAgain',
-          description: 'errors.partnershipGenerationFailed',
+          description: action.payload as string,
           type: 'error',
         };
       })

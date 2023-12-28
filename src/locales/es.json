@@ -1,6 +1,238 @@
 {
-  "home": {
-    "example": "Edita <0>App.tsx</0> para cambiar esta pantalla y luego vuelve para ver tus cambios.",
-    "text": "¡Aquí hay algo de texto para demostrar esto!"
+  "next": "Siguiente",
+  "retry": "Reintentar",
+  "you": "Tú",
+  "today": "Hoy",
+  "phoneNumber": "Número de Teléfono",
+  "permissions": {
+    "notifications": {
+      "title": "Saber cuándo {{ name }} responde...",
+      "titleNameBackup": "Saber cuándo tu pareja responde...",
+      "description": "Recibe notificaciones para preguntas y respuestas",
+      "buttonText": "Permitir"
+    }
+  },
+  "errors": {
+    "tryAgain": "Intentar de nuevo",
+    "pleaseTryAgain": "Por favor, intenta de nuevo",
+    "whoops": "¡Ups! Parece que hubo un error",
+    "verificationCodeEmpty": "El código de verificación no puede estar vacío",
+    "invalidAPICode": "Algo salió mal al enviar tu código de verificación",
+    "phoneNumberEmpty": "El número de teléfono no puede estar vacío",
+    "phoneNumberInvalid": "El número de teléfono es inválido",
+    "phoneNumberAPIError": "Algo salió mal al enviar tu número de teléfono",
+    "resendingVerificationCodeFailed": "Algo salió mal al reenviar tu código de verificación",
+    "registrationCheckFailed": "Algo salió mal al verificar tu registro",
+    "invitePartnerAPIError": "Algo salió mal al invitar a tu pareja",
+    "partnerNameEmpty": "El nombre de la pareja no puede estar vacío",
+    "relationshipDateEmpty": "La fecha de la relación no puede estar vacía",
+    "relationshipTypeEmpty": "El estado de la relación no puede estar vacío",
+    "userNameEmpty": "Tu nombre no puede estar vacío",
+    "birthdayEmpty": "La fecha de nacimiento no puede estar vacía",
+    "colorEmpty": "El color no puede estar vacío",
+    "userUpdateFailed": "Algo salió mal al actualizar tu usuario",
+    "partnershipGenerationFailed": "Algo salió mal al inicializar tu asociación",
+    "initializeSession": "Algo salió mal al iniciar tu usuario",
+    "errorPurchasing": "Error al comprar",
+    "recordingSaveFailed": "Algo salió mal al guardar tu grabación",
+    "historyAPIError": "Algo salió mal al obtener tu historial",
+    "initSessionAPIError": "Algo salió mal al iniciar tu sesión",
+    "purchaseError": "Algo salió mal al comprar tu suscripción",
+    "restoreError": "Algo salió mal al restaurar tu suscripción",
+    "fetchPartnerDataAPIError": "Algo salió mal al obtener los datos de tu pareja",
+    "fetchPartnershipDataAPIError": "Algo salió mal al obtener los datos de tu asociación",
+    "fetchQuestionAPIError": "Algo salió mal al obtener tu pregunta",
+    "audioPlayBackError": "Algo salió mal al reproducir tu audio. Por favor, intenta de nuevo",
+    "deleteRelationshipFailed": "Algo salió mal al terminar tu relación",
+    "partnerAlreadyInUse": "Este número de teléfono ya está en uso"
+  },
+  "browserScreen": {
+    "title": "Navegador"
+  },
+  "accountScreen": {
+    "title": "Configuración de la Cuenta",
+    "yourName": "Tu Nombre",
+    "yourColor": "Tu Color",
+    "yourPartnerName": "Nombre de Tu Pareja",
+    "yourPartnerColor": "Color de Tu Pareja",
+    "signOut": "Cerrar Sesión",
+    "deleteAccount": "Terminar Relación y Eliminar Cuentas",
+    "and": " y ",
+    "legal": "Preguntas diarias de SAUERAPPLE LLC",
+    "terms": "Términos y Condiciones",
+    "privacy": "Política de Privacidad",
+    "language": "Idioma Preferido",
+    "deleteAccountModal": {
+      "title": "¿Estás seguro de que deseas terminar esta relación?",
+      "description": "Esto eliminará tu cuenta y la cuenta de tu pareja. Ya no podrás acceder a tu historial o grabaciones.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar"
+    },
+    "colorScreen": {
+      "title": "Cambiar tu color",
+      "success": "¡Tu color ha sido actualizado!"
+    },
+    "languageScreen": {
+      "title": "Cambia tu idioma preferido"
+    },
+    "nameScreen": {
+      "title": "Cambiar tu nombre",
+      "submitButton": "Guardar",
+      "placeholder": "Escribe un nuevo nombre",
+      "success": "¡Tu nombre ha sido actualizado!"
+    }
+  },
+  "questionScreen": {
+    "nonSubscriberScreen": {
+      "default": {
+        "text": "¿Cuál ha sido la mejor cita en la que han estado juntos?"
+      },
+      "notification": {
+        "title": "¡Ups! Tu suscripción ha expirado...",
+        "description": "¡Por favor arregla tu pago para continuar usando la app!",
+        "restoreButtonText": "Restaurar Compras",
+        "updatePaymentButtonText": "Suscribirse"
+      }
+    },
+    "subscriberScreen": {
+      "redo": "Rehacer",
+      "submit": "Enviar",
+      "timeRemaining": "Queda {{ time }}...",
+      "lock": {
+        "title": "{{ name }} ha respondido",
+        "description": "¡Graba tu respuesta para escucharla!"
+      },
+      "pendingRecord": {
+        "title": "{{ name }} aún no ha respondido"
+      },
+      "record": {
+        "title": "Toca para grabar tu respuesta"
+      },
+      "play": {
+        "title": "{{ name }} ha respondido",
+        "description": "{{ date }} a las {{ time }}"
+      },
+      "audioPermissions": {
+        "title": "Permitir permisos para grabar",
+        "description": "Debes permitir permisos para grabar tu respuesta",
+        "buttonText": "Permitir"
+      }
+    }
+  },
+  "trialScreen": {
+    "title": "¡Listo, ya estás todo preparado!",
+    "subTitle": "Empieza tu prueba de 30 días",
+    "benefit1": "Primeros 30 días",
+    "free": "gratis",
+    "benefit2": "Mensual por pareja",
+    "benefit2Description": "A partir del {{ date }}",
+    "price": "$9.99",
+    "footer": {
+      "title": "Cancela en cualquier momento. ¡Pruébalo!",
+      "description": "¡Tu regalo! Estarás pagando $9.99 al mes por ti y tu pareja. Pruébalo gratis este mes. Cancela en cualquier momento.",
+      "buttonText": "Empezar Prueba Gratuita",
+      "restoreButtonText": "Restaurar Compras"
+    }
+  },
+  "historyScreen": {
+    "title": "Historial",
+    "noResults": "Las grabaciones pasadas aparecerán aquí...\n\n ¡Solo podrás escuchar grabaciones en las que ambos respondan a la pregunta!",
+    "status": {
+      "bothAnswered": "Ambos respondieron",
+      "partnerAnswered": "{{ name }} respondió, pero tú no",
+      "userAnswered": "Tú respondiste, pero {{ name }} no",
+      "bothDidNotAnswer": "Ninguno de los dos respondió"
+    },
+    "buttonText": "Ver Historial"
+  },
+  "auth": {
+    "signInScreen": {
+      "title": "Preguntas diarias",
+      "subtitle": "Edición para Parejas",
+      "description": "Descubrir las respuestas del otro a\n preguntas diarias personalizadas",
+      "buttonText": "Obtener Código",
+      "terms": "Al registrarte, aceptas nuestros"
+    },
+    "phoneNumberScreen": {
+      "title": "¡Bienvenido! Inicia sesión para comenzar",
+      "inputTitle": "Iniciar sesión *",
+      "inputDescription": "Para iniciar sesión, escribe tu número de teléfono para recibir un código de verificación."
+    },
+    "verificationCodeScreen": {
+      "title": "Tu código de inicio de sesión fue enviado a tu número.",
+      "inputTitle": "Código de Verificación *",
+      "inputDescriptionP1": "¿No recibiste tu código? ",
+      "inputDescriptionP2": "Toca aquí ",
+      "inputDescriptionP3": "para reenviar en ",
+      "inputDescriptionP4": " seg",
+      "buttonText": "Verificar"
+    },
+    "partnerDetails": {
+      "nameScreen": {
+        "title": "¡Vale, es hora de invitar a tu pareja! ¿Cómo se llama tu pareja?",
+        "inputTitle": "Nombre de Tu Pareja *",
+        "inputPlaceholder": "Nombre de tu pareja",
+        "inputDescription": "Introduce el nombre o apodo de tu pareja que ambos utilicen."
+      },
+      "relationshipTypeScreen": {
+        "title": "¿Cuál es el estado de tu relación con tu pareja?",
+        "types": [
+          { "stillGettingToKnowEachOther": "Todavía Nos Estamos Conociendo" },
+          { "dating": "Saliendo" },
+          { "inARelationship": "En una Relación" },
+          { "engaged": "Comprometidos" },
+          { "domesticPartnership": "Pareja de Hecho" },
+          { "cohabiting": "Cohabitando" },
+          { "longDistanceRelationship": "Relación a Distancia" },
+          {
+            "consensualNonMonogamousRelationship": "Relación No-monógama Consensuada"
+          },
+          { "inAnOpenRelationship": "Relación Abierta" },
+          { "married": "Casados" }
+        ]
+      },
+      "relationshipDateScreen": {
+        "title": "¿Cuándo empezaron a conocerse?",
+        "inputTitle": "Inicio de la Relación *",
+        "inputDescription": "Conocer la antigüedad de la relación ayuda a personalizar tu experiencia"
+      },
+      "invitePartnerScreen": {
+        "title": "Esta app solo funciona con tu pareja. ¡Envía la invitación a tu pareja!",
+        "inputTitle": "Número de Teléfono de Tu Pareja",
+        "inputPlaceholder": "Número de teléfono de la pareja",
+        "inputDescription": "Al enviar, confirmo que he obtenido el consentimiento de mi pareja para enviarle una invitación por SMS",
+        "sendInvite": "Enviar Invitación"
+      }
+    },
+    "userDetails": {
+      "userNameScreen": {
+        "title": "Elige tu color y nombre favoritos para que tu pareja te reconozca.",
+        "inputTitle": "Tu Nombre *",
+        "inputPlaceholder": "Nombre",
+        "inputDescription": "Usa tu nombre o uno que tu pareja reconozca"
+      },
+      "birthdayScreen": {
+        "title": "Agrega tu cumpleaños para que podamos personalizar las preguntas para ti.",
+        "inputTitle": "Fecha de Nacimiento*",
+        "inputDescription": "Saber tu edad ayuda a personalizar tu experiencia"
+      }
+    },
+    "signIn": "Iniciar Sesión",
+    "enterPhone": "Introduce tu número de teléfono",
+    "getCode": "Obtener Código",
+    "enterCode": "Introduce el código",
+    "verify": "Verificar",
+    "enterName": "Introduce tu nombre completo",
+    "chooseColor": "Elige tu color favorito",
+    "enterBirthday": "Introduce tu fecha de nacimiento",
+    "partnerPhone": "Número de teléfono de tu pareja",
+    "sendInvite": "Enviar Invitación",
+    "single": "Soltero/a",
+    "inARelationship": "En una Relación",
+    "engaged": "Comprometido/a",
+    "married": "Casado/a",
+    "domesticPartnership": "Pareja de Hecho",
+    "polyamorous": "Poliamoroso/a (¡Próximamente!)",
+    "relationshipStatus": "¿Cuál es tu estado de relación?"
   }
 }
