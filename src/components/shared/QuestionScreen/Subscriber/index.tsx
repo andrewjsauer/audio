@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { isBefore, startOfDay } from 'date-fns';
-import i18n from 'i18next';
 
 import { selectUserData } from '@store/auth/selectors';
 import {
@@ -23,16 +21,15 @@ import {
 
 import { AppDispatch } from '@store/index';
 
-import { fetchLatestQuestion } from '@store/question/thunks';
 import { fetchPartnership, fetchPartnerData } from '@store/partnership/thunks';
 
 import { trackScreen, trackEvent } from '@lib/analytics';
-import { QuestionType } from '@lib/types';
 
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
 import useTimeRemainingToMidnight from '@lib/customHooks/useTimeRemainingToMidnight';
 import useRecordingSubscription from '@lib/customHooks/useRecordingSubscription';
 import useListeningSubscription from '@lib/customHooks/useListeningSubscription';
+import useQuestionSubscription from '@lib/customHooks/useQuestionSubscription';
 
 import LoadingView from '@components/shared/LoadingView';
 import ErrorView from '@components/shared/ErrorView';
@@ -41,45 +38,28 @@ import Layout from '../Layout';
 import Question from '../QuestionView';
 import { Container } from './style';
 
-const isQuestionExpired = (question: QuestionType) => {
-  const today = startOfDay(new Date());
-  return isBefore(question.createdAt, today);
-};
-
 function SubscriberScreen() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const userData = useSelector(selectUserData);
-  const partnerData = useSelector(selectPartnerData);
-  const partnershipData = useSelector(selectPartnershipData);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
-  const lastFailedAction = useSelector(selectLastFailedAction);
   const currentQuestion = useSelector(selectCurrentQuestion);
+  const error = useSelector(selectError);
+  const isLoading = useSelector(selectIsLoading);
   const isLoadingQuestion = useSelector(selectIsLoadingQuestion);
-  const partnerStatus = useSelector(selectPartnerRecordingStatus);
-  const userStatus = useSelector(selectUserRecordingStatus);
-  const partnerRecording = useSelector(selectPartnerRecording);
-  const userRecording = useSelector(selectUserRecording);
-  const userReactionToPartner = useSelector(selectUserReactionToPartnerType);
+  const lastFailedAction = useSelector(selectLastFailedAction);
+  const partnerData = useSelector(selectPartnerData);
   const partnerReactionToUser = useSelector(selectPartnerReactionToUserType);
-  const currentLanguage = i18n.language;
+  const partnerRecording = useSelector(selectPartnerRecording);
+  const partnershipData = useSelector(selectPartnershipData);
+  const partnerStatus = useSelector(selectPartnerRecordingStatus);
+  const userData = useSelector(selectUserData);
+  const userReactionToPartner = useSelector(selectUserReactionToPartnerType);
+  const userRecording = useSelector(selectUserRecording);
+  const userStatus = useSelector(selectUserRecordingStatus);
 
   useEffect(() => {
     trackScreen('SubscriberScreen');
     if (!partnershipData) dispatch(fetchPartnership(userData.partnershipId));
   }, []);
-
-  useEffect(() => {
-    if (
-      (!currentQuestion || isQuestionExpired(currentQuestion)) &&
-      partnershipData &&
-      partnerData &&
-      !isLoadingQuestion
-    ) {
-      dispatch(fetchLatestQuestion({ partnershipData, partnerData, userData, currentLanguage }));
-    }
-  }, [partnershipData, isLoadingQuestion, currentQuestion, partnerData]);
 
   useNotificationPermissions();
 
@@ -95,6 +75,8 @@ function SubscriberScreen() {
     userData,
     userRecordingId: userRecording?.id,
   });
+
+  useQuestionSubscription();
 
   const timeRemaining = useTimeRemainingToMidnight();
 

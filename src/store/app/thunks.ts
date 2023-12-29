@@ -20,7 +20,7 @@ export const signOut = createAsyncThunk(
   async (
     {
       userId,
-      isDelete,
+      isDelete = false,
     }: {
       userId: string;
       isDelete?: boolean;
