@@ -7,7 +7,6 @@ import {
 } from '@lib/types';
 
 import { signOut } from '@store/app/thunks';
-import { fetchLatestQuestion } from '@store/question/thunks';
 import { generatePartnership } from '@store/auth/thunks';
 import { fetchPartnerData, updatePartnershipUser, fetchPartnership } from './thunks';
 
@@ -43,6 +42,9 @@ const partnershipSlice = createSlice({
     },
     setPartnerData: (state, action: PayloadAction<object | null>) => {
       state.partnerData = action.payload as PartnershipDataType;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -97,25 +99,9 @@ const partnershipSlice = createSlice({
         payload: action.meta.arg,
       };
     });
-    builder.addCase(fetchLatestQuestion.fulfilled, (state, action) => {
-      state.partnershipData = {
-        ...state.partnershipData,
-        latestQuestionId: action.payload.id,
-      };
-    });
-    builder.addCase(fetchLatestQuestion.pending, (state) => {
-      state.error = null;
-    });
-    builder.addCase(fetchLatestQuestion.rejected, (state, action) => {
-      state.error = 'errors.fetchQuestionAPIError';
-      state.lastFailedAction = {
-        type: fetchLatestQuestion.typePrefix,
-        payload: action.meta.arg,
-      };
-    });
   },
 });
 
-export const { setPartnershipData, setPartnerData, setPartnershipUserData } =
+export const { setError, setPartnershipData, setPartnerData, setPartnershipUserData } =
   partnershipSlice.actions;
 export default partnershipSlice.reducer;

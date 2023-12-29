@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RecordingType, ListeningType } from '@lib/types';
 
-import { fetchLatestQuestion } from '@store/question/thunks';
 import { signOut } from '@store/app/thunks';
 import { saveUserRecording } from './thunks';
 
@@ -26,16 +25,16 @@ const recordingSlice = createSlice({
   name: 'recording',
   initialState,
   reducers: {
-    setPartnerRecording: (state, action: PayloadAction<RecordingType>) => {
+    setPartnerRecording: (state, action: PayloadAction<RecordingType | null>) => {
       state.partnerRecording = action.payload;
     },
-    setUserRecording: (state, action: PayloadAction<RecordingType>) => {
+    setUserRecording: (state, action: PayloadAction<RecordingType | null>) => {
       state.userRecording = action.payload;
     },
-    setUserReactionToPartner: (state, action: PayloadAction<ListeningType>) => {
+    setUserReactionToPartner: (state, action: PayloadAction<ListeningType | null>) => {
       state.userReactionToPartner = action.payload;
     },
-    setPartnerReactionToUser: (state, action: PayloadAction<ListeningType>) => {
+    setPartnerReactionToUser: (state, action: PayloadAction<ListeningType | null>) => {
       state.partnerReactionToUser = action.payload;
     },
   },
@@ -56,12 +55,6 @@ const recordingSlice = createSlice({
     });
     builder.addCase(saveUserRecording.rejected, (state) => {
       state.isLoading = false;
-    });
-    builder.addCase(fetchLatestQuestion.fulfilled, (state) => {
-      state.partnerReactionToUser = null;
-      state.partnerRecording = null;
-      state.userReactionToPartner = null;
-      state.userRecording = null;
     });
   },
 });

@@ -44,7 +44,8 @@
     "fetchQuestionAPIError": "Something went wrong when fetching your question",
     "audioPlayBackError": "Something went wrong when playing your audio. Please try again",
     "deleteRelationshipFailed": "Something went wrong when deleting your relationship",
-    "partnerAlreadyInUse": "This phone number is already in use"
+    "partnerAlreadyInUse": "This phone number is already in use",
+    "signOutFailed": "Something went wrong when signing you out"
   },
   "browserScreen": {
     "title": "Browser"

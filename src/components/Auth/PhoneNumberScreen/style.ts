@@ -4,7 +4,7 @@ export const CodeInput = styled.TextInput.attrs((props) => ({
   placeholderTextColor: props.theme.colors.lightGray,
 }))`
   border: 1px solid ${(p) => p.theme.colors.lightGray};
-  font-size: ${(p) => p.theme.fontSizes.regular};
+  font-size: ${(p) => p.theme.fontSizes.medium};
   font-family: ${(p) => p.theme.fonts.bold};
   border-radius: 4px;
   padding: 15px;
