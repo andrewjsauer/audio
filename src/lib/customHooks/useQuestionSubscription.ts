@@ -54,8 +54,6 @@ const useQuestionSubscription = () => {
 
   const storeLatestQuestion = (question: QuestionType) => {
     dispatch(setQuestion(question));
-    dispatch(setUserRecording(null));
-    dispatch(setPartnerRecording(null));
     dispatch(setUserReactionToPartner(null));
     dispatch(setPartnerReactionToUser(null));
   };
