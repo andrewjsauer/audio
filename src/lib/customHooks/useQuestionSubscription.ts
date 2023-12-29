@@ -7,16 +7,15 @@ import functions from '@react-native-firebase/functions';
 import { startOfDay } from 'date-fns';
 import i18n from 'i18next';
 
-import { selectPartnerData, selectPartnershipData } from '@store/partnership/selectors';
+import {
+  selectPartnerData,
+  selectPartnershipData,
+  selectIsLoading,
+} from '@store/partnership/selectors';
 import { selectUserData } from '@store/auth/selectors';
 import { setLoading, setQuestion } from '@store/question/slice';
 import { setError } from '@store/partnership/slice';
-import {
-  setPartnerRecording,
-  setUserRecording,
-  setUserReactionToPartner,
-  setPartnerReactionToUser,
-} from '@store/recording/slice';
+import { setUserReactionToPartner, setPartnerReactionToUser } from '@store/recording/slice';
 
 import { trackEvent } from '@lib/analytics';
 import { QuestionType } from '@lib/types';
@@ -27,6 +26,7 @@ const useQuestionSubscription = () => {
   const partnershipData = useSelector(selectPartnershipData);
   const partnerData = useSelector(selectPartnerData);
   const userData = useSelector(selectUserData);
+  const isLoading = useSelector(selectIsLoading);
 
   const formatQuestion = (data: QuestionType) => ({
     ...data,
@@ -68,7 +68,7 @@ const useQuestionSubscription = () => {
         : partnershipData?.startDate,
     };
 
-    if (partnershipData && partnerData && userData) {
+    if (partnershipData && partnerData && userData && !isLoading) {
       const today = startOfDay(new Date());
 
       questionUnsubscribe = firestore()
