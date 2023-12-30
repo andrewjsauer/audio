@@ -162,7 +162,7 @@ exports.generateQuestion = functions
         'What shared goal would you like to achieve with your partner?',
         'What is a fun tradition you would like to start with your partner?',
         'What was your first impression of your partner, and how has it changed?',
-        'What is a challenge you’ve overcome together with your partner?',
+        'What is a challenge you\'ve overcome together with your partner?',
         'What do you appreciate most about your relationship?',
         'What is a dream vacation you want to take with your partner?',
         'How do you both handle disagreements or conflicts?',
@@ -170,9 +170,9 @@ exports.generateQuestion = functions
         'What have you learned about love and relationships from being with your partner?',
         'What is a funny or quirky habit of your partner?',
         'How do you show love and affection to each other?',
-        'What is the best piece of advice you’ve received as a couple?',
+        'What is the best piece of advice you\'ve received as a couple?',
         'What is something new you want to try together?',
-        'How do you both support each other’s individual goals?',
+        'How do you both support each other\'s individual goals?',
         'What is a significant lesson your relationship has taught you?',
         'What are some ways you keep the romance alive?',
         'How do you both manage stress and maintain balance in your relationship?',
@@ -857,7 +857,7 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     const smsRef = admin.firestore().collection('sms').doc();
     batch.set(smsRef, {
       to: partnerDetails.phoneNumber,
-      body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join Daily Q’s. Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822 😊`,
+      body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join Daily Q\'s. Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822 😊`,
     });
 
     await batch.commit();
