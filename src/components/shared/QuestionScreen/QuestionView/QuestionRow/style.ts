@@ -65,5 +65,5 @@ export const ReactionOrb = styled.View<{ color: string }>`
 `;
 
 export const ReactionIcon = styled.Text`
-  font-size: 12px;
+  font-size: 10px;
 `;

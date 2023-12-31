@@ -113,16 +113,16 @@ function SettingsScreen() {
         <>
           <Container>
             <OptionContainer>
-              <OptionTitle>{t('accountScreen.yourName')}</OptionTitle>
-              <OptionButton onPress={handleNameChange}>
-                <OptionName>{userData?.name}</OptionName>
+              <OptionTitle>{t('accountScreen.language')}</OptionTitle>
+              <OptionButton onPress={handleLanguageChange}>
+                <OptionName>{languageMap[i18n.language]}</OptionName>
                 <ChevronRight width={24} height={24} />
               </OptionButton>
             </OptionContainer>
             <OptionContainer>
-              <OptionTitle>{t('accountScreen.language')}</OptionTitle>
-              <OptionButton onPress={handleLanguageChange}>
-                <OptionName>{languageMap[i18n.language]}</OptionName>
+              <OptionTitle>{t('accountScreen.yourName')}</OptionTitle>
+              <OptionButton onPress={handleNameChange}>
+                <OptionName>{userData?.name}</OptionName>
                 <ChevronRight width={24} height={24} />
               </OptionButton>
             </OptionContainer>

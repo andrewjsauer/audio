@@ -1,10 +1,8 @@
-/* eslint-disable no-underscore-dangle */
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { defineSecret } from 'firebase-functions/params';
 
 import { v4 as uuidv4 } from 'uuid';
-import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 import { OpenAI } from 'openai';
 
 admin.initializeApp({
@@ -39,37 +37,6 @@ const relationshipTypeMap: { [key in RelationshipType]: string } = {
   married: 'Married',
 };
 
-function calculateDuration(startDate: FirebaseFirestore.Timestamp | Date | any): string {
-  if (!startDate) {
-    functions.logger.error(`Invalid date: ${JSON.stringify(startDate)}`);
-    return 'some amount of time';
-  }
-
-  let start = startDate;
-  if (startDate instanceof Date) {
-    start = startDate;
-  } else if (startDate._seconds) {
-    start = new Date(startDate._seconds * 1000);
-  } else if (startDate instanceof admin.firestore.Timestamp) {
-    start = startDate.toDate();
-  }
-
-  functions.logger.info(`Start date: ${start}`);
-
-  const now = new Date();
-
-  const years = differenceInYears(now, start);
-  if (years > 0) return `${years} year${years > 1 ? 's' : ''}`;
-
-  const months = differenceInMonths(now, start);
-  if (months > 0) return `${months} month${months !== 1 ? 's' : ''}`;
-
-  const days = differenceInDays(now, start);
-  if (days > 0) return `${days} day${days !== 1 ? 's' : ''}`;
-
-  return 'same day';
-}
-
 exports.generateQuestion = functions
   .runWith({ secrets: [openApiKey] })
   .https.onCall(async (data, context) => {
@@ -87,7 +54,7 @@ exports.generateQuestion = functions
     let questionText;
 
     try {
-      const relationshipDuration = calculateDuration(partnershipData.startDate);
+      const relationshipDuration = partnershipData.startDate;
       const userName = userData.name;
       const partnerName = partnerData.name;
       const relationshipType = relationshipTypeMap[partnershipData.type as RelationshipType];

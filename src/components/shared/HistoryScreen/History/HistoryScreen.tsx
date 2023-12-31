@@ -150,13 +150,15 @@ function HistoryScreen({
             onPress={() =>
               navigation.navigate(HistoryScreens.PlayUserModal, {
                 audioUrl: partnerAudioUrl,
+                color: partnerColor,
                 duration: partnerDuration,
                 isUsersPartner: true,
+                questionId: id,
                 questionText: text,
                 reaction: userReactionToPartner,
+                reactionColor: userColor,
                 recordingId: partnerRecordingId,
                 userId,
-                questionId: id,
               })
             }
           >
@@ -173,13 +175,15 @@ function HistoryScreen({
             onPress={() =>
               navigation.navigate(HistoryScreens.PlayUserModal, {
                 audioUrl: userAudioUrl,
+                color: userColor,
                 duration: userDuration,
                 isUsersPartner: false,
+                questionId: id,
                 questionText: text,
                 reaction: partnerReactionToUser,
+                reactionColor: partnerColor,
                 recordingId: userRecordingId,
                 userId: partnerId,
-                questionId: id,
               })
             }
           >

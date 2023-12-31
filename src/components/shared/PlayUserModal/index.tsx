@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import { format } from 'date-fns';
 
 import { trackEvent, trackScreen } from '@lib/analytics';
 import { ReactionType } from '@lib/types';
@@ -30,12 +29,23 @@ import {
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
-const formatTime = (milliseconds: number) => {
-  if (Number.isNaN(milliseconds) || milliseconds < 0) {
+const parseDuration = (durationString: string) => {
+  const matches = durationString.match(/(\d+)m (\d+)s/);
+  if (matches && matches.length === 3) {
+    const minutes = parseInt(matches[1], 10);
+    const seconds = parseInt(matches[2], 10);
+    return (minutes * 60 + seconds) * 1000;
+  }
+  return 0;
+};
+
+const formatTime = (duration: number, currentPosition: number) => {
+  const remainingTime = duration - currentPosition;
+  if (Number.isNaN(remainingTime) || remainingTime < 0) {
     return '00m 00s';
   }
 
-  const totalSeconds = Math.floor(milliseconds / 1000);
+  const totalSeconds = Math.floor(remainingTime / 1000);
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
 
@@ -49,22 +59,26 @@ function PlayUserModal() {
 
   const {
     audioUrl,
+    color,
     duration,
     isUsersPartner,
+    questionId,
     questionText,
+    reaction,
+    reactionColor,
     recordingId,
     userId,
-    questionId,
-    reaction,
   } = route.params as {
     audioUrl: string;
+    color: string;
     duration: number;
-    questionText: string;
-    recordingId: string;
-    questionId: string;
-    userId: string;
     isUsersPartner: boolean;
+    questionId: string;
+    questionText: string;
     reaction: ReactionType | null;
+    reactionColor: string;
+    recordingId: string;
+    userId: string;
   };
 
   const [selectedReaction, setSelectedReaction] = useState<ReactionType | null>(reaction || null);
@@ -102,7 +116,7 @@ function PlayUserModal() {
       } else {
         await audioRecorderPlayer.startPlayer(audioUrl);
         audioRecorderPlayer.addPlayBackListener((e: any) => {
-          setCurrentTime(formatTime(e.currentPosition));
+          setCurrentTime(formatTime(parseDuration(duration), e.currentPosition));
 
           if (e.currentPosition === e.duration) {
             audioRecorderPlayer.stopPlayer();
@@ -159,49 +173,53 @@ function PlayUserModal() {
           <Title>{questionText}</Title>
           <Timer>{currentTime}</Timer>
           <PlayBackContainer>
-            <ReactionButton
-              disabled={isLoading || !isUsersPartner}
-              onPress={() => handleReaction(ReactionType.Love)}
-              isSelected={selectedReaction === ReactionType.Love}
-              isFaded={
-                (!!selectedReaction && selectedReaction !== ReactionType.Love) || !isUsersPartner
-              }
-            >
-              <ReactionIcon>❤️</ReactionIcon>
-            </ReactionButton>
-            <ReactionButton
-              disabled={isLoading || !isUsersPartner}
-              onPress={() => handleReaction(ReactionType.Laugh)}
-              isSelected={selectedReaction === ReactionType.Laugh}
-              isFaded={
-                (!!selectedReaction && selectedReaction !== ReactionType.Laugh) || !isUsersPartner
-              }
-            >
-              <ReactionIcon>😂</ReactionIcon>
-            </ReactionButton>
-            <PlayBackButton onPress={onPlayPause} type="play" disabled={isLoading}>
+            {isUsersPartner && (
+              <>
+                <ReactionButton
+                  disabled={isLoading}
+                  isFaded={!!selectedReaction && selectedReaction !== ReactionType.Love}
+                  isSelected={selectedReaction === ReactionType.Love}
+                  onPress={() => handleReaction(ReactionType.Love)}
+                  reactionColor={reactionColor}
+                >
+                  <ReactionIcon>❤️</ReactionIcon>
+                </ReactionButton>
+                <ReactionButton
+                  disabled={isLoading}
+                  isFaded={!!selectedReaction && selectedReaction !== ReactionType.Laugh}
+                  isSelected={selectedReaction === ReactionType.Laugh}
+                  onPress={() => handleReaction(ReactionType.Laugh)}
+                  reactionColor={reactionColor}
+                >
+                  <ReactionIcon>😂</ReactionIcon>
+                </ReactionButton>
+              </>
+            )}
+            <PlayBackButton color={color} onPress={onPlayPause} disabled={isLoading}>
               {isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : buttonIcon}
             </PlayBackButton>
-            <ReactionButton
-              disabled={isLoading || !isUsersPartner}
-              onPress={() => handleReaction(ReactionType.Cute)}
-              isSelected={selectedReaction === ReactionType.Cute}
-              isFaded={
-                (!!selectedReaction && selectedReaction !== ReactionType.Cute) || !isUsersPartner
-              }
-            >
-              <ReactionIcon>🥹</ReactionIcon>
-            </ReactionButton>
-            <ReactionButton
-              disabled={isLoading || !isUsersPartner}
-              onPress={() => handleReaction(ReactionType.Fire)}
-              isSelected={selectedReaction === ReactionType.Fire}
-              isFaded={
-                (!!selectedReaction && selectedReaction !== ReactionType.Fire) || !isUsersPartner
-              }
-            >
-              <ReactionIcon>🔥</ReactionIcon>
-            </ReactionButton>
+            {isUsersPartner && (
+              <>
+                <ReactionButton
+                  disabled={isLoading}
+                  isFaded={!!selectedReaction && selectedReaction !== ReactionType.Cute}
+                  isSelected={selectedReaction === ReactionType.Cute}
+                  onPress={() => handleReaction(ReactionType.Cute)}
+                  reactionColor={reactionColor}
+                >
+                  <ReactionIcon>🥹</ReactionIcon>
+                </ReactionButton>
+                <ReactionButton
+                  disabled={isLoading}
+                  isFaded={!!selectedReaction && selectedReaction !== ReactionType.Fire}
+                  isSelected={selectedReaction === ReactionType.Fire}
+                  onPress={() => handleReaction(ReactionType.Fire)}
+                  reactionColor={reactionColor}
+                >
+                  <ReactionIcon>🔥</ReactionIcon>
+                </ReactionButton>
+              </>
+            )}
           </PlayBackContainer>
         </>
       )}

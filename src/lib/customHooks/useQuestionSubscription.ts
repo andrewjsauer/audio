@@ -4,19 +4,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import functions from '@react-native-firebase/functions';
-import { startOfDay } from 'date-fns';
+import { startOfDay, differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 import i18n from 'i18next';
 
-import { selectPartnerData, selectPartnershipData } from '@store/partnership/selectors';
+import {
+  selectPartnerData,
+  selectPartnershipData,
+  selectIsLoading,
+} from '@store/partnership/selectors';
 import { selectUserData } from '@store/auth/selectors';
 import { setLoading, setQuestion } from '@store/question/slice';
 import { setError } from '@store/partnership/slice';
-import {
-  setPartnerRecording,
-  setUserRecording,
-  setUserReactionToPartner,
-  setPartnerReactionToUser,
-} from '@store/recording/slice';
+import { setUserReactionToPartner, setPartnerReactionToUser } from '@store/recording/slice';
 
 import { trackEvent } from '@lib/analytics';
 import { QuestionType } from '@lib/types';
@@ -27,6 +26,25 @@ const useQuestionSubscription = () => {
   const partnershipData = useSelector(selectPartnershipData);
   const partnerData = useSelector(selectPartnerData);
   const userData = useSelector(selectUserData);
+  const isLoading = useSelector(selectIsLoading);
+
+  const calculateDuration = (startDate: Date) => {
+    if (!startDate) return 'some amount of time';
+
+    const start = new Date(startDate);
+    const now = new Date();
+
+    const years = differenceInYears(now, start);
+    if (years > 0) return `${years} year${years > 1 ? 's' : ''}`;
+
+    const months = differenceInMonths(now, start);
+    if (months > 0) return `${months} month${months !== 1 ? 's' : ''}`;
+
+    const days = differenceInDays(now, start);
+    if (days > 0) return `${days} day${days !== 1 ? 's' : ''}`;
+
+    return 'same day';
+  };
 
   const formatQuestion = (data: QuestionType) => ({
     ...data,
@@ -41,21 +59,23 @@ const useQuestionSubscription = () => {
   const generateQuestion = async (payload: any) => {
     dispatch(setLoading(true));
 
+    const generatePayload = {
+      ...payload,
+      partnershipData: {
+        ...payload.partnershipData,
+        startDate: calculateDuration(payload.partnershipData.startDate),
+      },
+    };
+
     try {
       const { data } = await functions().httpsCallable('generateQuestion')({
-        ...payload,
+        ...generatePayload,
       });
 
       return formatQuestion(data);
     } finally {
       dispatch(setLoading(false));
     }
-  };
-
-  const storeLatestQuestion = (question: QuestionType) => {
-    dispatch(setQuestion(question));
-    dispatch(setUserReactionToPartner(null));
-    dispatch(setPartnerReactionToUser(null));
   };
 
   useEffect(() => {
@@ -68,7 +88,7 @@ const useQuestionSubscription = () => {
         : partnershipData?.startDate,
     };
 
-    if (partnershipData && partnerData && userData) {
+    if (partnershipData && partnerData && userData && !isLoading) {
       const today = startOfDay(new Date());
 
       questionUnsubscribe = firestore()
@@ -89,13 +109,15 @@ const useQuestionSubscription = () => {
                   usersLanguage: i18n.language,
                 });
 
-                storeLatestQuestion(newQuestion);
+                dispatch(setQuestion(newQuestion));
+                dispatch(setUserReactionToPartner(null));
+                dispatch(setPartnerReactionToUser(null));
               } else {
                 const latestQuestion = processQuestion(snapshot.docs[0]);
 
                 if (latestQuestion.createdAt >= today) {
                   trackEvent('question_within_date_limit');
-                  storeLatestQuestion(latestQuestion);
+                  dispatch(setQuestion(latestQuestion));
                 } else {
                   trackEvent('question_out_of_date');
                   const newQuestion = await generateQuestion({
@@ -105,7 +127,9 @@ const useQuestionSubscription = () => {
                     usersLanguage: i18n.language,
                   });
 
-                  storeLatestQuestion(newQuestion);
+                  dispatch(setQuestion(newQuestion));
+                  dispatch(setUserReactionToPartner(null));
+                  dispatch(setPartnerReactionToUser(null));
                 }
               }
             } catch (err) {
