@@ -45,23 +45,27 @@ function QuestionView({
     if (isPartner && partnerStatus === QuestionStatusType.Play) {
       navigation.navigate(ModalScreens.PlayUserModal, {
         audioUrl: partnerRecording.audioUrl,
+        color: partner.color,
         duration: partnerRecording.duration,
         isUsersPartner: true,
         questionText: text,
+        reaction: userReactionToPartner,
         recordingId: partnerRecording.id,
         userId: user.id,
-        reaction: userReactionToPartner,
+        reactionColor: user.color,
       });
     } else if (!isPartner) {
       if (userStatus === QuestionStatusType.Play) {
         navigation.navigate(ModalScreens.PlayUserModal, {
           audioUrl: userRecording.audioUrl,
+          color: user.color,
           duration: userRecording.duration,
           isUsersPartner: false,
           questionText: text,
+          reaction: partnerReactionToUser,
+          reactionColor: partner.color,
           recordingId: userRecording.id,
           userId: user.id,
-          reaction: partnerReactionToUser,
         });
       } else if (userStatus === QuestionStatusType.Record) {
         navigation.navigate(ModalScreens.RecordUserModal);
