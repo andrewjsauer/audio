@@ -4,7 +4,7 @@ import { BlurView } from '@react-native-community/blur';
 export const Container = styled.View`
   flex: 1;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 60px;
   flex-direction: column;
   justify-content: flex-start;
   padding: 0 8px;
