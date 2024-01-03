@@ -149,7 +149,12 @@
       "userAnswered": "You answered, but {{ name }} didn't",
       "bothDidNotAnswer": "Neither of you answered"
     },
-    "buttonText": "View History"
+    "buttonText": "View History",
+    "buttonTextMore": "View More",
+    "noMoreResults": {
+      "title": "No more results",
+      "description": "You've reached the end of your history"
+    }
   },
   "auth": {
     "signInScreen": {

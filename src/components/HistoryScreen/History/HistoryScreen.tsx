@@ -6,6 +6,7 @@ import { format, isToday, isBefore } from 'date-fns';
 
 import LoadingView from '@components/shared/LoadingView';
 import ErrorView from '@components/shared/ErrorView';
+import Button from '@components/shared/Button';
 
 import {
   HistoryScreens,
@@ -33,6 +34,7 @@ import {
   NoResultsContainer,
   NoResultsText,
   ReactionOrb,
+  FooterContainer,
   ReactionIcon,
 } from './style';
 
@@ -56,6 +58,7 @@ function HistoryScreen({
   handleRetry,
   isBlurred,
   isLoading,
+  onEndReached,
   partnerId,
   partnerName,
   questions,
@@ -65,10 +68,11 @@ function HistoryScreen({
   handleRetry: () => void;
   isBlurred: boolean;
   isLoading: boolean;
+  onEndReached: () => void;
+  partnerId: string;
   partnerName: string;
   questions: HistoryType[];
   userId: string;
-  partnerId: string;
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -98,6 +102,18 @@ function HistoryScreen({
       </Container>
     );
   }
+
+  const renderFooter = () => {
+    if (!questions?.length || questions.length < 10) {
+      return null;
+    }
+
+    return (
+      <FooterContainer>
+        <Button text={t('historyScreen.buttonTextMore')} onPress={onEndReached} mode="light" />
+      </FooterContainer>
+    );
+  };
 
   const renderHistoryItem = ({
     item: {
@@ -227,7 +243,12 @@ function HistoryScreen({
 
   return (
     <Container>
-      <FlatList data={questions} renderItem={renderHistoryItem} keyExtractor={(item) => item.id} />
+      <FlatList
+        data={questions}
+        renderItem={renderHistoryItem}
+        keyExtractor={(item) => item.id}
+        ListFooterComponent={renderFooter}
+      />
       {isBlurred && (
         <BlurredBackground
           blurType="light"

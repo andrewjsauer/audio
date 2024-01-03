@@ -6,15 +6,14 @@ import {
   PartnershipUserDataType,
 } from '@lib/types';
 
-import { signOut } from '@store/app/thunks';
-import { updateNewUser, generatePartnership } from '@store/auth/thunks';
+import { signOut, initializeSubscriber } from '@store/app/thunks';
+import { generatePartnership } from '@store/auth/thunks';
 import { fetchLatestQuestion } from '@store/question/thunks';
 import { updatePartnership } from './thunks';
 
 interface PartnershipState {
   error: string | undefined | null;
-  isLoadingPartnerData: boolean;
-  isLoadingPartnershipData: boolean;
+  isLoading: boolean;
   lastFailedAction: object | null;
   partnerData: PartnerDataType | null;
   partnershipData: PartnershipDataType | null;
@@ -23,8 +22,7 @@ interface PartnershipState {
 
 const initialState: PartnershipState = {
   error: null,
-  isLoadingPartnerData: false,
-  isLoadingPartnershipData: false,
+  isLoading: false,
   lastFailedAction: null,
   partnerData: null,
   partnershipData: null,
@@ -51,8 +49,7 @@ const partnershipSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(signOut.fulfilled, (state) => {
       state.error = null;
-      state.isLoadingPartnerData = false;
-      state.isLoadingPartnershipData = false;
+      state.isLoading = false;
       state.lastFailedAction = null;
       state.partnerData = null;
       state.partnershipData = null;
@@ -82,20 +79,20 @@ const partnershipSlice = createSlice({
     builder.addCase(updatePartnership.pending, (state) => {
       state.error = null;
       state.lastFailedAction = null;
-      state.isLoadingPartnershipData = true;
+      state.isLoading = true;
     });
     builder.addCase(updatePartnership.rejected, (state, action) => {
       state.error = 'errors.updatePartnershipAPIError';
-      state.isLoadingPartnershipData = false;
+      state.isLoading = false;
       state.lastFailedAction = {
         type: updatePartnership.typePrefix,
         payload: action.meta.arg,
       };
     });
     builder.addCase(updatePartnership.fulfilled, (state) => {
-      state.isLoadingPartnershipData = false;
+      state.isLoading = false;
     });
-    builder.addCase(updateNewUser.fulfilled, (state, action) => {
+    builder.addCase(initializeSubscriber.fulfilled, (state, action) => {
       state.partnershipData = action.payload.partnershipData as PartnershipDataType;
     });
   },

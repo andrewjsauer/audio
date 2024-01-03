@@ -122,10 +122,11 @@ export const generatePartnership = createAsyncThunk(
         },
       };
     } catch (error) {
-      trackEvent('initialize_partnership_error', { error });
+      trackEvent('generate_partnership_error', { error });
       crashlytics().recordError(error);
 
-      if (error?.code === 'already-exists') {
+      const errorMessage = error?.toString();
+      if (errorMessage && errorMessage.includes('Partner already has a partner')) {
         return rejectWithValue('errors.partnerAlreadyInUse');
       }
 
@@ -158,7 +159,7 @@ export const updateUser = createAsyncThunk(
 
 export const updateNewUser = createAsyncThunk(
   'auth/updateNewUser',
-  async ({ id, userDetails, tempId }: UpdateUserArgs, { rejectWithValue, dispatch }) => {
+  async ({ id, userDetails, tempId }: UpdateUserArgs, { rejectWithValue }) => {
     const userPayload = {
       ...userDetails,
       birthDate: firestore.Timestamp.fromDate(userDetails.birthDate as Date),
@@ -171,41 +172,8 @@ export const updateNewUser = createAsyncThunk(
         tempId,
       });
 
-      const partnershipSnapshot = await firestore()
-        .collection('partnership')
-        .where('id', '==', data.partnershipId)
-        .get();
-
-      let partnershipData = null;
-
-      if (partnershipSnapshot.empty) {
-        trackEvent('update_new_user_partnership_not_found');
-      } else {
-        const responseData = partnershipSnapshot.docs[0].data();
-        partnershipData = {
-          ...responseData,
-          createdAt: new Date(responseData.createdAt._seconds * 1000),
-          startDate: new Date(responseData.startDate._seconds * 1000),
-        };
-      }
-
-      dispatch(
-        fetchLatestQuestion({
-          currentLanguage: i18n.language,
-          currentQuestion: null,
-          partnerData: { name: '' },
-          partnershipData,
-          userData: data,
-        }),
-      );
-
       return {
         userData: data,
-        partnershipData: {
-          ...partnershipData,
-          createdAt: new Date(partnershipData.createdAt._seconds * 1000),
-          startDate: new Date(partnershipData.startDate._seconds * 1000),
-        },
       };
     } catch (error) {
       trackEvent('update_new_user_data_error', { error });

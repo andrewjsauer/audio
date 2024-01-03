@@ -11,9 +11,44 @@ import { Platform } from 'react-native';
 import Config from 'react-native-config';
 
 import { trackEvent } from '@lib/analytics';
+import { UserDataType, PartnershipDataType } from '@lib/types';
 
 import { updateUser } from '@store/auth/thunks';
-import { UserDataType } from '@lib/types';
+import { fetchLatestQuestion } from '@store/question/thunks';
+import { selectUserData } from '@store/auth/selectors';
+
+export const initializeSubscriber = createAsyncThunk(
+  'app/initializeSubscriber',
+  async (_, { getState, rejectWithValue, dispatch }) => {
+    trackEvent('initializing_subscriber');
+
+    const state = getState();
+    const userData = selectUserData(state);
+
+    if (!userData) {
+      return {};
+    }
+
+    try {
+      const partnershipSnapshot = await firestore()
+        .collection('partnership')
+        .where('id', '==', userData.partnershipId)
+        .get();
+
+      const partnershipData = partnershipSnapshot.docs[0].data() as PartnershipDataType;
+      dispatch(fetchLatestQuestion({ partnershipData }));
+
+      return {
+        partnershipData,
+      };
+    } catch (error) {
+      crashlytics().log('Error initializing subscriber');
+      trackEvent('error_initializing_subscriber', { error });
+
+      return rejectWithValue(error.message);
+    }
+  },
+);
 
 export const signOut = createAsyncThunk(
   'app/signOut',

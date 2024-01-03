@@ -6,9 +6,9 @@ import { selectIsSubscribed } from '@store/auth/selectors';
 
 import { QuestionScreens, ModalScreens } from '@lib/types';
 
-import SubscriberScreen from '@components/shared/QuestionScreen/Subscriber';
-import NonSubscriberScreen from '@components/shared/QuestionScreen/NonSubscriber';
-import RecordUserModal from '@components/shared/QuestionScreen/RecordUserModal';
+import SubscriberScreen from '@components/QuestionScreen/Subscriber';
+import NonSubscriberScreen from '@components/QuestionScreen/NonSubscriber';
+import RecordUserModal from '@components/QuestionScreen/RecordUserModal';
 import PlayUserModal from '@components/shared/PlayUserModal';
 
 export type QuestionStackParamList = {

@@ -2,7 +2,6 @@ import { useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppState } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import i18n from 'i18next';
 
 import { AppDispatch } from '@store/index';
 import { fetchLatestQuestion } from '@store/question/thunks';
@@ -22,20 +21,12 @@ const useFetchQuestion = ({
   userData: UserDataType;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const currentLanguage = i18n.language;
   const navigation = useNavigation();
 
   const checkQuestion = useCallback(() => {
     if (!partnershipData || !partnerData || !userData || isLoadingQuestion) return;
-    dispatch(
-      fetchLatestQuestion({
-        currentLanguage,
-        currentQuestion,
-        partnerData,
-        partnershipData,
-        userData,
-      }),
-    );
+
+    dispatch(fetchLatestQuestion({ partnershipData }));
   }, [partnershipData, partnerData, userData, currentQuestion, isLoadingQuestion, dispatch]);
 
   useEffect(() => {

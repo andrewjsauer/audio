@@ -2,9 +2,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import { UserDataType, QuestionType, RecordingType, QuestionStatusType } from '@lib/types';
-
+import { RecordingType, QuestionStatusType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
+
+import { showNotification } from '@store/ui/slice';
+
+import { selectUserData } from '@store/auth/selectors';
+import { selectPartnerData } from '@store/partnership/selectors';
+import { selectLastDocSnapshot } from './selectors';
 
 async function getRecordingData(recordings: RecordingType[], userId: string, partnerId: string) {
   const userRecording = recordings.find((rec) => rec.userId === userId);
@@ -99,10 +104,12 @@ async function getRecordingData(recordings: RecordingType[], userId: string, par
 
 export const fetchHistoryData = createAsyncThunk(
   'history/fetchHistoryData',
-  async (
-    { userData, partnerData }: { userData: UserDataType; partnerData: UserDataType },
-    { rejectWithValue },
-  ) => {
+  async (_, { rejectWithValue, getState }) => {
+    const state = getState();
+
+    const userData = selectUserData(state);
+    const partnerData = selectPartnerData(state);
+
     try {
       const { partnershipId } = userData;
 
@@ -118,7 +125,7 @@ export const fetchHistoryData = createAsyncThunk(
         return rejectWithValue('No history data found');
       }
 
-      const questions: QuestionType[] = questionsSnapshot.docs.map((doc) => ({
+      const questions = questionsSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
@@ -130,7 +137,7 @@ export const fetchHistoryData = createAsyncThunk(
             .where('questionId', '==', question.id)
             .get();
 
-          const recordings: RecordingType[] = recordingsSnapshot.docs.map((doc) => ({
+          const recordings = recordingsSnapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }));
@@ -172,9 +179,120 @@ export const fetchHistoryData = createAsyncThunk(
       );
 
       trackEvent('history_fetched');
-      return historyData;
+      const lastDoc = questionsSnapshot.docs[questionsSnapshot.docs.length - 1];
+      const lastDocData = lastDoc.exists ? { id: lastDoc.id, ...lastDoc.data() } : null;
+
+      return { questions: historyData, lastDocSnapshot: lastDocData };
     } catch (error) {
       trackEvent('history_fetch_error', { error });
+      crashlytics().recordError(error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const fetchMoreHistoryData = createAsyncThunk(
+  'history/fetchMoreHistoryData',
+  async (_, { rejectWithValue, dispatch, getState }) => {
+    try {
+      const state = getState();
+      const userData = selectUserData(state);
+      const lastDocSnapshot = selectLastDocSnapshot(state);
+      const partnerData = selectPartnerData(state);
+
+      if (!lastDocSnapshot) {
+        trackEvent('last_doc_snapshot_not_found');
+        return {
+          questions: [],
+          lastDocSnapshot: null,
+        };
+      }
+
+      const questionsSnapshot = await firestore()
+        .collection('questions')
+        .where('partnershipId', '==', userData.partnershipId)
+        .orderBy('createdAt', 'desc')
+        .startAfter(lastDocSnapshot)
+        .limit(10)
+        .get();
+
+      if (questionsSnapshot.empty) {
+        trackEvent('more_history_not_found');
+        dispatch(
+          showNotification({
+            title: 'historyScreen.noMoreResults.title',
+            description: 'historyScreen.noMoreResults.description',
+            type: 'success',
+          }),
+        );
+
+        return {
+          questions: [],
+          lastDocSnapshot: null,
+        };
+      }
+
+      const questions = questionsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      const moreHistoryData = await Promise.all(
+        questions.map(async (question) => {
+          const recordingsSnapshot = await firestore()
+            .collection('recordings')
+            .where('questionId', '==', question.id)
+            .get();
+
+          const recordings = recordingsSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          const {
+            partnerAudioUrl,
+            partnerDuration,
+            partnerReactionToUser,
+            partnerRecordingId,
+            partnershipTextKey,
+            partnerStatus,
+            userAudioUrl,
+            userDuration,
+            userReactionToPartner,
+            userRecordingId,
+            userStatus,
+          } = await getRecordingData(recordings, userData.id, question.partnerId);
+
+          return {
+            createdAt: new Date(question.createdAt._seconds * 1000),
+            id: `${question.id}_${userData.id}`,
+            partnerAudioUrl,
+            partnerColor: partnerData.color,
+            partnerDuration,
+            partnerReactionToUser,
+            partnerRecordingId,
+            partnershipTextKey,
+            partnerStatus,
+            questionId: question.id,
+            text: question.text,
+            userAudioUrl,
+            userColor: userData.color,
+            userDuration,
+            userReactionToPartner,
+            userRecordingId,
+            userStatus,
+          };
+        }),
+      );
+
+      trackEvent('more_history_fetched');
+
+      const lastDoc = questionsSnapshot.docs[questionsSnapshot.docs.length - 1];
+      const lastDocData = lastDoc.exists ? { id: lastDoc.id, ...lastDoc.data() } : null;
+
+      return { questions: moreHistoryData, lastDocSnapshot: lastDocData };
+    } catch (error) {
+      trackEvent('history_fetch_more_history_data_error', { error });
       crashlytics().recordError(error);
       return rejectWithValue(error);
     }

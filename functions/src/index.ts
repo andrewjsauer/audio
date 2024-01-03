@@ -166,7 +166,7 @@ exports.generateQuestion = functions
         const relationshipDuration = partnershipData.startDate;
         const userName = userData.name;
         const partnerName = partnerData.name;
-        const relationshipType = relationshipTypeMap[partnershipData.type as RelationshipType];
+        const relationshipType = relationshipTypeMap[partnershipData?.type as RelationshipType];
 
         const adjectives = [
           'insightful',
