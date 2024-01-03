@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-native';
 
 import { deleteRelationship } from '@store/auth/thunks';
-import { selectPartnerData } from '@store/partnership/selectors';
+import { selectPartnerData, selectPartnershipData } from '@store/partnership/selectors';
 import { selectUserData, selectIsLoading } from '@store/auth/selectors';
 import { signOut } from '@store/app/thunks';
 import i18n from 'i18next';
@@ -13,7 +13,7 @@ import i18n from 'i18next';
 import { AppDispatch } from '@store/index';
 
 import { trackEvent, trackScreen } from '@lib/analytics';
-import { AccountScreens } from '@lib/types';
+import { AccountScreens, RelationshipType } from '@lib/types';
 
 import ChevronRight from '@assets/icons/chevron-right.svg';
 
@@ -46,6 +46,7 @@ function SettingsScreen() {
 
   const userData = useSelector(selectUserData);
   const partnerData = useSelector(selectPartnerData);
+  const partnershipData = useSelector(selectPartnershipData);
   const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
@@ -77,6 +78,11 @@ function SettingsScreen() {
     navigation.navigate(AccountScreens.LanguageScreen);
   };
 
+  const handleRelationshipTypeChange = () => {
+    trackEvent('relationship_type_change_button_clicked');
+    navigation.navigate(AccountScreens.RelationshipTypeScreen);
+  };
+
   const handleDeleteAccount = () => {
     trackEvent('delete_account_button_clicked');
 
@@ -104,6 +110,26 @@ function SettingsScreen() {
       { cancelable: false },
     );
   };
+  const types = t('auth.partnerDetails.relationshipTypeScreen.types', {
+    returnObjects: true,
+  }) as { [key in RelationshipType]: string }[];
+
+  const truncateString = (str, num) => {
+    if (str.length <= num) {
+      return str;
+    }
+    return `${str.slice(0, num)}...`;
+  };
+
+  const relationshipType = useMemo(() => {
+    return types.reduce((acc, currentType) => {
+      const typeKey = Object.keys(currentType)[0];
+      if (typeKey === partnershipData.type) {
+        return truncateString(currentType[typeKey as keyof typeof currentType], 10);
+      }
+      return acc;
+    }, '');
+  }, [types, partnershipData.type]);
 
   return (
     <Layout titleKey="accountScreen.title" screen="account_screen">
@@ -116,6 +142,13 @@ function SettingsScreen() {
               <OptionTitle>{t('accountScreen.language')}</OptionTitle>
               <OptionButton onPress={handleLanguageChange}>
                 <OptionName>{languageMap[i18n.language]}</OptionName>
+                <ChevronRight width={24} height={24} />
+              </OptionButton>
+            </OptionContainer>
+            <OptionContainer>
+              <OptionTitle>{t('accountScreen.relationshipStatus')}</OptionTitle>
+              <OptionButton onPress={handleRelationshipTypeChange}>
+                <OptionName>{relationshipType}</OptionName>
                 <ChevronRight width={24} height={24} />
               </OptionButton>
             </OptionContainer>

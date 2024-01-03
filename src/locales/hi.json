@@ -39,7 +39,6 @@
     "initSessionAPIError": "आपका सत्र आरंभ करते समय कुछ गलत हो गया",
     "purchaseError": "सदस्यता खरीदते समय कुछ गलत हो गया",
     "restoreError": "सदस्यता पुनःस्थापित करते समय कुछ गलत हो गया",
-    "fetchPartnerDataAPIError": "साथी का डेटा प्राप्त करते समय कुछ गलत हो गया",
     "fetchPartnershipDataAPIError": "संबंध का डेटा प्राप्त करते समय कुछ गलत हो गया",
     "fetchQuestionAPIError": "प्रश्न प्राप्त करते समय कुछ गलत हो गया",
     "audioPlayBackError": "आपकी ऑडियो चलाते समय कुछ गलत हो गया। कृपया पुनः प्रयास करें",

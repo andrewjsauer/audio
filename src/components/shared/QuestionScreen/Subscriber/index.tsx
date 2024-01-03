@@ -21,15 +21,14 @@ import {
 
 import { AppDispatch } from '@store/index';
 
-import { fetchPartnership, fetchPartnerData } from '@store/partnership/thunks';
+import { fetchLatestQuestion } from '@store/question/thunks';
 
 import { trackScreen, trackEvent } from '@lib/analytics';
-
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
-import useTimeRemainingToMidnight from '@lib/customHooks/useTimeRemainingToMidnight';
 import useRecordingSubscription from '@lib/customHooks/useRecordingSubscription';
 import useListeningSubscription from '@lib/customHooks/useListeningSubscription';
-import useQuestionSubscription from '@lib/customHooks/useQuestionSubscription';
+import usePartnershipSubscription from '@lib/customHooks/usePartnershipSubscription';
+import useFetchQuestion from '@lib/customHooks/useFetchQuestion';
 
 import LoadingView from '@components/shared/LoadingView';
 import ErrorView from '@components/shared/ErrorView';
@@ -49,17 +48,24 @@ function SubscriberScreen() {
   const partnerData = useSelector(selectPartnerData);
   const partnerReactionToUser = useSelector(selectPartnerReactionToUserType);
   const partnerRecording = useSelector(selectPartnerRecording);
-  const partnershipData = useSelector(selectPartnershipData);
   const partnerStatus = useSelector(selectPartnerRecordingStatus);
   const userData = useSelector(selectUserData);
   const userReactionToPartner = useSelector(selectUserReactionToPartnerType);
   const userRecording = useSelector(selectUserRecording);
   const userStatus = useSelector(selectUserRecordingStatus);
+  const partnershipData = useSelector(selectPartnershipData);
 
   useEffect(() => {
     trackScreen('SubscriberScreen');
-    if (!partnershipData) dispatch(fetchPartnership(userData.partnershipId));
   }, []);
+
+  useFetchQuestion({
+    currentQuestion,
+    isLoadingQuestion,
+    partnerData,
+    partnershipData,
+    userData,
+  });
 
   useNotificationPermissions();
 
@@ -76,19 +82,15 @@ function SubscriberScreen() {
     userRecordingId: userRecording?.id,
   });
 
-  useQuestionSubscription();
-
-  const timeRemaining = useTimeRemainingToMidnight();
+  usePartnershipSubscription();
 
   const handleRetry = () => {
     trackEvent('retry_button_clicked', {
       action: lastFailedAction.type,
     });
 
-    if (lastFailedAction && lastFailedAction.type === fetchPartnership.typePrefix) {
-      dispatch(fetchPartnership(lastFailedAction.payload));
-    } else if (lastFailedAction && lastFailedAction.type === fetchPartnerData.typePrefix) {
-      dispatch(fetchPartnerData(lastFailedAction.payload));
+    if (lastFailedAction && lastFailedAction.type === fetchLatestQuestion.typePrefix) {
+      dispatch(fetchLatestQuestion(lastFailedAction.payload));
     }
   };
 
@@ -99,7 +101,6 @@ function SubscriberScreen() {
       partnerRecording={partnerRecording}
       partnerStatus={partnerStatus}
       text={currentQuestion?.text}
-      timeRemaining={timeRemaining}
       user={userData}
       userReactionToPartner={userReactionToPartner}
       userRecording={userRecording}

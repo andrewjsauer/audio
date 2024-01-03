@@ -46,6 +46,7 @@ export enum AccountScreens {
   ColorScreen = 'ColorScreen',
   NameScreen = 'NameScreen',
   LanguageScreen = 'LanguageScreen',
+  RelationshipTypeScreen = 'RelationshipTypeScreen',
 }
 
 export type UserDataType = {
@@ -67,7 +68,7 @@ export type PartnershipDataType = {
   id?: string;
   startDate?: Date;
   type?: string;
-  createdAt?: FirebaseFirestoreTypes.Timestamp;
+  createdAt?: FirebaseFirestoreTypes.Timestamp | Date;
   latestQuestionId?: string;
 };
 
@@ -155,6 +156,7 @@ export type HistoryType = {
   userReactionToPartner: ReactionType | null;
   userRecordingId: string | null;
   userStatus: QuestionStatusType;
+  isItemBlurred?: boolean;
 };
 
 export type ListeningType = {
@@ -164,3 +166,15 @@ export type ListeningType = {
   createdAt: FirebaseFirestoreTypes.Timestamp;
   reaction: ReactionType;
 };
+
+export type RelationshipType =
+  | 'stillGettingToKnowEachOther'
+  | 'dating'
+  | 'inARelationship'
+  | 'engaged'
+  | 'domesticPartnership'
+  | 'married'
+  | 'cohabiting'
+  | 'longDistanceRelationship'
+  | 'consensualNonMonogamousRelationship'
+  | 'inAnOpenRelationship';

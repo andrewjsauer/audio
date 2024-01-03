@@ -39,7 +39,6 @@
     "initSessionAPIError": "حدث خطأ ما عند تهيئة جلستك",
     "purchaseError": "حدث خطأ ما عند شراء الاشتراك الخاص بك",
     "restoreError": "حدث خطأ ما عند استعادة اشتراكك",
-    "fetchPartnerDataAPIError": "حدث خطأ ما عند جلب بيانات شريكك",
     "fetchPartnershipDataAPIError": "حدث خطأ ما عند جلب بيانات الشراكة الخاصة بك",
     "fetchQuestionAPIError": "حدث خطأ ما أثناء جلب سؤالك",
     "audioPlayBackError": "حدث خطأ ما عند تشغيل تسجيلك الصوتي. الرجاء المحاولة مرة أخرى",

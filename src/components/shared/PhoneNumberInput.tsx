@@ -39,17 +39,20 @@ const styles = StyleSheet.create({
 
 type Props = {
   phoneInputRef: React.RefObject<PhoneNumberInput>;
-  phoneNumber: string;
   setPhoneNumber: (text: string) => void;
 };
 
-function PhoneNumberInputContainer({ phoneInputRef, phoneNumber, setPhoneNumber }: Props) {
-  const [countryCode, setCountryCode] = useState<any>('US');
+function PhoneNumberInputContainer({ phoneInputRef, setPhoneNumber }: Props) {
   const { t } = useTranslation();
+
+  const [countryCode, setCountryCode] = useState<any>('US');
+  const [phoneNumberValue, setPhoneNumberValue] = useState<string>('');
 
   const handlePhoneNumberChange = (number: string) => {
     const formattedNumber = new AsYouType(countryCode).input(number);
+
     setPhoneNumber(formattedNumber);
+    setPhoneNumberValue(formattedNumber);
   };
 
   const handleCountryCodeChange = (code: string) => {
@@ -70,7 +73,7 @@ function PhoneNumberInputContainer({ phoneInputRef, phoneNumber, setPhoneNumber 
       ref={phoneInputRef}
       textContainerStyle={styles.textContainer}
       textInputStyle={styles.textInput}
-      value={phoneNumber}
+      value={phoneNumberValue}
       textInputProps={{
         placeholder: `${t('phoneNumber')}`,
         placeholderTextColor: '#909090',

@@ -9,14 +9,22 @@ import ChevronLeft from '@assets/icons/chevron-left.svg';
 
 import { Container, BackButton, Header, Title } from './style';
 
-function Layout({ children, titleKey, screen }: { children: React.ReactNode; titleKey: string; screen: string }) {
+function Layout({
+  children,
+  titleKey,
+  screen,
+}: {
+  children: React.ReactNode;
+  titleKey: string;
+  screen: string;
+}) {
   const { t } = useTranslation();
 
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
   const handleGoBack = () => {
-    trackEvent(`${screen}_back_button_clicked`);
+    trackEvent(`${screen}_back_clicked`);
     navigation.goBack();
   };
 

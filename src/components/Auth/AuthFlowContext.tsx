@@ -54,20 +54,23 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
   const [partnershipDetails, setPartnershipDetails] = useState<PartnershipDetailsType>({});
   const [currentStep, setCurrentStep] = useState(1);
 
-  const steps = [
-    Steps.SignInScreen,
-    Steps.PhoneNumberStep,
-    ...(!isPartner
-      ? [
-          Steps.UserNameStep,
-          Steps.BirthdayStep,
-          Steps.PartnerNameStep,
-          Steps.RelationshipTypeStep,
-          Steps.RelationshipDateStep,
-          Steps.InviteStep,
-        ]
-      : [Steps.UserNameStep, Steps.BirthdayStep]),
-  ];
+  const steps = useMemo(
+    () => [
+      Steps.SignInScreen,
+      Steps.PhoneNumberStep,
+      ...(!isPartner
+        ? [
+            Steps.UserNameStep,
+            Steps.BirthdayStep,
+            Steps.PartnerNameStep,
+            Steps.RelationshipTypeStep,
+            Steps.RelationshipDateStep,
+            Steps.InviteStep,
+          ]
+        : [Steps.UserNameStep, Steps.BirthdayStep]),
+    ],
+    [isPartner],
+  );
 
   const totalSteps = steps.length;
 
@@ -101,11 +104,12 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const goToNextStep = useCallback(() => {
+  const goToNextStep = () => {
     if (currentStep < totalSteps) {
       setCurrentStep((prevStep) => {
         const nextStepIndex = prevStep + 1;
-        navigateToStep(nextStepIndex);
+
+        setTimeout(() => navigateToStep(nextStepIndex), 0);
         return nextStepIndex;
       });
     } else if (currentStep === totalSteps) {
@@ -127,17 +131,18 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
         );
       }
     }
-  }, [currentStep, dispatch, isPartner, partnerDetails, totalSteps, userDetails]);
+  };
 
-  const goToPreviousStep = useCallback(() => {
+  const goToPreviousStep = () => {
     if (currentStep > 1) {
       setCurrentStep((prevStep) => {
         const prevStepIndex = prevStep - 1;
-        navigateToStep(prevStepIndex);
+
+        setTimeout(() => navigateToStep(prevStepIndex), 0);
         return prevStepIndex;
       });
     }
-  }, [currentStep]);
+  };
 
   const contextValue = useMemo(
     () => ({

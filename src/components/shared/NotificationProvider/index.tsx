@@ -82,7 +82,7 @@ function Notification() {
           </ButtonWrapper>
         )}
         <CloseButton onPress={dismissNotification}>
-          <CloseIcon width={14} height={14} />
+          <CloseIcon width={16} height={16} />
         </CloseButton>
       </Container>
     </AnimatedContainer>

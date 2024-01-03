@@ -42,7 +42,6 @@ function NonSubscribedScreen() {
           }}
           partnerStatus={QuestionStatusType.PendingRecord}
           text={t('questionScreen.nonSubscriberScreen.default.text')}
-          timeRemaining="22h 6m 31s"
           user={userData}
           userReactionToPartner={null}
           userRecording={{

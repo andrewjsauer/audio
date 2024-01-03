@@ -25,6 +25,11 @@ function PartnerNameScreen() {
   const { goToNextStep, partnerDetails, handlePartnerDetails } = useAuthFlow();
   const { name, color } = partnerDetails;
 
+  const handleNameChange = (typedName: string) => {
+    const nameWithoutWhitespace = typedName.replace(/\s+/g, '');
+    handlePartnerDetails({ name: nameWithoutWhitespace });
+  };
+
   const handleSubmit = () => {
     if (!name) {
       dispatch(
@@ -53,7 +58,7 @@ function PartnerNameScreen() {
           <TextInput
             placeholder={t('auth.partnerDetails.nameScreen.inputPlaceholder')}
             keyboardType="default"
-            onChangeText={(typedName) => handlePartnerDetails({ name: typedName })}
+            onChangeText={handleNameChange}
             autoCapitalize="words"
             returnKeyType="next"
             value={name}

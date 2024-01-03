@@ -8,7 +8,12 @@ import rootReducer, { RootReducerState } from './rootReducer';
 const middleware: any = [];
 
 if (__DEV__) {
-  middleware.push(createLogger());
+  middleware.push(
+    createLogger({
+      collapsed: true,
+      diff: true,
+    }),
+  );
 }
 
 const persistConfig = {

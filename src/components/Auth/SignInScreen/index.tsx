@@ -7,8 +7,8 @@ import { trackScreen } from '@lib/analytics';
 import Button from '@components/shared/Button';
 import Layout from '@components/Auth/Layout';
 
-import { selectUser, selectCode, selectConfirm } from '@store/auth/selectors';
-import { setUser, setCode, setConfirm } from '@store/auth/slice';
+import { selectUser, selectCode, selectConfirm, selectUserData } from '@store/auth/selectors';
+import { setUser, setCode, setConfirm, setUserData } from '@store/auth/slice';
 import { AppDispatch } from '@store/index';
 
 import { useAuthFlow } from '@components/Auth/AuthFlowContext';
@@ -33,6 +33,7 @@ function SignInScreen() {
 
   const { goToNextStep } = useAuthFlow();
 
+  const userData = useSelector(selectUserData);
   const user = useSelector(selectUser);
   const code = useSelector(selectCode);
   const confirm = useSelector(selectConfirm);
@@ -43,6 +44,7 @@ function SignInScreen() {
     if (user) dispatch(setUser(null));
     if (code) dispatch(setCode(''));
     if (confirm) dispatch(setConfirm(null));
+    if (userData) dispatch(setUserData(null));
   }, []);
 
   return (
@@ -56,7 +58,7 @@ function SignInScreen() {
         <FooterContainer>
           <LegalContainer>
             <ButtonWrapper>
-              <Button mode="dark" text={t('auth.signIn')} onPress={goToNextStep} />
+              <Button mode="dark" text={t('auth.signIn')} onPress={() => goToNextStep()} />
             </ButtonWrapper>
             <LegalText>{t('auth.signInScreen.terms')}</LegalText>
             <LegalButtonContainer>

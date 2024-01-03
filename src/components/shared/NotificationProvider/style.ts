@@ -7,7 +7,7 @@ type TypeProps = {
 
 export const BaseContainer = styled.View`
   position: absolute;
-  top: 10%;
+  top: 12%;
   left: 0;
   right: 0;
   z-index: 999;
@@ -45,6 +45,7 @@ export const Title = styled.Text`
   font-family: ${(p) => p.theme.fonts.bold};
   font-size: ${(p) => p.theme.fontSizes.regular};
   color: ${(p) => p.theme.colors.white};
+  padding: 0 2px 0 0;
 `;
 
 export const Description = styled.Text`

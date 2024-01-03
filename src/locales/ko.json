@@ -39,7 +39,6 @@
     "initSessionAPIError": "세션을 초기화하는 도중 문제가 발생했습니다",
     "purchaseError": "구독을 구매하는 도중 문제가 발생했습니다",
     "restoreError": "구독을 복구하는 도중 문제가 발생했습니다",
-    "fetchPartnerDataAPIError": "파트너의 데이터를 가져오는 도중 문제가 발생했습니다",
     "fetchPartnershipDataAPIError": "파트너십 데이터를 가져오는 도중 문제가 발생했습니다",
     "fetchQuestionAPIError": "질문을 가져오는 도중 문제가 발생했습니다",
     "audioPlayBackError": "오디오 재생 중 문제가 발생했습니다. 다시 시도해 주세요",

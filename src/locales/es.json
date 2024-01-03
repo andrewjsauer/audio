@@ -39,7 +39,6 @@
     "initSessionAPIError": "Algo salió mal al iniciar tu sesión",
     "purchaseError": "Algo salió mal al comprar tu suscripción",
     "restoreError": "Algo salió mal al restaurar tu suscripción",
-    "fetchPartnerDataAPIError": "Algo salió mal al obtener los datos de tu pareja",
     "fetchPartnershipDataAPIError": "Algo salió mal al obtener los datos de tu asociación",
     "fetchQuestionAPIError": "Algo salió mal al obtener tu pregunta",
     "audioPlayBackError": "Algo salió mal al reproducir tu audio. Por favor, intenta de nuevo",

@@ -6,6 +6,7 @@ export const Title = styled.Text`
   color: ${(p) => p.theme.colors.black};
   text-align: center;
   margin-bottom: 12px;
+  padding: 0 10px;
 `;
 
 export const Timer = styled.Text`

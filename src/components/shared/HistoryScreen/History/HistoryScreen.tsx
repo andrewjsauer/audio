@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { format, isToday } from 'date-fns';
+import { format, isToday, isBefore } from 'date-fns';
 
 import LoadingView from '@components/shared/LoadingView';
 import ErrorView from '@components/shared/ErrorView';
@@ -21,6 +21,7 @@ import MicIcon from '@assets/icons/mic.svg';
 
 import {
   BlurredBackground,
+  BlurredItemRow,
   Container,
   IconButton,
   ItemContainer,
@@ -116,6 +117,7 @@ function HistoryScreen({
       userReactionToPartner,
       userRecordingId,
       userStatus,
+      isItemBlurred = false,
     },
   }: {
     item: HistoryType;
@@ -124,17 +126,43 @@ function HistoryScreen({
     const { icon: PartnerIcon } = statusIcons[partnerStatus];
 
     let formatDate = '';
+    let isDateToday = false;
+    let isDatePast = false;
+
     if (createdAt) {
-      formatDate = isToday(new Date(createdAt)) ? t('today') : format(new Date(createdAt), 'PP');
+      isDateToday = isToday(new Date(createdAt));
+      isDatePast = isBefore(new Date(createdAt), new Date());
+
+      formatDate = isDateToday ? t('today') : format(new Date(createdAt), 'PP');
     }
+
+    const shouldBlurr = !isDateToday && isItemBlurred;
+    const isPartnerButtonDisabled =
+      partnerStatus !== StatusTypes.Play || (isDatePast && userStatus !== StatusTypes.Play);
+
+    const isUserButtonDisabled =
+      userStatus !== StatusTypes.Play || (isDatePast && partnerStatus !== StatusTypes.Play);
 
     return (
       <ItemContainer key={id}>
         <ItemQuestionContainer>
           <ItemDate>{formatDate}</ItemDate>
-          <ItemQuestionText numberOfLines={2} ellipsizeMode="tail">
-            {text}
-          </ItemQuestionText>
+          {shouldBlurr ? (
+            <View>
+              <BlurredItemRow
+                blurType="light"
+                blurAmount={5}
+                reducedTransparencyFallbackColor="white"
+              />
+              <ItemQuestionText numberOfLines={2} ellipsizeMode="tail">
+                {text}
+              </ItemQuestionText>
+            </View>
+          ) : (
+            <ItemQuestionText numberOfLines={2} ellipsizeMode="tail">
+              {text}
+            </ItemQuestionText>
+          )}
           <ItemQuestionStatusText>
             {t(`historyScreen.status.${partnershipTextKey}`, {
               name: partnerName,
@@ -144,9 +172,7 @@ function HistoryScreen({
         <ItemIconContainer>
           <IconButton
             color={partnerColor}
-            disabled={
-              partnerStatus === StatusTypes.PendingRecord || partnerStatus === StatusTypes.Lock
-            }
+            disabled={isPartnerButtonDisabled}
             onPress={() =>
               navigation.navigate(HistoryScreens.PlayUserModal, {
                 audioUrl: partnerAudioUrl,
@@ -171,7 +197,7 @@ function HistoryScreen({
           </IconButton>
           <IconButton
             color={userColor}
-            disabled={userStatus === StatusTypes.PendingRecord || userStatus === StatusTypes.Lock}
+            disabled={isUserButtonDisabled}
             onPress={() =>
               navigation.navigate(HistoryScreens.PlayUserModal, {
                 audioUrl: userAudioUrl,

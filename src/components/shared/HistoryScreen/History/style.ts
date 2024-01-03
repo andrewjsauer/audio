@@ -18,6 +18,15 @@ export const BlurredBackground = styled(BlurView)`
   height: 100%;
 `;
 
+export const BlurredItemRow = styled(BlurView)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: 9999;
+`;
+
 export const NoResultsContainer = styled.View`
   border-radius: 20px;
   background: #f1f1f1;

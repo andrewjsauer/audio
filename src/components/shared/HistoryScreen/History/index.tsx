@@ -7,7 +7,7 @@ import {
   selectError,
   selectIsLoading,
   selectLastFailedAction,
-  selectQuestions,
+  selectFormattedQuestions,
 } from '@store/history/selectors';
 
 import { fetchHistoryData } from '@store/history/thunks';
@@ -26,7 +26,7 @@ function HistoryScreenContainer() {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
   const lastFailedAction = useSelector(selectLastFailedAction);
-  const questions = useSelector(selectQuestions);
+  const questions = useSelector(selectFormattedQuestions);
   const userData = useSelector(selectUserData);
   const partnerData = useSelector(selectPartnerData);
 

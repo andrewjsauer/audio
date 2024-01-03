@@ -44,6 +44,11 @@ function NameScreen() {
     }
   };
 
+  const handleNameChange = (typedName: string) => {
+    const nameWithoutWhitespace = typedName.replace(/\s+/g, '');
+    setNewName(nameWithoutWhitespace);
+  };
+
   return (
     <Layout titleKey="accountScreen.nameScreen.title" screen="name_account_screen">
       {isLoading ? (
@@ -54,7 +59,7 @@ function NameScreen() {
             <TextInput
               placeholder={t('accountScreen.nameScreen.placeholder')}
               keyboardType="default"
-              onChangeText={setNewName}
+              onChangeText={handleNameChange}
               autoCapitalize="words"
               returnKeyType="next"
               value={newName}

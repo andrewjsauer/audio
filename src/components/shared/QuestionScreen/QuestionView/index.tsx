@@ -2,6 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
+import useTimeRemainingToMidnight from '@lib/customHooks/useTimeRemainingToMidnight';
+
 import {
   UserDataType,
   QuestionStatusType,
@@ -18,7 +20,6 @@ type QuestionViewProps = {
   partnerRecording: RecordingType;
   partnerStatus: QuestionStatusType;
   text: string;
-  timeRemaining: string;
   user: UserDataType;
   userRecording: RecordingType;
   userStatus: QuestionStatusType;
@@ -32,7 +33,6 @@ function QuestionView({
   partnerRecording,
   partnerStatus,
   text,
-  timeRemaining,
   user,
   userReactionToPartner,
   userRecording,
@@ -40,6 +40,8 @@ function QuestionView({
 }: QuestionViewProps) {
   const { t } = useTranslation();
   const navigation = useNavigation();
+
+  const timeRemaining = useTimeRemainingToMidnight();
 
   const handleNavigation = (isPartner: boolean) => {
     if (isPartner && partnerStatus === QuestionStatusType.Play) {
@@ -77,7 +79,7 @@ function QuestionView({
     <Container>
       <TimerText>
         {t('questionScreen.subscriberScreen.timeRemaining', {
-          time: timeRemaining,
+          time: timeRemaining || '00h 00m 00s',
         })}
       </TimerText>
       <QuestionText>{text}</QuestionText>

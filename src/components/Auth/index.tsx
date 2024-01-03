@@ -30,7 +30,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 function AuthStack() {
   return (
     <AuthFlowProvider>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName={Steps.SignInScreen}>
         <Stack.Screen
           component={SignInScreen}
           name={Steps.SignInScreen}
