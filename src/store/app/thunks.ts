@@ -26,7 +26,9 @@ export const initializeSubscriber = createAsyncThunk(
     const userData = selectUserData(state);
 
     if (!userData) {
-      return {};
+      return {
+        partnershipData: {},
+      };
     }
 
     try {

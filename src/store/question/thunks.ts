@@ -20,11 +20,14 @@ interface FetchLatestQuestionArgs {
 
 const calculateQuestionIndex = (createdAt: Date) => {
   if (!createdAt) return 0;
+
   const start = convertDateToLocalStart(createdAt);
+  if (Number.isNaN(start?.getTime())) return 0;
 
   const now = startOfDay(new Date());
   const index = differenceInDays(now, start);
 
+  if (Number.isNaN(index)) return 0;
   return index;
 };
 
