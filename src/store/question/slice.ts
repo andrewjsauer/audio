@@ -1,18 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { QuestionType } from '@lib/types';
-import { signOut } from '@store/app/thunks';
+import { signOut, initializeSubscriber } from '@store/app/thunks';
 
 import { fetchLatestQuestion } from './thunks';
 
 interface QuestionState {
   currentQuestion: null | QuestionType;
   isLoading: boolean;
+  isInitializing: boolean;
 }
 
 const initialState: QuestionState = {
   currentQuestion: null,
   isLoading: false,
+  isInitializing: false,
 };
 
 const questionSlice = createSlice({
@@ -40,6 +42,15 @@ const questionSlice = createSlice({
     });
     builder.addCase(fetchLatestQuestion.rejected, (state) => {
       state.isLoading = false;
+    });
+    builder.addCase(initializeSubscriber.fulfilled, (state) => {
+      state.isInitializing = false;
+    });
+    builder.addCase(initializeSubscriber.pending, (state) => {
+      state.isInitializing = true;
+    });
+    builder.addCase(initializeSubscriber.rejected, (state) => {
+      state.isInitializing = false;
     });
   },
 });

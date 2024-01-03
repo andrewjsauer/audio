@@ -124,12 +124,12 @@ function SettingsScreen() {
   const relationshipType = useMemo(() => {
     return types.reduce((acc, currentType) => {
       const typeKey = Object.keys(currentType)[0];
-      if (typeKey === partnershipData.type) {
+      if (typeKey === partnershipData?.type) {
         return truncateString(currentType[typeKey as keyof typeof currentType], 10);
       }
       return acc;
     }, '');
-  }, [types, partnershipData.type]);
+  }, [types, partnershipData]);
 
   return (
     <Layout titleKey="accountScreen.title" screen="account_screen">

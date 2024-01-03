@@ -10,7 +10,7 @@ import {
   selectFormattedQuestions,
 } from '@store/history/selectors';
 
-import { fetchHistoryData } from '@store/history/thunks';
+import { fetchHistoryData, fetchMoreHistoryData } from '@store/history/thunks';
 import { AppDispatch } from '@store/index';
 
 import NonSubscriberNotification from '@components/shared/NonSubscriberNotification';
@@ -32,12 +32,7 @@ function HistoryScreenContainer() {
 
   useEffect(() => {
     trackScreen('HistoryScreen');
-    dispatch(
-      fetchHistoryData({
-        userData,
-        partnerData,
-      }),
-    );
+    dispatch(fetchHistoryData());
   }, []);
 
   const handleRetry = () => {
@@ -46,7 +41,13 @@ function HistoryScreenContainer() {
         action: lastFailedAction.type,
       });
 
-      dispatch(fetchHistoryData(lastFailedAction.payload));
+      dispatch(fetchHistoryData());
+    } else if (lastFailedAction && lastFailedAction.type === fetchMoreHistoryData.typePrefix) {
+      trackEvent('retry_button_clicked', {
+        action: lastFailedAction.type,
+      });
+
+      dispatch(fetchMoreHistoryData());
     }
   };
 
@@ -56,8 +57,9 @@ function HistoryScreenContainer() {
       <HistoryScreen
         error={error}
         handleRetry={handleRetry}
-        isBlurred={!isSubscribed}
+        isBlurred={false}
         isLoading={isLoading}
+        onEndReached={() => dispatch(fetchMoreHistoryData())}
         partnerId={partnerData?.id}
         partnerName={partnerData?.name}
         questions={questions}

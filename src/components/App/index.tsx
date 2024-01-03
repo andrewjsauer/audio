@@ -24,10 +24,10 @@ import { AppScreens } from '@lib/types';
 import LoadingView from '@components/shared/LoadingView';
 import ErrorView from '@components/shared/ErrorView';
 
-import AccountScreen from '@components/shared/AccountScreen';
-import HistoryScreen from '@components/shared/HistoryScreen';
-import QuestionScreen from '@components/shared/QuestionScreen';
-import TrialScreen from '@components/shared/TrialScreen';
+import AccountScreen from '@components/AccountScreen';
+import HistoryScreen from '@components/HistoryScreen';
+import QuestionScreen from '@components/QuestionScreen';
+import TrialScreen from '@components/TrialScreen';
 
 export type AppStackParamList = {
   [AppScreens.AccountScreen]: typeof AccountScreen;

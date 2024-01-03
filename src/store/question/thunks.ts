@@ -4,17 +4,18 @@ import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import functions from '@react-native-firebase/functions';
 import { startOfDay, differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
+import i18n from 'i18next';
 
 import { convertDateToLocalStart } from '@lib/dateUtils';
-import { PartnershipDataType, UserDataType, QuestionType } from '@lib/types';
+import { PartnershipDataType, QuestionType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
 
+import { selectCurrentQuestion } from '@store/question/selectors';
+import { selectUserData } from '@store/auth/selectors';
+import { selectPartnerData } from '@store/partnership/selectors';
+
 interface FetchLatestQuestionArgs {
-  partnerData: UserDataType;
-  userData: UserDataType;
   partnershipData: PartnershipDataType;
-  currentLanguage: string;
-  currentQuestion: QuestionType;
 }
 
 const calculateQuestionIndex = (createdAt: Date) => {
@@ -64,8 +65,17 @@ const generateQuestion = async ({ partnerData, partnershipData, userData, usersL
     },
   };
 
-  const { data } = await functions().httpsCallable('generateQuestion')(payload);
-  return formatQuestion(data);
+  let data = null;
+
+  try {
+    ({ data } = await functions().httpsCallable('generateQuestion')(payload));
+    return formatQuestion(data);
+  } catch (error) {
+    crashlytics().recordError(error);
+    trackEvent('question_generation_error', { error: error.message });
+
+    return null;
+  }
 };
 
 export const fetchLatestQuestion = createAsyncThunk<
@@ -73,18 +83,15 @@ export const fetchLatestQuestion = createAsyncThunk<
   FetchLatestQuestionArgs
 >(
   'question/fetchLatestQuestion',
-  async (
-    {
-      currentLanguage,
-      currentQuestion,
-      partnerData,
-      partnershipData,
-      userData,
-    }: FetchLatestQuestionArgs,
-    { rejectWithValue },
-  ): any => {
+  async ({ partnershipData }: FetchLatestQuestionArgs, { rejectWithValue, getState }): any => {
     try {
+      const state = getState();
       const today = startOfDay(new Date());
+
+      const userData = selectUserData(state);
+      const currentQuestion = selectCurrentQuestion(state);
+      const partnerData = selectPartnerData(state);
+      const currentLanguage = i18n.language;
 
       if (currentQuestion) {
         const currentQuestionLocalCreatedAt = convertDateToLocalStart(currentQuestion.createdAt);
@@ -102,9 +109,11 @@ export const fetchLatestQuestion = createAsyncThunk<
         }
       }
 
+      const latestQuestionId = partnershipData?.latestQuestionId || '';
+
       const snapshot = await firestore()
         .collection('questions')
-        .where('id', '==', partnershipData?.latestQuestionId ?? null)
+        .where('id', '==', latestQuestionId)
         .get();
 
       if (snapshot.empty) {

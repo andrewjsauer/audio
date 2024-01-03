@@ -4,12 +4,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectUserData } from '@store/auth/selectors';
 import {
   selectError,
-  selectIsLoading,
   selectLastFailedAction,
   selectPartnerData,
   selectPartnershipData,
 } from '@store/partnership/selectors';
-import { selectCurrentQuestion, selectIsLoadingQuestion } from '@store/question/selectors';
+import {
+  selectCurrentQuestion,
+  selectIsLoadingQuestion,
+  selectIsInitializing,
+} from '@store/question/selectors';
 import {
   selectPartnerRecording,
   selectPartnerRecordingStatus,
@@ -22,6 +25,7 @@ import {
 import { AppDispatch } from '@store/index';
 
 import { fetchLatestQuestion } from '@store/question/thunks';
+import { initializeSubscriber } from '@store/app/thunks';
 
 import { trackScreen, trackEvent } from '@lib/analytics';
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
@@ -42,7 +46,7 @@ function SubscriberScreen() {
 
   const currentQuestion = useSelector(selectCurrentQuestion);
   const error = useSelector(selectError);
-  const isLoading = useSelector(selectIsLoading);
+  const isInitializing = useSelector(selectIsInitializing);
   const isLoadingQuestion = useSelector(selectIsLoadingQuestion);
   const lastFailedAction = useSelector(selectLastFailedAction);
   const partnerData = useSelector(selectPartnerData);
@@ -57,6 +61,7 @@ function SubscriberScreen() {
 
   useEffect(() => {
     trackScreen('SubscriberScreen');
+    dispatch(initializeSubscriber());
   }, []);
 
   useFetchQuestion({
@@ -108,7 +113,7 @@ function SubscriberScreen() {
     />
   );
 
-  if (isLoading || isLoadingQuestion) {
+  if (isInitializing || isLoadingQuestion) {
     content = <LoadingView />;
   }
 
@@ -117,7 +122,7 @@ function SubscriberScreen() {
   }
 
   return (
-    <Layout isLoading={isLoading}>
+    <Layout isLoading={isInitializing || isLoadingQuestion}>
       <Container>{content}</Container>
     </Layout>
   );
