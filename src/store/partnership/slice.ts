@@ -7,7 +7,7 @@ import {
 } from '@lib/types';
 
 import { signOut } from '@store/app/thunks';
-import { generatePartnership } from '@store/auth/thunks';
+import { updateNewUser, generatePartnership } from '@store/auth/thunks';
 import { fetchLatestQuestion } from '@store/question/thunks';
 import { updatePartnership } from './thunks';
 
@@ -94,6 +94,9 @@ const partnershipSlice = createSlice({
     });
     builder.addCase(updatePartnership.fulfilled, (state) => {
       state.isLoadingPartnershipData = false;
+    });
+    builder.addCase(updateNewUser.fulfilled, (state, action) => {
+      state.partnershipData = action.payload.partnershipData as PartnershipDataType;
     });
   },
 });

@@ -156,6 +156,7 @@ export type HistoryType = {
   userReactionToPartner: ReactionType | null;
   userRecordingId: string | null;
   userStatus: QuestionStatusType;
+  isItemBlurred?: boolean;
 };
 
 export type ListeningType = {

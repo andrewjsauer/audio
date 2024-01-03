@@ -123,7 +123,7 @@ const authSlice = createSlice({
       })
       .addCase(updateNewUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.userData = action.payload;
+        state.userData = action.payload.userData as UserDataType;
       })
       .addCase(updateNewUser.rejected, (state) => {
         state.isLoading = false;

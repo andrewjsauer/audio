@@ -59,8 +59,6 @@ function SubscriberScreen() {
     trackScreen('SubscriberScreen');
   }, []);
 
-  usePartnershipSubscription();
-
   useFetchQuestion({
     currentQuestion,
     isLoadingQuestion,
@@ -83,6 +81,8 @@ function SubscriberScreen() {
     userData,
     userRecordingId: userRecording?.id,
   });
+
+  usePartnershipSubscription();
 
   const handleRetry = () => {
     trackEvent('retry_button_clicked', {

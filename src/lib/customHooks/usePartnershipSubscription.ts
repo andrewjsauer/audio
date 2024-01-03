@@ -23,7 +23,6 @@ const usePartnershipSubscription = () => {
         .onSnapshot((snapshot) => {
           if (snapshot && !snapshot.empty) {
             const data = snapshot.docs[0].data() as PartnershipDataType;
-
             const payload = {
               ...data,
               startDate: new Date(data.startDate._seconds * 1000),

@@ -79,7 +79,7 @@ function QuestionView({
     <Container>
       <TimerText>
         {t('questionScreen.subscriberScreen.timeRemaining', {
-          time: timeRemaining,
+          time: timeRemaining || '00h 00m 00s',
         })}
       </TimerText>
       <QuestionText>{text}</QuestionText>
