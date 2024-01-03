@@ -39,7 +39,6 @@
     "initSessionAPIError": "Algo deu errado ao iniciar sua sessão",
     "purchaseError": "Algo deu errado ao comprar sua assinatura",
     "restoreError": "Algo deu errado ao restaurar sua assinatura",
-    "fetchPartnerDataAPIError": "Algo deu errado ao buscar os dados do seu parceiro",
     "fetchPartnershipDataAPIError": "Algo deu errado ao buscar os dados da sua parceria",
     "fetchQuestionAPIError": "Algo deu errado ao buscar sua pergunta",
     "audioPlayBackError": "Algo deu errado ao reproduzir seu áudio. Por favor, tente novamente",

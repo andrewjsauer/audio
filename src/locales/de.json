@@ -39,7 +39,6 @@
     "initSessionAPIError": "Etwas ist schiefgelaufen bei der Initialisierung deiner Sitzung",
     "purchaseError": "Etwas ist schiefgelaufen beim Kauf deines Abonnements",
     "restoreError": "Etwas ist schiefgelaufen bei der Wiederherstellung deines Abonnements",
-    "fetchPartnerDataAPIError": "Etwas ist schiefgelaufen beim Abrufen der Daten deines Partners",
     "fetchPartnershipDataAPIError": "Etwas ist schiefgelaufen beim Abrufen der Daten deiner Partnerschaft",
     "fetchQuestionAPIError": "Etwas ist schiefgelaufen beim Abrufen deiner Frage",
     "audioPlayBackError": "Etwas ist schiefgelaufen beim Abspielen deines Audios. Bitte versuche es erneut",

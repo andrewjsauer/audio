@@ -6,13 +6,7 @@ import Button from '@components/shared/Button';
 import PhoneNumberInput from '@components/shared/PhoneNumberInput';
 
 import Layout from '../Layout';
-import {
-  Container,
-  ButtonWrapper,
-  InputTitle,
-  InputSubtitle,
-  InputWrapper,
-} from '../style';
+import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
 
 type Props = {
   goToPreviousStep: () => void;
@@ -43,9 +37,7 @@ function PhoneNumberScreen({
             phoneInputRef={phoneInputRef}
             phoneNumber={phoneNumber}
           />
-          <InputSubtitle>
-            {t('auth.phoneNumberScreen.inputDescription')}
-          </InputSubtitle>
+          <InputSubtitle>{t('auth.phoneNumberScreen.inputDescription')}</InputSubtitle>
         </InputWrapper>
         <ButtonWrapper>
           <Button

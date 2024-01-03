@@ -9,11 +9,12 @@ import {
 } from '@store/auth/thunks';
 import { signOut } from '@store/app/thunks';
 import { saveUserRecording } from '@store/recording/thunks';
+import { updatePartnership } from '@store/partnership/thunks';
 
 interface UIState {
   notification: {
     buttonText?: string;
-    description: string;
+    description?: string;
     onButtonPress?: () => void;
     title: string;
     type: 'error' | 'success';
@@ -90,6 +91,19 @@ export const uiSlice = createSlice({
         state.notification = {
           title: 'errors.pleaseTryAgain',
           description: 'errors.deleteRelationshipFailed',
+          type: 'error',
+        };
+      })
+      .addCase(updatePartnership.fulfilled, (state) => {
+        state.notification = {
+          title: 'accountScreen.relationshipTypeScreen.success',
+          type: 'success',
+        };
+      })
+      .addCase(updatePartnership.rejected, (state) => {
+        state.notification = {
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.updatePartnershipFailed',
           type: 'error',
         };
       });

@@ -57,6 +57,11 @@ function UserNameScreen() {
     goToNextStep();
   };
 
+  const handleNameChange = (typedName: string) => {
+    const nameWithoutWhitespace = typedName.replace(/\s+/g, '');
+    handleUserDetails({ name: nameWithoutWhitespace });
+  };
+
   return (
     <Layout isBackButtonEnabled={false} title={t('auth.userDetails.userNameScreen.title')}>
       <Container>
@@ -68,7 +73,7 @@ function UserNameScreen() {
           <TextInput
             placeholder={t('auth.userDetails.userNameScreen.inputPlaceholder')}
             keyboardType="default"
-            onChangeText={(typedName) => handleUserDetails({ name: typedName })}
+            onChangeText={handleNameChange}
             autoCapitalize="words"
             returnKeyType="next"
             value={name}

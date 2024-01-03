@@ -14,12 +14,10 @@ export const ModalDismiss = styled.TouchableOpacity`
 
 export const ModalContainer = styled.View`
   height: 400px;
-  width: 100%;
-  margin: 0 12px;
-  min-width: 380px;
+  margin: 0 10px;
   max-width: 400px;
   background-color: white;
   border-radius: 20px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   padding: 30px 10px 0 10px;
 `;

@@ -138,3 +138,10 @@ export const languageContainer = styled.View`
   justify-content: space-between;
   margin-bottom: 24px;
 `;
+
+export const RelationshipTypeContainer = styled.View`
+  padding: 0 30px;
+  width: 100%;
+  flex: 1;
+  justify-content: center;
+`;

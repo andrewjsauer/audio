@@ -28,8 +28,6 @@ const useInitializeSession = () => {
           if (snapshot && !snapshot.empty) {
             const userData = snapshot.docs[0].data() as UserDataType;
             dispatch(setUserData(userData));
-          } else {
-            dispatch(setUserData(null));
           }
         });
 

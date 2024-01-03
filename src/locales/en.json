@@ -39,13 +39,13 @@
     "initSessionAPIError": "Something went wrong when initializing your session",
     "purchaseError": "Something went wrong when purchasing your subscription",
     "restoreError": "Something went wrong when restoring your subscription",
-    "fetchPartnerDataAPIError": "Something went wrong when fetching your partner's data",
     "fetchPartnershipDataAPIError": "Something went wrong when fetching your partnership data",
     "fetchQuestionAPIError": "Something went wrong when fetching your question",
     "audioPlayBackError": "Something went wrong when playing your audio. Please try again",
     "deleteRelationshipFailed": "Something went wrong when deleting your relationship",
     "partnerAlreadyInUse": "This phone number is already in use",
-    "signOutFailed": "Something went wrong when signing you out"
+    "signOutFailed": "Something went wrong when signing you out",
+    "updatePartnershipFailed": "Something went wrong when updating your partnership"
   },
   "browserScreen": {
     "title": "Browser"
@@ -63,9 +63,10 @@
     "terms": "Terms & Conditions",
     "privacy": "Privacy Policy",
     "language": "Preferred Language",
+    "relationshipStatus": "Relationship Status",
     "deleteAccountModal": {
       "title": "Are you sure you want to end this relationship?",
-      "description": "This will delete your account and your partner's account. You will no longer be able to access your history or recordings.",
+      "description": "This will delete your account and your partner's account. You will no longer be able to access your history or recordings. Subscriptions will need to be cancelled via the App Store.",
       "cancel": "Cancel",
       "delete": "Delete"
     },
@@ -81,6 +82,10 @@
       "submitButton": "Save",
       "placeholder": "Type a new name",
       "success": "Your name has been updated!"
+    },
+    "relationshipTypeScreen": {
+      "title": "Change your relationship status",
+      "success": "Your relationship status has been updated!"
     }
   },
   "questionScreen": {

@@ -114,6 +114,7 @@ export const generatePartnership = createAsyncThunk(
         partnerData: partnerPayload,
         partnershipData: {
           ...partnershipPayload,
+          createdAt: new Date(partnershipPayload.createdAt._seconds * 1000),
           startDate: new Date(partnershipPayload.startDate._seconds * 1000),
         },
       };

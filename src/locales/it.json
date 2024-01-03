@@ -39,7 +39,6 @@
     "initSessionAPIError": "Qualcosa è andato storto nell'iniziare la tua sessione",
     "purchaseError": "Qualcosa è andato storto nell'acquisto del tuo abbonamento",
     "restoreError": "Qualcosa è andato storto nel ripristinare il tuo abbonamento",
-    "fetchPartnerDataAPIError": "Qualcosa è andato storto nel recuperare i dati del tuo partner",
     "fetchPartnershipDataAPIError": "Qualcosa è andato storto nel recuperare i dati della tua partnership",
     "fetchQuestionAPIError": "Qualcosa è andato storto nel recuperare la tua domanda",
     "audioPlayBackError": "Qualcosa è andato storto durante la riproduzione del tuo audio. Per favore riprova",

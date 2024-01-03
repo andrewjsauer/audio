@@ -39,7 +39,6 @@
     "initSessionAPIError": "Une erreur s'est produite lors de l'initialisation de votre session",
     "purchaseError": "Une erreur s'est produite lors de l'achat de votre abonnement",
     "restoreError": "Une erreur s'est produite lors de la restauration de votre abonnement",
-    "fetchPartnerDataAPIError": "Une erreur s'est produite lors de la récupération des données de votre partenaire",
     "fetchPartnershipDataAPIError": "Une erreur s'est produite lors de la récupération des données de votre partenariat",
     "fetchQuestionAPIError": "Une erreur s'est produite lors de la récupération de votre question",
     "audioPlayBackError": "Une erreur s'est produite lors de la lecture de votre audio. Veuillez réessayer",

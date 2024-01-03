@@ -39,7 +39,6 @@
     "initSessionAPIError": "初始化会话时出了些问题",
     "purchaseError": "购买订阅时出了些问题",
     "restoreError": "恢复订阅时出了些问题",
-    "fetchPartnerDataAPIError": "获取伴侣数据时出了些问题",
     "fetchPartnershipDataAPIError": "获取伙伴关系数据时出了些问题",
     "fetchQuestionAPIError": "获取问题时出了些问题",
     "audioPlayBackError": "播放音频时出了些问题，请再试一次",

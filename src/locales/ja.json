@@ -39,7 +39,6 @@
     "initSessionAPIError": "セッション初期化時に何か問題が発生しました",
     "purchaseError": "サブスクリプションの購入時に何か問題が発生しました",
     "restoreError": "サブスクリプションの復元時に何か問題が発生しました",
-    "fetchPartnerDataAPIError": "パートナーのデータ取得時に何か問題が発生しました",
     "fetchPartnershipDataAPIError": "パートナーシップデータの取得時に何か問題が発生しました",
     "fetchQuestionAPIError": "質問の取得時に何か問題が発生しました",
     "audioPlayBackError": "音声の再生時に何か問題が発生しました。もう一度試してください",

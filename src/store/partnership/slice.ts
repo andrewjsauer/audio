@@ -8,7 +8,8 @@ import {
 
 import { signOut } from '@store/app/thunks';
 import { generatePartnership } from '@store/auth/thunks';
-import { fetchPartnerData, updatePartnershipUser, fetchPartnership } from './thunks';
+import { fetchLatestQuestion } from '@store/question/thunks';
+import { updatePartnership } from './thunks';
 
 interface PartnershipState {
   error: string | undefined | null;
@@ -41,7 +42,7 @@ const partnershipSlice = createSlice({
       state.partnershipUserData = action.payload as PartnershipUserDataType;
     },
     setPartnerData: (state, action: PayloadAction<object | null>) => {
-      state.partnerData = action.payload as PartnershipDataType;
+      state.partnerData = action.payload as PartnerDataType;
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
@@ -61,43 +62,38 @@ const partnershipSlice = createSlice({
       state.partnershipData = action.payload.partnershipData as PartnershipDataType;
       state.partnerData = action.payload.partnerData as PartnerDataType;
     });
-    builder.addCase(updatePartnershipUser.fulfilled, (state, action) => {
-      state.partnershipUserData = {
-        ...state.partnershipUserData,
-        ...action.payload,
+    builder.addCase(fetchLatestQuestion.pending, (state) => {
+      state.error = null;
+      state.lastFailedAction = null;
+    });
+    builder.addCase(fetchLatestQuestion.rejected, (state, action) => {
+      state.error = 'errors.fetchQuestionAPIError';
+      state.lastFailedAction = {
+        type: fetchLatestQuestion.typePrefix,
+        payload: action.meta.arg,
       };
     });
-    builder.addCase(fetchPartnership.pending, (state) => {
+    builder.addCase(fetchLatestQuestion.fulfilled, (state, action) => {
+      state.partnershipData = {
+        ...state.partnershipData,
+        latestQuestionId: action.payload.question.id,
+      };
+    });
+    builder.addCase(updatePartnership.pending, (state) => {
+      state.error = null;
+      state.lastFailedAction = null;
       state.isLoadingPartnershipData = true;
-      state.error = null;
     });
-    builder.addCase(fetchPartnership.rejected, (state, action) => {
+    builder.addCase(updatePartnership.rejected, (state, action) => {
+      state.error = 'errors.updatePartnershipAPIError';
       state.isLoadingPartnershipData = false;
-      state.error = 'errors.fetchPartnershipDataAPIError';
       state.lastFailedAction = {
-        type: fetchPartnership.typePrefix,
+        type: updatePartnership.typePrefix,
         payload: action.meta.arg,
       };
     });
-    builder.addCase(fetchPartnership.fulfilled, (state, action) => {
+    builder.addCase(updatePartnership.fulfilled, (state) => {
       state.isLoadingPartnershipData = false;
-      state.partnershipData = action.payload as PartnershipDataType;
-    });
-    builder.addCase(fetchPartnerData.pending, (state) => {
-      state.isLoadingPartnerData = true;
-      state.error = null;
-    });
-    builder.addCase(fetchPartnerData.fulfilled, (state, action) => {
-      state.partnerData = action.payload as PartnerDataType;
-      state.isLoadingPartnerData = false;
-    });
-    builder.addCase(fetchPartnerData.rejected, (state, action) => {
-      state.isLoadingPartnerData = false;
-      state.error = 'errors.fetchPartnerDataAPIError';
-      state.lastFailedAction = {
-        type: fetchPartnerData.typePrefix,
-        payload: action.meta.arg,
-      };
     });
   },
 });

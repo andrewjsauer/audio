@@ -2,6 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
+import useTimeRemainingToMidnight from '@lib/customHooks/useTimeRemainingToMidnight';
+
 import {
   UserDataType,
   QuestionStatusType,
@@ -18,7 +20,6 @@ type QuestionViewProps = {
   partnerRecording: RecordingType;
   partnerStatus: QuestionStatusType;
   text: string;
-  timeRemaining: string;
   user: UserDataType;
   userRecording: RecordingType;
   userStatus: QuestionStatusType;
@@ -32,7 +33,6 @@ function QuestionView({
   partnerRecording,
   partnerStatus,
   text,
-  timeRemaining,
   user,
   userReactionToPartner,
   userRecording,
@@ -41,27 +41,33 @@ function QuestionView({
   const { t } = useTranslation();
   const navigation = useNavigation();
 
+  const timeRemaining = useTimeRemainingToMidnight();
+
   const handleNavigation = (isPartner: boolean) => {
     if (isPartner && partnerStatus === QuestionStatusType.Play) {
       navigation.navigate(ModalScreens.PlayUserModal, {
         audioUrl: partnerRecording.audioUrl,
+        color: partner.color,
         duration: partnerRecording.duration,
         isUsersPartner: true,
         questionText: text,
+        reaction: userReactionToPartner,
         recordingId: partnerRecording.id,
         userId: user.id,
-        reaction: userReactionToPartner,
+        reactionColor: user.color,
       });
     } else if (!isPartner) {
       if (userStatus === QuestionStatusType.Play) {
         navigation.navigate(ModalScreens.PlayUserModal, {
           audioUrl: userRecording.audioUrl,
+          color: user.color,
           duration: userRecording.duration,
           isUsersPartner: false,
           questionText: text,
+          reaction: partnerReactionToUser,
+          reactionColor: partner.color,
           recordingId: userRecording.id,
           userId: user.id,
-          reaction: partnerReactionToUser,
         });
       } else if (userStatus === QuestionStatusType.Record) {
         navigation.navigate(ModalScreens.RecordUserModal);

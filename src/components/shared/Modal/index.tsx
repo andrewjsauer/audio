@@ -9,10 +9,9 @@ function Modal({ children }: { children: React.ReactNode }) {
   const navigation = useNavigation();
   const translateY = useRef(new Animated.Value(0)).current;
 
-  const onGestureEvent = Animated.event(
-    [{ nativeEvent: { translationY: translateY } }],
-    { useNativeDriver: true },
-  );
+  const onGestureEvent = Animated.event([{ nativeEvent: { translationY: translateY } }], {
+    useNativeDriver: true,
+  });
 
   const onHandlerStateChange = (event) => {
     if (event.nativeEvent.oldState === State.ACTIVE) {
@@ -33,7 +32,8 @@ function Modal({ children }: { children: React.ReactNode }) {
       <ModalDismiss activeOpacity={1} onPress={() => navigation.goBack()} />
       <PanGestureHandler
         onGestureEvent={onGestureEvent}
-        onHandlerStateChange={onHandlerStateChange}>
+        onHandlerStateChange={onHandlerStateChange}
+      >
         <Animated.View style={{ transform: [{ translateY }] }}>
           <ModalContainer>{children}</ModalContainer>
         </Animated.View>

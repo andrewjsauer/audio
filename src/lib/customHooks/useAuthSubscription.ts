@@ -15,7 +15,7 @@ import { selectUserId } from '@store/auth/selectors';
 
 import { trackEvent } from '@lib/analytics';
 
-function useAuthStateListener() {
+function useAuthSubscription() {
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector(selectUserId);
 
@@ -33,11 +33,11 @@ function useAuthStateListener() {
     return subscriber;
   }, []);
 
-  async function saveTokenToUser(token: string) {
-    if (userId) {
+  async function saveTokenToUser(token: string, id: string | null) {
+    if (id) {
       dispatch(
         updateUser({
-          id: userId,
+          id,
           userDetails: {
             deviceIds: firestore.FieldValue.arrayUnion(token),
           },
@@ -51,7 +51,7 @@ function useAuthStateListener() {
       messaging()
         .getToken()
         .then((token) => {
-          return saveTokenToUser(token);
+          return saveTokenToUser(token, userId);
         });
     } catch (error) {
       trackEvent('get_firebase_device_token_error', { error });
@@ -59,9 +59,9 @@ function useAuthStateListener() {
     }
 
     return messaging().onTokenRefresh((token) => {
-      saveTokenToUser(token);
+      saveTokenToUser(token, userId);
     });
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
@@ -85,4 +85,4 @@ function useAuthStateListener() {
   }, [userId]);
 }
 
-export default useAuthStateListener;
+export default useAuthSubscription;

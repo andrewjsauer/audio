@@ -6,6 +6,7 @@ export const Title = styled.Text`
   color: ${(p) => p.theme.colors.black};
   text-align: center;
   margin-bottom: 12px;
+  padding: 0 10px;
 `;
 
 export const Timer = styled.Text`
@@ -22,8 +23,8 @@ export const PlayBackContainer = styled.View`
   flex-direction: row;
 `;
 
-export const PlayBackButton = styled.TouchableOpacity<{ type: string }>`
-  background-color: ${(p) => p.theme.colors.play};
+export const PlayBackButton = styled.TouchableOpacity<{ color: string }>`
+  background-color: ${(p) => p.color};
   border: 6px solid rgba(255, 255, 255, 0.5);
   width: 80px;
   height: 80px;
@@ -36,6 +37,7 @@ export const PlayBackButton = styled.TouchableOpacity<{ type: string }>`
 export const ReactionButton = styled.TouchableOpacity<{
   isSelected: boolean;
   isFaded: boolean;
+  reactionColor: string;
 }>`
   border-radius: 30px;
   align-items: center;
@@ -43,7 +45,7 @@ export const ReactionButton = styled.TouchableOpacity<{
   width: 50px;
   height: 50px;
   opacity: ${(p) => (p.isFaded ? 0.5 : 1)};
-  background-color: ${(p) => (p.isSelected ? p.theme.colors.play : p.theme.colors.transparentGray)};
+  background-color: ${(p) => (p.isSelected ? p.reactionColor : p.theme.colors.transparentGray)};
 `;
 
 export const ReactionIcon = styled.Text`

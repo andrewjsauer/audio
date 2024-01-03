@@ -4,6 +4,7 @@ import { BlurView } from '@react-native-community/blur';
 export const Container = styled.View`
   flex: 1;
   margin-top: 20px;
+  margin-bottom: 20px;
   flex-direction: column;
   justify-content: flex-start;
   padding: 0 8px;
@@ -96,5 +97,5 @@ export const ReactionOrb = styled.View<{ color: string }>`
 `;
 
 export const ReactionIcon = styled.Text`
-  font-size: 10px;
+  font-size: 7px;
 `;
