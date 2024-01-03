@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import i18n from 'i18next';
 
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -15,7 +14,6 @@ import {
 import { trackEvent } from '@lib/analytics';
 
 import { signOut } from '@store/app/thunks';
-import { fetchLatestQuestion } from '@store/question/thunks';
 
 export const submitPhoneNumber = createAsyncThunk<FirebaseAuthTypes.ConfirmationResult, string>(
   'auth/submitPhoneNumber',
