@@ -122,10 +122,11 @@ export const generatePartnership = createAsyncThunk(
         },
       };
     } catch (error) {
-      trackEvent('initialize_partnership_error', { error });
+      trackEvent('generate_partnership_error', { error });
       crashlytics().recordError(error);
 
-      if (error?.code === 'already-exists') {
+      const errorMessage = error?.toString();
+      if (errorMessage && errorMessage.includes('Partner already has a partner')) {
         return rejectWithValue('errors.partnerAlreadyInUse');
       }
 

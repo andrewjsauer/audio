@@ -23,30 +23,40 @@ function NameScreen() {
   const { name, id } = useSelector(selectUserData);
   const isLoading = useSelector(selectIsLoading);
 
-  const [newName, setNewName] = useState('');
+  const [newName, setNewName] = useState(name);
+  const [updateAttempted, setUpdateAttempted] = useState(false);
 
   useEffect(() => {
-    if (name === newName) {
+    if (updateAttempted && name === newName) {
       dispatch(
         showNotification({
           title: 'accountScreen.nameScreen.success',
           type: 'success',
         }),
       );
+
+      setUpdateAttempted(false);
     }
-  }, [name]);
+  }, [name, newName, dispatch, updateAttempted]);
 
   const handleSubmit = () => {
     trackEvent('name_change_submit_clicked');
 
-    if (name && name !== newName) {
-      dispatch(updateUser({ id, userDetails: { name: newName } }));
+    if (newName.trim() && name !== newName) {
+      dispatch(updateUser({ id, userDetails: { name: newName.trim() } }));
+      setUpdateAttempted(true);
+    } else {
+      dispatch(
+        showNotification({
+          title: 'errors.userNameEmpty',
+          type: 'error',
+        }),
+      );
     }
   };
 
   const handleNameChange = (typedName: string) => {
-    const nameWithoutWhitespace = typedName.replace(/\s+/g, '');
-    setNewName(nameWithoutWhitespace);
+    setNewName(typedName);
   };
 
   return (
