@@ -38,10 +38,16 @@ export const initializeSubscriber = createAsyncThunk(
         .get();
 
       const partnershipData = partnershipSnapshot.docs[0].data() as PartnershipDataType;
-      dispatch(fetchLatestQuestion({ partnershipData }));
+      const payload = {
+        ...partnershipData,
+        startDate: new Date(data.startDate._seconds * 1000),
+        createdAt: new Date(data.createdAt._seconds * 1000),
+      };
+
+      dispatch(fetchLatestQuestion({ partnershipData: payload }));
 
       return {
-        partnershipData,
+        partnershipData: payload,
       };
     } catch (error) {
       crashlytics().log('Error initializing subscriber');

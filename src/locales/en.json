@@ -15,6 +15,7 @@
   "errors": {
     "tryAgain": "Try Again",
     "pleaseTryAgain": "Please Try Again",
+    "pleaseTryAgainLater": "Please Try Again Later",
     "whoops": "Oops! Looks like there was an error",
     "verificationCodeEmpty": "Verification code cannot be empty",
     "invalidAPICode": "Something went wrong when submitting your verification code",
@@ -45,7 +46,8 @@
     "deleteRelationshipFailed": "Something went wrong when deleting your relationship",
     "partnerAlreadyInUse": "This phone number is already in use",
     "signOutFailed": "Something went wrong when signing you out",
-    "updatePartnershipFailed": "Something went wrong when updating your partnership"
+    "updatePartnershipFailed": "Something went wrong when updating your partnership",
+    "tooManyAttempts": "Too many attempts. Please wait to try again."
   },
   "browserScreen": {
     "title": "Browser"
