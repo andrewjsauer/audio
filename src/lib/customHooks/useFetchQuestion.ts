@@ -13,7 +13,7 @@ const useFetchQuestion = () => {
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState === 'active') {
-        dispatch(initializeSubscriber({ shouldFetchPartnership: true }));
+        dispatch(initializeSubscriber());
       }
     });
 
@@ -24,7 +24,7 @@ const useFetchQuestion = () => {
 
   useEffect(() => {
     const focusListener = navigation.addListener('focus', () => {
-      dispatch(initializeSubscriber({ shouldFetchPartnership: true }));
+      dispatch(initializeSubscriber());
     });
 
     return focusListener;

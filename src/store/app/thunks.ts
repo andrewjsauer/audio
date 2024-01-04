@@ -20,29 +20,26 @@ import { selectPartnershipData } from '@store/partnership/selectors';
 
 export const initializeSubscriber = createAsyncThunk(
   'app/initializeSubscriber',
-  async (
-    { shouldFetchPartnership }: { shouldFetchPartnership: boolean },
-    { getState, rejectWithValue, dispatch },
-  ) => {
+  async (_, { getState, rejectWithValue, dispatch }) => {
     const state = getState();
     const userData = selectUserData(state);
     const partnershipData = selectPartnershipData(state);
 
     try {
-      trackEvent('initializing_subscriber', { shouldFetchPartnership });
+      trackEvent('initializing_subscriber', userData);
       let payload = partnershipData;
 
-      if (shouldFetchPartnership || !partnershipData) {
-        const partnershipSnapshot = await firestore()
-          .collection('partnership')
-          .where('id', '==', userData.partnershipId)
-          .get();
+      const partnershipSnapshot = await firestore()
+        .collection('partnership')
+        .where('id', '==', userData.partnershipId)
+        .get();
 
-        const partnershipSnapshotData = partnershipSnapshot.docs[0].data() as PartnershipDataType;
+      if (!partnershipSnapshot.empty) {
+        const data = partnershipSnapshot.docs[0].data() as PartnershipDataType;
         payload = {
-          ...partnershipSnapshotData,
-          startDate: new Date(partnershipSnapshotData.startDate._seconds * 1000),
-          createdAt: new Date(partnershipSnapshotData.createdAt._seconds * 1000),
+          ...data,
+          startDate: new Date(data.startDate._seconds * 1000),
+          createdAt: new Date(data.createdAt._seconds * 1000),
         };
       }
 
