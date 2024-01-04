@@ -29,7 +29,6 @@ import { trackScreen, trackEvent } from '@lib/analytics';
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
 import useRecordingSubscription from '@lib/customHooks/useRecordingSubscription';
 import useListeningSubscription from '@lib/customHooks/useListeningSubscription';
-import usePartnershipSubscription from '@lib/customHooks/usePartnershipSubscription';
 import useFetchQuestion from '@lib/customHooks/useFetchQuestion';
 
 import LoadingView from '@components/shared/LoadingView';
@@ -76,8 +75,6 @@ function SubscriberScreen() {
     userData,
     userRecordingId: userRecording?.id,
   });
-
-  usePartnershipSubscription();
 
   const handleRetry = () => {
     trackEvent('retry_button_clicked', {
