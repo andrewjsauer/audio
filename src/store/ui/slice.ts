@@ -38,10 +38,10 @@ export const uiSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(submitPhoneNumber.rejected, (state) => {
+      .addCase(submitPhoneNumber.rejected, (state, action) => {
         state.notification = {
-          title: 'errors.pleaseTryAgain',
-          description: 'errors.phoneNumberAPIError',
+          title: action.payload?.title || 'errors.pleaseTryAgain',
+          description: action.payload?.description || 'errors.phoneNumberAPIError',
           type: 'error',
         };
       })
