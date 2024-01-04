@@ -54,14 +54,8 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(signOut.fulfilled, (state) => {
-        state.code = '';
-        state.confirm = null;
-        state.error = null;
-        state.isLoading = false;
-        state.isLoadingPartnerData = false;
-        state.user = null;
-        state.userData = null;
+      .addCase(signOut.fulfilled, () => {
+        return initialState;
       })
       .addCase(submitPhoneNumber.pending, (state) => {
         state.isLoading = true;

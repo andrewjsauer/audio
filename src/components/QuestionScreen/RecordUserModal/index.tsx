@@ -27,6 +27,7 @@ import PlayIcon from '@assets/icons/play.svg';
 import StopIcon from '@assets/icons/stop.svg';
 
 import Modal from '@components/shared/Modal';
+import { trackEvent } from '@lib/analytics';
 
 import PermissionNotification from './PermissionNotification';
 import {
@@ -64,6 +65,7 @@ function RecordUserModal() {
 
   useEffect(() => {
     if (userRecording) {
+      trackEvent('question_recorded', { question_id: currentQuestion.id });
       navigation.goBack();
     }
   }, [userRecording]);
@@ -98,6 +100,8 @@ function RecordUserModal() {
   };
 
   const onStartRecord = async () => {
+    trackEvent('question_record_started', { question_id: currentQuestion.id });
+
     const audioSet: AudioSet = {
       AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
       AudioSourceAndroid: AudioSourceAndroidType.MIC,
@@ -118,6 +122,8 @@ function RecordUserModal() {
   };
 
   const onStopRecord = async () => {
+    trackEvent('question_record_stopped', { question_id: currentQuestion.id });
+
     const result = await audioRecorderPlayer.stopRecorder();
     audioRecorderPlayer.removeRecordBackListener();
 
@@ -127,6 +133,8 @@ function RecordUserModal() {
 
   const onRedo = async () => {
     if (isPlaying) {
+      trackEvent('question_record_redo', { question_id: currentQuestion.id });
+
       await audioRecorderPlayer.stopPlayer();
       setIsPlaying(false);
     }
@@ -137,6 +145,7 @@ function RecordUserModal() {
 
   const onPlayBack = async () => {
     if (!recordPath) return;
+    trackEvent('question_record_playback', { question_id: currentQuestion.id });
     setIsPlaying(true);
 
     await audioRecorderPlayer.startPlayer(recordPath);
@@ -151,6 +160,8 @@ function RecordUserModal() {
   };
 
   const onStopPlay = async () => {
+    trackEvent('question_record_playback_stopped', { question_id: currentQuestion.id });
+
     await audioRecorderPlayer.stopPlayer();
     audioRecorderPlayer.removePlayBackListener();
 
@@ -174,16 +185,20 @@ function RecordUserModal() {
 
   const handlePlayPress = () => {
     if (isPlaying) {
+      trackEvent('question_record_stop_play', { question_id: currentQuestion.id });
       onStopPlay();
     } else {
+      trackEvent('question_record_play_back', { question_id: currentQuestion.id });
       onPlayBack();
     }
   };
 
   const handleRecordPress = () => {
     if (isRecording) {
+      trackEvent('question_record_stop', { question_id: currentQuestion.id });
       onStopRecord();
     } else {
+      trackEvent('question_record_start', { question_id: currentQuestion.id });
       onStartRecord();
     }
   };
@@ -207,18 +222,26 @@ function RecordUserModal() {
       </RecordContainer>
     );
   } else {
-    const buttonIcon = isPlaying ? <StopIcon width={30} height={30} /> : <PlayIcon width={30} height={30} />;
+    const buttonIcon = isPlaying ? (
+      <StopIcon width={30} height={30} />
+    ) : (
+      <PlayIcon width={30} height={30} />
+    );
 
     buttonContent = (
       <PostRecordContainer>
         <SecondaryButton type="redo" onPress={onRedo} disabled={isLoading}>
-          <SecondaryButtonText type="redo">{t('questionScreen.subscriberScreen.redo')}</SecondaryButtonText>
+          <SecondaryButtonText type="redo">
+            {t('questionScreen.subscriberScreen.redo')}
+          </SecondaryButtonText>
         </SecondaryButton>
         <RecordButton onPress={handlePlayPress} type="play" disabled={isLoading}>
           {isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : buttonIcon}
         </RecordButton>
         <SecondaryButton type="submit" onPress={onSubmit} disabled={isLoading}>
-          <SecondaryButtonText type="submit">{t('questionScreen.subscriberScreen.submit')}</SecondaryButtonText>
+          <SecondaryButtonText type="submit">
+            {t('questionScreen.subscriberScreen.submit')}
+          </SecondaryButtonText>
         </SecondaryButton>
       </PostRecordContainer>
     );

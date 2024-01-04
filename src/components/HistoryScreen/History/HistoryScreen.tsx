@@ -14,6 +14,7 @@ import {
   QuestionStatusType as StatusTypes,
   ReactionTypeIcons,
 } from '@lib/types';
+import { trackEvent } from '@lib/analytics';
 
 import PlayIcon from '@assets/icons/play.svg';
 import QuestionIcon from '@assets/icons/help.svg';
@@ -189,7 +190,8 @@ function HistoryScreen({
           <IconButton
             color={partnerColor}
             disabled={isPartnerButtonDisabled}
-            onPress={() =>
+            onPress={() => {
+              trackEvent('question_row_clicked', { action: 'play_partner' });
               navigation.navigate(HistoryScreens.PlayUserModal, {
                 audioUrl: partnerAudioUrl,
                 color: partnerColor,
@@ -201,8 +203,8 @@ function HistoryScreen({
                 reactionColor: userColor,
                 recordingId: partnerRecordingId,
                 userId,
-              })
-            }
+              });
+            }}
           >
             <PartnerIcon width={18} height={18} />
             {userReactionToPartner && (
@@ -214,7 +216,9 @@ function HistoryScreen({
           <IconButton
             color={userColor}
             disabled={isUserButtonDisabled}
-            onPress={() =>
+            onPress={() => {
+              trackEvent('question_row_clicked', { action: 'play_user' });
+
               navigation.navigate(HistoryScreens.PlayUserModal, {
                 audioUrl: userAudioUrl,
                 color: userColor,
@@ -226,8 +230,8 @@ function HistoryScreen({
                 reactionColor: partnerColor,
                 recordingId: userRecordingId,
                 userId: partnerId,
-              })
-            }
+              });
+            }}
           >
             <UserIcon width={18} height={18} />
             {partnerReactionToUser && (

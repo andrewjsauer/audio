@@ -1,53 +1,34 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppState } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { AppDispatch } from '@store/index';
-import { fetchLatestQuestion } from '@store/question/thunks';
-import { PartnershipDataType, UserDataType, QuestionType } from '@lib/types';
+import { initializeSubscriber } from '@store/app/thunks';
 
-const useFetchQuestion = ({
-  currentQuestion,
-  isLoadingQuestion,
-  partnerData,
-  partnershipData,
-  userData,
-}: {
-  currentQuestion: QuestionType;
-  isLoadingQuestion: boolean;
-  partnerData: UserDataType;
-  partnershipData: PartnershipDataType;
-  userData: UserDataType;
-}) => {
+const useFetchQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation();
-
-  const checkQuestion = useCallback(() => {
-    if (!partnershipData || !partnerData || !userData || isLoadingQuestion) return;
-
-    dispatch(fetchLatestQuestion({ partnershipData }));
-  }, [partnershipData, partnerData, userData, currentQuestion, isLoadingQuestion, dispatch]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState === 'active') {
-        checkQuestion();
+        dispatch(initializeSubscriber({ shouldFetchPartnership: true }));
       }
     });
 
     return () => {
       subscription.remove();
     };
-  }, [checkQuestion]);
+  }, []);
 
   useEffect(() => {
     const focusListener = navigation.addListener('focus', () => {
-      checkQuestion();
+      dispatch(initializeSubscriber({ shouldFetchPartnership: true }));
     });
 
     return focusListener;
-  }, [navigation, checkQuestion]);
+  }, []);
 };
 
 export default useFetchQuestion;

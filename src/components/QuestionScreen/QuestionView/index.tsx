@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
+import { trackEvent } from '@lib/analytics';
 import useTimeRemainingToMidnight from '@lib/customHooks/useTimeRemainingToMidnight';
 
 import {
@@ -45,6 +46,7 @@ function QuestionView({
 
   const handleNavigation = (isPartner: boolean) => {
     if (isPartner && partnerStatus === QuestionStatusType.Play) {
+      trackEvent('question_row_clicked', { action: 'play_partner' });
       navigation.navigate(ModalScreens.PlayUserModal, {
         audioUrl: partnerRecording.audioUrl,
         color: partner.color,
@@ -57,6 +59,7 @@ function QuestionView({
         reactionColor: user.color,
       });
     } else if (!isPartner) {
+      trackEvent('question_row_clicked', { action: 'play_user' });
       if (userStatus === QuestionStatusType.Play) {
         navigation.navigate(ModalScreens.PlayUserModal, {
           audioUrl: userRecording.audioUrl,
@@ -70,6 +73,7 @@ function QuestionView({
           userId: user.id,
         });
       } else if (userStatus === QuestionStatusType.Record) {
+        trackEvent('question_row_clicked', { action: 'record_user' });
         navigation.navigate(ModalScreens.RecordUserModal);
       }
     }

@@ -29,9 +29,8 @@ const questionSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(signOut.fulfilled, (state) => {
-      state.currentQuestion = null;
-      state.isLoading = false;
+    builder.addCase(signOut.fulfilled, () => {
+      return initialState;
     });
     builder.addCase(fetchLatestQuestion.fulfilled, (state, action) => {
       state.isLoading = false;

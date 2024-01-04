@@ -54,7 +54,12 @@ const formatQuestion = (data: QuestionType) => ({
 });
 
 const generateQuestion = async ({ partnerData, partnershipData, userData, usersLanguage }: any) => {
-  const questionIndex = calculateQuestionIndex(partnershipData.createdAt);
+  console.log('partnerData', partnerData);
+  console.log('partnershipData', partnershipData);
+  console.log('userData', userData);
+  console.log('usersLanguage', usersLanguage);
+
+  const questionIndex = calculateQuestionIndex(partnershipData?.createdAt);
 
   const payload = {
     questionIndex,
@@ -63,7 +68,7 @@ const generateQuestion = async ({ partnerData, partnershipData, userData, usersL
     usersLanguage,
     partnershipData: {
       ...partnershipData,
-      startDate: calculateDuration(partnershipData.startDate),
+      startDate: calculateDuration(partnershipData?.startDate),
     },
   };
 

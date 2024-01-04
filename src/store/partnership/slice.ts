@@ -47,13 +47,8 @@ const partnershipSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(signOut.fulfilled, (state) => {
-      state.error = null;
-      state.isLoading = false;
-      state.lastFailedAction = null;
-      state.partnerData = null;
-      state.partnershipData = null;
-      state.partnershipUserData = null;
+    builder.addCase(signOut.fulfilled, () => {
+      return initialState;
     });
     builder.addCase(generatePartnership.fulfilled, (state, action) => {
       state.partnershipData = action.payload.partnershipData as PartnershipDataType;

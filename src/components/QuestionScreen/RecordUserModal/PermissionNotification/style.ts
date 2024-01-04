@@ -27,7 +27,7 @@ export const Description = styled.Text`
 `;
 
 export const ButtonWrapper = styled.View`
-  padding-left: 6;
+  padding-left: 6px;
   flex-shrink: 0;
 `;
 

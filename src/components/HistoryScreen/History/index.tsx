@@ -51,6 +51,11 @@ function HistoryScreenContainer() {
     }
   };
 
+  const handleEndReached = () => {
+    trackEvent('end_reached', { action: 'fetch_more_history_data' });
+    dispatch(fetchMoreHistoryData());
+  };
+
   return (
     <Layout titleKey="historyScreen.title" screen="history_screen">
       {!isSubscribed && <NonSubscriberNotification />}
@@ -59,7 +64,7 @@ function HistoryScreenContainer() {
         handleRetry={handleRetry}
         isBlurred={false}
         isLoading={isLoading}
-        onEndReached={() => dispatch(fetchMoreHistoryData())}
+        onEndReached={handleEndReached}
         partnerId={partnerData?.id}
         partnerName={partnerData?.name}
         questions={questions}
