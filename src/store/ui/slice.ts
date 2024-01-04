@@ -37,6 +37,9 @@ export const uiSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(signOut.fulfilled, () => {
+      return initialState;
+    });
     builder
       .addCase(submitPhoneNumber.rejected, (state, action) => {
         state.notification = {

@@ -9,6 +9,8 @@ import {
   RESULTS,
 } from 'react-native-permissions';
 
+import { trackEvent } from '@lib/analytics';
+
 const useAudioRecordingPermission = () => {
   const [isPermissionGranted, setIsPermissionGranted] = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
@@ -18,9 +20,7 @@ const useAudioRecordingPermission = () => {
     setIsPermissionGranted(status === RESULTS.GRANTED);
 
     if (!isInitialCheck) {
-      setPermissionDenied(
-        status === RESULTS.DENIED || status === RESULTS.BLOCKED,
-      );
+      setPermissionDenied(status === RESULTS.DENIED || status === RESULTS.BLOCKED);
     }
   };
 
@@ -64,8 +64,10 @@ const useAudioRecordingPermission = () => {
     if (isPermissionGranted) return;
 
     if (!isPermissionGranted && permissionDenied) {
+      trackEvent('Audio Permission', { status: 'openSettings' });
       openSettings();
     } else {
+      trackEvent('Audio Permission', { status: 'request' });
       requestAudioPermission();
     }
   };

@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDispatch } from '@store/index';
 import { updatePartnership } from '@store/partnership/thunks';
-import {
-  selectPartnershipData,
-  selectIsLoadingPartnershipData,
-} from '@store/partnership/selectors';
+import { selectPartnershipData, selectIsLoading } from '@store/partnership/selectors';
 
 import { trackEvent } from '@lib/analytics';
 
@@ -20,7 +17,7 @@ function RelationshipTypeScreen() {
   const dispatch = useDispatch<AppDispatch>();
 
   const { type, id } = useSelector(selectPartnershipData);
-  const isLoading = useSelector(selectIsLoadingPartnershipData);
+  const isLoading = useSelector(selectIsLoading);
 
   const handleChange = (selectedType: string) => {
     if (type !== selectedType) {

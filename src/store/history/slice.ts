@@ -28,11 +28,8 @@ const historySlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(signOut.fulfilled, (state) => {
-        state.isLoading = false;
-        state.questions = [];
-        state.error = null;
-        state.lastFailedAction = null;
+      .addCase(signOut.fulfilled, () => {
+        return initialState;
       })
       .addCase(fetchHistoryData.pending, (state) => {
         state.isLoading = true;

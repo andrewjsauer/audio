@@ -2020,7 +2020,12 @@ PODS:
     - React-Core
   - RNSVG (14.1.0):
     - React-Core
+  - segment-analytics-react-native (2.17.0):
+    - React-Core
+    - sovran-react-native
   - SocketRocket (0.6.1)
+  - sovran-react-native (1.0.4):
+    - React-Core
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -2097,6 +2102,8 @@ DEPENDENCIES:
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNPurchases (from `../node_modules/react-native-purchases`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - "segment-analytics-react-native (from `../node_modules/@segment/analytics-react-native`)"
+  - "sovran-react-native (from `../node_modules/@segment/sovran-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2282,6 +2289,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-purchases"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  segment-analytics-react-native:
+    :path: "../node_modules/@segment/analytics-react-native"
+  sovran-react-native:
+    :path: "../node_modules/@segment/sovran-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -2393,7 +2404,9 @@ SPEC CHECKSUMS:
   RNPermissions: b4ccb7f1a3cece23cbcf4339c662c940a9098163
   RNPurchases: 6460a884756442e75b2d25a1d7e58cd39ebbffe6
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
+  segment-analytics-react-native: dbdd08d96fec78132e96bda092562e41c2ce0ce0
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  sovran-react-native: 791f2f726b4d57ece59676eda58d6da9dc95ad4e
   Yoga: 4f53dc50008d626fa679c7a1cb4bed898f8c0bde
 
 PODFILE CHECKSUM: 4d12b85d5adca1c1d19051d21a20ab1112cebb7a

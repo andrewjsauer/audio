@@ -6,7 +6,6 @@ import messaging from '@react-native-firebase/messaging';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
-import analytics from '@react-native-firebase/analytics';
 
 import { AppDispatch } from '@store/index';
 import { setUser } from '@store/auth/slice';
@@ -22,8 +21,6 @@ function useAuthSubscription() {
   function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
     if (user) {
       crashlytics().setUserId(user.uid);
-      analytics().setUserId(user.uid);
-
       dispatch(setUser(user));
     }
   }

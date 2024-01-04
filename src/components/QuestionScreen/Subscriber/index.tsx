@@ -6,7 +6,6 @@ import {
   selectError,
   selectLastFailedAction,
   selectPartnerData,
-  selectPartnershipData,
 } from '@store/partnership/selectors';
 import {
   selectCurrentQuestion,
@@ -25,7 +24,6 @@ import {
 import { AppDispatch } from '@store/index';
 
 import { fetchLatestQuestion } from '@store/question/thunks';
-import { initializeSubscriber } from '@store/app/thunks';
 
 import { trackScreen, trackEvent } from '@lib/analytics';
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
@@ -57,20 +55,12 @@ function SubscriberScreen() {
   const userReactionToPartner = useSelector(selectUserReactionToPartnerType);
   const userRecording = useSelector(selectUserRecording);
   const userStatus = useSelector(selectUserRecordingStatus);
-  const partnershipData = useSelector(selectPartnershipData);
 
   useEffect(() => {
     trackScreen('SubscriberScreen');
-    dispatch(initializeSubscriber());
   }, []);
 
-  useFetchQuestion({
-    currentQuestion,
-    isLoadingQuestion,
-    partnerData,
-    partnershipData,
-    userData,
-  });
+  useFetchQuestion();
 
   useNotificationPermissions();
 

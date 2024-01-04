@@ -10,45 +10,45 @@ import functions from '@react-native-firebase/functions';
 import { Platform } from 'react-native';
 import Config from 'react-native-config';
 
-import { trackEvent } from '@lib/analytics';
+import { trackEvent, initializeAnalytics, reset } from '@lib/analytics';
 import { UserDataType, PartnershipDataType } from '@lib/types';
 
 import { updateUser } from '@store/auth/thunks';
 import { fetchLatestQuestion } from '@store/question/thunks';
 import { selectUserData } from '@store/auth/selectors';
+import { selectPartnershipData } from '@store/partnership/selectors';
 
 export const initializeSubscriber = createAsyncThunk(
   'app/initializeSubscriber',
-  async (_, { getState, rejectWithValue, dispatch }) => {
-    trackEvent('initializing_subscriber');
-
+  async (
+    { shouldFetchPartnership }: { shouldFetchPartnership: boolean },
+    { getState, rejectWithValue, dispatch },
+  ) => {
     const state = getState();
     const userData = selectUserData(state);
-
-    if (!userData) {
-      return {
-        partnershipData: {},
-      };
-    }
+    const partnershipData = selectPartnershipData(state);
 
     try {
-      const partnershipSnapshot = await firestore()
-        .collection('partnership')
-        .where('id', '==', userData.partnershipId)
-        .get();
+      trackEvent('initializing_subscriber', { shouldFetchPartnership });
+      let payload = partnershipData;
 
-      const partnershipData = partnershipSnapshot.docs[0].data() as PartnershipDataType;
-      const payload = {
-        ...partnershipData,
-        startDate: new Date(data.startDate._seconds * 1000),
-        createdAt: new Date(data.createdAt._seconds * 1000),
-      };
+      if (shouldFetchPartnership || !partnershipData) {
+        const partnershipSnapshot = await firestore()
+          .collection('partnership')
+          .where('id', '==', userData.partnershipId)
+          .get();
+
+        const partnershipSnapshotData = partnershipSnapshot.docs[0].data() as PartnershipDataType;
+        payload = {
+          ...partnershipSnapshotData,
+          startDate: new Date(partnershipSnapshotData.startDate._seconds * 1000),
+          createdAt: new Date(partnershipSnapshotData.createdAt._seconds * 1000),
+        };
+      }
 
       dispatch(fetchLatestQuestion({ partnershipData: payload }));
 
-      return {
-        partnershipData: payload,
-      };
+      return { partnershipData: payload };
     } catch (error) {
       crashlytics().log('Error initializing subscriber');
       trackEvent('error_initializing_subscriber', { error });
@@ -86,6 +86,7 @@ export const signOut = createAsyncThunk(
 
       if (currentUser) {
         await auth().signOut();
+        reset();
       }
 
       if (!Purchases.isConfigured) {
@@ -103,6 +104,8 @@ export const initializeSession = createAsyncThunk(
   'app/initializeSession',
   async (user: FirebaseAuthTypes.User, { rejectWithValue }) => {
     try {
+      initializeAnalytics(user.uid);
+
       if (__DEV__) Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
 
       Purchases.configure({

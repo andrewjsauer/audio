@@ -1,23 +1,83 @@
-import analytics from '@react-native-firebase/analytics';
+import { createClient } from '@segment/analytics-react-native';
+import Config from 'react-native-config';
 
-export const trackScreen = async (screen: string) => {
+let analyticsInstance: any | null = null;
+
+export const initializeAnalytics = async (userId?: string): Promise<void> => {
+  if (__DEV__) return;
+
   try {
-    console.log('SCREEN', screen);
+    if (!analyticsInstance) {
+      analyticsInstance = createClient({
+        writeKey: Config.segmentKey as string,
+        trackAppLifecycleEvents: true,
+        debug: __DEV__,
+      });
 
-    await analytics().logScreenView({
-      screen_name: screen,
-    });
+      analyticsInstance.flush();
+    }
+
+    if (userId) analyticsInstance.identify(userId);
   } catch (error) {
-    console.log('trackScreen error', error);
+    if (error instanceof Error) {
+      console.log('initializeAnalytics error', error.message);
+    } else {
+      console.log('initializeAnalytics error', error);
+    }
   }
 };
 
-export const trackEvent = async (event, options = {}) => {
-  try {
-    console.log('EVENT', event, options);
+export const trackScreen = async (screen: string): Promise<void> => {
+  if (!analyticsInstance || __DEV__) {
+    console.log('Analytics Screen', screen);
+    return;
+  }
 
-    await analytics().logEvent(event, options);
+  try {
+    analyticsInstance.screen(screen);
   } catch (error) {
-    console.log('trackEvent error', error);
+    if (error instanceof Error) {
+      console.log('trackScreen error', error.message);
+    } else {
+      console.log('trackScreen error', error);
+    }
+  }
+};
+
+interface EventOptions {
+  [key: string]: any;
+}
+
+export const trackEvent = async (event: string, options: EventOptions = {}): Promise<void> => {
+  if (!analyticsInstance || __DEV__) {
+    console.log('Analytics Track', event, options);
+    return;
+  }
+
+  try {
+    analyticsInstance.track(event, options);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log('trackEvent error', error.message);
+    } else {
+      console.log('trackEvent error', error);
+    }
+  }
+};
+
+export const reset = async (): Promise<void> => {
+  if (!analyticsInstance) {
+    console.log('Analytics instance not initialized');
+    return;
+  }
+
+  try {
+    analyticsInstance.reset();
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log('reset error', error.message);
+    } else {
+      console.log('reset error', error);
+    }
   }
 };

@@ -30,11 +30,8 @@ const appSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(signOut.fulfilled, (state) => {
-      state.error = null;
-      state.isLoading = false;
-      state.lastFailedAction = null;
-      state.transactionError = null;
+    builder.addCase(signOut.fulfilled, () => {
+      return initialState;
     });
     builder.addCase(signOut.pending, (state) => {
       state.error = null;

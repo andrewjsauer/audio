@@ -11,7 +11,7 @@ import {
   UserDetailsType,
   PartnerDetailsType,
 } from '@lib/types';
-import { trackEvent } from '@lib/analytics';
+import { trackEvent, initializeAnalytics } from '@lib/analytics';
 
 import { signOut } from '@store/app/thunks';
 
@@ -81,6 +81,7 @@ export const verifyCode = createAsyncThunk(
         userData = responseData;
       }
 
+      initializeAnalytics(currentUser?.uid as string);
       return { user: currentUser, userData };
     } catch (error) {
       trackEvent('verify_code_error', { error });
