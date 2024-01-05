@@ -28,7 +28,7 @@ function Notification() {
 
   const handleUpdatePayment = () => {
     trackEvent('update_payment_button_clicked');
-    dispatch(purchaseProduct({ user, partnerData }));
+    dispatch(purchaseProduct({ user, partnerData, productIdentifier: 'dq_999_1m_1m0' }));
   };
 
   return (

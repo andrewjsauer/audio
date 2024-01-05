@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { activateKeepAwake, deactivateKeepAwake } from 'react-native-keep-awake';
 
 import AudioRecorderPlayer, {
   AudioSet,
@@ -85,6 +86,7 @@ function RecordUserModal() {
       setIsPlaying(false);
       setRecordTime('00m 00s');
       setRecordPath('');
+      deactivateKeepAwake();
     };
   }, []);
 
@@ -118,6 +120,7 @@ function RecordUserModal() {
       // Update visualizer here
     });
 
+    activateKeepAwake();
     setIsRecording(true);
   };
 
@@ -128,6 +131,7 @@ function RecordUserModal() {
     audioRecorderPlayer.removeRecordBackListener();
 
     setRecordPath(result);
+    deactivateKeepAwake();
     setIsRecording(false);
   };
 
@@ -169,7 +173,14 @@ function RecordUserModal() {
     setRecordTime(maxRecordTime);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    if (isPlaying) {
+      await audioRecorderPlayer.stopPlayer();
+      audioRecorderPlayer.removePlayBackListener();
+      setIsPlaying(false);
+      setRecordTime(maxRecordTime);
+    }
+
     if (recordPath) {
       dispatch(
         saveUserRecording({

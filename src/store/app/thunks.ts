@@ -13,10 +13,10 @@ import Config from 'react-native-config';
 import { trackEvent, initializeAnalytics, reset } from '@lib/analytics';
 import { UserDataType, PartnershipDataType } from '@lib/types';
 
-import { updateUser } from '@store/auth/thunks';
 import { fetchLatestQuestion } from '@store/question/thunks';
 import { selectUserData } from '@store/auth/selectors';
 import { selectPartnershipData } from '@store/partnership/selectors';
+import { updateUser } from '@store/auth/thunks';
 
 export const initializeSubscriber = createAsyncThunk(
   'app/initializeSubscriber',
@@ -136,24 +136,62 @@ export const purchaseProduct = createAsyncThunk(
     {
       user,
       partnerData,
+      productIdentifier,
     }: {
       user: FirebaseAuthTypes.User;
       partnerData?: UserDataType;
+      productIdentifier: string;
     },
     { rejectWithValue },
   ) => {
     try {
-      await Purchases.purchaseProduct('dq_999_1m_1m0');
+      const offerings = await Purchases.getOfferings();
+      const availablePackages = offerings.current?.availablePackages;
+      const targetPackage = availablePackages?.find(
+        (p) => p.product.identifier === productIdentifier,
+      );
 
-      await functions().httpsCallable('updatePartnershipPurchase')({
-        partnerId: partnerData.id,
-        userId: user.uid,
-      });
+      if (!targetPackage) {
+        throw new Error('Package not found for product');
+      }
 
-      return {
-        hasSubscribed: true,
-        isSubscribed: true,
-      };
+      let purchaseResponse = null;
+
+      if (targetPackage.product.discounts && targetPackage.product.discounts.length > 0) {
+        try {
+          const paymentDiscount = await Purchases.getPromotionalOffer(
+            targetPackage.product,
+            targetPackage.product.discounts[0],
+          );
+
+          if (paymentDiscount) {
+            purchaseResponse = await Purchases.purchaseDiscountedPackage(
+              targetPackage,
+              paymentDiscount,
+            );
+          }
+        } catch (error) {
+          trackEvent('error_purchasing_promo', { error });
+        }
+      }
+
+      if (!purchaseResponse) {
+        purchaseResponse = await Purchases.purchasePackage(targetPackage);
+      }
+
+      if (purchaseResponse) {
+        await functions().httpsCallable('updatePartnershipPurchase')({
+          partnerId: partnerData.id,
+          userId: user.uid,
+        });
+
+        return {
+          hasSubscribed: true,
+          isSubscribed: true,
+        };
+      }
+
+      return null;
     } catch (error: any) {
       if (error.userCancelled) {
         trackEvent('user_cancelled_purchasing_product');

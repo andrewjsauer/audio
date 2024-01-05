@@ -43,6 +43,7 @@
     "react-native-date-picker": "^4.3.5",
     "react-native-gesture-handler": "^2.14.0",
     "react-native-get-random-values": "^1.10.0",
+    "react-native-keep-awake": "^4.0.0",
     "react-native-permissions": "^3.10.1",
     "react-native-phone-number-input": "^2.1.0",
     "react-native-purchases": "^7.5.1",
