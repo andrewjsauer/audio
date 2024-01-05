@@ -67,13 +67,13 @@ export const saveUserRecording = createAsyncThunk(
               if (partnerData.deviceIds?.length) {
                 await functions().httpsCallable('sendNotification')({
                   tokens: partnerData.deviceIds,
-                  title: `${userData.name} recorded todays question!`,
+                  title: `${userData.name} answered today's question!`,
                   body: 'Tap to listen to their answer.',
                 });
               } else {
                 await functions().httpsCallable('sendSMS')({
                   phoneNumber: partnerData.phoneNumber,
-                  body: `${userData.name} recorded todays question on Daily Q’s! Download the app to listen to their answer. Link: https://dailyqs.app/download`,
+                  body: `${userData.name} answered today's question on Daily Q’s! Download the app to listen to their answer. Link: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822`,
                 });
               }
 

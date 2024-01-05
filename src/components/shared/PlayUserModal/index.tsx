@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import { activateKeepAwake, deactivateKeepAwake } from 'react-native-keep-awake';
 
 import { trackEvent, trackScreen } from '@lib/analytics';
 import { ReactionType } from '@lib/types';
@@ -97,6 +98,7 @@ function PlayUserModal() {
       if (isPlaying) {
         audioRecorderPlayer.stopPlayer();
         audioRecorderPlayer.removePlayBackListener();
+        deactivateKeepAwake();
       }
     };
   }, [isPlaying]);
@@ -113,6 +115,8 @@ function PlayUserModal() {
 
         setIsPlaying(false);
         setCurrentTime(duration);
+
+        deactivateKeepAwake();
       } else {
         await audioRecorderPlayer.startPlayer(audioUrl);
         audioRecorderPlayer.addPlayBackListener((e: any) => {
@@ -122,9 +126,13 @@ function PlayUserModal() {
             audioRecorderPlayer.stopPlayer();
             setIsPlaying(false);
             setCurrentTime(duration);
+
+            deactivateKeepAwake();
           }
         });
+
         setIsPlaying(true);
+        activateKeepAwake();
       }
     } catch (error) {
       setError(t('errors.audioPlayBackError'));

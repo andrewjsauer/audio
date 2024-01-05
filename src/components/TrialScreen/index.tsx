@@ -41,7 +41,7 @@ function TrialScreen() {
 
   const handlePurchase = () => {
     trackEvent('start_trial_button_clicked');
-    dispatch(purchaseProduct({ user, partnerData }));
+    dispatch(purchaseProduct({ user, partnerData, productIdentifier: 'dq_999_1m_1m0' }));
   };
 
   const handleRestorePurchases = () => {
