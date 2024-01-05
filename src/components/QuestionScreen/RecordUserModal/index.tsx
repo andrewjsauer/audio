@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { activateKeepAwake, deactivateKeepAwake } from 'react-native-keep-awake';
+import KeepAwake from 'react-native-keep-awake';
 
 import AudioRecorderPlayer, {
   AudioSet,
@@ -86,7 +86,7 @@ function RecordUserModal() {
       setIsPlaying(false);
       setRecordTime('00m 00s');
       setRecordPath('');
-      deactivateKeepAwake();
+      KeepAwake.deactivate();
     };
   }, []);
 
@@ -120,7 +120,7 @@ function RecordUserModal() {
       // Update visualizer here
     });
 
-    activateKeepAwake();
+    KeepAwake.activate();
     setIsRecording(true);
   };
 
@@ -131,7 +131,7 @@ function RecordUserModal() {
     audioRecorderPlayer.removeRecordBackListener();
 
     setRecordPath(result);
-    deactivateKeepAwake();
+    KeepAwake.deactivate();
     setIsRecording(false);
   };
 

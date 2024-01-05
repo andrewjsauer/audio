@@ -31,6 +31,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@segment/analytics-react-native": "^2.17.0",
     "@segment/sovran-react-native": "^1.0.4",
+    "@types/react-native-keep-awake": "^2.0.8",
     "date-fns": "^2.30.0",
     "debug": "^4.3.4",
     "i18next": "^23.7.7",
