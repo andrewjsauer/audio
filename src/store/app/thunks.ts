@@ -124,7 +124,7 @@ export const purchaseProduct = createAsyncThunk(
       partnerData?: UserDataType;
       productIdentifier: string;
     },
-    { rejectWithValue, dispatch },
+    { rejectWithValue },
   ) => {
     try {
       const offerings = await Purchases.getOfferings();

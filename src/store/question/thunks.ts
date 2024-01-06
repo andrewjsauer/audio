@@ -104,7 +104,11 @@ export const fetchLatestQuestion = createAsyncThunk<
         const currentQuestionLocalCreatedAt = convertDateToLocalStart(currentQuestion.createdAt);
 
         if (currentQuestionLocalCreatedAt >= today) {
-          trackEvent('current_question_within_date_limit');
+          trackEvent('current_question_within_date_limit', {
+            currentQuestion,
+            currentQuestionLocalCreatedAt,
+            today,
+          });
 
           return {
             question: currentQuestion,
@@ -115,7 +119,11 @@ export const fetchLatestQuestion = createAsyncThunk<
           };
         }
 
-        trackEvent('current_question_out_of_date');
+        trackEvent('current_question_out_of_date', {
+          currentQuestion,
+          currentQuestionLocalCreatedAt,
+          today,
+        });
       }
 
       const latestQuestionId = partnershipData?.latestQuestionId || '';
@@ -155,7 +163,12 @@ export const fetchLatestQuestion = createAsyncThunk<
 
       const latestQuestionLocalCreatedAt = convertDateToLocalStart(latestQuestion.createdAt);
       if (latestQuestionLocalCreatedAt >= today) {
-        trackEvent('question_within_date_limit');
+        trackEvent('question_within_date_limit', {
+          latestQuestionId,
+          latestQuestion,
+          latestQuestionLocalCreatedAt,
+          today,
+        });
 
         return {
           question: latestQuestion,
@@ -166,7 +179,12 @@ export const fetchLatestQuestion = createAsyncThunk<
         };
       }
 
-      trackEvent('question_out_of_date');
+      trackEvent('question_out_of_date', {
+        latestQuestionId,
+        latestQuestion,
+        latestQuestionLocalCreatedAt,
+        today,
+      });
       const newQuestion = await generateQuestion({
         partnerData,
         partnershipData,
