@@ -13,7 +13,7 @@ import { restorePurchases, purchaseProduct } from '@store/app/thunks';
 
 import { Description, Container, Title, ButtonText, Button, ButtonWrapper } from './style';
 
-function Notification() {
+function NonSubscriberNotification() {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -63,4 +63,4 @@ function Notification() {
   );
 }
 
-export default Notification;
+export default NonSubscriberNotification;

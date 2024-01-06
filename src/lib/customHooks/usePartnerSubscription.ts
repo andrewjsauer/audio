@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 
 import { UserDataType, PartnershipUserDataType } from '@lib/types';
+import { trackEvent } from '@lib/analytics';
 
 import { AppDispatch } from '@store/index';
 import { selectUserId } from '@store/auth/selectors';
@@ -33,7 +34,7 @@ const usePartnerSubscription = () => {
     return () => {
       partnershipUserUnsubscribe();
     };
-  }, [userId, dispatch]);
+  }, [userId]);
 
   useEffect(() => {
     let partnerUnsubscribe = () => {};
@@ -53,7 +54,7 @@ const usePartnerSubscription = () => {
     return () => {
       partnerUnsubscribe();
     };
-  }, [partnershipUserData, dispatch]);
+  }, [partnershipUserData]);
 };
 
 export default usePartnerSubscription;

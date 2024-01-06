@@ -114,6 +114,8 @@ export const fetchLatestQuestion = createAsyncThunk<
             isNewQuestion: boolean;
           };
         }
+
+        trackEvent('current_question_out_of_date');
       }
 
       const latestQuestionId = partnershipData?.latestQuestionId || '';

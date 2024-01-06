@@ -97,7 +97,7 @@
       },
       "notification": {
         "title": "Oops! Your subscription has expired...",
-        "description": "Please fix your payment to continue using the app!",
+        "description": "To keep using the app, it's $9.99/month for both you and your partner. You can cancel anytime.",
         "restoreButtonText": "Restore Purchases",
         "updatePaymentButtonText": "Subscribe"
       }

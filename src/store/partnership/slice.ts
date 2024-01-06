@@ -6,8 +6,8 @@ import {
   PartnershipUserDataType,
 } from '@lib/types';
 
-import { signOut, initializeSubscriber } from '@store/app/thunks';
-import { generatePartnership } from '@store/auth/thunks';
+import { signOut } from '@store/app/thunks';
+import { generatePartnership, updateNewUser } from '@store/auth/thunks';
 import { fetchLatestQuestion } from '@store/question/thunks';
 import { updatePartnership } from './thunks';
 
@@ -87,7 +87,7 @@ const partnershipSlice = createSlice({
     builder.addCase(updatePartnership.fulfilled, (state) => {
       state.isLoading = false;
     });
-    builder.addCase(initializeSubscriber.fulfilled, (state, action) => {
+    builder.addCase(updateNewUser.fulfilled, (state, action) => {
       state.partnershipData = action.payload.partnershipData as PartnershipDataType;
     });
   },

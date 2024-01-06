@@ -11,10 +11,9 @@ import { Platform } from 'react-native';
 import Config from 'react-native-config';
 
 import { trackEvent, initializeAnalytics, reset } from '@lib/analytics';
-import { UserDataType, PartnershipDataType } from '@lib/types';
+import { UserDataType } from '@lib/types';
 
 import { fetchLatestQuestion } from '@store/question/thunks';
-import { selectUserData } from '@store/auth/selectors';
 import { selectPartnershipData } from '@store/partnership/selectors';
 import { updateUser } from '@store/auth/thunks';
 
@@ -22,30 +21,13 @@ export const initializeSubscriber = createAsyncThunk(
   'app/initializeSubscriber',
   async (_, { getState, rejectWithValue, dispatch }) => {
     const state = getState();
-    const userData = selectUserData(state);
     const partnershipData = selectPartnershipData(state);
 
     try {
-      trackEvent('initializing_subscriber', userData);
-      let payload = partnershipData;
+      trackEvent('initializing_subscriber');
+      dispatch(fetchLatestQuestion({ partnershipData }));
 
-      const partnershipSnapshot = await firestore()
-        .collection('partnership')
-        .where('id', '==', userData.partnershipId)
-        .get();
-
-      if (!partnershipSnapshot.empty) {
-        const data = partnershipSnapshot.docs[0].data() as PartnershipDataType;
-        payload = {
-          ...data,
-          startDate: new Date(data.startDate._seconds * 1000),
-          createdAt: new Date(data.createdAt._seconds * 1000),
-        };
-      }
-
-      dispatch(fetchLatestQuestion({ partnershipData: payload }));
-
-      return { partnershipData: payload };
+      return null;
     } catch (error) {
       crashlytics().log('Error initializing subscriber');
       trackEvent('error_initializing_subscriber', { error });
@@ -142,7 +124,7 @@ export const purchaseProduct = createAsyncThunk(
       partnerData?: UserDataType;
       productIdentifier: string;
     },
-    { rejectWithValue },
+    { rejectWithValue, dispatch },
   ) => {
     try {
       const offerings = await Purchases.getOfferings();
@@ -181,7 +163,7 @@ export const purchaseProduct = createAsyncThunk(
 
       if (purchaseResponse) {
         await functions().httpsCallable('updatePartnershipPurchase')({
-          partnerId: partnerData.id,
+          partnerId: partnerData?.id,
           userId: user.uid,
         });
 
