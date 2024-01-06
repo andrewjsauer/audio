@@ -97,9 +97,9 @@
       },
       "notification": {
         "title": "Oops! Your subscription has expired...",
-        "description": "Please fix your payment to continue using the app!",
+        "description": "Renew for $9.99/month to continue Daily Q's with your partner. Cancel anytime. Full access to all features!",
         "restoreButtonText": "Restore Purchases",
-        "updatePaymentButtonText": "Subscribe"
+        "updatePaymentButtonText": "Subscribe Now"
       }
     },
     "subscriberScreen": {

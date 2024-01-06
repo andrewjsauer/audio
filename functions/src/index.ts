@@ -770,12 +770,14 @@ async function getPartnerIdByPhoneNumber(phoneNumber: string) {
     .get();
 
   if (!partnerQuery.empty) {
+    functions.logger.info('Partner found!');
     const partnerData = partnerQuery.docs[0] as any;
 
     return { partnerId: partnerData.id, partnerData, isNewUser: false };
   }
 
-  return { partnerId: uuidv4(), partnerData: null, isNewUser: true };
+  const partnerId = uuidv4();
+  return { partnerId, partnerData: null, isNewUser: true };
 }
 
 exports.generatePartnership = functions.https.onCall(async (data, context) => {
@@ -795,6 +797,8 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
       partnerDetails.phoneNumber,
     );
 
+    functions.logger.info(`Partner ID: ${partnerId}`);
+
     if (!isNewUser && partnerData) {
       const partnershipUserRef = admin
         .firestore()
@@ -806,6 +810,7 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
         const partnershipUser = partnershipUserData.docs[0].data();
 
         if (partnershipUser.otherUserId !== userId) {
+          functions.logger.error('Partner already has a partner');
           throw new functions.https.HttpsError(
             'already-exists',
             'Partner already has a partner',

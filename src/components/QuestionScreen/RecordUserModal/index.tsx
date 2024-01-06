@@ -43,6 +43,7 @@ import {
 } from './style';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
+const MAX_RECORDING_DURATION = 10 * 60 * 1000; // 10 minutes
 
 function RecordUserModal() {
   const { t } = useTranslation();
@@ -101,6 +102,17 @@ function RecordUserModal() {
     return `${paddedMinutes}m ${paddedSeconds}s`;
   };
 
+  const onStopRecord = async () => {
+    trackEvent('question_record_stopped', { question_id: currentQuestion.id });
+
+    const result = await audioRecorderPlayer.stopRecorder();
+    audioRecorderPlayer.removeRecordBackListener();
+
+    setRecordPath(result);
+    KeepAwake.deactivate();
+    setIsRecording(false);
+  };
+
   const onStartRecord = async () => {
     trackEvent('question_record_started', { question_id: currentQuestion.id });
 
@@ -122,17 +134,12 @@ function RecordUserModal() {
 
     KeepAwake.activate();
     setIsRecording(true);
-  };
 
-  const onStopRecord = async () => {
-    trackEvent('question_record_stopped', { question_id: currentQuestion.id });
-
-    const result = await audioRecorderPlayer.stopRecorder();
-    audioRecorderPlayer.removeRecordBackListener();
-
-    setRecordPath(result);
-    KeepAwake.deactivate();
-    setIsRecording(false);
+    setTimeout(() => {
+      if (isRecording) {
+        onStopRecord();
+      }
+    }, MAX_RECORDING_DURATION);
   };
 
   const onRedo = async () => {

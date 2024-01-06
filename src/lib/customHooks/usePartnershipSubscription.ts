@@ -5,21 +5,20 @@ import firestore from '@react-native-firebase/firestore';
 import { PartnershipDataType } from '@lib/types';
 
 import { AppDispatch } from '@store/index';
-import { selectUserData } from '@store/auth/selectors';
 import { setPartnershipData } from '@store/partnership/slice';
+import { selectPartnershipUserData } from '@store/partnership/selectors';
 
 const usePartnershipSubscription = () => {
   const dispatch = useDispatch<AppDispatch>();
-
-  const userData = useSelector(selectUserData);
+  const partnershipUserData = useSelector(selectPartnershipUserData);
 
   useEffect(() => {
     let partnershipUnsubscribe = () => {};
 
-    if (userData) {
+    if (partnershipUserData) {
       partnershipUnsubscribe = firestore()
         .collection('partnership')
-        .where('id', '==', userData.partnershipId)
+        .where('id', '==', partnershipUserData.partnershipId)
         .onSnapshot((snapshot) => {
           if (snapshot && !snapshot.empty) {
             const data = snapshot.docs[0].data() as PartnershipDataType;
@@ -37,7 +36,7 @@ const usePartnershipSubscription = () => {
     return () => {
       partnershipUnsubscribe();
     };
-  }, [userData, dispatch]);
+  }, [partnershipUserData]);
 };
 
 export default usePartnershipSubscription;

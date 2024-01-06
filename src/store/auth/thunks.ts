@@ -169,7 +169,7 @@ export const updateUser = createAsyncThunk(
 
 export const updateNewUser = createAsyncThunk(
   'auth/updateNewUser',
-  async ({ id, userDetails, tempId }: UpdateUserArgs, { rejectWithValue }) => {
+  async ({ id, userDetails, tempId }: UpdateUserArgs, { rejectWithValue, dispatch }) => {
     const userPayload = {
       ...userDetails,
       birthDate: firestore.Timestamp.fromDate(userDetails.birthDate as Date),
@@ -182,8 +182,23 @@ export const updateNewUser = createAsyncThunk(
         tempId,
       });
 
+      const partnershipSnapshot = await firestore()
+        .collection('partnership')
+        .where('id', '==', data.partnershipId)
+        .get();
+
+      let partnershipData = null;
+
+      if (partnershipSnapshot.empty) {
+        trackEvent('no_partnership_found_for_partner_user');
+      } else {
+        const responseData = partnershipSnapshot.docs[0].data() as PartnershipDetailsType;
+        partnershipData = responseData;
+      }
+
       return {
         userData: data,
+        partnershipData,
       };
     } catch (error) {
       trackEvent('update_new_user_data_error', { error });
