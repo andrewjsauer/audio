@@ -1,11 +1,13 @@
-import { parseISO, startOfDay } from 'date-fns';
+import { parseISO } from 'date-fns';
 
 export const convertDateToLocalStart = (date: Date) => {
   const createdAtDate = typeof date === 'string' ? parseISO(date) : new Date(date);
 
-  const timezoneOffset = new Date().getTimezoneOffset();
-  const createdAtLocal = new Date(createdAtDate.getTime() + timezoneOffset);
-  const createdAtStartOfDay = startOfDay(createdAtLocal);
+  // Get the timezone offset in minutes, then convert it to milliseconds.
+  // We subtract this from the UTC time to get the local time.
+  const timezoneOffset = new Date().getTimezoneOffset() * 60000;
 
-  return createdAtStartOfDay;
+  // Adjust createdAtDate to local time.
+  const createdAtLocal = new Date(createdAtDate.getTime() - timezoneOffset);
+  return createdAtLocal;
 };
