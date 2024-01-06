@@ -104,7 +104,11 @@ export const fetchLatestQuestion = createAsyncThunk<
         const currentQuestionLocalCreatedAt = convertDateToLocalStart(currentQuestion.createdAt);
 
         if (currentQuestionLocalCreatedAt >= today) {
-          trackEvent('current_question_within_date_limit');
+          trackEvent('current_question_within_date_limit', {
+            currentQuestion,
+            currentQuestionLocalCreatedAt,
+            today,
+          });
 
           return {
             question: currentQuestion,
@@ -159,7 +163,12 @@ export const fetchLatestQuestion = createAsyncThunk<
 
       const latestQuestionLocalCreatedAt = convertDateToLocalStart(latestQuestion.createdAt);
       if (latestQuestionLocalCreatedAt >= today) {
-        trackEvent('question_within_date_limit');
+        trackEvent('question_within_date_limit', {
+          latestQuestionId,
+          latestQuestion,
+          latestQuestionLocalCreatedAt,
+          today,
+        });
 
         return {
           question: latestQuestion,
