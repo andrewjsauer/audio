@@ -43,7 +43,11 @@
     "fetchQuestionAPIError": "질문을 가져오는 도중 문제가 발생했습니다",
     "audioPlayBackError": "오디오 재생 중 문제가 발생했습니다. 다시 시도해 주세요",
     "deleteRelationshipFailed": "관계를 삭제하는 중 문제가 발생했습니다",
-    "partnerAlreadyInUse": "이 전화번호는 이미 사용 중입니다"
+    "partnerAlreadyInUse": "이 전화번호는 이미 사용 중입니다",
+    "pleaseTryAgainLater": "나중에 다시 시도해주세요.",
+    "signOutFailed": "로그아웃하는 동안 문제가 발생했습니다.",
+    "updatePartnershipFailed": "협력 업데이트 중 오류가 발생했습니다.",
+    "tooManyAttempts": "너무 많은 시도입니다. 다시 시도하려면 잠시 기다려주세요."
   },
   "browserScreen": {
     "title": "브라우저"
@@ -79,6 +83,14 @@
       "submitButton": "저장",
       "placeholder": "새 이름 입력",
       "success": "이름이 업데이트 되었습니다!"
+    },
+    "relationshipStatus": "연애 상태",
+    "relationshipTypeScreen": {
+      "title": "관계 상태를 변경하세요.",
+      "success": "당신의 관계 상태가 업데이트되었습니다!"
+    },
+    "request": {
+      "title": "데이터 요청 양식"
     }
   },
   "questionScreen": {
@@ -142,7 +154,12 @@
       "userAnswered": "당신이 답변했지만 {{ name }}님은 하지 않았습니다",
       "bothDidNotAnswer": "둘 다 답변하지 않았습니다"
     },
-    "buttonText": "기록 보기"
+    "buttonText": "기록 보기",
+    "buttonTextMore": "더 보기",
+    "noMoreResults": {
+      "title": "더 이상의 결과가 없습니다.",
+      "description": "역사의 끝에 도달했습니다."
+    }
   },
   "auth": {
     "signInScreen": {
@@ -176,18 +193,36 @@
       "relationshipTypeScreen": {
         "title": "파트너와의 관계 상태는 무엇인가요?",
         "types": [
-          { "stillGettingToKnowEachOther": "아직 서로 알아가는 중" },
-          { "dating": "데이팅 중" },
-          { "inARelationship": "연애 중" },
-          { "engaged": "약혼함" },
-          { "domesticPartnership": "사실혼" },
-          { "cohabiting": "동거 중" },
-          { "longDistanceRelationship": "장거리 연애" },
+          {
+            "stillGettingToKnowEachOther": "아직 서로 알아가는 중"
+          },
+          {
+            "dating": "데이팅 중"
+          },
+          {
+            "inARelationship": "연애 중"
+          },
+          {
+            "engaged": "약혼함"
+          },
+          {
+            "domesticPartnership": "사실혼"
+          },
+          {
+            "cohabiting": "동거 중"
+          },
+          {
+            "longDistanceRelationship": "장거리 연애"
+          },
           {
             "consensualNonMonogamousRelationship": "합의에 의한 비모노가미 관계"
           },
-          { "inAnOpenRelationship": "개방적인 관계" },
-          { "married": "기혼" }
+          {
+            "inAnOpenRelationship": "개방적인 관계"
+          },
+          {
+            "married": "기혼"
+          }
         ]
       },
       "relationshipDateScreen": {

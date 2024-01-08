@@ -43,7 +43,11 @@
     "fetchQuestionAPIError": "Что-то пошло не так при получении вашего вопроса",
     "audioPlayBackError": "Что-то пошло не так при воспроизведении вашего аудио. Пожалуйста, попробуйте еще раз",
     "deleteRelationshipFailed": "Что-то пошло не так при удалении ваших отношений",
-    "partnerAlreadyInUse": "Этот номер телефона уже используется"
+    "partnerAlreadyInUse": "Этот номер телефона уже используется",
+    "pleaseTryAgainLater": "Пожалуйста, попробуйте позже.",
+    "signOutFailed": "Что-то пошло не так при выходе из системы.",
+    "updatePartnershipFailed": "Что-то пошло не так при обновлении вашего партнерства.",
+    "tooManyAttempts": "Слишком много попыток. Пожалуйста, подождите, чтобы попробовать снова."
   },
   "browserScreen": {
     "title": "Браузер"
@@ -79,6 +83,14 @@
       "submitButton": "Сохранить",
       "placeholder": "Введите новое имя",
       "success": "Ваше имя было обновлено!"
+    },
+    "relationshipStatus": "Семейное положение",
+    "relationshipTypeScreen": {
+      "title": "Изменить свой семейный статус",
+      "success": "Ваш статус отношений обновлен!"
+    },
+    "request": {
+      "title": "Запросить форму для предоставления ваших данных."
     }
   },
   "questionScreen": {
@@ -142,7 +154,12 @@
       "userAnswered": "Вы ответили, но {{ name }} нет",
       "bothDidNotAnswer": "Ни один из вас не ответил"
     },
-    "buttonText": "Просмотреть историю"
+    "buttonText": "Просмотреть историю",
+    "buttonTextMore": "Просмотреть больше",
+    "noMoreResults": {
+      "title": "Больше результатов нет",
+      "description": "Вы достигли конца вашей истории."
+    }
   },
   "auth": {
     "signInScreen": {
@@ -176,18 +193,36 @@
       "relationshipTypeScreen": {
         "title": "Каков ваш статус отношений с партнером?",
         "types": [
-          { "stillGettingToKnowEachOther": "Еще знакомимся" },
-          { "dating": "Нравимся друг другу" },
-          { "inARelationship": "В отношениях" },
-          { "engaged": "Помолвлены" },
-          { "domesticPartnership": "Гражданский брак" },
-          { "cohabiting": "Сожительствуем" },
-          { "longDistanceRelationship": "Дальнее знакомство" },
+          {
+            "stillGettingToKnowEachOther": "Еще знакомимся"
+          },
+          {
+            "dating": "Нравимся друг другу"
+          },
+          {
+            "inARelationship": "В отношениях"
+          },
+          {
+            "engaged": "Помолвлены"
+          },
+          {
+            "domesticPartnership": "Гражданский брак"
+          },
+          {
+            "cohabiting": "Сожительствуем"
+          },
+          {
+            "longDistanceRelationship": "Дальнее знакомство"
+          },
           {
             "consensualNonMonogamousRelationship": "Добровольные немоногамные отношения"
           },
-          { "inAnOpenRelationship": "В открытых отношениях" },
-          { "married": "Женаты/Замужем" }
+          {
+            "inAnOpenRelationship": "В открытых отношениях"
+          },
+          {
+            "married": "Женаты/Замужем"
+          }
         ]
       },
       "relationshipDateScreen": {

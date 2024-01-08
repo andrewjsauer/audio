@@ -88,6 +88,9 @@
     "relationshipTypeScreen": {
       "title": "Change your relationship status",
       "success": "Your relationship status has been updated!"
+    },
+    "request": {
+      "title": "Request Your Data Form"
     }
   },
   "questionScreen": {

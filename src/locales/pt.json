@@ -43,7 +43,11 @@
     "fetchQuestionAPIError": "Algo deu errado ao buscar sua pergunta",
     "audioPlayBackError": "Algo deu errado ao reproduzir seu áudio. Por favor, tente novamente",
     "deleteRelationshipFailed": "Algo deu errado ao terminar seu relacionamento",
-    "partnerAlreadyInUse": "Este número de telefone já está em uso"
+    "partnerAlreadyInUse": "Este número de telefone já está em uso",
+    "pleaseTryAgainLater": "Por favor, tente novamente mais tarde.",
+    "signOutFailed": "Algo deu errado ao fazer o seu logout.",
+    "updatePartnershipFailed": "Algo deu errado ao atualizar sua parceria.",
+    "tooManyAttempts": "Muitas tentativas. Por favor, aguarde para tentar novamente."
   },
   "browserScreen": {
     "title": "Navegador"
@@ -79,6 +83,14 @@
       "submitButton": "Salvar",
       "placeholder": "Digite um novo nome",
       "success": "Seu nome foi atualizado!"
+    },
+    "relationshipStatus": "Estado Civil",
+    "relationshipTypeScreen": {
+      "title": "Altere seu estado de relacionamento",
+      "success": "O seu status de relacionamento foi atualizado!"
+    },
+    "request": {
+      "title": "Formulário de Solicitação dos Seus Dados"
     }
   },
   "questionScreen": {
@@ -142,7 +154,12 @@
       "userAnswered": "Você respondeu, mas {{ name }} não",
       "bothDidNotAnswer": "Nenhum de vocês respondeu"
     },
-    "buttonText": "Ver Histórico"
+    "buttonText": "Ver Histórico",
+    "buttonTextMore": "Ver mais",
+    "noMoreResults": {
+      "title": "Não há mais resultados.",
+      "description": "Você chegou ao fim da sua história."
+    }
   },
   "auth": {
     "signInScreen": {
@@ -176,18 +193,36 @@
       "relationshipTypeScreen": {
         "title": "Qual é o status do seu relacionamento com seu parceiro?",
         "types": [
-          { "stillGettingToKnowEachOther": "Ainda Se Conhecendo" },
-          { "dating": "Namorando" },
-          { "inARelationship": "Em um Relacionamento" },
-          { "engaged": "Noivos" },
-          { "domesticPartnership": "Parceria Doméstica" },
-          { "cohabiting": "Cohabitando" },
-          { "longDistanceRelationship": "Relacionamento à Distância" },
+          {
+            "stillGettingToKnowEachOther": "Ainda Se Conhecendo"
+          },
+          {
+            "dating": "Namorando"
+          },
+          {
+            "inARelationship": "Em um Relacionamento"
+          },
+          {
+            "engaged": "Noivos"
+          },
+          {
+            "domesticPartnership": "Parceria Doméstica"
+          },
+          {
+            "cohabiting": "Cohabitando"
+          },
+          {
+            "longDistanceRelationship": "Relacionamento à Distância"
+          },
           {
             "consensualNonMonogamousRelationship": "Relacionamento Não-monogâmico Consensual"
           },
-          { "inAnOpenRelationship": "Em um Relacionamento Aberto" },
-          { "married": "Casados" }
+          {
+            "inAnOpenRelationship": "Em um Relacionamento Aberto"
+          },
+          {
+            "married": "Casados"
+          }
         ]
       },
       "relationshipDateScreen": {

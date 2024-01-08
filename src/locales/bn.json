@@ -43,9 +43,15 @@
     "fetchQuestionAPIError": "আপনার প্রশ্ন আনার সময় কিছু ভুল হয়েছে",
     "audioPlayBackError": "আপনার অডিও বাজানোর সময় কিছু সমস্যা ঘটেছে। দয়া করে আবার চেষ্টা করুন",
     "deleteRelationshipFailed": "আপনার সম্পর্ক মুছে ফেলার সময় কিছু ভুল হয়েছে",
-    "partnerAlreadyInUse": "এই ফোন নম্বরটি ইতিমধ্যে ব্যবহার করা হচ্ছে"
+    "partnerAlreadyInUse": "এই ফোন নম্বরটি ইতিমধ্যে ব্যবহার করা হচ্ছে",
+    "pleaseTryAgainLater": "দয়াকরে পরে আবার চেষ্টা করুন",
+    "signOutFailed": "আপনি সাইন আউট করতে যাচ্ছিলেন একটি ভুল হয়েছে।",
+    "updatePartnershipFailed": "নিজ ভালোবাসা আপডেট করতে একটা সমস্যা হয়েছে।",
+    "tooManyAttempts": "অনেক চেষ্টা করেছেন। আবার চেষ্টা করতে অনুগ্রহ করে অপেক্ষা করুন।"
   },
-  "browserScreen": { "title": "ব্রাউজার" },
+  "browserScreen": {
+    "title": "ব্রাউজার"
+  },
   "accountScreen": {
     "title": "অ্যাকাউন্ট সেটিংস",
     "yourName": "আপনার প্রথম নাম",
@@ -65,7 +71,10 @@
       "cancel": "বাতিল করুন",
       "delete": "মুছে ফেলুন"
     },
-    "colorScreen": { "title": "আপনার রং পরিবর্তন করুন", "success": "আপনার রঙ আপডেট করা হয়েছে!" },
+    "colorScreen": {
+      "title": "আপনার রং পরিবর্তন করুন",
+      "success": "আপনার রঙ আপডেট করা হয়েছে!"
+    },
     "languageScreen": {
       "title": "আপনার পছন্দের ভাষা পরিবর্তন করুন"
     },
@@ -74,11 +83,21 @@
       "submitButton": "সংরক্ষণ করুন",
       "placeholder": "নতুন নাম টাইপ করুন",
       "success": "আপনার নাম আপডেট করা হয়েছে!"
+    },
+    "relationshipStatus": "সম্পর্কের অবস্থা",
+    "relationshipTypeScreen": {
+      "title": "আপনার সম্পর্ক স্থিতি পরিবর্তন করুন",
+      "success": "আপনার সম্পর্ক স্থিতি আপডেট হয়েছে!"
+    },
+    "request": {
+      "title": "আপনার ডাটা ফর্ম অনুদান করছি"
     }
   },
   "questionScreen": {
     "nonSubscriberScreen": {
-      "default": { "text": "আপনারা দুজনে যেটা একসাথে করেছেন সেটার মধ্যে সেরা ডেট কোনটি?" },
+      "default": {
+        "text": "আপনারা দুজনে যেটা একসাথে করেছেন সেটার মধ্যে সেরা ডেট কোনটি?"
+      },
       "notification": {
         "title": "ওহো! আপনার সাবস্ক্রিপশন মেয়াদ শেষ হয়ে গেছে...",
         "description": "অ্যাপটি ব্যবহার চালিয়ে যেতে দয়া করে আপনার পেমেন্ট ঠিক করুন!",
@@ -94,9 +113,16 @@
         "title": "{{ name }} উত্তর দিয়েছে",
         "description": "উত্তর রেকর্ড করতে আপনার উত্তরটি রেকর্ড করুন!"
       },
-      "pendingRecord": { "title": "{{ name }} এখনো উত্তর দেননি" },
-      "record": { "title": "আপনার উত্তর রেকর্ড করতে ট্যাপ করুন" },
-      "play": { "title": "{{ name }} উত্তর দিয়েছে", "description": "{{ date }} এ {{ time }}" },
+      "pendingRecord": {
+        "title": "{{ name }} এখনো উত্তর দেননি"
+      },
+      "record": {
+        "title": "আপনার উত্তর রেকর্ড করতে ট্যাপ করুন"
+      },
+      "play": {
+        "title": "{{ name }} উত্তর দিয়েছে",
+        "description": "{{ date }} এ {{ time }}"
+      },
       "audioPermissions": {
         "title": "রেকর্ড করার অনুমতি দিন",
         "description": "আপনার উত্তর রেকর্ড করার জন্য অনুমতি দিতে হবে",
@@ -128,7 +154,12 @@
       "userAnswered": "আপনি উত্তর দিয়েছেন, কিন্তু {{ name }} দেয়নি",
       "bothDidNotAnswer": "আপনারা দুজনেই উত্তর দেননি"
     },
-    "buttonText": "ইতিহাস দেখুন"
+    "buttonText": "ইতিহাস দেখুন",
+    "buttonTextMore": "আরো দেখুন",
+    "noMoreResults": {
+      "title": "আর কোন ফলাফল নেই",
+      "description": "আপনি আপনার ইতিহাসের শেষ পর্যন্ত পৌঁছেছেন"
+    }
   },
   "auth": {
     "signInScreen": {
@@ -162,16 +193,36 @@
       "relationshipTypeScreen": {
         "title": "আপনার এবং আপনার সঙ্গীর সম্পর্কের অবস্থা কি?",
         "types": [
-          { "stillGettingToKnowEachOther": "এখনও পরস্পরকে চিনছি" },
-          { "dating": "ডেটিং করছি" },
-          { "inARelationship": "একটি সম্পর্কে আছি" },
-          { "engaged": "বাগ্দান হয়েছে" },
-          { "domesticPartnership": "ঘরোয়া সম্পর্ক" },
-          { "cohabiting": "একসাথে বাস করছি" },
-          { "longDistanceRelationship": "দূরত্ব বিশিষ্ট সম্পর্ক" },
-          { "consensualNonMonogamousRelationship": "সম্মত অ-একান্তিক সম্পর্ক" },
-          { "inAnOpenRelationship": "খোলা সম্পর্কে" },
-          { "married": "বিবাহিত" }
+          {
+            "stillGettingToKnowEachOther": "এখনও পরস্পরকে চিনছি"
+          },
+          {
+            "dating": "ডেটিং করছি"
+          },
+          {
+            "inARelationship": "একটি সম্পর্কে আছি"
+          },
+          {
+            "engaged": "বাগ্দান হয়েছে"
+          },
+          {
+            "domesticPartnership": "ঘরোয়া সম্পর্ক"
+          },
+          {
+            "cohabiting": "একসাথে বাস করছি"
+          },
+          {
+            "longDistanceRelationship": "দূরত্ব বিশিষ্ট সম্পর্ক"
+          },
+          {
+            "consensualNonMonogamousRelationship": "সম্মত অ-একান্তিক সম্পর্ক"
+          },
+          {
+            "inAnOpenRelationship": "খোলা সম্পর্কে"
+          },
+          {
+            "married": "বিবাহিত"
+          }
         ]
       },
       "relationshipDateScreen": {

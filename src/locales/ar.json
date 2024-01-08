@@ -43,9 +43,15 @@
     "fetchQuestionAPIError": "حدث خطأ ما أثناء جلب سؤالك",
     "audioPlayBackError": "حدث خطأ ما عند تشغيل تسجيلك الصوتي. الرجاء المحاولة مرة أخرى",
     "deleteRelationshipFailed": "حدث خطأ ما أثناء حذف علاقتك",
-    "partnerAlreadyInUse": "هذا الرقم مستخدم بالفعل"
+    "partnerAlreadyInUse": "هذا الرقم مستخدم بالفعل",
+    "pleaseTryAgainLater": "يرجى المحاولة مرة أخرى في وقت لاحق",
+    "signOutFailed": "حدث خطأ ما عند تسجيل خروجك",
+    "updatePartnershipFailed": "حدث خطأ ما عند تحديث شراكتك.",
+    "tooManyAttempts": "عدد المحاولات كثير جداً. يرجى الانتظار قبل المحاولة مرة أخرى."
   },
-  "browserScreen": { "title": "المتصفح" },
+  "browserScreen": {
+    "title": "المتصفح"
+  },
   "accountScreen": {
     "title": "إعدادات الحساب",
     "yourName": "اسمك الأول",
@@ -65,7 +71,10 @@
       "cancel": "إلغاء",
       "delete": "حذف"
     },
-    "colorScreen": { "title": "غير لونك", "success": "تم تحديث لونك بنجاح!" },
+    "colorScreen": {
+      "title": "غير لونك",
+      "success": "تم تحديث لونك بنجاح!"
+    },
     "languageScreen": {
       "title": "غيّر لغتك المفضلة"
     },
@@ -74,11 +83,21 @@
       "submitButton": "حفظ",
       "placeholder": "اكتب اسمًا جديدًا",
       "success": "تم تحديث اسمك بنجاح!"
+    },
+    "relationshipStatus": "حالة العلاقة",
+    "relationshipTypeScreen": {
+      "title": "قم بتغيير حالة علاقتك",
+      "success": "تم تحديث حالة علاقتك!"
+    },
+    "request": {
+      "title": "نموذج طلب بياناتك"
     }
   },
   "questionScreen": {
     "nonSubscriberScreen": {
-      "default": { "text": "ما هو أفضل موعد قضيتماه معًا؟" },
+      "default": {
+        "text": "ما هو أفضل موعد قضيتماه معًا؟"
+      },
       "notification": {
         "title": "عذرًا! الاشتراك الخاص بك قد انتهى...",
         "description": "الرجاء تحديث طريقة الدفع لمتابعة استخدام التطبيق!",
@@ -90,10 +109,20 @@
       "redo": "إعادة",
       "submit": "إرسال",
       "timeRemaining": "{{ time }} متبقية...",
-      "lock": { "title": "أجاب {{ name }}", "description": "سجل إجابتك للاستماع إليها!" },
-      "pendingRecord": { "title": "{{ name }} لم يجب بعد" },
-      "record": { "title": "اضغط لتسجيل إجابتك" },
-      "play": { "title": "أجاب {{ name }}", "description": "{{ date }} في {{ time }}" },
+      "lock": {
+        "title": "أجاب {{ name }}",
+        "description": "سجل إجابتك للاستماع إليها!"
+      },
+      "pendingRecord": {
+        "title": "{{ name }} لم يجب بعد"
+      },
+      "record": {
+        "title": "اضغط لتسجيل إجابتك"
+      },
+      "play": {
+        "title": "أجاب {{ name }}",
+        "description": "{{ date }} في {{ time }}"
+      },
       "audioPermissions": {
         "title": "السماح بأذونات التسجيل",
         "description": "يجب السماح بالأذونات لتسجيل إجابتك",
@@ -125,7 +154,12 @@
       "userAnswered": "أجبت، ولكن {{ name }} لم يفعل",
       "bothDidNotAnswer": "لم يجب أي منكما"
     },
-    "buttonText": "عرض السجل"
+    "buttonText": "عرض السجل",
+    "buttonTextMore": "عرض المزيد",
+    "noMoreResults": {
+      "title": "لا مزيد من النتائج",
+      "description": "لقد وصلت إلى نهاية تاريخك."
+    }
   },
   "auth": {
     "signInScreen": {
@@ -159,16 +193,36 @@
       "relationshipTypeScreen": {
         "title": "ما هو وضع علاقتك مع شريكك؟",
         "types": [
-          { "stillGettingToKnowEachOther": "ما زلنا نتعرف على بعضنا البعض" },
-          { "dating": "مواعدة" },
-          { "inARelationship": "في علاقة" },
-          { "engaged": "مخطوبون" },
-          { "domesticPartnership": "الشراكة المنزلية" },
-          { "cohabiting": "مقيمون معًا" },
-          { "longDistanceRelationship": "علاقة عن بُعد" },
-          { "consensualNonMonogamousRelationship": "علاقة غير أحادية الزواج بالتراضي" },
-          { "inAnOpenRelationship": "علاقة مفتوحة" },
-          { "married": "متزوجون" }
+          {
+            "stillGettingToKnowEachOther": "ما زلنا نتعرف على بعضنا البعض"
+          },
+          {
+            "dating": "مواعدة"
+          },
+          {
+            "inARelationship": "في علاقة"
+          },
+          {
+            "engaged": "مخطوبون"
+          },
+          {
+            "domesticPartnership": "الشراكة المنزلية"
+          },
+          {
+            "cohabiting": "مقيمون معًا"
+          },
+          {
+            "longDistanceRelationship": "علاقة عن بُعد"
+          },
+          {
+            "consensualNonMonogamousRelationship": "علاقة غير أحادية الزواج بالتراضي"
+          },
+          {
+            "inAnOpenRelationship": "علاقة مفتوحة"
+          },
+          {
+            "married": "متزوجون"
+          }
         ]
       },
       "relationshipDateScreen": {

@@ -43,7 +43,11 @@
     "fetchQuestionAPIError": "Etwas ist schiefgelaufen beim Abrufen deiner Frage",
     "audioPlayBackError": "Etwas ist schiefgelaufen beim Abspielen deines Audios. Bitte versuche es erneut",
     "deleteRelationshipFailed": "Etwas ist schiefgelaufen beim Löschen deiner Beziehung",
-    "partnerAlreadyInUse": "Diese Telefonnummer wird bereits verwendet"
+    "partnerAlreadyInUse": "Diese Telefonnummer wird bereits verwendet",
+    "pleaseTryAgainLater": "Bitte versuchen Sie es später erneut.",
+    "signOutFailed": "Beim Abmelden ist etwas schiefgegangen",
+    "updatePartnershipFailed": "Es ist etwas schiefgelaufen, als wir Ihre Partnerschaft aktualisiert haben.",
+    "tooManyAttempts": "Zu viele Versuche. Bitte warten Sie, um es erneut zu versuchen."
   },
   "browserScreen": {
     "title": "Browser"
@@ -79,6 +83,14 @@
       "submitButton": "Speichern",
       "placeholder": "Tippe einen neuen Namen ein",
       "success": "Dein Name wurde aktualisiert!"
+    },
+    "relationshipStatus": "Beziehungsstatus",
+    "relationshipTypeScreen": {
+      "title": "Ändern Sie Ihren Beziehungsstatus",
+      "success": "Dein Beziehungsstatus wurde aktualisiert!"
+    },
+    "request": {
+      "title": "Anforderungsformular für Ihre Daten"
     }
   },
   "questionScreen": {
@@ -142,7 +154,12 @@
       "userAnswered": "Du hast geantwortet, aber {{ name }} nicht",
       "bothDidNotAnswer": "Keiner von euch hat geantwortet"
     },
-    "buttonText": "Verlauf ansehen"
+    "buttonText": "Verlauf ansehen",
+    "buttonTextMore": "Mehr anzeigen",
+    "noMoreResults": {
+      "title": "Keine weiteren Ergebnisse mehr",
+      "description": "Du hast das Ende deiner Geschichte erreicht"
+    }
   },
   "auth": {
     "signInScreen": {
@@ -176,18 +193,36 @@
       "relationshipTypeScreen": {
         "title": "Was ist dein Beziehungsstatus mit deinem Partner?",
         "types": [
-          { "stillGettingToKnowEachOther": "Noch am Kennenlernen" },
-          { "dating": "Datiert" },
-          { "inARelationship": "In einer Beziehung" },
-          { "engaged": "Verlobt" },
-          { "domesticPartnership": "Eingetragene Partnerschaft" },
-          { "cohabiting": "Zusammenlebend" },
-          { "longDistanceRelationship": "Fernbeziehung" },
+          {
+            "stillGettingToKnowEachOther": "Noch am Kennenlernen"
+          },
+          {
+            "dating": "Datiert"
+          },
+          {
+            "inARelationship": "In einer Beziehung"
+          },
+          {
+            "engaged": "Verlobt"
+          },
+          {
+            "domesticPartnership": "Eingetragene Partnerschaft"
+          },
+          {
+            "cohabiting": "Zusammenlebend"
+          },
+          {
+            "longDistanceRelationship": "Fernbeziehung"
+          },
           {
             "consensualNonMonogamousRelationship": "Einvernehmliche nicht monogame Beziehung"
           },
-          { "inAnOpenRelationship": "Offene Beziehung" },
-          { "married": "Verheiratet" }
+          {
+            "inAnOpenRelationship": "Offene Beziehung"
+          },
+          {
+            "married": "Verheiratet"
+          }
         ]
       },
       "relationshipDateScreen": {

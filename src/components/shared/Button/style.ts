@@ -17,7 +17,10 @@ const buttonSizeStyles = {
 export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
   border-radius: 30px;
   background-color: ${({ mode, disabled, theme }) => {
-    if (disabled) return theme.colors.gray;
+    if (disabled) {
+      if (mode === 'hidden') return theme.colors.transparentGray;
+      return theme.colors.gray;
+    }
 
     switch (mode) {
       case 'light':

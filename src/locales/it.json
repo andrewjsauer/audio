@@ -43,7 +43,11 @@
     "fetchQuestionAPIError": "Qualcosa è andato storto nel recuperare la tua domanda",
     "audioPlayBackError": "Qualcosa è andato storto durante la riproduzione del tuo audio. Per favore riprova",
     "deleteRelationshipFailed": "Qualcosa è andato storto nel cancellare la tua relazione",
-    "partnerAlreadyInUse": "Questo numero di telefono è già in uso"
+    "partnerAlreadyInUse": "Questo numero di telefono è già in uso",
+    "pleaseTryAgainLater": "Si prega di riprovare più tardi",
+    "signOutFailed": "Qualcosa è andato storto quando ti ho disconnesso",
+    "updatePartnershipFailed": "Qualcosa è andato storto durante l'aggiornamento della tua partnership.",
+    "tooManyAttempts": "Troppi tentativi. Per favore, aspetta di riprovare."
   },
   "browserScreen": {
     "title": "Browser"
@@ -79,6 +83,14 @@
       "submitButton": "Salva",
       "placeholder": "Scrivi un nuovo nome",
       "success": "Il tuo nome è stato aggiornato!"
+    },
+    "relationshipStatus": "Stato della relazione",
+    "relationshipTypeScreen": {
+      "title": "Modifica il tuo stato di relazione",
+      "success": "Il tuo stato di relazione è stato aggiornato!"
+    },
+    "request": {
+      "title": "Modulo di Richiesta dei Tuoi Dati"
     }
   },
   "questionScreen": {
@@ -142,7 +154,12 @@
       "userAnswered": "Tu hai risposto, ma {{ name }} no",
       "bothDidNotAnswer": "Nessuno di voi ha risposto"
     },
-    "buttonText": "Visualizza Cronologia"
+    "buttonText": "Visualizza Cronologia",
+    "buttonTextMore": "Visualizza Di Più",
+    "noMoreResults": {
+      "title": "Nessun altro risultato",
+      "description": "Sei arrivato alla fine della tua storia."
+    }
   },
   "auth": {
     "signInScreen": {
@@ -176,18 +193,36 @@
       "relationshipTypeScreen": {
         "title": "Qual è il tuo stato di relazione con il tuo partner?",
         "types": [
-          { "stillGettingToKnowEachOther": "Ancora in fase di conoscenza" },
-          { "dating": "Incontri" },
-          { "inARelationship": "In una relazione" },
-          { "engaged": "Fidanzati" },
-          { "domesticPartnership": "Unione civile" },
-          { "cohabiting": "Convivenza" },
-          { "longDistanceRelationship": "Relazione a distanza" },
+          {
+            "stillGettingToKnowEachOther": "Ancora in fase di conoscenza"
+          },
+          {
+            "dating": "Incontri"
+          },
+          {
+            "inARelationship": "In una relazione"
+          },
+          {
+            "engaged": "Fidanzati"
+          },
+          {
+            "domesticPartnership": "Unione civile"
+          },
+          {
+            "cohabiting": "Convivenza"
+          },
+          {
+            "longDistanceRelationship": "Relazione a distanza"
+          },
           {
             "consensualNonMonogamousRelationship": "Relazione non monogama consensuale"
           },
-          { "inAnOpenRelationship": "Relazione aperta" },
-          { "married": "Sposati" }
+          {
+            "inAnOpenRelationship": "Relazione aperta"
+          },
+          {
+            "married": "Sposati"
+          }
         ]
       },
       "relationshipDateScreen": {

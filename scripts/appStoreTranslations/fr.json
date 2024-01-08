@@ -1,0 +1,30 @@
+{
+  "appTitle": "Édition pour couples",
+  "appDescription": {
+    "title": "Illuminez chaque jour l'un de l'autre avec les questions quotidiennes (édition pour couples) - Abonnement requis !",
+    "howItWorks": {
+      "title": "Comment ça marche:",
+      "point1": "Questions quotidiennes (Fonction Premium) : Chaque jour, recevez une question unique adaptée à vous et votre partenaire. Note : Un abonnement premium est requis pour accéder à toutes les questions.",
+      "point2": "Exprimez vos pensées (fonctionnalité Premium) : Enregistrez vos réponses et attendez la réponse de votre partenaire avec impatience. Disponible exclusivement avec un abonnement premium.",
+      "point3": "Déverrouillez et écoutez (fonction premium) : écoutez les enregistrements les uns des autres, débloquant de nouveaux niveaux de connexion. Cette fonctionnalité est accessible uniquement avec un abonnement premium.",
+      "point4": "Axé sur la vie privée : Garantir un espace sûr et privé pour vous et votre partenaire afin de vous exprimer librement."
+    },
+    "why": {
+      "title": "Pourquoi télécharger Daily Q's - Édition couples ?",
+      "point1": "Chaque jour est une nouvelle aventure : Engagez-vous dans des conversations quotidiennes, allant des échanges amusants aux discussions profondes. Abonnement premium requis.",
+      "point2": "Apprenez, riez, aimez : Découvrez de nouvelles choses l'un sur l'autre, riez ensemble et renforcez votre lien. Exclusivement pour les abonnés.",
+      "point3": "Pour tous les couples : Parfait pour toutes les étapes des relations, des nouvelles aux relations de longue durée."
+    },
+    "perfectFor": {
+      "title": "Parfait pour :",
+      "point1": "Les couples désirant des conversations amusantes et significatives.",
+      "point2": "Les relations qui valorisent l'humour et l'affection.",
+      "point3": "Partenaires à distance recherchant un engagement quotidien."
+    },
+    "footer": {
+      "title": "Joignez-vous aujourd'hui à Daily Q (édition Couples) ! Faites l'expérience d'un monde de découvertes délicieuses. Téléchargez maintenant et explorez notre essai gratuit. Pour avoir accès à toutes les fonctionnalités, un abonnement premium est nécessaire.",
+      "terms": "Conditions d'utilisation :",
+      "privacy": "Politique de confidentialité :"
+    }
+  }
+}

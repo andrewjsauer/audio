@@ -43,7 +43,11 @@
     "fetchQuestionAPIError": "प्रश्न प्राप्त करते समय कुछ गलत हो गया",
     "audioPlayBackError": "आपकी ऑडियो चलाते समय कुछ गलत हो गया। कृपया पुनः प्रयास करें",
     "deleteRelationshipFailed": "आपके संबंध को हटाते समय कुछ गलत हो गया",
-    "partnerAlreadyInUse": "यह फोन नंबर पहले से ही उपयोग में है"
+    "partnerAlreadyInUse": "यह फोन नंबर पहले से ही उपयोग में है",
+    "pleaseTryAgainLater": "कृपया बाद में फिर से कोशिश करें।",
+    "signOutFailed": "कुछ गड़बड़ हो गई है जब आपको लॉगआउट कर रहे थे।",
+    "updatePartnershipFailed": "आपके साझेदारी को अद्यतन करने में कुछ गड़बड़ी हो गई है।",
+    "tooManyAttempts": "बहुत सारे प्रयास। कृपया फिर से प्रयास करने के लिए प्रतीक्षा करें।"
   },
   "browserScreen": {
     "title": "ब्राउज़र"
@@ -79,6 +83,14 @@
       "submitButton": "सेव करें",
       "placeholder": "नया नाम लिखें",
       "success": "आपका नाम अपडेट कर दिया गया है!"
+    },
+    "relationshipStatus": "संबंध स्थिति",
+    "relationshipTypeScreen": {
+      "title": "अपनी संबंध स्थिति बदलें",
+      "success": "आपकी संबंध स्थिति अपडेट की गई है!"
+    },
+    "request": {
+      "title": "आपका डेटा फॉर्म अनुरोध करना"
     }
   },
   "questionScreen": {
@@ -142,7 +154,12 @@
       "userAnswered": "आपने जवाब दिया, लेकिन {{ name }} ने नहीं",
       "bothDidNotAnswer": "आप दोनों में से किसी ने जवाब नहीं दिया"
     },
-    "buttonText": "इतिहास देखें"
+    "buttonText": "इतिहास देखें",
+    "buttonTextMore": "और अधिक देखें",
+    "noMoreResults": {
+      "title": "कोई और परिणाम नहीं",
+      "description": "तुमने अपनी इतिहास की समाप्ति तक पहुंच ली है।"
+    }
   },
   "auth": {
     "signInScreen": {
@@ -176,16 +193,36 @@
       "relationshipTypeScreen": {
         "title": "आपके और आपके साथी का संबंध क्या है?",
         "types": [
-          { "stillGettingToKnowEachOther": "अभी एक दूसरे को जान रहे हैं" },
-          { "dating": "डेटिंग" },
-          { "inARelationship": "एक संबंध में" },
-          { "engaged": "सगाई कर ली है" },
-          { "domesticPartnership": "घरेलू साझीदारी" },
-          { "cohabiting": "सहवास कर रहे हैं" },
-          { "longDistanceRelationship": "दूरी का संबंध" },
-          { "consensualNonMonogamousRelationship": "सहमति से अनेक साझीदारी संबंध" },
-          { "inAnOpenRelationship": "खुले संबंध में" },
-          { "married": "विवाहित" }
+          {
+            "stillGettingToKnowEachOther": "अभी एक दूसरे को जान रहे हैं"
+          },
+          {
+            "dating": "डेटिंग"
+          },
+          {
+            "inARelationship": "एक संबंध में"
+          },
+          {
+            "engaged": "सगाई कर ली है"
+          },
+          {
+            "domesticPartnership": "घरेलू साझीदारी"
+          },
+          {
+            "cohabiting": "सहवास कर रहे हैं"
+          },
+          {
+            "longDistanceRelationship": "दूरी का संबंध"
+          },
+          {
+            "consensualNonMonogamousRelationship": "सहमति से अनेक साझीदारी संबंध"
+          },
+          {
+            "inAnOpenRelationship": "खुले संबंध में"
+          },
+          {
+            "married": "विवाहित"
+          }
         ]
       },
       "relationshipDateScreen": {
