@@ -14,18 +14,42 @@ import { trackEvent, initializeAnalytics, reset } from '@lib/analytics';
 import { UserDataType } from '@lib/types';
 
 import { fetchLatestQuestion } from '@store/question/thunks';
-import { selectPartnershipData } from '@store/partnership/selectors';
+import { fetchPartnership, fetchPartnerData } from '@store/partnership/thunks';
 import { updateUser } from '@store/auth/thunks';
+
+import { selectUserData } from '@store/auth/selectors';
+import { selectPartnershipData, selectPartnerData } from '@store/partnership/selectors';
 
 export const initializeSubscriber = createAsyncThunk(
   'app/initializeSubscriber',
   async (_, { getState, rejectWithValue, dispatch }) => {
     const state = getState();
     const partnershipData = selectPartnershipData(state);
+    const userData = selectUserData(state);
+    const partnerData = selectPartnerData(state);
+
+    let partnership = partnershipData;
 
     try {
       trackEvent('initializing_subscriber');
-      dispatch(fetchLatestQuestion({ partnershipData }));
+      if (!partnershipData) {
+        const partnershipResponse = await dispatch(fetchPartnership(userData.partnershipId));
+        if (fetchPartnership.fulfilled.match(partnershipResponse)) {
+          partnership = partnershipResponse.payload;
+        }
+      }
+
+      if (!partnerData) {
+        await dispatch(fetchPartnerData(userData.id));
+      }
+
+      const resultAction = await dispatch(fetchLatestQuestion({ partnershipData: partnership }));
+
+      if (fetchLatestQuestion.fulfilled.match(resultAction)) {
+        trackEvent('subscriber_question_fetched');
+      } else if (fetchLatestQuestion.rejected.match(resultAction)) {
+        trackEvent('subscriber_question_fetch_error', { error: resultAction.payload });
+      }
 
       return null;
     } catch (error) {
