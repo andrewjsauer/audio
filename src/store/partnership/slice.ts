@@ -9,7 +9,7 @@ import {
 import { signOut } from '@store/app/thunks';
 import { generatePartnership, updateNewUser } from '@store/auth/thunks';
 import { fetchLatestQuestion } from '@store/question/thunks';
-import { updatePartnership } from './thunks';
+import { updatePartnership, fetchPartnership, fetchPartnershipUser } from './thunks';
 
 interface PartnershipState {
   error: string | undefined | null;
@@ -89,6 +89,12 @@ const partnershipSlice = createSlice({
     });
     builder.addCase(updateNewUser.fulfilled, (state, action) => {
       state.partnershipData = action.payload.partnershipData as PartnershipDataType;
+    });
+    builder.addCase(fetchPartnership.fulfilled, (state, action) => {
+      state.partnershipData = action.payload as PartnershipDataType;
+    });
+    builder.addCase(fetchPartnershipUser.fulfilled, (state, action) => {
+      state.partnershipUserData = action.payload as PartnershipUserDataType;
     });
   },
 });

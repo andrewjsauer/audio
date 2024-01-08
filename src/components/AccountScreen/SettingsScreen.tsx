@@ -184,6 +184,9 @@ function SettingsScreen() {
             </SignOutButton>
             <LegalContainer>
               <LegalText>{t('accountScreen.legal')}</LegalText>
+              <ButtonURL url="https://forms.gle/Ah9nKKj8RN7AAu1G7">
+                {t('accountScreen.request.title')}
+              </ButtonURL>
               <LegalButtonContainer>
                 <ButtonURL url="https://docs.google.com/document/d/1vvfIdHnZnoNj_hTTqNFcRme5IsuN5DQC6WEHU4wAqA4/edit?usp=sharing">
                   {t('accountScreen.privacy')}

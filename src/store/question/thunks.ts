@@ -93,7 +93,8 @@ export const fetchLatestQuestion = createAsyncThunk<
   async ({ partnershipData }: FetchLatestQuestionArgs, { rejectWithValue, getState }): any => {
     try {
       const state = getState();
-      const today = startOfDay(new Date());
+      const startOfDayUTC = startOfDay(new Date());
+      const today = convertDateToLocalStart(startOfDayUTC);
 
       const userData = selectUserData(state);
       const currentQuestion = selectCurrentQuestion(state);

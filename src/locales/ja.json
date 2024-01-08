@@ -43,9 +43,15 @@
     "fetchQuestionAPIError": "質問の取得時に何か問題が発生しました",
     "audioPlayBackError": "音声の再生時に何か問題が発生しました。もう一度試してください",
     "deleteRelationshipFailed": "関係の削除時に何か問題が発生しました",
-    "partnerAlreadyInUse": "この電話番号は既に使用中です"
+    "partnerAlreadyInUse": "この電話番号は既に使用中です",
+    "pleaseTryAgainLater": "後でもう一度お試しください。",
+    "signOutFailed": "サインアウト時に何か問題が発生しました。",
+    "updatePartnershipFailed": "パートナーシップの更新時に何か問題が発生しました。",
+    "tooManyAttempts": "試行回数が多すぎます。再試行する前にお待ちください。"
   },
-  "browserScreen": { "title": "ブラウザ" },
+  "browserScreen": {
+    "title": "ブラウザ"
+  },
   "accountScreen": {
     "title": "アカウント設定",
     "yourName": "あなたの名前",
@@ -65,18 +71,33 @@
       "cancel": "キャンセル",
       "delete": "削除"
     },
-    "colorScreen": { "title": "色を変更する", "success": "色が更新されました！" },
-    "languageScreen": { "title": "優先言語を変更する" },
+    "colorScreen": {
+      "title": "色を変更する",
+      "success": "色が更新されました！"
+    },
+    "languageScreen": {
+      "title": "優先言語を変更する"
+    },
     "nameScreen": {
       "title": "名前を変更する",
       "submitButton": "保存",
       "placeholder": "新しい名前を入力",
       "success": "名前が更新されました！"
+    },
+    "relationshipStatus": "関係の状況",
+    "relationshipTypeScreen": {
+      "title": "関係のステータスを変更してください。",
+      "success": "あなたの関係ステータスが更新されました！"
+    },
+    "request": {
+      "title": "データのリクエストフォーム"
     }
   },
   "questionScreen": {
     "nonSubscriberScreen": {
-      "default": { "text": "二人で行った一番のデートは何ですか？" },
+      "default": {
+        "text": "二人で行った一番のデートは何ですか？"
+      },
       "notification": {
         "title": "おっと！サブスクリプションが期限切れです...",
         "description": "アプリを使用し続けるには、お支払いを修正してください！",
@@ -92,9 +113,16 @@
         "title": "{{ name }}が答えました",
         "description": "回答を録音して聞くためにあなたの回答を記録してください！"
       },
-      "pendingRecord": { "title": "{{ name }}はまだ答えていません" },
-      "record": { "title": "タップして回答を録音する" },
-      "play": { "title": "{{ name }}が答えました", "description": "{{ date }}の{{ time }}に" },
+      "pendingRecord": {
+        "title": "{{ name }}はまだ答えていません"
+      },
+      "record": {
+        "title": "タップして回答を録音する"
+      },
+      "play": {
+        "title": "{{ name }}が答えました",
+        "description": "{{ date }}の{{ time }}に"
+      },
       "audioPermissions": {
         "title": "録音のための許可を許可する",
         "description": "回答を録音するためには、許可を与えなければなりません",
@@ -126,7 +154,12 @@
       "userAnswered": "あなたは答えましたが、{{ name }}は答えていません",
       "bothDidNotAnswer": "どちらも答えていません"
     },
-    "buttonText": "履歴を見る"
+    "buttonText": "履歴を見る",
+    "buttonTextMore": "もっと見る",
+    "noMoreResults": {
+      "title": "結果はもうありません。",
+      "description": "あなたは歴史の終わりに到達しました。"
+    }
   },
   "auth": {
     "signInScreen": {
@@ -160,16 +193,36 @@
       "relationshipTypeScreen": {
         "title": "パートナーとの関係状態は何ですか？",
         "types": [
-          { "stillGettingToKnowEachOther": "まだ知り合いです" },
-          { "dating": "デート中" },
-          { "inARelationship": "交際中" },
-          { "engaged": "婚約中" },
-          { "domesticPartnership": "事実婚" },
-          { "cohabiting": "同棲中" },
-          { "longDistanceRelationship": "遠距離恋愛" },
-          { "consensualNonMonogamousRelationship": "合意の上の非一夫一妻関係" },
-          { "inAnOpenRelationship": "オープンな関係中" },
-          { "married": "既婚" }
+          {
+            "stillGettingToKnowEachOther": "まだ知り合いです"
+          },
+          {
+            "dating": "デート中"
+          },
+          {
+            "inARelationship": "交際中"
+          },
+          {
+            "engaged": "婚約中"
+          },
+          {
+            "domesticPartnership": "事実婚"
+          },
+          {
+            "cohabiting": "同棲中"
+          },
+          {
+            "longDistanceRelationship": "遠距離恋愛"
+          },
+          {
+            "consensualNonMonogamousRelationship": "合意の上の非一夫一妻関係"
+          },
+          {
+            "inAnOpenRelationship": "オープンな関係中"
+          },
+          {
+            "married": "既婚"
+          }
         ]
       },
       "relationshipDateScreen": {

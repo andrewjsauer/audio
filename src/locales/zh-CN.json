@@ -43,9 +43,15 @@
     "fetchQuestionAPIError": "获取问题时出了些问题",
     "audioPlayBackError": "播放音频时出了些问题，请再试一次",
     "deleteRelationshipFailed": "删除关系时出了些问题",
-    "partnerAlreadyInUse": "这个电话号码已经在使用中"
+    "partnerAlreadyInUse": "这个电话号码已经在使用中",
+    "pleaseTryAgainLater": "请稍后再试",
+    "signOutFailed": "当签出您时出现错误",
+    "updatePartnershipFailed": "在更新您的合作伙伴关系时出了问题。",
+    "tooManyAttempts": "尝试次数过多，请等待再试。"
   },
-  "browserScreen": { "title": "浏览器" },
+  "browserScreen": {
+    "title": "浏览器"
+  },
   "accountScreen": {
     "title": "账户设置",
     "yourName": "你的名字",
@@ -65,7 +71,10 @@
       "cancel": "取消",
       "delete": "删除"
     },
-    "colorScreen": { "title": "更改你的颜色", "success": "你的颜色已更新！" },
+    "colorScreen": {
+      "title": "更改你的颜色",
+      "success": "你的颜色已更新！"
+    },
     "languageScreen": {
       "title": "更改您的首选语言"
     },
@@ -74,11 +83,21 @@
       "submitButton": "保存",
       "placeholder": "输入一个新名字",
       "success": "你的名字已更新！"
+    },
+    "relationshipStatus": "感情状况",
+    "relationshipTypeScreen": {
+      "title": "更改您的感情状态",
+      "success": "你的恋爱状态已更新！"
+    },
+    "request": {
+      "title": "请求您的数据表格"
     }
   },
   "questionScreen": {
     "nonSubscriberScreen": {
-      "default": { "text": "你们一起去过的最好的约会是什么？" },
+      "default": {
+        "text": "你们一起去过的最好的约会是什么？"
+      },
       "notification": {
         "title": "哎呀！你的订阅已过期...",
         "description": "请修正你的支付信息以继续使用应用！",
@@ -90,10 +109,20 @@
       "redo": "重做",
       "submit": "提交",
       "timeRemaining": "{{ time }} 剩余...",
-      "lock": { "title": "{{ name }} 已回答", "description": "录下你的回答以听取！" },
-      "pendingRecord": { "title": "{{ name }} 还未回答" },
-      "record": { "title": "点击录下你的回答" },
-      "play": { "title": "{{ name }} 已回答", "description": "{{ date }} 在 {{ time }}" },
+      "lock": {
+        "title": "{{ name }} 已回答",
+        "description": "录下你的回答以听取！"
+      },
+      "pendingRecord": {
+        "title": "{{ name }} 还未回答"
+      },
+      "record": {
+        "title": "点击录下你的回答"
+      },
+      "play": {
+        "title": "{{ name }} 已回答",
+        "description": "{{ date }} 在 {{ time }}"
+      },
       "audioPermissions": {
         "title": "允许录音权限",
         "description": "你必须允许录音权限以录下你的回答",
@@ -125,7 +154,12 @@
       "userAnswered": "你回答了，但 {{ name }} 没有",
       "bothDidNotAnswer": "你们两个都没有回答"
     },
-    "buttonText": "查看历史"
+    "buttonText": "查看历史",
+    "buttonTextMore": "查看更多",
+    "noMoreResults": {
+      "title": "没有更多的结果",
+      "description": "您已经到达了历史的尽头"
+    }
   },
   "auth": {
     "signInScreen": {
@@ -159,16 +193,36 @@
       "relationshipTypeScreen": {
         "title": "你和你伴侣的关系状态是什么？",
         "types": [
-          { "stillGettingToKnowEachOther": "仍在相互了解" },
-          { "dating": "约会" },
-          { "inARelationship": "恋爱中" },
-          { "engaged": "已订婚" },
-          { "domesticPartnership": "同居伴侣" },
-          { "cohabiting": "共同居住" },
-          { "longDistanceRelationship": "异地恋" },
-          { "consensualNonMonogamousRelationship": "共识的非一夫一妻制关系" },
-          { "inAnOpenRelationship": "开放式关系" },
-          { "married": "已婚" }
+          {
+            "stillGettingToKnowEachOther": "仍在相互了解"
+          },
+          {
+            "dating": "约会"
+          },
+          {
+            "inARelationship": "恋爱中"
+          },
+          {
+            "engaged": "已订婚"
+          },
+          {
+            "domesticPartnership": "同居伴侣"
+          },
+          {
+            "cohabiting": "共同居住"
+          },
+          {
+            "longDistanceRelationship": "异地恋"
+          },
+          {
+            "consensualNonMonogamousRelationship": "共识的非一夫一妻制关系"
+          },
+          {
+            "inAnOpenRelationship": "开放式关系"
+          },
+          {
+            "married": "已婚"
+          }
         ]
       },
       "relationshipDateScreen": {
