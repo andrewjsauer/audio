@@ -939,3 +939,177 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     }
   }
 });
+
+// exports.dailyEveningReminder = functions.pubsub
+//   .schedule('0 20 * * *')
+//   .timeZone('America/Los_Angeles')
+//   .onRun(async () => {
+//     try {
+//       const db = admin.firestore();
+//       const partnerships = await db.collection('partnership').get();
+
+//       const evening = new Date();
+//       evening.setHours(20, 0, 0, 0);
+
+//       const sendNotifications = async (partnership: any) => {
+//         const partnershipId = partnership.id;
+//         const partnershipUsers = await db
+//           .collection('partnershipUser')
+//           .where('partnershipId', '==', partnershipId)
+//           .get();
+
+//         if (partnershipUsers.empty) {
+//           functions.logger.info(`No users found for partnership: ${partnershipId}`);
+//           return;
+//         }
+
+//         const userNotificationPromises = partnershipUsers.docs.map(async (doc) => {
+//           const { userId } = doc.data();
+//           const user = await db.collection('users').doc(userId).get();
+
+//           if (!user.exists) {
+//             functions.logger.info(`User not found: ${userId}`);
+//             return;
+//           }
+
+//           const { deviceIds } = user.data() as any;
+//           if (!deviceIds || deviceIds.length === 0) {
+//             return;
+//           }
+
+//           const today = new Date();
+//           today.setHours(0, 0, 0, 0);
+//           const userRecordings = await db
+//             .collection('recordings')
+//             .where('userId', '==', userId)
+//             .where('createdAt', '>=', today)
+//             .get();
+
+//           const hasUserAnswered = !userRecordings.empty;
+
+//           const partnerDoc = partnershipUsers.docs.find((d) => d.data().userId !== userId);
+//           if (!partnerDoc) {
+//             functions.logger.info(`Partner not found for user: ${userId}`);
+//             return;
+//           }
+
+//           const partnerId = partnerDoc.data().userId;
+//           const partner = await db.collection('users').doc(partnerId).get();
+//           const partnerData = partner.data() as any;
+//           const partnerName = partnerData.name;
+
+//           const partnerRecordings = await db
+//             .collection('recordings')
+//             .where('userId', '==', partnerId)
+//             .where('createdAt', '>=', today)
+//             .get();
+
+//           const hasPartnerAnswered = !partnerRecordings.empty;
+
+//           const title = 'Daily Q’s';
+//           let body = '';
+
+//           if (!hasUserAnswered && !hasPartnerAnswered) {
+//             body = 'Don’t forget to answer!';
+//           } else if (!hasUserAnswered && hasPartnerAnswered) {
+//             body = `Record and listen to ${partnerName}'s answer!`;
+//           } else {
+//             return; // No notification needed
+//           }
+
+//           return admin
+//             .messaging()
+//             .sendMulticast({
+//               tokens: deviceIds,
+//               notification: { title, body },
+//             })
+//             .then(() => {
+//               functions.logger.info(`Notification sent successfully for user: ${userId}`);
+//               return null;
+//             })
+//             .catch((error) => {
+//               functions.logger.error(`Error sending notification for user: ${error}`);
+//               return null;
+//             });
+//         });
+
+//         return Promise.all(userNotificationPromises);
+//       };
+
+//       await Promise.all(partnerships.docs.map(sendNotifications));
+//     } catch (error) {
+//       functions.logger.error('Error in dailyNoonReminder function:', error);
+//     }
+//   });
+
+// exports.dailyNoonReminder = functions.pubsub
+//   .schedule('0 12 * * *')
+//   .timeZone('America/Los_Angeles')
+//   .onRun(async () => {
+//     try {
+//       const db = admin.firestore();
+//       const partnerships = await db.collection('partnership').get();
+
+//       const noon = new Date();
+//       noon.setHours(12, 0, 0, 0);
+
+//       const sendNotifications = async (partnership: any) => {
+//         const partnershipId = partnership.id;
+//         const partnershipUsers = await db
+//           .collection('partnershipUser')
+//           .where('partnershipId', '==', partnershipId)
+//           .get();
+
+//         if (partnershipUsers.empty) {
+//           functions.logger.info(`No users found for partnership: ${partnershipId}`);
+//           return;
+//         }
+
+//         const userNotificationPromises = partnershipUsers.docs.map(async (doc) => {
+//           const { userId } = doc.data();
+//           const user = await db.collection('users').doc(userId).get();
+
+//           if (!user.exists) {
+//             functions.logger.info(`User not found: ${userId}`);
+//             return;
+//           }
+
+//           const { deviceIds } = user.data() as any;
+//           if (!deviceIds || deviceIds.length === 0) {
+//             return;
+//           }
+
+//           const { isSubscribed, lastActiveAt } = user.data() as any;
+//           const lastActiveAtDate = lastActiveAt.toDate();
+
+//           if (isSubscribed && lastActiveAtDate < noon) {
+//             return admin
+//               .messaging()
+//               .sendMulticast({
+//                 tokens: deviceIds,
+//                 notification: {
+//                   title: "Today's Question",
+//                   body: 'Tap to see what question you are getting today',
+//                 },
+//               })
+//               .then((response) => {
+//                 functions.logger.info(`Notification sent successfully for user: ${response}`);
+//                 return null;
+//               })
+//               .catch((error) => {
+//                 functions.logger.error(`Error sending notification for user: ${error}`);
+//                 return null;
+//               });
+//           }
+
+//           functions.logger.info(`No notification needed for user: ${userId}`);
+//         });
+
+//         return Promise.all(userNotificationPromises);
+//       };
+
+//       await Promise.all(partnerships.docs.map(sendNotifications));
+//     } catch (error) {
+//       functions.logger.error('Error in dailyNoonReminder function:', error);
+//     }
+//   });

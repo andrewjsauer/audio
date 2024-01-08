@@ -1,5 +1,6 @@
 {
   "appTitle": "Couples Edition",
+  "keywords": "Couples,Relationship,Love,Questions,Daily,Q's,Partner,Intimacy,Fun,Communication,Married,Distance",
   "appDescription": {
     "title": "Spark Each Other's Days – Everyday with Daily Q's (Couples Edition) - Subscription Required!",
     "howItWorks": {
@@ -26,5 +27,7 @@
       "terms": "Terms of use:",
       "privacy": "Privacy policy:"
     }
-  }
+  },
+  "subTitle": "Fun Q&A Discovery",
+  "updates": "Bug fixes, translations and performance improvements"
 }
