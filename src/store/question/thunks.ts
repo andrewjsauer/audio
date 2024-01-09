@@ -127,15 +127,15 @@ export const fetchLatestQuestion = createAsyncThunk<
         });
       }
 
-      const latestQuestionId = partnershipData?.latestQuestionId || '';
-
-      const snapshot = await firestore()
+      const queriedDescQuestionSnapshot = await firestore()
         .collection('questions')
-        .where('id', '==', latestQuestionId)
+        .where('partnershipId', '==', partnershipData?.id)
+        .orderBy('createdAt', 'desc')
+        .limit(1)
         .get();
 
-      if (snapshot.empty) {
-        trackEvent('fetched_question_not_found');
+      if (queriedDescQuestionSnapshot.empty) {
+        trackEvent('fetched_desc_question_not_found');
 
         const newQuestion = await generateQuestion({
           partnerData,
@@ -153,26 +153,22 @@ export const fetchLatestQuestion = createAsyncThunk<
         };
       }
 
-      const latestQuestion = snapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          ...data,
-          id: doc.id,
-          createdAt: new Date(data.createdAt._seconds * 1000),
-        };
-      })[0];
+      const doc = queriedDescQuestionSnapshot.docs[0];
+      const fetchedQuestionData = {
+        ...doc.data(),
+        id: doc.id,
+        createdAt: new Date(doc.data().createdAt._seconds * 1000),
+      };
 
-      const latestQuestionLocalCreatedAt = convertDateToLocalStart(latestQuestion.createdAt);
-      if (latestQuestionLocalCreatedAt >= today) {
-        trackEvent('question_within_date_limit', {
-          latestQuestionId,
-          latestQuestion,
-          latestQuestionLocalCreatedAt,
+      const fetchQuestionCreatedAtLocal = convertDateToLocalStart(fetchedQuestionData.createdAt);
+      if (fetchQuestionCreatedAtLocal >= today) {
+        trackEvent('fetched_desc_question_within_date_limit', {
+          fetchedQuestionData,
           today,
         });
 
         return {
-          question: latestQuestion,
+          question: fetchedQuestionData,
           isNewQuestion: false,
         } as {
           question: QuestionType;
@@ -180,12 +176,12 @@ export const fetchLatestQuestion = createAsyncThunk<
         };
       }
 
-      trackEvent('question_out_of_date', {
-        latestQuestionId,
-        latestQuestion,
-        latestQuestionLocalCreatedAt,
+      trackEvent('fetched_desc_question_out_of_date', {
+        fetchQuestionCreatedAtLocal,
+        fetchedQuestionData,
         today,
       });
+
       const newQuestion = await generateQuestion({
         partnerData,
         partnershipData,

@@ -32,6 +32,7 @@ export const initializeSubscriber = createAsyncThunk(
 
     try {
       trackEvent('initializing_subscriber');
+
       if (!partnershipData) {
         const partnershipResponse = await dispatch(fetchPartnership(userData.partnershipId));
         if (fetchPartnership.fulfilled.match(partnershipResponse)) {
