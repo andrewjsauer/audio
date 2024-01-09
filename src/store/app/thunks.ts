@@ -22,14 +22,7 @@ import { selectPartnershipData, selectPartnerData } from '@store/partnership/sel
 
 export const initializeSubscriber = createAsyncThunk(
   'app/initializeSubscriber',
-  async (
-    {
-      shouldFetchPartnership,
-    }: {
-      shouldFetchPartnership: boolean;
-    },
-    { getState, rejectWithValue, dispatch },
-  ) => {
+  async (_, { getState, rejectWithValue, dispatch }) => {
     const state = getState();
     const partnershipData = selectPartnershipData(state);
     const userData = selectUserData(state);
@@ -39,7 +32,8 @@ export const initializeSubscriber = createAsyncThunk(
 
     try {
       trackEvent('initializing_subscriber');
-      if (shouldFetchPartnership || !partnershipData) {
+
+      if (!partnershipData) {
         const partnershipResponse = await dispatch(fetchPartnership(userData.partnershipId));
         if (fetchPartnership.fulfilled.match(partnershipResponse)) {
           partnership = partnershipResponse.payload;
