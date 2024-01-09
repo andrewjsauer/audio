@@ -23,7 +23,7 @@ const useFetchQuestion = () => {
       setAppState(nextAppState);
 
       if (nextAppState === 'active' && !hasInitializedRef.current) {
-        dispatch(initializeSubscriber());
+        dispatch(initializeSubscriber({ shouldFetchPartnership: true }));
         hasInitializedRef.current = true;
       } else if (nextAppState === 'background') {
         hasInitializedRef.current = false;
@@ -39,7 +39,7 @@ const useFetchQuestion = () => {
   useEffect(() => {
     const focusListener = navigation.addListener('focus', () => {
       if (appState === 'active' && !hasInitializedRef.current) {
-        dispatch(initializeSubscriber());
+        dispatch(initializeSubscriber({ shouldFetchPartnership: false }));
       }
     });
 
