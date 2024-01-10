@@ -1231,3 +1231,69 @@ exports.saveRecording = functions
 //       functions.logger.error('Error in dailyNoonReminder function:', error);
 //     }
 //   });
+
+// exports.encryptMp4Files = functions
+//   .runWith({ secrets: [recordingEncryptionKey] })
+//   .firestore.document('cleanUp/{docId}')
+//   .onCreate(async () => {
+//     const encryptionKey = recordingEncryptionKey.value();
+
+//     const [files] = await admin.storage().bucket().getFiles({ prefix: 'recordings/' });
+//     const mp4Files = files.filter((file) => file.name.endsWith('.mp4'));
+
+//     await Promise.all(
+//       mp4Files.map(async (file) => {
+//         functions.logger.info(`Encrypting file: ${file.name}`);
+//         const tempFilePath = path.join(os.tmpdir(), 'recordings', file.name);
+
+//         try {
+//           const tempDir = path.dirname(tempFilePath);
+//           if (!fs.existsSync(tempDir)) {
+//             fs.mkdirSync(tempDir, { recursive: true });
+//           }
+
+//           await file.download({ destination: tempFilePath });
+
+//           const dataBuffer = fs.readFileSync(tempFilePath);
+//           const base64Data = dataBuffer.toString('base64');
+
+//           const encrypted = crypto.AES.encrypt(base64Data, encryptionKey).toString();
+
+//           const encryptedFilePath = `${tempFilePath}.enc`;
+//           fs.writeFileSync(encryptedFilePath, encrypted);
+
+//           const encryptedFileName = `recordings/${path.basename(file.name, '.mp4')}.enc`;
+//           await admin
+//             .storage()
+//             .bucket()
+//             .upload(encryptedFilePath, {
+//               destination: encryptedFileName,
+//               metadata: {
+//                 contentType: 'application/octet-stream',
+//               },
+//             });
+
+//           const encryptedStorageRef = admin.storage().bucket().file(encryptedFileName);
+//           const [newAudioUrl] = await encryptedStorageRef.getSignedUrl({
+//             action: 'read',
+//             expires: '03-09-2491',
+//           });
+
+//           const recordingId = path.basename(file.name, '.mp4');
+//           await admin.firestore().collection('recordings').doc(recordingId).update({
+//             audioUrl: newAudioUrl,
+//           });
+
+//           await file.delete();
+
+//           fs.unlinkSync(tempFilePath);
+//           fs.unlinkSync(encryptedFilePath);
+//         } catch (error) {
+//           functions.logger.error(`Error encrypting file: ${file.name}`);
+//           throw new functions.https.HttpsError('unknown', `Error encrypting file: ${error}`, error);
+//         }
+//       }),
+//     );
+
+//     return null;
+//   });
