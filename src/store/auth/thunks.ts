@@ -81,7 +81,7 @@ export const verifyCode = createAsyncThunk(
         userData = responseData;
       }
 
-      initializeAnalytics(currentUser?.uid as string);
+      initializeAnalytics(userData);
       return { user: currentUser, userData };
     } catch (error) {
       trackEvent('verify_code_error', { error });

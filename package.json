@@ -60,6 +60,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "reselect": "^5.0.1",
+    "semver": "^7.5.4",
     "styled-components": "^6.1.1",
     "uuid": "^9.0.1"
   },

@@ -10,6 +10,7 @@ import { setUserData } from '@store/auth/slice';
 import { initializeSession } from '@store/app/thunks';
 
 import { selectUserId, selectUser } from '@store/auth/selectors';
+import { trackIdentify } from '@lib/analytics';
 
 import usePartnerSubscription from '@lib/customHooks/usePartnerSubscription';
 import usePartnershipSubscription from '@lib/customHooks/usePartnershipSubscription';
@@ -35,7 +36,9 @@ const useInitializeSession = () => {
         .onSnapshot((snapshot) => {
           if (snapshot && !snapshot.empty) {
             const data = snapshot.docs[0].data() as UserDataType;
+
             dispatch(setUserData(data));
+            trackIdentify(data);
           }
         });
 

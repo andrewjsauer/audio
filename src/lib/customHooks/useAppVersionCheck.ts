@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import semver from 'semver';
 
 import firestore from '@react-native-firebase/firestore';
 import DeviceInfo from 'react-native-device-info';
@@ -19,11 +20,12 @@ const useAppVersionCheck = () => {
   const [isPromptOpen, setIsPromptOpen] = useState(false);
   const shouldUpdateApp = useSelector(selectShouldUpdateApp);
 
-  const compareVersions = (cloudVersion) => {
+  const compareVersions = (cloudVersion: string) => {
     const deviceVersion = DeviceInfo.getVersion();
     trackEvent('app_version_check', { deviceVersion, cloudVersion });
 
-    const needUpdate = deviceVersion !== cloudVersion;
+    const needUpdate = semver.lt(deviceVersion, cloudVersion); // device < cloud
+
     dispatch(shouldUpdateAppVersion(needUpdate));
     setIsPromptOpen(needUpdate);
   };
