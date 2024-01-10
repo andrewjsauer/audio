@@ -28,7 +28,6 @@ import {
   ReactionButton,
   ReactionIcon,
   SubTitle,
-  Timer,
   Title,
 } from './style';
 
