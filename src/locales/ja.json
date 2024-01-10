@@ -128,6 +128,9 @@
         "description": "回答を録音するためには、許可を与えなければなりません",
         "buttonText": "許可"
       }
+    },
+    "recordScreen": {
+      "note": "すべての録音はプライベートで暗号化されています。"
     }
   },
   "trialScreen": {

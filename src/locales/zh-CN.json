@@ -128,6 +128,9 @@
         "description": "你必须允许录音权限以录下你的回答",
         "buttonText": "允许"
       }
+    },
+    "recordScreen": {
+      "note": "所有录音是私密且经过加密的。"
     }
   },
   "trialScreen": {

@@ -128,6 +128,9 @@
         "description": "Devi permettere l'autorizzazione per registrare la tua risposta",
         "buttonText": "Permetti"
       }
+    },
+    "recordScreen": {
+      "note": "Tutte le registrazioni sono private e criptate."
     }
   },
   "trialScreen": {

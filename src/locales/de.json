@@ -128,6 +128,9 @@
         "description": "Du musst Berechtigungen erteilen, um deine Antwort aufzunehmen",
         "buttonText": "Erlauben"
       }
+    },
+    "recordScreen": {
+      "note": "Alle Aufnahmen sind privat und verschlüsselt."
     }
   },
   "trialScreen": {
