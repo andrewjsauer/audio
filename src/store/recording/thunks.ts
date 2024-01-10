@@ -2,10 +2,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
-import storage from '@react-native-firebase/storage';
 import functions from '@react-native-firebase/functions';
+import RNFS from 'react-native-fs';
 
-import { UserDataType, RecordingType } from '@lib/types';
+import { UserDataType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
 
 type saveUserRecordingArgs = {
@@ -16,6 +16,11 @@ type saveUserRecordingArgs = {
   duration: string;
 };
 
+const readAudioFile = async (filePath: string) => {
+  const fileContent = await RNFS.readFile(filePath, 'base64');
+  return fileContent;
+};
+
 export const saveUserRecording = createAsyncThunk(
   'recording/saveUserRecording',
   async (
@@ -23,72 +28,20 @@ export const saveUserRecording = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      const { id: userId, partnershipId } = userData;
-      const recordingId = `${userId}_${questionId}`;
+      const base64Data = await readAudioFile(recordPath);
 
-      const storageRef = storage().ref(`/recordings/${recordingId}.mp4`);
-
-      const blob = await fetch(recordPath).then((res) => res.blob());
-      const uploadTask = storageRef.put(blob);
-
-      return new Promise((resolve, reject) => {
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log(`Upload is ${progress}% done`);
-          },
-          (error) => {
-            crashlytics().recordError(error);
-            trackEvent('upload_recording_error', { error: error.message });
-            reject(rejectWithValue(error.message));
-          },
-          async () => {
-            try {
-              const audioUrl = await uploadTask.snapshot.ref.getDownloadURL();
-              const recordingData: RecordingType = {
-                audioUrl,
-                createdAt: firestore.Timestamp.now(),
-                didLikeQuestion: null,
-                duration,
-                feedbackText: null,
-                id: recordingId,
-                partnershipId,
-                questionId,
-                reaction: [],
-                userId,
-              };
-
-              await firestore()
-                .collection('recordings')
-                .doc(recordingId)
-                .set(recordingData, { merge: true });
-
-              if (partnerData.deviceIds?.length) {
-                await functions().httpsCallable('sendNotification')({
-                  tokens: partnerData.deviceIds,
-                  title: `${userData.name} answered today's question!`,
-                  body: 'Tap to listen to their answer.',
-                });
-              } else {
-                await functions().httpsCallable('sendSMS')({
-                  phoneNumber: partnerData.phoneNumber,
-                  body: `${userData.name} answered today's question on Daily Q’s! Download the app to listen to their answer. Link: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822`,
-                });
-              }
-
-              resolve({
-                ...recordingData,
-                createdAt: new Date(recordingData.createdAt._seconds * 1000),
-              });
-            } catch (error) {
-              crashlytics().recordError(error);
-              trackEvent('save_recording_error', { error: error.message });
-              reject(rejectWithValue(error.message));
-            }
-          },
-        );
+      const { data } = await functions().httpsCallable('saveRecording')({
+        base64Data,
+        duration,
+        partnerData,
+        questionId,
+        userData,
       });
+
+      return {
+        ...data,
+        createdAt: new Date(data.createdAt._seconds * 1000),
+      };
     } catch (error) {
       crashlytics().recordError(error);
       trackEvent('save_recording_error', { error: error.message });

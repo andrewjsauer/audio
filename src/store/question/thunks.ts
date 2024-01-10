@@ -23,10 +23,12 @@ const calculateQuestionIndex = (createdAt: Date) => {
 
   const start = convertDateToLocalStart(createdAt);
 
-  const now = startOfDay(new Date());
-  const index = differenceInDays(now, start);
+  const startOfDayUTC = startOfDay(new Date());
+  const today = convertDateToLocalStart(startOfDayUTC);
 
-  if (Number.isNaN(index)) return 0;
+  const index = differenceInDays(today, start);
+
+  trackEvent('calculate_question_index', { start, createdAt, index });
   return index;
 };
 
@@ -54,11 +56,6 @@ const formatQuestion = (data: QuestionType) => ({
 });
 
 const generateQuestion = async ({ partnerData, partnershipData, userData, usersLanguage }: any) => {
-  console.log('partnerData', partnerData);
-  console.log('partnershipData', partnershipData);
-  console.log('userData', userData);
-  console.log('usersLanguage', usersLanguage);
-
   const questionIndex = calculateQuestionIndex(partnershipData?.createdAt);
 
   const payload = {
@@ -127,15 +124,15 @@ export const fetchLatestQuestion = createAsyncThunk<
         });
       }
 
-      const latestQuestionId = partnershipData?.latestQuestionId || '';
-
-      const snapshot = await firestore()
+      const queriedDescQuestionSnapshot = await firestore()
         .collection('questions')
-        .where('id', '==', latestQuestionId)
+        .where('partnershipId', '==', partnershipData?.id)
+        .orderBy('createdAt', 'desc')
+        .limit(1)
         .get();
 
-      if (snapshot.empty) {
-        trackEvent('fetched_question_not_found');
+      if (queriedDescQuestionSnapshot.empty) {
+        trackEvent('fetched_desc_question_not_found');
 
         const newQuestion = await generateQuestion({
           partnerData,
@@ -153,26 +150,22 @@ export const fetchLatestQuestion = createAsyncThunk<
         };
       }
 
-      const latestQuestion = snapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          ...data,
-          id: doc.id,
-          createdAt: new Date(data.createdAt._seconds * 1000),
-        };
-      })[0];
+      const doc = queriedDescQuestionSnapshot.docs[0];
+      const fetchedQuestionData = {
+        ...doc.data(),
+        id: doc.id,
+        createdAt: new Date(doc.data().createdAt._seconds * 1000),
+      };
 
-      const latestQuestionLocalCreatedAt = convertDateToLocalStart(latestQuestion.createdAt);
-      if (latestQuestionLocalCreatedAt >= today) {
-        trackEvent('question_within_date_limit', {
-          latestQuestionId,
-          latestQuestion,
-          latestQuestionLocalCreatedAt,
+      const fetchQuestionCreatedAtLocal = convertDateToLocalStart(fetchedQuestionData.createdAt);
+      if (fetchQuestionCreatedAtLocal >= today) {
+        trackEvent('fetched_desc_question_within_date_limit', {
+          fetchedQuestionData,
           today,
         });
 
         return {
-          question: latestQuestion,
+          question: fetchedQuestionData,
           isNewQuestion: false,
         } as {
           question: QuestionType;
@@ -180,12 +173,12 @@ export const fetchLatestQuestion = createAsyncThunk<
         };
       }
 
-      trackEvent('question_out_of_date', {
-        latestQuestionId,
-        latestQuestion,
-        latestQuestionLocalCreatedAt,
+      trackEvent('fetched_desc_question_out_of_date', {
+        fetchQuestionCreatedAtLocal,
+        fetchedQuestionData,
         today,
       });
+
       const newQuestion = await generateQuestion({
         partnerData,
         partnershipData,

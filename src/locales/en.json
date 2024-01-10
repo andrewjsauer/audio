@@ -128,6 +128,9 @@
         "description": "You must allow permissions to record your answer",
         "buttonText": "Allow"
       }
+    },
+    "recordScreen": {
+      "note": "All recordings are private and encrypted"
     }
   },
   "trialScreen": {

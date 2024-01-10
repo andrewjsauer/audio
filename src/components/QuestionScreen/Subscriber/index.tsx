@@ -86,26 +86,30 @@ function SubscriberScreen() {
     }
   };
 
-  let content = (
-    <Question
-      partner={partnerData}
-      partnerReactionToUser={partnerReactionToUser}
-      partnerRecording={partnerRecording}
-      partnerStatus={partnerStatus}
-      text={currentQuestion?.text}
-      user={userData}
-      userReactionToPartner={userReactionToPartner}
-      userRecording={userRecording}
-      userStatus={userStatus}
-    />
-  );
-
-  if (isInitializing || isLoadingQuestion) {
-    content = <LoadingView />;
-  }
+  let content = null;
 
   if (error) {
     content = <ErrorView error={error} onRetry={handleRetry} />;
+  }
+
+  if (isInitializing || isLoadingQuestion || !currentQuestion) {
+    content = <LoadingView />;
+  }
+
+  if (currentQuestion) {
+    content = (
+      <Question
+        partner={partnerData}
+        partnerReactionToUser={partnerReactionToUser}
+        partnerRecording={partnerRecording}
+        partnerStatus={partnerStatus}
+        text={currentQuestion.text}
+        user={userData}
+        userReactionToPartner={userReactionToPartner}
+        userRecording={userRecording}
+        userStatus={userStatus}
+      />
+    );
   }
 
   return (

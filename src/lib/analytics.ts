@@ -3,7 +3,7 @@ import Config from 'react-native-config';
 
 let analyticsInstance: any | null = null;
 
-export const initializeAnalytics = async (userId?: string): Promise<void> => {
+export const initializeAnalytics = (userId?: string) => {
   if (__DEV__) return;
 
   try {
@@ -27,7 +27,7 @@ export const initializeAnalytics = async (userId?: string): Promise<void> => {
   }
 };
 
-export const trackScreen = async (screen: string): Promise<void> => {
+export const trackScreen = (screen: string) => {
   if (!analyticsInstance || __DEV__) {
     console.log('Analytics Screen', screen);
     return;
@@ -48,14 +48,16 @@ interface EventOptions {
   [key: string]: any;
 }
 
-export const trackEvent = async (event: string, options: EventOptions = {}): Promise<void> => {
+export const trackEvent = (event: string, options?: EventOptions) => {
   if (!analyticsInstance || __DEV__) {
     console.log('Analytics Track', event, options);
     return;
   }
 
+  const properties = options || {};
+
   try {
-    analyticsInstance.track(event, options);
+    analyticsInstance.track(event, properties);
   } catch (error) {
     if (error instanceof Error) {
       console.log('trackEvent error', error.message);
@@ -65,7 +67,7 @@ export const trackEvent = async (event: string, options: EventOptions = {}): Pro
   }
 };
 
-export const reset = async (): Promise<void> => {
+export const reset = () => {
   if (!analyticsInstance) {
     console.log('Analytics instance not initialized');
     return;

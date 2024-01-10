@@ -9,7 +9,7 @@ import { initializeSubscriber } from '@store/app/thunks';
 const useFetchQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [isFirstMount, setIsFirstMount] = useState(true);
-
+  const [appState, setAppState] = useState(AppState.currentState);
   const hasInitializedRef = useRef(false);
   const navigation = useNavigation();
 
@@ -20,9 +20,11 @@ const useFetchQuestion = () => {
   useEffect(() => {
     const handleAppStateChange = (nextAppState: string) => {
       if (isFirstMount) return;
+      setAppState(nextAppState);
 
       if (nextAppState === 'active' && !hasInitializedRef.current) {
         dispatch(initializeSubscriber());
+        hasInitializedRef.current = true;
       } else if (nextAppState === 'background') {
         hasInitializedRef.current = false;
       }
@@ -36,9 +38,8 @@ const useFetchQuestion = () => {
 
   useEffect(() => {
     const focusListener = navigation.addListener('focus', () => {
-      if (!hasInitializedRef.current) {
+      if (appState === 'active' && !hasInitializedRef.current) {
         dispatch(initializeSubscriber());
-        hasInitializedRef.current = true;
       }
     });
 
@@ -50,7 +51,9 @@ const useFetchQuestion = () => {
       focusListener();
       blurListener();
     };
-  }, []);
+  }, [appState]);
+
+  return null;
 };
 
 export default useFetchQuestion;

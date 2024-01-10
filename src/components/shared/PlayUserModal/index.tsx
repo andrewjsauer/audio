@@ -6,6 +6,9 @@ import { ActivityIndicator } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import KeepAwake from 'react-native-keep-awake';
+import functions from '@react-native-firebase/functions';
+import RNFS from 'react-native-fs';
+import base64 from 'react-native-base64';
 
 import { trackEvent, trackScreen } from '@lib/analytics';
 import { ReactionType } from '@lib/types';
@@ -23,9 +26,10 @@ import {
   PlayBackButton,
   PlayBackContainer,
   ReactionButton,
+  ReactionIcon,
+  SubTitle,
   Timer,
   Title,
-  ReactionIcon,
 } from './style';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -82,6 +86,7 @@ function PlayUserModal() {
     userId: string;
   };
 
+  const [tempFilePath, setTempFilePath] = useState<string | null>(null);
   const [selectedReaction, setSelectedReaction] = useState<ReactionType | null>(reaction || null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -95,13 +100,55 @@ function PlayUserModal() {
 
   useEffect(() => {
     return () => {
-      if (isPlaying) {
+      if (tempFilePath) {
+        KeepAwake.deactivate();
+
         audioRecorderPlayer.stopPlayer();
         audioRecorderPlayer.removePlayBackListener();
-        KeepAwake.deactivate();
+
+        RNFS.unlink(tempFilePath)
+          .then(() => {
+            setTempFilePath(null);
+          })
+          .catch((err) => {
+            trackEvent('unlink_error', {
+              error: err.message,
+            });
+
+            setTempFilePath(null);
+          });
       }
     };
-  }, [isPlaying]);
+  }, [tempFilePath]);
+
+  const fetchAndDecryptAudio = async (url: string) => {
+    try {
+      const { data } = await functions().httpsCallable('getRecording')({ audioUrl: url });
+      return data.audioData;
+    } catch (e) {
+      trackEvent('error_fetching_decryption_audio', {
+        error: e.message,
+      });
+
+      throw e;
+    }
+  };
+
+  const writeDecryptedDataToFile = async (decryptedData: any) => {
+    const path = `${RNFS.CachesDirectoryPath}/decryptedAudio.m4a`;
+
+    try {
+      const binaryData = base64.decode(decryptedData);
+
+      await RNFS.writeFile(path, binaryData, 'base64');
+    } catch (err) {
+      trackEvent('decryption_date_to_file_error');
+      throw err;
+    }
+
+    setTempFilePath(`file://${path}`);
+    return `file://${path}`;
+  };
 
   const onPlayPause = async () => {
     trackEvent('playback_button_clicked');
@@ -118,7 +165,25 @@ function PlayUserModal() {
 
         KeepAwake.deactivate();
       } else {
-        await audioRecorderPlayer.startPlayer(audioUrl);
+        let fileUri = tempFilePath;
+
+        if (!tempFilePath) {
+          const decryptedAudioData = await fetchAndDecryptAudio(audioUrl);
+          fileUri = await writeDecryptedDataToFile(decryptedAudioData);
+        }
+
+        if (fileUri) {
+          try {
+            await audioRecorderPlayer.startPlayer(fileUri);
+          } catch (e) {
+            trackEvent('start_player_error', {
+              error: e.message,
+            });
+          }
+        } else {
+          throw new Error('Failed to get file URI');
+        }
+
         audioRecorderPlayer.addPlayBackListener((e: any) => {
           setCurrentTime(formatTime(parseDuration(duration), e.currentPosition));
 
@@ -179,7 +244,11 @@ function PlayUserModal() {
       ) : (
         <>
           <Title>{questionText}</Title>
-          <Timer>{currentTime}</Timer>
+          {isPlaying ? (
+            <SubTitle>{currentTime}</SubTitle>
+          ) : (
+            <SubTitle>{t('questionScreen.recordScreen.note')}</SubTitle>
+          )}
           <PlayBackContainer>
             {isUsersPartner && (
               <>

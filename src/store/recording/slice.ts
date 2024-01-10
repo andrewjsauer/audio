@@ -9,6 +9,7 @@ import { saveUserRecording } from './thunks';
 
 interface RecordingState {
   isLoading: boolean;
+  lastFailedAction: object | null;
   partnerReactionToUser: ListeningType | null;
   partnerRecording: RecordingType | null;
   userReactionToPartner: ListeningType | null;
@@ -17,6 +18,7 @@ interface RecordingState {
 
 const initialState: RecordingState = {
   isLoading: false,
+  lastFailedAction: null,
   partnerReactionToUser: null,
   partnerRecording: null,
   userReactionToPartner: null,
@@ -50,9 +52,14 @@ const recordingSlice = createSlice({
     });
     builder.addCase(saveUserRecording.pending, (state) => {
       state.isLoading = true;
+      state.lastFailedAction = null;
     });
-    builder.addCase(saveUserRecording.rejected, (state) => {
+    builder.addCase(saveUserRecording.rejected, (state, action) => {
       state.isLoading = false;
+      state.lastFailedAction = {
+        type: saveUserRecording.typePrefix,
+        payload: action.meta.arg,
+      };
     });
     builder.addCase(fetchLatestQuestion.fulfilled, (state, action) => {
       if (action.payload.isNewQuestion) {
