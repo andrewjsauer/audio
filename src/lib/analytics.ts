@@ -1,9 +1,11 @@
 import { createClient } from '@segment/analytics-react-native';
 import Config from 'react-native-config';
 
+import { UserDataType } from '@lib/types';
+
 let analyticsInstance: any | null = null;
 
-export const initializeAnalytics = (userId?: string) => {
+export const initializeAnalytics = (userData?: UserDataType | null) => {
   if (__DEV__) return;
 
   try {
@@ -17,7 +19,7 @@ export const initializeAnalytics = (userId?: string) => {
       analyticsInstance.flush();
     }
 
-    if (userId) analyticsInstance.identify(userId);
+    if (userData) analyticsInstance.identify(userData.id, userData);
   } catch (error) {
     if (error instanceof Error) {
       console.log('initializeAnalytics error', error.message);
@@ -40,6 +42,23 @@ export const trackScreen = (screen: string) => {
       console.log('trackScreen error', error.message);
     } else {
       console.log('trackScreen error', error);
+    }
+  }
+};
+
+export const trackIdentify = (userData: UserDataType) => {
+  if (!analyticsInstance || __DEV__) {
+    console.log('Analytics Identify', userData);
+    return;
+  }
+
+  try {
+    analyticsInstance.identify(userData.id, userData);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log('trackIdentify error', error.message);
+    } else {
+      console.log('trackIdentify error', error);
     }
   }
 };
