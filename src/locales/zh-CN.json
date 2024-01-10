@@ -47,7 +47,12 @@
     "pleaseTryAgainLater": "请稍后再试",
     "signOutFailed": "当签出您时出现错误",
     "updatePartnershipFailed": "在更新您的合作伙伴关系时出了问题。",
-    "tooManyAttempts": "尝试次数过多，请等待再试。"
+    "tooManyAttempts": "尝试次数过多，请等待再试。",
+    "updateApp": {
+      "title": "更新要求",
+      "description": "请更新到最新版本的每日问题来继续使用该应用。",
+      "buttonText": "更新"
+    }
   },
   "browserScreen": {
     "title": "浏览器"

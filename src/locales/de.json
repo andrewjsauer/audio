@@ -47,7 +47,12 @@
     "pleaseTryAgainLater": "Bitte versuchen Sie es später erneut.",
     "signOutFailed": "Beim Abmelden ist etwas schiefgegangen",
     "updatePartnershipFailed": "Es ist etwas schiefgelaufen, als wir Ihre Partnerschaft aktualisiert haben.",
-    "tooManyAttempts": "Zu viele Versuche. Bitte warten Sie, um es erneut zu versuchen."
+    "tooManyAttempts": "Zu viele Versuche. Bitte warten Sie, um es erneut zu versuchen.",
+    "updateApp": {
+      "title": "Aktualisierung erforderlich",
+      "description": "Bitte aktualisieren Sie die App auf die neueste Version von Daily Q's, um sie weiterhin verwenden zu können.",
+      "buttonText": "Aktualisierung"
+    }
   },
   "browserScreen": {
     "title": "Browser"

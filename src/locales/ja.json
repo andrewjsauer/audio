@@ -47,7 +47,12 @@
     "pleaseTryAgainLater": "後でもう一度お試しください。",
     "signOutFailed": "サインアウト時に何か問題が発生しました。",
     "updatePartnershipFailed": "パートナーシップの更新時に何か問題が発生しました。",
-    "tooManyAttempts": "試行回数が多すぎます。再試行する前にお待ちください。"
+    "tooManyAttempts": "試行回数が多すぎます。再試行する前にお待ちください。",
+    "updateApp": {
+      "title": "アップデートが必要です。",
+      "description": "アプリを使用するには、Daily Q'sの最新バージョンにアップデートしてください。",
+      "buttonText": "アップデート"
+    }
   },
   "browserScreen": {
     "title": "ブラウザ"

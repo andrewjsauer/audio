@@ -47,7 +47,12 @@
     "pleaseTryAgainLater": "Si prega di riprovare più tardi",
     "signOutFailed": "Qualcosa è andato storto quando ti ho disconnesso",
     "updatePartnershipFailed": "Qualcosa è andato storto durante l'aggiornamento della tua partnership.",
-    "tooManyAttempts": "Troppi tentativi. Per favore, aspetta di riprovare."
+    "tooManyAttempts": "Troppi tentativi. Per favore, aspetta di riprovare.",
+    "updateApp": {
+      "title": "Aggiornamento richiesto",
+      "description": "Per favore, aggiorna all'ultima versione di Daily Q's per continuare a utilizzare l'app.",
+      "buttonText": "Aggiornamento"
+    }
   },
   "browserScreen": {
     "title": "Browser"

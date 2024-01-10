@@ -47,7 +47,12 @@
     "pleaseTryAgainLater": "Por favor, intenta de nuevo más tarde.",
     "signOutFailed": "Algo salió mal al cerrar sesión",
     "updatePartnershipFailed": "Algo salió mal al actualizar tu sociedad.",
-    "tooManyAttempts": "Demasiados intentos. Por favor, espera para volver a intentarlo."
+    "tooManyAttempts": "Demasiados intentos. Por favor, espera para volver a intentarlo.",
+    "updateApp": {
+      "title": "Actualización requerida",
+      "description": "Por favor, actualiza a la última versión de Daily Q's para seguir usando la aplicación.",
+      "buttonText": "Actualización"
+    }
   },
   "browserScreen": {
     "title": "Navegador"
