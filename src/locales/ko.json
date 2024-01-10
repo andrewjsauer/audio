@@ -128,6 +128,9 @@
         "description": "답변을 녹음하려면 권한을 허용해야 합니다",
         "buttonText": "허용"
       }
+    },
+    "recordScreen": {
+      "note": "모든 녹음은 개인적이며 암호화되어 있습니다."
     }
   },
   "trialScreen": {
