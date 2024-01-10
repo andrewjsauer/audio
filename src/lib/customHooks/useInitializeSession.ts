@@ -13,6 +13,7 @@ import { selectUserId, selectUser } from '@store/auth/selectors';
 
 import usePartnerSubscription from '@lib/customHooks/usePartnerSubscription';
 import usePartnershipSubscription from '@lib/customHooks/usePartnershipSubscription';
+import useAppVersionCheck from '@lib/customHooks/useAppVersionCheck';
 
 const useInitializeSession = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,6 +22,8 @@ const useInitializeSession = () => {
   const userId = useSelector(selectUserId);
 
   useAuthSubscription();
+
+  useAppVersionCheck();
 
   useEffect(() => {
     let userUnsubscribe = () => {};

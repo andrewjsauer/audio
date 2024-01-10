@@ -47,7 +47,12 @@
     "partnerAlreadyInUse": "This phone number is already in use",
     "signOutFailed": "Something went wrong when signing you out",
     "updatePartnershipFailed": "Something went wrong when updating your partnership",
-    "tooManyAttempts": "Too many attempts. Please wait to try again."
+    "tooManyAttempts": "Too many attempts. Please wait to try again.",
+    "updateApp": {
+      "title": "Update Required",
+      "description": "Please update to the latest version of Daily Q's to continue using the app.",
+      "buttonText": "Update"
+    }
   },
   "browserScreen": {
     "title": "Browser"
