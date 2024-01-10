@@ -10,6 +10,7 @@ import {
   selectIsLoading,
   selectLastFailedAction,
   selectTransactionError,
+  selectShouldUpdateApp,
 } from '@store/app/selectors';
 
 import { initializeSession } from '@store/app/thunks';
@@ -47,6 +48,7 @@ function App(): JSX.Element {
   const hasPreviouslySubscribed = useSelector(selectHasSubscribed);
   const transactionError = useSelector(selectTransactionError);
   const lastFailedAction = useSelector(selectLastFailedAction);
+  const shouldUpdateApp = useSelector(selectShouldUpdateApp);
 
   useInitializeSession();
 
@@ -67,7 +69,7 @@ function App(): JSX.Element {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || shouldUpdateApp) {
     return <LoadingView />;
   }
 

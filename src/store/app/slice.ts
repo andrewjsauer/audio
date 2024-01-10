@@ -8,6 +8,7 @@ export interface AppState {
   isPurchasing: boolean;
   lastFailedAction: object | null;
   transactionError: string | undefined | null;
+  shouldUpdateApp: boolean;
 }
 
 const initialState: AppState = {
@@ -16,6 +17,7 @@ const initialState: AppState = {
   isPurchasing: false,
   lastFailedAction: null,
   transactionError: null,
+  shouldUpdateApp: false,
 };
 
 const appSlice = createSlice({
@@ -27,6 +29,9 @@ const appSlice = createSlice({
     },
     setTransactionError: (state, action: PayloadAction<string | null>) => {
       state.transactionError = action.payload;
+    },
+    shouldUpdateAppVersion: (state, action: PayloadAction<boolean>) => {
+      state.shouldUpdateApp = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -81,5 +86,5 @@ const appSlice = createSlice({
   },
 });
 
-export const { setError, setTransactionError } = appSlice.actions;
+export const { setError, setTransactionError, shouldUpdateAppVersion } = appSlice.actions;
 export default appSlice.reducer;

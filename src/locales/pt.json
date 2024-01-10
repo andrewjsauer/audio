@@ -47,7 +47,12 @@
     "pleaseTryAgainLater": "Por favor, tente novamente mais tarde.",
     "signOutFailed": "Algo deu errado ao fazer o seu logout.",
     "updatePartnershipFailed": "Algo deu errado ao atualizar sua parceria.",
-    "tooManyAttempts": "Muitas tentativas. Por favor, aguarde para tentar novamente."
+    "tooManyAttempts": "Muitas tentativas. Por favor, aguarde para tentar novamente.",
+    "updateApp": {
+      "title": "Atualização necessária",
+      "description": "Por favor, atualize para a versão mais recente do Daily Q's para continuar usando o aplicativo.",
+      "buttonText": "Atualização"
+    }
   },
   "browserScreen": {
     "title": "Navegador"

@@ -47,7 +47,12 @@
     "pleaseTryAgainLater": "Veuillez réessayer ultérieurement.",
     "signOutFailed": "Quelque chose s'est mal passé lorsque nous avons essayé de vous déconnecter.",
     "updatePartnershipFailed": "Quelque chose s'est mal passé lors de la mise à jour de votre partenariat.",
-    "tooManyAttempts": "Trop de tentatives. Veuillez attendre pour réessayer."
+    "tooManyAttempts": "Trop de tentatives. Veuillez attendre pour réessayer.",
+    "updateApp": {
+      "title": "Mise à jour requise",
+      "description": "Veuillez mettre à jour vers la dernière version de Daily Q's pour continuer à utiliser l'application.",
+      "buttonText": "Mise à jour"
+    }
   },
   "browserScreen": {
     "title": "Navigateur"

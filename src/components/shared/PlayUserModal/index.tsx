@@ -163,6 +163,7 @@ function PlayUserModal() {
         setCurrentTime(duration);
 
         KeepAwake.deactivate();
+        trackEvent('playback_stopped');
       } else {
         let fileUri = tempFilePath;
 
