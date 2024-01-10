@@ -23,10 +23,12 @@ const calculateQuestionIndex = (createdAt: Date) => {
 
   const start = convertDateToLocalStart(createdAt);
 
-  const now = startOfDay(new Date());
-  const index = differenceInDays(now, start);
+  const startOfDayUTC = startOfDay(new Date());
+  const today = convertDateToLocalStart(startOfDayUTC);
 
-  if (Number.isNaN(index)) return 0;
+  const index = differenceInDays(today, start);
+
+  trackEvent('calculate_question_index', { start, createdAt, index });
   return index;
 };
 
@@ -54,11 +56,6 @@ const formatQuestion = (data: QuestionType) => ({
 });
 
 const generateQuestion = async ({ partnerData, partnershipData, userData, usersLanguage }: any) => {
-  console.log('partnerData', partnerData);
-  console.log('partnershipData', partnershipData);
-  console.log('userData', userData);
-  console.log('usersLanguage', usersLanguage);
-
   const questionIndex = calculateQuestionIndex(partnershipData?.createdAt);
 
   const payload = {

@@ -4,6 +4,8 @@ import { defineSecret } from 'firebase-functions/params';
 
 import { v4 as uuidv4 } from 'uuid';
 import { OpenAI } from 'openai';
+import fetch from 'cross-fetch';
+import crypto from 'crypto-js';
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
@@ -11,6 +13,7 @@ admin.initializeApp({
 });
 
 const openApiKey = defineSecret('OPEN_AI_API_KEY');
+const recordingEncryptionKey = defineSecret('RECORDING_ENCRYPTION_KEY');
 
 type RelationshipType =
   | 'stillGettingToKnowEachOther'
@@ -622,7 +625,7 @@ exports.deletePartnership = functions.https.onCall(async (data, context) => {
       const recordingData = doc.data();
       batch.delete(doc.ref);
 
-      admin.storage().bucket().file(`recordings/${recordingData.id}.mp4`).delete();
+      admin.storage().bucket().file(`recordings/${recordingData.id}.enc`).delete();
     });
 
     const listeningsRef = db
@@ -939,3 +942,292 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
     }
   }
 });
+
+exports.getRecording = functions
+  .runWith({ secrets: [recordingEncryptionKey] })
+  .https.onCall(async (data, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+    }
+
+    const encryptionKey = recordingEncryptionKey.value();
+    const { audioUrl } = data;
+
+    try {
+      const response = await fetch(audioUrl);
+      const encryptedDataBase64 = await response.text();
+
+      functions.logger.debug(`Encrypted data size: ${encryptedDataBase64.length} bytes`);
+
+      const decrypted = crypto.AES.decrypt(encryptedDataBase64, encryptionKey);
+      const decryptedData = crypto.enc.Base64.stringify(decrypted);
+
+      functions.logger.debug(`Decrypted data size: ${decryptedData.length} bytes`);
+
+      return { audioData: decryptedData };
+    } catch (error) {
+      throw new functions.https.HttpsError('internal', 'Error retrieving and decrypting recording');
+    }
+  });
+
+exports.saveRecording = functions
+  .runWith({ secrets: [recordingEncryptionKey] })
+  .https.onCall(async (data, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+    }
+
+    const encryptionKey = recordingEncryptionKey.value();
+
+    const { base64Data, questionId, userData, duration, partnerData } = data;
+    const { id: userId, partnershipId } = userData;
+    const recordingId = `${userId}_${questionId}`;
+
+    try {
+      functions.logger.debug(`Original Base64 data size: ${base64Data.length} characters`);
+      const encrypted = crypto.AES.encrypt(base64Data, encryptionKey).toString();
+      functions.logger.debug(`Encrypted Base64 data size: ${encrypted.length} characters`);
+
+      const storageRef = admin.storage().bucket().file(`recordings/${recordingId}.enc`);
+
+      await storageRef.save(encrypted, {
+        contentType: 'application/octet-stream',
+      });
+
+      const [audioUrl] = await storageRef.getSignedUrl({
+        action: 'read',
+        expires: '03-09-2491',
+      });
+
+      const recordingData = {
+        audioUrl,
+        createdAt: admin.firestore.Timestamp.now(),
+        didLikeQuestion: null,
+        duration,
+        feedbackText: null,
+        id: recordingId,
+        partnershipId,
+        questionId,
+        reaction: [],
+        userId,
+      };
+
+      await admin
+        .firestore()
+        .collection('recordings')
+        .doc(recordingId)
+        .set(recordingData, { merge: true });
+
+      if (partnerData.deviceIds?.length) {
+        await admin.messaging().sendMulticast({
+          tokens: partnerData.deviceIds,
+          notification: {
+            title: `${userData.name} answered today's question!`,
+            body: 'Tap to listen to their answer.',
+          },
+        });
+      } else {
+        await admin
+          .firestore()
+          .collection('sms')
+          .add({
+            phoneNumber: partnerData.phoneNumber,
+            body: `${userData.name} answered today's question on Daily Q’s! Download the app to listen to their answer. Link: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822`,
+          });
+      }
+
+      return { ...recordingData };
+    } catch (error: unknown) {
+      const e = error as {
+        response?: { status?: string; data?: object };
+        message?: string;
+      };
+
+      if (e.response) {
+        functions.logger.error(`Error status ${e.response.status}`);
+        functions.logger.error(`Error data ${JSON.stringify(e.response.data)}`);
+        throw new functions.https.HttpsError(
+          'unknown',
+          `Error saving recording: ${e.response.data}`,
+          e.response.data,
+        );
+      } else {
+        functions.logger.error(`Error message ${error}`);
+        throw new functions.https.HttpsError('unknown', `Error saving recording: ${error}`, error);
+      }
+    }
+  });
+
+// exports.dailyEveningReminder = functions.pubsub
+//   .schedule('0 20 * * *')
+//   .timeZone('America/Los_Angeles')
+//   .onRun(async () => {
+//     try {
+//       const db = admin.firestore();
+//       const partnerships = await db.collection('partnership').get();
+
+//       const evening = new Date();
+//       evening.setHours(20, 0, 0, 0);
+
+//       const sendNotifications = async (partnership: any) => {
+//         const partnershipId = partnership.id;
+//         const partnershipUsers = await db
+//           .collection('partnershipUser')
+//           .where('partnershipId', '==', partnershipId)
+//           .get();
+
+//         if (partnershipUsers.empty) {
+//           functions.logger.info(`No users found for partnership: ${partnershipId}`);
+//           return;
+//         }
+
+//         const userNotificationPromises = partnershipUsers.docs.map(async (doc) => {
+//           const { userId } = doc.data();
+//           const user = await db.collection('users').doc(userId).get();
+
+//           if (!user.exists) {
+//             functions.logger.info(`User not found: ${userId}`);
+//             return;
+//           }
+
+//           const { deviceIds } = user.data() as any;
+//           if (!deviceIds || deviceIds.length === 0) {
+//             return;
+//           }
+
+//           const today = new Date();
+//           today.setHours(0, 0, 0, 0);
+//           const userRecordings = await db
+//             .collection('recordings')
+//             .where('userId', '==', userId)
+//             .where('createdAt', '>=', today)
+//             .get();
+
+//           const hasUserAnswered = !userRecordings.empty;
+
+//           const partnerDoc = partnershipUsers.docs.find((d) => d.data().userId !== userId);
+//           if (!partnerDoc) {
+//             functions.logger.info(`Partner not found for user: ${userId}`);
+//             return;
+//           }
+
+//           const partnerId = partnerDoc.data().userId;
+//           const partner = await db.collection('users').doc(partnerId).get();
+//           const partnerData = partner.data() as any;
+//           const partnerName = partnerData.name;
+
+//           const partnerRecordings = await db
+//             .collection('recordings')
+//             .where('userId', '==', partnerId)
+//             .where('createdAt', '>=', today)
+//             .get();
+
+//           const hasPartnerAnswered = !partnerRecordings.empty;
+
+//           const title = 'Daily Q’s';
+//           let body = '';
+
+//           if (!hasUserAnswered && !hasPartnerAnswered) {
+//             body = 'Don’t forget to answer!';
+//           } else if (!hasUserAnswered && hasPartnerAnswered) {
+//             body = `Record and listen to ${partnerName}'s answer!`;
+//           } else {
+//             return; // No notification needed
+//           }
+
+//           return admin
+//             .messaging()
+//             .sendMulticast({
+//               tokens: deviceIds,
+//               notification: { title, body },
+//             })
+//             .then(() => {
+//               functions.logger.info(`Notification sent successfully for user: ${userId}`);
+//               return null;
+//             })
+//             .catch((error) => {
+//               functions.logger.error(`Error sending notification for user: ${error}`);
+//               return null;
+//             });
+//         });
+
+//         return Promise.all(userNotificationPromises);
+//       };
+
+//       await Promise.all(partnerships.docs.map(sendNotifications));
+//     } catch (error) {
+//       functions.logger.error('Error in dailyNoonReminder function:', error);
+//     }
+//   });
+
+// exports.dailyNoonReminder = functions.pubsub
+//   .schedule('0 12 * * *')
+//   .timeZone('America/Los_Angeles')
+//   .onRun(async () => {
+//     try {
+//       const db = admin.firestore();
+//       const partnerships = await db.collection('partnership').get();
+
+//       const noon = new Date();
+//       noon.setHours(12, 0, 0, 0);
+
+//       const sendNotifications = async (partnership: any) => {
+//         const partnershipId = partnership.id;
+//         const partnershipUsers = await db
+//           .collection('partnershipUser')
+//           .where('partnershipId', '==', partnershipId)
+//           .get();
+
+//         if (partnershipUsers.empty) {
+//           functions.logger.info(`No users found for partnership: ${partnershipId}`);
+//           return;
+//         }
+
+//         const userNotificationPromises = partnershipUsers.docs.map(async (doc) => {
+//           const { userId } = doc.data();
+//           const user = await db.collection('users').doc(userId).get();
+
+//           if (!user.exists) {
+//             functions.logger.info(`User not found: ${userId}`);
+//             return;
+//           }
+
+//           const { deviceIds } = user.data() as any;
+//           if (!deviceIds || deviceIds.length === 0) {
+//             return;
+//           }
+
+//           const { isSubscribed, lastActiveAt } = user.data() as any;
+//           const lastActiveAtDate = lastActiveAt.toDate();
+
+//           if (isSubscribed && lastActiveAtDate < noon) {
+//             return admin
+//               .messaging()
+//               .sendMulticast({
+//                 tokens: deviceIds,
+//                 notification: {
+//                   title: "Today's Question",
+//                   body: 'Tap to see what question you are getting today',
+//                 },
+//               })
+//               .then((response) => {
+//                 functions.logger.info(`Notification sent successfully for user: ${response}`);
+//                 return null;
+//               })
+//               .catch((error) => {
+//                 functions.logger.error(`Error sending notification for user: ${error}`);
+//                 return null;
+//               });
+//           }
+
+//           functions.logger.info(`No notification needed for user: ${userId}`);
+//         });
+
+//         return Promise.all(userNotificationPromises);
+//       };
+
+//       await Promise.all(partnerships.docs.map(sendNotifications));
+//     } catch (error) {
+//       functions.logger.error('Error in dailyNoonReminder function:', error);
+//     }
+//   });

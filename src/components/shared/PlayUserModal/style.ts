@@ -9,7 +9,7 @@ export const Title = styled.Text`
   padding: 0 10px;
 `;
 
-export const Timer = styled.Text`
+export const SubTitle = styled.Text`
   font-family: ${(p) => p.theme.fonts.bold};
   font-size: ${(p) => p.theme.fontSizes.regular};
   color: ${(p) => p.theme.colors.lightGray};

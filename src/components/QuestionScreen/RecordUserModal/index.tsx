@@ -32,14 +32,14 @@ import { trackEvent } from '@lib/analytics';
 
 import PermissionNotification from './PermissionNotification';
 import {
-  RecordButton,
-  SecondaryButton,
-  SecondaryButtonText,
-  RecordContainer,
-  Title,
-  Timer,
   PermissionNotificationContainer,
   PostRecordContainer,
+  SubTitle,
+  RecordButton,
+  RecordContainer,
+  SecondaryButton,
+  SecondaryButtonText,
+  Title,
 } from './style';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -68,7 +68,7 @@ function RecordUserModal() {
   useEffect(() => {
     if (userRecording) {
       trackEvent('question_recorded', { question_id: currentQuestion.id });
-      navigation.goBack();
+      setTimeout(() => navigation.goBack(), 0);
     }
   }, [userRecording]);
 
@@ -268,7 +268,11 @@ function RecordUserModal() {
   return (
     <Modal>
       <Title>{currentQuestion.text}</Title>
-      <Timer>{recordTime}</Timer>
+      {isRecording || isPlaying ? (
+        <SubTitle>{recordTime}</SubTitle>
+      ) : (
+        <SubTitle>{t('questionScreen.recordScreen.note')}</SubTitle>
+      )}
       {recordContent}
       {buttonContent}
     </Modal>
