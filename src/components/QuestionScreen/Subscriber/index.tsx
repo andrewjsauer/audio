@@ -92,7 +92,7 @@ function SubscriberScreen() {
     content = <ErrorView error={error} onRetry={handleRetry} />;
   } else if (isInitializing || isLoadingQuestion) {
     content = <LoadingView />;
-  } else if (currentQuestion) {
+  } else if (currentQuestion && currentQuestion.text) {
     content = (
       <Question
         partner={partnerData}

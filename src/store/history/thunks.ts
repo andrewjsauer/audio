@@ -25,7 +25,7 @@ async function getRecordingData(recordings: RecordingType[], userId: string, par
 
       return listeningSnapshot.empty ? null : listeningSnapshot.docs[0].data().reaction;
     } catch (error) {
-      trackEvent('fetch_reaction_error', { error });
+      trackEvent('fetch_reaction_error', { error: error.message });
       crashlytics().recordError(error);
       return null;
     }
@@ -184,7 +184,7 @@ export const fetchHistoryData = createAsyncThunk(
 
       return { questions: historyData, lastDocSnapshot: lastDocData };
     } catch (error) {
-      trackEvent('history_fetch_error', { error });
+      trackEvent('history_fetch_error', { error: error.message });
       crashlytics().recordError(error);
       return rejectWithValue(error);
     }
@@ -292,9 +292,9 @@ export const fetchMoreHistoryData = createAsyncThunk(
 
       return { questions: moreHistoryData, lastDocSnapshot: lastDocData };
     } catch (error) {
-      trackEvent('history_fetch_more_history_data_error', { error });
+      trackEvent('history_fetch_more_history_data_error', { error: error.message });
       crashlytics().recordError(error);
-      return rejectWithValue(error);
+      return rejectWithValue(error.message);
     }
   },
 );

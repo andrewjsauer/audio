@@ -21,7 +21,7 @@ export const submitPhoneNumber = createAsyncThunk<FirebaseAuthTypes.Confirmation
     try {
       return await auth().signInWithPhoneNumber(phoneNumber);
     } catch (error) {
-      trackEvent('submit_phone_number_error', { error });
+      trackEvent('submit_phone_number_error', { error: error.message });
       crashlytics().recordError(error);
 
       const errorMessage = error?.toString();
@@ -46,7 +46,7 @@ export const resendCode = createAsyncThunk<FirebaseAuthTypes.ConfirmationResult,
     try {
       return await auth().signInWithPhoneNumber(phoneNumber, true);
     } catch (error) {
-      trackEvent('resend_code_error', { error });
+      trackEvent('resend_code_error', { error: error.message });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);
@@ -84,7 +84,7 @@ export const verifyCode = createAsyncThunk(
       initializeAnalytics(userData);
       return { user: currentUser, userData };
     } catch (error) {
-      trackEvent('verify_code_error', { error });
+      trackEvent('verify_code_error', { error: error.message });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);
@@ -132,7 +132,7 @@ export const generatePartnership = createAsyncThunk(
         },
       };
     } catch (error) {
-      trackEvent('generate_partnership_error', { error });
+      trackEvent('generate_partnership_error', { error: error.message });
       crashlytics().recordError(error);
 
       const errorMessage = error?.toString();
@@ -159,7 +159,7 @@ export const updateUser = createAsyncThunk(
 
       return userDetails;
     } catch (error) {
-      trackEvent('update_user_data_error', { error });
+      trackEvent('update_user_data_error', { error: error.message });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);
@@ -169,7 +169,7 @@ export const updateUser = createAsyncThunk(
 
 export const updateNewUser = createAsyncThunk(
   'auth/updateNewUser',
-  async ({ id, userDetails, tempId }: UpdateUserArgs, { rejectWithValue, dispatch }) => {
+  async ({ id, userDetails, tempId }: UpdateUserArgs, { rejectWithValue }) => {
     const userPayload = {
       ...userDetails,
       birthDate: firestore.Timestamp.fromDate(userDetails.birthDate as Date),
@@ -201,7 +201,7 @@ export const updateNewUser = createAsyncThunk(
         partnershipData,
       };
     } catch (error) {
-      trackEvent('update_new_user_data_error', { error });
+      trackEvent('update_new_user_data_error', { error: error.message });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);
@@ -229,7 +229,7 @@ export const deleteRelationship = createAsyncThunk(
 
       return null;
     } catch (error) {
-      trackEvent('delete_relationship_error', { error });
+      trackEvent('delete_relationship_error', { error: error.message });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);

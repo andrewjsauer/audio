@@ -5,6 +5,11 @@ import { UserDataType } from '@lib/types';
 
 let analyticsInstance: any | null = null;
 
+const convertToDate = (timestamp: any) => {
+  if (!timestamp) return null;
+  return new Date((timestamp.seconds || timestamp._seconds) * 1000);
+};
+
 export const initializeAnalytics = (userData?: UserDataType | null) => {
   if (__DEV__) return;
 
@@ -19,7 +24,23 @@ export const initializeAnalytics = (userData?: UserDataType | null) => {
       analyticsInstance.flush();
     }
 
-    if (userData) analyticsInstance.identify(userData.id, userData);
+    if (userData) {
+      const birthDate = convertToDate(userData.birthDate);
+      const createdAt = convertToDate(userData.createdAt);
+      const lastActiveAt = convertToDate(userData.lastActiveAt);
+
+      const userPayload = {
+        ...userData,
+        createdAt,
+        birthDate,
+        lastActiveAt,
+      };
+
+      delete userPayload.deviceIds;
+
+      const userId = userData.id;
+      analyticsInstance.identify(userId, userPayload);
+    }
   } catch (error) {
     if (error instanceof Error) {
       console.log('initializeAnalytics error', error.message);
@@ -53,7 +74,21 @@ export const trackIdentify = (userData: UserDataType) => {
   }
 
   try {
-    analyticsInstance.identify(userData.id, userData);
+    const birthDate = convertToDate(userData.birthDate);
+    const createdAt = convertToDate(userData.createdAt);
+    const lastActiveAt = convertToDate(userData.lastActiveAt);
+
+    const userPayload = {
+      ...userData,
+      createdAt,
+      birthDate,
+      lastActiveAt,
+    };
+
+    delete userPayload.deviceIds;
+
+    const userId = userData.id;
+    analyticsInstance.identify(userId, userPayload);
   } catch (error) {
     if (error instanceof Error) {
       console.log('trackIdentify error', error.message);

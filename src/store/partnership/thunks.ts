@@ -27,7 +27,7 @@ export const updatePartnership = createAsyncThunk(
       await firestore().collection('partnership').doc(id).set(partnershipDetails, { merge: true });
       return partnershipDetails;
     } catch (error) {
-      trackEvent('update_partnership_failed', { error });
+      trackEvent('update_partnership_failed', { error: error.message });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);
@@ -60,10 +60,10 @@ export const fetchPartnership = createAsyncThunk(
       trackEvent('partnership_not_found');
       return rejectWithValue('Partnership not found');
     } catch (error) {
-      trackEvent('partnership_fetch_error', { error });
+      trackEvent('partnership_fetch_error', { error: error.message });
       crashlytics().recordError(error);
 
-      return rejectWithValue(error);
+      return rejectWithValue(error.message);
     }
   },
 );
@@ -87,10 +87,10 @@ export const fetchPartnershipUser = createAsyncThunk(
       trackEvent('partnership_user_not_found');
       return null;
     } catch (error) {
-      trackEvent('partnership_user_fetch_error', { error });
+      trackEvent('partnership_user_fetch_error', { error: error.message });
       crashlytics().recordError(error);
 
-      return rejectWithValue(error);
+      return rejectWithValue(error.message);
     }
   },
 );
@@ -117,9 +117,9 @@ export const fetchPartnerData = createAsyncThunk(
 
       return null;
     } catch (error) {
-      trackEvent('partnership_data_fetch_error', { error });
+      trackEvent('partnership_data_fetch_error', { error: error.message });
       crashlytics().recordError(error);
-      return rejectWithValue(error);
+      return rejectWithValue(error.message);
     }
   },
 );
