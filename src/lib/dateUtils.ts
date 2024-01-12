@@ -1,6 +1,6 @@
 import { parseISO } from 'date-fns';
 
-export const convertDateToLocalStart = (date: Date) => {
+export const convertDateToLocal = (date: Date) => {
   const createdAtDate = typeof date === 'string' ? parseISO(date) : new Date(date);
 
   // Get the timezone offset in minutes, then convert it to milliseconds.
