@@ -60,6 +60,7 @@ const formatQuestion = (data: QuestionType) => ({
 
 const generateQuestion = async ({ partnerData, partnershipData, userData, usersLanguage }: any) => {
   const questionIndex = calculateQuestionIndex(partnershipData?.createdAt);
+  trackEvent('generate_question', { questionIndex });
 
   const payload = {
     questionIndex,
@@ -169,7 +170,7 @@ export const fetchLatestQuestion = createAsyncThunk<
 
         return {
           question: fetchedQuestionData,
-          isNewQuestion: false,
+          isNewQuestion: true,
         } as {
           question: QuestionType;
           isNewQuestion: boolean;
