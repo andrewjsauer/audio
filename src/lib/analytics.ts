@@ -25,21 +25,34 @@ export const initializeAnalytics = (userData?: UserDataType | null) => {
     }
 
     if (userData) {
-      const birthDate = convertToDate(userData.birthDate);
-      const createdAt = convertToDate(userData.createdAt);
-      const lastActiveAt = convertToDate(userData.lastActiveAt);
-
-      const userPayload = {
-        ...userData,
-        createdAt,
+      const {
         birthDate,
+        createdAt,
+        hasSubscribed,
+        isRegistered,
+        isSubscribed,
         lastActiveAt,
-      };
+        name,
+        partnershipId,
+        phoneNumber,
+      } = userData;
 
-      delete userPayload.deviceIds;
+      const birthDateConverted = convertToDate(birthDate);
+      const createdAtConverted = convertToDate(createdAt);
+      const lastActiveAtConverted = convertToDate(lastActiveAt);
 
       const userId = userData.id;
-      analyticsInstance.identify(userId, userPayload);
+      analyticsInstance.identify(userId, {
+        birthDate: birthDateConverted,
+        createdAt: createdAtConverted,
+        hasSubscribed,
+        isRegistered,
+        isSubscribed,
+        lastActiveAt: lastActiveAtConverted,
+        name,
+        partnershipId,
+        phoneNumber,
+      });
     }
   } catch (error) {
     if (error instanceof Error) {
@@ -74,21 +87,34 @@ export const trackIdentify = (userData: UserDataType) => {
   }
 
   try {
-    const birthDate = convertToDate(userData.birthDate);
-    const createdAt = convertToDate(userData.createdAt);
-    const lastActiveAt = convertToDate(userData.lastActiveAt);
-
-    const userPayload = {
-      ...userData,
-      createdAt,
+    const {
       birthDate,
+      createdAt,
+      hasSubscribed,
+      isRegistered,
+      isSubscribed,
       lastActiveAt,
-    };
+      name,
+      partnershipId,
+      phoneNumber,
+    } = userData;
 
-    delete userPayload.deviceIds;
+    const birthDateConverted = convertToDate(birthDate);
+    const createdAtConverted = convertToDate(createdAt);
+    const lastActiveAtConverted = convertToDate(lastActiveAt);
 
     const userId = userData.id;
-    analyticsInstance.identify(userId, userPayload);
+    analyticsInstance.identify(userId, {
+      birthDate: birthDateConverted,
+      createdAt: createdAtConverted,
+      hasSubscribed,
+      isRegistered,
+      isSubscribed,
+      lastActiveAt: lastActiveAtConverted,
+      name,
+      partnershipId,
+      phoneNumber,
+    });
   } catch (error) {
     if (error instanceof Error) {
       console.log('trackIdentify error', error.message);
