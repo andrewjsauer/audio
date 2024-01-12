@@ -35,6 +35,7 @@ export const initializeAnalytics = (userData?: UserDataType | null) => {
         name,
         partnershipId,
         phoneNumber,
+        id,
       } = userData;
 
       const birthDateConverted = convertToDate(birthDate);
@@ -52,6 +53,7 @@ export const initializeAnalytics = (userData?: UserDataType | null) => {
         name,
         partnershipId,
         phoneNumber,
+        id,
       });
     }
   } catch (error) {
@@ -97,6 +99,7 @@ export const trackIdentify = (userData: UserDataType) => {
       name,
       partnershipId,
       phoneNumber,
+      id,
     } = userData;
 
     const birthDateConverted = convertToDate(birthDate);
@@ -114,6 +117,7 @@ export const trackIdentify = (userData: UserDataType) => {
       name,
       partnershipId,
       phoneNumber,
+      id,
     });
   } catch (error) {
     if (error instanceof Error) {
