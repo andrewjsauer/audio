@@ -21,12 +21,13 @@ interface FetchLatestQuestionArgs {
 export const calculateQuestionIndex = (createdAt: Date) => {
   if (!createdAt) return 0;
 
-  const createdAtLocal = convertDateToLocal(createdAt);
+  const createdAtLocal = convertDateToLocal(new Date(createdAt));
+  const todayLocal = convertDateToLocal(new Date());
 
-  const startOfDayUTC = startOfDay(new Date());
-  const today = convertDateToLocal(startOfDayUTC);
+  const startOfDayCreatedAt = startOfDay(createdAtLocal);
+  const startOfDayToday = startOfDay(todayLocal);
 
-  const diffInMillis = today - createdAtLocal;
+  const diffInMillis = startOfDayToday - startOfDayCreatedAt;
   let index = Math.floor(diffInMillis / (1000 * 60 * 60 * 24));
   index = Math.max(0, index);
 
