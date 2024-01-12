@@ -106,7 +106,7 @@ export const initializeSession = createAsyncThunk(
   'app/initializeSession',
   async (user: FirebaseAuthTypes.User, { rejectWithValue }) => {
     try {
-      initializeAnalytics(user.uid);
+      initializeAnalytics(null);
 
       if (__DEV__) Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
 
