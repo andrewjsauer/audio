@@ -6,7 +6,7 @@ import functions from '@react-native-firebase/functions';
 import { startOfDay, differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 import i18n from 'i18next';
 
-import { convertDateToLocalStart } from '@lib/dateUtils';
+import { convertDateToLocal } from '@lib/dateUtils';
 import { PartnershipDataType, QuestionType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
 
@@ -18,17 +18,19 @@ interface FetchLatestQuestionArgs {
   partnershipData: PartnershipDataType;
 }
 
-const calculateQuestionIndex = (createdAt: Date) => {
+export const calculateQuestionIndex = (createdAt: Date) => {
   if (!createdAt) return 0;
 
-  const start = convertDateToLocalStart(createdAt);
+  const createdAtLocal = convertDateToLocal(createdAt);
 
   const startOfDayUTC = startOfDay(new Date());
-  const today = convertDateToLocalStart(startOfDayUTC);
+  const today = convertDateToLocal(startOfDayUTC);
 
-  const index = differenceInDays(today, start);
+  const diffInMillis = today - createdAtLocal;
+  let index = Math.floor(diffInMillis / (1000 * 60 * 60 * 24));
+  index = Math.max(0, index);
 
-  trackEvent('calculate_question_index', { start, createdAt, index });
+  trackEvent('calculate_question_index', { createdAtLocal, createdAt, index });
   return index;
 };
 
@@ -91,7 +93,7 @@ export const fetchLatestQuestion = createAsyncThunk<
     try {
       const state = getState();
       const startOfDayUTC = startOfDay(new Date());
-      const today = convertDateToLocalStart(startOfDayUTC);
+      const today = convertDateToLocal(startOfDayUTC);
 
       const userData = selectUserData(state);
       const currentQuestion = selectCurrentQuestion(state);
@@ -99,7 +101,7 @@ export const fetchLatestQuestion = createAsyncThunk<
       const currentLanguage = i18n.language;
 
       if (currentQuestion) {
-        const currentQuestionLocalCreatedAt = convertDateToLocalStart(currentQuestion.createdAt);
+        const currentQuestionLocalCreatedAt = convertDateToLocal(currentQuestion.createdAt);
 
         if (currentQuestionLocalCreatedAt >= today) {
           trackEvent('current_question_within_date_limit', {
@@ -157,7 +159,7 @@ export const fetchLatestQuestion = createAsyncThunk<
         createdAt: new Date(doc.data().createdAt._seconds * 1000),
       };
 
-      const fetchQuestionCreatedAtLocal = convertDateToLocalStart(fetchedQuestionData.createdAt);
+      const fetchQuestionCreatedAtLocal = convertDateToLocal(fetchedQuestionData.createdAt);
       if (fetchQuestionCreatedAtLocal >= today) {
         trackEvent('fetched_desc_question_within_date_limit', {
           fetchedQuestionData,

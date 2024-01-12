@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
-import crashlytics from '@react-native-firebase/crashlytics';
 
 import { RootScreens, AppScreens } from '@lib/types';
 
@@ -23,7 +22,6 @@ const Stack = createStackNavigator<RootStackParamList>();
 function App(): JSX.Element {
   useEffect(() => {
     SplashScreen.hide();
-    crashlytics().log('Application mounted');
   }, []);
 
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
