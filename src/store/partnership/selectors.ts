@@ -1,3 +1,5 @@
+import { createSelector } from 'reselect';
+
 export const selectError = (state) => state.partnership.error;
 export const selectIsLoading = (state) => state.partnership.isLoading;
 export const selectLastFailedAction = (state) => state.partnership.lastFailedAction;
@@ -6,3 +8,8 @@ export const selectPartnerData = (state) => state.partnership.partnerData;
 export const selectPartnerName = (state) => state.partnership.partnerData?.name;
 export const selectPartnershipData = (state) => state.partnership.partnershipData;
 export const selectPartnershipUserData = (state) => state.partnership.partnershipUserData;
+
+export const selectPartnershipTimeZone = createSelector(
+  selectPartnershipData,
+  (partnershipData) => partnershipData?.timeZone || 'America/Los_Angeles',
+);

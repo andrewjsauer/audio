@@ -54,13 +54,13 @@ export const OptionColor = styled.View<{ color: string }>`
 
 export const Footer = styled.View`
   align-items: center;
-  padding: 16px 0;
+  padding-bottom: 8px;
 `;
 
 export const SignOutButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
-  padding: 20px 0;
+  padding: 16px 0;
   border-top-width: 1px;
   border-bottom-width: 1px;
   border-top-color: ${(p) => p.theme.colors.lighterGray};
@@ -77,7 +77,7 @@ export const SignOutText = styled.Text`
 export const DeleteAccountButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
-  padding: 20px 0;
+  padding: 16px 0;
   border-top-width: 1px;
   border-top-color: ${(p) => p.theme.colors.lighterGray};
   width: 100%;
@@ -93,7 +93,7 @@ export const LegalContainer = styled.View`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 20px 0;
+  padding: 12px 0;
   width: 100%;
 `;
 
@@ -141,6 +141,13 @@ export const languageContainer = styled.View`
 
 export const RelationshipTypeContainer = styled.View`
   padding: 0 30px;
+  width: 100%;
+  flex: 1;
+  justify-content: center;
+`;
+
+export const TimeZoneContainer = styled.View`
+  padding: 0 12px;
   width: 100%;
   flex: 1;
   justify-content: center;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { endOfDay, differenceInSeconds } from 'date-fns';
+import moment from 'moment-timezone';
 
-const useTimeRemainingToMidnight = () => {
+const useTimeRemainingToMidnight = (timeZone: string) => {
   const [timeRemaining, setTimeRemaining] = useState('');
 
   const formatTime = (totalSeconds: number) => {
@@ -16,9 +16,9 @@ const useTimeRemainingToMidnight = () => {
 
   useEffect(() => {
     const calculateTimeRemaining = () => {
-      const now = new Date();
-      const midnight = endOfDay(now);
-      const diffInSeconds = differenceInSeconds(midnight, now);
+      const now = moment.tz(timeZone);
+      const midnight = now.clone().endOf('day');
+      const diffInSeconds = midnight.diff(now, 'seconds');
 
       return formatTime(diffInSeconds);
     };
@@ -28,9 +28,10 @@ const useTimeRemainingToMidnight = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [timeZone]);
 
-  return timeRemaining;
+  const timeZoneAbbreviation = moment.tz(timeZone).zoneAbbr();
+  return { time: timeRemaining, countryCode: timeZoneAbbreviation };
 };
 
 export default useTimeRemainingToMidnight;

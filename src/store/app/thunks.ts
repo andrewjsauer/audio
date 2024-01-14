@@ -53,7 +53,7 @@ export const initializeSubscriber = createAsyncThunk(
       return null;
     } catch (error) {
       crashlytics().log('Error initializing subscriber');
-      trackEvent('error_initializing_subscriber', { error });
+      trackEvent('error_initializing_subscriber', { error: error.message });
 
       return rejectWithValue(error.message);
     }
@@ -106,7 +106,7 @@ export const initializeSession = createAsyncThunk(
   'app/initializeSession',
   async (user: FirebaseAuthTypes.User, { rejectWithValue }) => {
     try {
-      initializeAnalytics(user.uid);
+      initializeAnalytics(null);
 
       if (__DEV__) Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
 
@@ -128,7 +128,7 @@ export const initializeSession = createAsyncThunk(
       return null;
     } catch (error) {
       crashlytics().log('Error initializing session');
-      trackEvent('error_initializing_session', { error });
+      trackEvent('error_initializing_session', { error: error.message });
 
       return rejectWithValue(error.message);
     }
@@ -176,7 +176,7 @@ export const purchaseProduct = createAsyncThunk(
             );
           }
         } catch (error) {
-          trackEvent('error_purchasing_promo', { error });
+          trackEvent('error_purchasing_promo', { error: error.message });
         }
       }
 
@@ -204,7 +204,7 @@ export const purchaseProduct = createAsyncThunk(
       }
 
       crashlytics().log('Error purchasing product');
-      trackEvent('error_purchasing_product', { error });
+      trackEvent('error_purchasing_product', { error: error.message });
 
       return rejectWithValue(error.message);
     }
@@ -225,7 +225,7 @@ export const restorePurchases = createAsyncThunk(
       }
 
       crashlytics().log('Error restoring purchases');
-      trackEvent('error_restoring_purchases', { error });
+      trackEvent('error_restoring_purchases', { error: error.message });
 
       return rejectWithValue(error.message);
     }

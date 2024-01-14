@@ -9,13 +9,15 @@ import ColorScreen from './ColorScreen';
 import NameScreen from './NameScreen';
 import LanguageScreen from './LanguageScreen';
 import RelationshipTypeScreen from './RelationshipTypeScreen';
+import TimeZoneScreen from './TimeZoneScreen';
 
 export type AccountStackParamList = {
-  [AccountScreens.SettingsScreen]: typeof SettingsScreen;
   [AccountScreens.ColorScreen]: typeof SettingsScreen;
-  [AccountScreens.NameScreen]: typeof SettingsScreen;
   [AccountScreens.LanguageScreen]: typeof LanguageScreen;
+  [AccountScreens.NameScreen]: typeof SettingsScreen;
   [AccountScreens.RelationshipTypeScreen]: typeof RelationshipTypeScreen;
+  [AccountScreens.SettingsScreen]: typeof SettingsScreen;
+  [AccountScreens.TimeZoneScreen]: typeof TimeZoneScreen;
 };
 
 const Stack = createStackNavigator<AccountStackParamList>();
@@ -50,6 +52,11 @@ function AccountScreenContainer() {
       <Stack.Screen
         component={RelationshipTypeScreen}
         name={AccountScreens.RelationshipTypeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={TimeZoneScreen}
+        name={AccountScreens.TimeZoneScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

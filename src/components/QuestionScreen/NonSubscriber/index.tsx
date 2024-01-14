@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import firestore from '@react-native-firebase/firestore';
 
 import { trackScreen } from '@lib/analytics';
 import { QuestionStatusType } from '@lib/types';
@@ -35,7 +34,7 @@ function NonSubscribedScreen() {
           partnerRecording={{
             id: 'partnerRecordingId',
             userId: 'partnerId',
-            createdAt: firestore.Timestamp.fromDate(new Date()),
+            createdAt: new Date(),
             partnershipId: 'partnershipId',
             audioUrl: '',
             duration: '10',
@@ -46,7 +45,7 @@ function NonSubscribedScreen() {
           userReactionToPartner={null}
           userRecording={{
             userId: 'userId',
-            createdAt: firestore.Timestamp.fromDate(new Date()),
+            createdAt: new Date(),
             partnershipId: 'partnershipId',
             audioUrl: '',
             duration: '10',

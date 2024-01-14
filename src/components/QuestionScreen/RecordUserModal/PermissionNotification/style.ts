@@ -7,7 +7,7 @@ export const Container = styled.View`
   margin: 0 8px;
   padding: 12px 16px;
   border-radius: 10px;
-  background-color: ${(p) => p.theme.colors.error};
+  background-color: ${(p) => p.theme.colors.burntOrange};
 `;
 
 export const Content = styled.View`
@@ -40,7 +40,7 @@ export const Button = styled.TouchableOpacity`
 
 export const ButtonText = styled.Text`
   padding: 8px 20px;
-  color: ${(p) => p.theme.colors.error};
+  color: ${(p) => p.theme.colors.burntOrange};
   font-family: ${(p) => p.theme.fonts.bold};
   font-size: ${(p) => p.theme.fontSizes.small};
 `;

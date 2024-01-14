@@ -30,7 +30,7 @@ export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
       case 'dark':
         return theme.colors.gray;
       case 'error':
-        return theme.colors.error;
+        return theme.colors.burntOrange;
       default:
         return theme.colors.gray;
     }

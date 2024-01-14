@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { OpenAI } from 'openai';
 import fetch from 'cross-fetch';
 import crypto from 'crypto-js';
+import moment from 'moment-timezone';
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
@@ -791,7 +792,7 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
   const { userDetails, partnerDetails, partnershipDetails } = data;
   const userId = context.auth.uid;
 
-  const { type, startDate } = partnershipDetails;
+  const { type, startDate, timeZone = 'America/Los_Angeles' } = partnershipDetails;
 
   try {
     const batch = admin.firestore().batch();
@@ -829,6 +830,7 @@ exports.generatePartnership = functions.https.onCall(async (data, context) => {
       id: partnershipId,
       latestQuestionId: null,
       startDate,
+      timeZone,
       type,
     };
     batch.set(partnershipRef, partnershipData, { merge: true });
@@ -980,6 +982,8 @@ exports.saveRecording = functions
     const encryptionKey = recordingEncryptionKey.value();
 
     const { base64Data, questionId, userData, duration, partnerData } = data;
+    functions.logger.info(`Data: ${JSON.stringify(data)}`);
+
     const { id: userId, partnershipId } = userData;
     const recordingId = `${userId}_${questionId}`;
 
@@ -1018,7 +1022,7 @@ exports.saveRecording = functions
         .doc(recordingId)
         .set(recordingData, { merge: true });
 
-      if (partnerData.deviceIds?.length) {
+      if (partnerData.deviceIds && partnerData.deviceIds.length > 0) {
         await admin.messaging().sendMulticast({
           tokens: partnerData.deviceIds,
           notification: {
@@ -1058,242 +1062,271 @@ exports.saveRecording = functions
     }
   });
 
-// exports.dailyEveningReminder = functions.pubsub
-//   .schedule('0 20 * * *')
-//   .timeZone('America/Los_Angeles')
-//   .onRun(async () => {
-//     try {
-//       const db = admin.firestore();
-//       const partnerships = await db.collection('partnership').get();
+function getTimeZonesForReminder() {
+  const timeZones = moment.tz.names();
 
-//       const evening = new Date();
-//       evening.setHours(20, 0, 0, 0);
+  return timeZones.filter((timeZone) => {
+    const currentTime = moment().tz(timeZone);
 
-//       const sendNotifications = async (partnership: any) => {
-//         const partnershipId = partnership.id;
-//         const partnershipUsers = await db
-//           .collection('partnershipUser')
-//           .where('partnershipId', '==', partnershipId)
-//           .get();
+    const isAfternoon = currentTime.hour() === 12 && currentTime.minute() <= 5;
+    const isEvening = currentTime.hour() === 20 && currentTime.minute() <= 5;
 
-//         if (partnershipUsers.empty) {
-//           functions.logger.info(`No users found for partnership: ${partnershipId}`);
-//           return;
-//         }
+    return isAfternoon || isEvening;
+  });
+}
 
-//         const userNotificationPromises = partnershipUsers.docs.map(async (doc) => {
-//           const { userId } = doc.data();
-//           const user = await db.collection('users').doc(userId).get();
+async function sendReminderNotificationIfNeeded(userDoc: any, timeZone: string, cutOffTime: any) {
+  const db = admin.firestore();
 
-//           if (!user.exists) {
-//             functions.logger.info(`User not found: ${userId}`);
-//             return;
-//           }
+  const userId = userDoc.data()?.userId;
+  if (!userId) {
+    functions.logger.info('User ID not found in document');
+    return;
+  }
 
-//           const { deviceIds } = user.data() as any;
-//           if (!deviceIds || deviceIds.length === 0) {
-//             return;
-//           }
+  const userSnapshot = await db.collection('users').doc(userId).get();
+  if (!userSnapshot.exists) {
+    functions.logger.info(`User not found: ${userId}`);
+    return;
+  }
 
-//           const today = new Date();
-//           today.setHours(0, 0, 0, 0);
-//           const userRecordings = await db
-//             .collection('recordings')
-//             .where('userId', '==', userId)
-//             .where('createdAt', '>=', today)
-//             .get();
+  const userData = userSnapshot.data() as any;
+  if (
+    !userData.deviceIds ||
+    userData.deviceIds.length === 0 ||
+    !userData.isSubscribed ||
+    !userData.lastActiveAt
+  ) {
+    return;
+  }
 
-//           const hasUserAnswered = !userRecordings.empty;
+  try {
+    const lastActiveAt = moment(userData.lastActiveAt).tz(timeZone).valueOf();
 
-//           const partnerDoc = partnershipUsers.docs.find((d) => d.data().userId !== userId);
-//           if (!partnerDoc) {
-//             functions.logger.info(`Partner not found for user: ${userId}`);
-//             return;
-//           }
+    if (lastActiveAt < cutOffTime.valueOf()) {
+      const response = await admin.messaging().sendMulticast({
+        tokens: userData.deviceIds,
+        notification: {
+          title: 'New question available!',
+          body: 'Tap to see what question you are getting today',
+        },
+      });
 
-//           const partnerId = partnerDoc.data().userId;
-//           const partner = await db.collection('users').doc(partnerId).get();
-//           const partnerData = partner.data() as any;
-//           const partnerName = partnerData.name;
+      functions.logger.info(
+        `Notification sent successfully for user: ${userId}, response: ${JSON.stringify(response)}`,
+      );
+    } else {
+      functions.logger.info(`No notification needed for user: ${userId}`);
+    }
+  } catch (error) {
+    functions.logger.error(`Error sending notification for user: ${userId}, error: ${error}`);
+  }
+}
 
-//           const partnerRecordings = await db
-//             .collection('recordings')
-//             .where('userId', '==', partnerId)
-//             .where('createdAt', '>=', today)
-//             .get();
+async function sendReminderNotification(userId: string) {
+  const userSnapshot = await admin.firestore().collection('users').doc(userId).get();
+  if (!userSnapshot.exists) return;
 
-//           const hasPartnerAnswered = !partnerRecordings.empty;
+  const userData = userSnapshot.data();
+  if (!userData.deviceIds || userData.deviceIds.length === 0) return;
 
-//           const title = 'Daily Q’s';
-//           let body = '';
+  await admin.messaging().sendMulticast({
+    tokens: userData.deviceIds,
+    notification: {
+      title: "Don't forget to check today's question!",
+      body: 'Tap to see what question you are getting today',
+    },
+  });
+}
 
-//           if (!hasUserAnswered && !hasPartnerAnswered) {
-//             body = 'Don’t forget to answer!';
-//           } else if (!hasUserAnswered && hasPartnerAnswered) {
-//             body = `Record and listen to ${partnerName}'s answer!`;
-//           } else {
-//             return; // No notification needed
-//           }
+async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
+  let partnerName = 'Your partner';
 
-//           return admin
-//             .messaging()
-//             .sendMulticast({
-//               tokens: deviceIds,
-//               notification: { title, body },
-//             })
-//             .then(() => {
-//               functions.logger.info(`Notification sent successfully for user: ${userId}`);
-//               return null;
-//             })
-//             .catch((error) => {
-//               functions.logger.error(`Error sending notification for user: ${error}`);
-//               return null;
-//             });
-//         });
+  try {
+    const partnerSnapshot = await admin.firestore().collection('users').doc(partnerId).get();
+    if (!partnerSnapshot.exists) return;
 
-//         return Promise.all(userNotificationPromises);
-//       };
+    const partnerData = partnerSnapshot.data();
+    partnerName = partnerData?.name || 'Your partner';
+  } catch (error) {
+    functions.logger.error(`Error getting partner: ${partnerId}`, error);
+    return;
+  }
 
-//       await Promise.all(partnerships.docs.map(sendNotifications));
-//     } catch (error) {
-//       functions.logger.error('Error in dailyNoonReminder function:', error);
-//     }
-//   });
+  if (!userData.deviceIds || userData.deviceIds.length === 0) return;
 
-// exports.dailyNoonReminder = functions.pubsub
-//   .schedule('0 12 * * *')
-//   .timeZone('America/Los_Angeles')
-//   .onRun(async () => {
-//     try {
-//       const db = admin.firestore();
-//       const partnerships = await db.collection('partnership').get();
+  await admin.messaging().sendMulticast({
+    tokens: userData.deviceIds,
+    notification: {
+      title: `${partnerName} has answered!,`,
+      body: 'Tap to hear their response to today’s question.',
+    },
+  });
+}
 
-//       const noon = new Date();
-//       noon.setHours(12, 0, 0, 0);
+async function checkUserActivity(userDoc: any, cutOffTime: any, timeZone: string) {
+  const userId = userDoc.data()?.userId;
+  if (!userId) {
+    functions.logger.info('User ID not found in document');
+    return { userId, userData: null, active: false };
+  }
 
-//       const sendNotifications = async (partnership: any) => {
-//         const partnershipId = partnership.id;
-//         const partnershipUsers = await db
-//           .collection('partnershipUser')
-//           .where('partnershipId', '==', partnershipId)
-//           .get();
+  let userSnapshot;
 
-//         if (partnershipUsers.empty) {
-//           functions.logger.info(`No users found for partnership: ${partnershipId}`);
-//           return;
-//         }
+  try {
+    userSnapshot = await admin.firestore().collection('users').doc(userId).get();
+    if (!userSnapshot.exists) return { userId, active: false };
+  } catch (error) {
+    functions.logger.error(`Error getting user: ${userId}`, error);
+    return { userId, userData: null, active: false };
+  }
 
-//         const userNotificationPromises = partnershipUsers.docs.map(async (doc) => {
-//           const { userId } = doc.data();
-//           const user = await db.collection('users').doc(userId).get();
+  const userData = userSnapshot.data();
+  const lastActiveAt = moment(userData.lastActiveAt._seconds * 1000)
+    .tz(timeZone)
+    .valueOf();
 
-//           if (!user.exists) {
-//             functions.logger.info(`User not found: ${userId}`);
-//             return;
-//           }
+  return { userId, userData, active: lastActiveAt >= cutOffTime.valueOf() };
+}
 
-//           const { deviceIds } = user.data() as any;
-//           if (!deviceIds || deviceIds.length === 0) {
-//             return;
-//           }
+async function processActiveUserLogic(activeUser: any, latestQuestionId: string, timeZone: string) {
+  const db = admin.firestore();
+  let questionData = null;
 
-//           const { isSubscribed, lastActiveAt } = user.data() as any;
-//           const lastActiveAtDate = lastActiveAt.toDate();
+  try {
+    const questionSnapshot = await db.collection('questions').doc(latestQuestionId).get();
 
-//           if (isSubscribed && lastActiveAtDate < noon) {
-//             return admin
-//               .messaging()
-//               .sendMulticast({
-//                 tokens: deviceIds,
-//                 notification: {
-//                   title: "Today's Question",
-//                   body: 'Tap to see what question you are getting today',
-//                 },
-//               })
-//               .then((response) => {
-//                 functions.logger.info(`Notification sent successfully for user: ${response}`);
-//                 return null;
-//               })
-//               .catch((error) => {
-//                 functions.logger.error(`Error sending notification for user: ${error}`);
-//                 return null;
-//               });
-//           }
+    if (!questionSnapshot.exists) {
+      functions.logger.info(`Question not found: ${latestQuestionId}`);
+      return;
+    }
 
-//           functions.logger.info(`No notification needed for user: ${userId}`);
-//         });
+    questionData = questionSnapshot.data();
+  } catch (error) {
+    functions.logger.error(`Error getting question: ${latestQuestionId}`, error);
+    return;
+  }
 
-//         return Promise.all(userNotificationPromises);
-//       };
+  const questionCreationDate = moment(questionData.createdAt._seconds * 1000)
+    .tz(timeZone)
+    .startOf('day')
+    .valueOf();
+  const currentDayStart = moment().tz(timeZone).startOf('day').valueOf();
 
-//       await Promise.all(partnerships.docs.map(sendNotifications));
-//     } catch (error) {
-//       functions.logger.error('Error in dailyNoonReminder function:', error);
-//     }
-//   });
+  if (questionCreationDate !== currentDayStart) {
+    functions.logger.info('Question is not today');
+    return;
+  }
 
-// exports.encryptMp4Files = functions
-//   .runWith({ secrets: [recordingEncryptionKey] })
-//   .firestore.document('cleanUp/{docId}')
-//   .onCreate(async () => {
-//     const encryptionKey = recordingEncryptionKey.value();
+  const recordingSnapshot = await db
+    .collection('recordings')
+    .where('questionId', '==', latestQuestionId)
+    .get();
 
-//     const [files] = await admin.storage().bucket().getFiles({ prefix: 'recordings/' });
-//     const mp4Files = files.filter((file) => file.name.endsWith('.mp4'));
+  if (recordingSnapshot.empty) {
+    functions.logger.info('No recordings found');
+    return;
+  }
 
-//     await Promise.all(
-//       mp4Files.map(async (file) => {
-//         functions.logger.info(`Encrypting file: ${file.name}`);
-//         const tempFilePath = path.join(os.tmpdir(), 'recordings', file.name);
+  await Promise.all(
+    recordingSnapshot.docs.map(async (doc) => {
+      const recordingData = doc.data();
 
-//         try {
-//           const tempDir = path.dirname(tempFilePath);
-//           if (!fs.existsSync(tempDir)) {
-//             fs.mkdirSync(tempDir, { recursive: true });
-//           }
+      if (recordingData.userId !== activeUser.id) {
+        await sendPartnerRecordingReminder(activeUser, recordingData.userId);
+      }
+    }),
+  );
+}
 
-//           await file.download({ destination: tempFilePath });
+async function handleEveningLogic(
+  partnershipUsers: any,
+  timeZone: string,
+  latestQuestionId: string,
+) {
+  const eveningCutOffTime = moment().tz(timeZone).hour(20);
 
-//           const dataBuffer = fs.readFileSync(tempFilePath);
-//           const base64Data = dataBuffer.toString('base64');
+  const userActivityPromises = partnershipUsers.docs.map((userDoc: any) =>
+    checkUserActivity(userDoc, eveningCutOffTime, timeZone),
+  );
 
-//           const encrypted = crypto.AES.encrypt(base64Data, encryptionKey).toString();
+  const userActivities = await Promise.all(userActivityPromises);
+  const inactiveUsers = userActivities.filter((activity) => !activity.active);
 
-//           const encryptedFilePath = `${tempFilePath}.enc`;
-//           fs.writeFileSync(encryptedFilePath, encrypted);
+  if (inactiveUsers.length === 2) {
+    functions.logger.info('Both users are inactive');
+    await Promise.all(inactiveUsers.map(({ userData }) => sendReminderNotification(userData.id)));
+  } else if (inactiveUsers.length === 1) {
+    functions.logger.info('One user is inactive');
+    await processActiveUserLogic(inactiveUsers[0], latestQuestionId, timeZone);
+  } else if (inactiveUsers.length === 0) {
+    functions.logger.info('Both users are active');
+  }
+}
 
-//           const encryptedFileName = `recordings/${path.basename(file.name, '.mp4')}.enc`;
-//           await admin
-//             .storage()
-//             .bucket()
-//             .upload(encryptedFilePath, {
-//               destination: encryptedFileName,
-//               metadata: {
-//                 contentType: 'application/octet-stream',
-//               },
-//             });
+async function handleAfternoonLogic(partnershipUsers: any, timeZone: string) {
+  const afternoonCutOffTime = moment().tz(timeZone).hour(12);
 
-//           const encryptedStorageRef = admin.storage().bucket().file(encryptedFileName);
-//           const [newAudioUrl] = await encryptedStorageRef.getSignedUrl({
-//             action: 'read',
-//             expires: '03-09-2491',
-//           });
+  const notificationPromises = partnershipUsers.docs.map((userDoc: any) =>
+    sendReminderNotificationIfNeeded(userDoc, timeZone, afternoonCutOffTime),
+  );
 
-//           const recordingId = path.basename(file.name, '.mp4');
-//           await admin.firestore().collection('recordings').doc(recordingId).update({
-//             audioUrl: newAudioUrl,
-//           });
+  await Promise.all(notificationPromises);
+}
 
-//           await file.delete();
+async function processPartnership(partnershipDoc: any) {
+  const partnershipData = partnershipDoc.data();
+  if (!partnershipData) {
+    functions.logger.error('Partnership data not found in document');
+    return;
+  }
 
-//           fs.unlinkSync(tempFilePath);
-//           fs.unlinkSync(encryptedFilePath);
-//         } catch (error) {
-//           functions.logger.error(`Error encrypting file: ${file.name}`);
-//           throw new functions.https.HttpsError('unknown', `Error encrypting file: ${error}`, error);
-//         }
-//       }),
-//     );
+  const { id: partnershipId, timeZone, latestQuestionId } = partnershipData;
+  const currentTime = moment().tz(timeZone);
 
-//     return null;
-//   });
+  try {
+    const db = admin.firestore();
+
+    const partnershipUsers = await db
+      .collection('partnershipUser')
+      .where('partnershipId', '==', partnershipId)
+      .get();
+
+    if (partnershipUsers.empty) {
+      functions.logger.info(`No users found for partnership: ${partnershipId}`);
+      return;
+    }
+
+    const isAfternoon = currentTime.hour() === 12 && currentTime.minute() <= 5;
+    const isEvening = currentTime.hour() === 20 && currentTime.minute() <= 5;
+
+    if (isAfternoon) {
+      await handleAfternoonLogic(partnershipUsers, timeZone);
+    } else if (isEvening) {
+      await handleEveningLogic(partnershipUsers, timeZone, latestQuestionId);
+    }
+  } catch (error) {
+    functions.logger.error(`Error processing partnership: ${partnershipId}`, error);
+  }
+}
+
+exports.checkTimeZones = functions.pubsub.schedule('every 60 minutes').onRun(async () => {
+  try {
+    const db = admin.firestore();
+    const partnerships = await db.collection('partnership').get();
+
+    const timeZonesToSend = getTimeZonesForReminder();
+    if (timeZonesToSend.length === 0) {
+      functions.logger.info('No time zones to send');
+      return;
+    }
+
+    const partnershipsToSend = partnerships.docs.filter((doc) =>
+      timeZonesToSend.includes(doc.data().timeZone),
+    );
+
+    await Promise.all(partnershipsToSend.map((doc) => processPartnership(doc)));
+  } catch (error) {
+    functions.logger.error('Error in checkTimeZones function:', error);
+  }
+});

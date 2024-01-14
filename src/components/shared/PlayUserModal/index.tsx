@@ -141,7 +141,10 @@ function PlayUserModal() {
 
       await RNFS.writeFile(path, binaryData, 'base64');
     } catch (err) {
-      trackEvent('decryption_date_to_file_error');
+      trackEvent('decryption_date_to_file_error', {
+        error: err.message,
+      });
+
       throw err;
     }
 

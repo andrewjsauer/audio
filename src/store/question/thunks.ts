@@ -1,42 +1,51 @@
-/* eslint-disable no-underscore-dangle */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import functions from '@react-native-firebase/functions';
-import { startOfDay, differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 import i18n from 'i18next';
+import moment from 'moment-timezone';
 
-import { convertDateToLocalStart } from '@lib/dateUtils';
 import { PartnershipDataType, QuestionType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
+import {
+  differenceInDays,
+  differenceInMonths,
+  differenceInYears,
+  formatCreatedAt,
+  startOfDayInTimeZone,
+} from '@lib/dateUtils';
 
 import { selectCurrentQuestion } from '@store/question/selectors';
 import { selectUserData } from '@store/auth/selectors';
-import { selectPartnerData } from '@store/partnership/selectors';
+import { selectPartnerData, selectPartnershipTimeZone } from '@store/partnership/selectors';
 
 interface FetchLatestQuestionArgs {
   partnershipData: PartnershipDataType;
 }
 
-const calculateQuestionIndex = (createdAt: Date) => {
+export const calculateQuestionIndex = (createdAt: Date, timeZone: string) => {
   if (!createdAt) return 0;
 
-  const start = convertDateToLocalStart(createdAt);
+  const startOfDayCreatedAt = startOfDayInTimeZone(createdAt, timeZone);
+  const startOfDayToday = startOfDayInTimeZone(new Date(), timeZone);
 
-  const startOfDayUTC = startOfDay(new Date());
-  const today = convertDateToLocalStart(startOfDayUTC);
+  let index = startOfDayToday.diff(startOfDayCreatedAt, 'days');
+  index = Math.max(0, index);
 
-  const index = differenceInDays(today, start);
+  trackEvent('calculate_question_index', {
+    today: startOfDayToday,
+    createdAt: startOfDayCreatedAt,
+    index,
+  });
 
-  trackEvent('calculate_question_index', { start, createdAt, index });
   return index;
 };
 
-const calculateDuration = (startDate: Date) => {
+export const calculateDuration = (startDate: Date, timeZone: string) => {
   if (!startDate) return 'some amount of time';
 
-  const start = startDate?._seconds ? new Date(startDate._seconds * 1000) : new Date(startDate);
-  const now = new Date();
+  const start = moment(startDate);
+  const now = moment().tz(timeZone);
 
   const years = differenceInYears(now, start);
   if (years > 0) return `${years} year${years > 1 ? 's' : ''}`;
@@ -50,13 +59,20 @@ const calculateDuration = (startDate: Date) => {
   return 'same day';
 };
 
-const formatQuestion = (data: QuestionType) => ({
+const formatQuestion = (data: QuestionType, timeZone: string) => ({
   ...data,
-  createdAt: new Date(data.createdAt._seconds * 1000),
+  createdAt: formatCreatedAt(data.createdAt, timeZone),
 });
 
-const generateQuestion = async ({ partnerData, partnershipData, userData, usersLanguage }: any) => {
-  const questionIndex = calculateQuestionIndex(partnershipData?.createdAt);
+const generateQuestion = async ({
+  partnerData,
+  partnershipData,
+  timeZone,
+  userData,
+  usersLanguage,
+}: any) => {
+  const questionIndex = calculateQuestionIndex(partnershipData?.createdAt, timeZone);
+  trackEvent('generate_question', { questionIndex });
 
   const payload = {
     questionIndex,
@@ -65,7 +81,7 @@ const generateQuestion = async ({ partnerData, partnershipData, userData, usersL
     usersLanguage,
     partnershipData: {
       ...partnershipData,
-      startDate: calculateDuration(partnershipData?.startDate),
+      startDate: calculateDuration(partnershipData?.startDate, timeZone),
     },
   };
 
@@ -73,7 +89,7 @@ const generateQuestion = async ({ partnerData, partnershipData, userData, usersL
 
   try {
     ({ data } = await functions().httpsCallable('generateQuestion')(payload));
-    return formatQuestion(data);
+    return formatQuestion(data, timeZone);
   } catch (error) {
     crashlytics().recordError(error);
     trackEvent('question_generation_error', { error: error.message });
@@ -90,16 +106,16 @@ export const fetchLatestQuestion = createAsyncThunk<
   async ({ partnershipData }: FetchLatestQuestionArgs, { rejectWithValue, getState }): any => {
     try {
       const state = getState();
-      const startOfDayUTC = startOfDay(new Date());
-      const today = convertDateToLocalStart(startOfDayUTC);
+      const today = startOfDayInTimeZone(new Date(), partnershipData.timeZone);
 
       const userData = selectUserData(state);
       const currentQuestion = selectCurrentQuestion(state);
       const partnerData = selectPartnerData(state);
+      const timeZone = selectPartnershipTimeZone(state);
       const currentLanguage = i18n.language;
 
       if (currentQuestion) {
-        const currentQuestionLocalCreatedAt = convertDateToLocalStart(currentQuestion.createdAt);
+        const currentQuestionLocalCreatedAt = moment(currentQuestion.createdAt).tz(timeZone);
 
         if (currentQuestionLocalCreatedAt >= today) {
           trackEvent('current_question_within_date_limit', {
@@ -137,6 +153,7 @@ export const fetchLatestQuestion = createAsyncThunk<
         const newQuestion = await generateQuestion({
           partnerData,
           partnershipData,
+          timeZone,
           userData,
           usersLanguage: currentLanguage,
         });
@@ -154,10 +171,10 @@ export const fetchLatestQuestion = createAsyncThunk<
       const fetchedQuestionData = {
         ...doc.data(),
         id: doc.id,
-        createdAt: new Date(doc.data().createdAt._seconds * 1000),
+        createdAt: formatCreatedAt(doc.data().createdAt, timeZone),
       };
 
-      const fetchQuestionCreatedAtLocal = convertDateToLocalStart(fetchedQuestionData.createdAt);
+      const fetchQuestionCreatedAtLocal = moment(fetchedQuestionData.createdAt).tz(timeZone);
       if (fetchQuestionCreatedAtLocal >= today) {
         trackEvent('fetched_desc_question_within_date_limit', {
           fetchedQuestionData,
@@ -166,7 +183,7 @@ export const fetchLatestQuestion = createAsyncThunk<
 
         return {
           question: fetchedQuestionData,
-          isNewQuestion: false,
+          isNewQuestion: true,
         } as {
           question: QuestionType;
           isNewQuestion: boolean;
@@ -182,6 +199,7 @@ export const fetchLatestQuestion = createAsyncThunk<
       const newQuestion = await generateQuestion({
         partnerData,
         partnershipData,
+        timeZone,
         userData,
         usersLanguage: currentLanguage,
       });

@@ -1,12 +1,14 @@
-/* eslint-disable no-underscore-dangle */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import functions from '@react-native-firebase/functions';
 import RNFS from 'react-native-fs';
 
+import { selectPartnershipTimeZone } from '@store/partnership/selectors';
+
 import { UserDataType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
+import { formatCreatedAt } from '@lib/dateUtils';
 
 type saveUserRecordingArgs = {
   recordPath: string;
@@ -25,9 +27,11 @@ export const saveUserRecording = createAsyncThunk(
   'recording/saveUserRecording',
   async (
     { recordPath, questionId, userData, duration, partnerData }: saveUserRecordingArgs,
-    { rejectWithValue },
+    { rejectWithValue, getState },
   ) => {
     try {
+      const state = getState();
+      const timeZone = selectPartnershipTimeZone(state);
       const base64Data = await readAudioFile(recordPath);
 
       const { data } = await functions().httpsCallable('saveRecording')({
@@ -40,10 +44,9 @@ export const saveUserRecording = createAsyncThunk(
 
       return {
         ...data,
-        createdAt: new Date(data.createdAt._seconds * 1000),
+        createdAt: formatCreatedAt(data.createdAt, timeZone),
       };
     } catch (error) {
-      crashlytics().recordError(error);
       trackEvent('save_recording_error', { error: error.message });
 
       return rejectWithValue(error.message);

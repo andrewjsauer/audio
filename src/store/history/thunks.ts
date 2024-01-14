@@ -4,11 +4,12 @@ import crashlytics from '@react-native-firebase/crashlytics';
 
 import { RecordingType, QuestionStatusType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
+import { formatCreatedAt } from '@lib/dateUtils';
 
 import { showNotification } from '@store/ui/slice';
 
 import { selectUserData } from '@store/auth/selectors';
-import { selectPartnerData } from '@store/partnership/selectors';
+import { selectPartnerData, selectPartnershipTimeZone } from '@store/partnership/selectors';
 import { selectLastDocSnapshot } from './selectors';
 
 async function getRecordingData(recordings: RecordingType[], userId: string, partnerId: string) {
@@ -25,7 +26,7 @@ async function getRecordingData(recordings: RecordingType[], userId: string, par
 
       return listeningSnapshot.empty ? null : listeningSnapshot.docs[0].data().reaction;
     } catch (error) {
-      trackEvent('fetch_reaction_error', { error });
+      trackEvent('fetch_reaction_error', { error: error.message });
       crashlytics().recordError(error);
       return null;
     }
@@ -109,6 +110,7 @@ export const fetchHistoryData = createAsyncThunk(
 
     const userData = selectUserData(state);
     const partnerData = selectPartnerData(state);
+    const timeZone = selectPartnershipTimeZone(state);
 
     try {
       const { partnershipId } = userData;
@@ -157,7 +159,7 @@ export const fetchHistoryData = createAsyncThunk(
           } = await getRecordingData(recordings, userData.id, partnerData.id);
 
           return {
-            createdAt: new Date(question.createdAt._seconds * 1000),
+            createdAt: formatCreatedAt(question.createdAt, timeZone),
             id: `${question.id}_${userData.id}`,
             partnerAudioUrl,
             partnerColor: partnerData.color,
@@ -184,7 +186,7 @@ export const fetchHistoryData = createAsyncThunk(
 
       return { questions: historyData, lastDocSnapshot: lastDocData };
     } catch (error) {
-      trackEvent('history_fetch_error', { error });
+      trackEvent('history_fetch_error', { error: error.message });
       crashlytics().recordError(error);
       return rejectWithValue(error);
     }
@@ -199,6 +201,7 @@ export const fetchMoreHistoryData = createAsyncThunk(
       const userData = selectUserData(state);
       const lastDocSnapshot = selectLastDocSnapshot(state);
       const partnerData = selectPartnerData(state);
+      const timeZone = selectPartnershipTimeZone(state);
 
       if (!lastDocSnapshot) {
         trackEvent('last_doc_snapshot_not_found');
@@ -264,7 +267,7 @@ export const fetchMoreHistoryData = createAsyncThunk(
           } = await getRecordingData(recordings, userData.id, question.partnerId);
 
           return {
-            createdAt: new Date(question.createdAt._seconds * 1000),
+            createdAt: formatCreatedAt(question.createdAt, timeZone),
             id: `${question.id}_${userData.id}`,
             partnerAudioUrl,
             partnerColor: partnerData.color,
@@ -292,9 +295,9 @@ export const fetchMoreHistoryData = createAsyncThunk(
 
       return { questions: moreHistoryData, lastDocSnapshot: lastDocData };
     } catch (error) {
-      trackEvent('history_fetch_more_history_data_error', { error });
+      trackEvent('history_fetch_more_history_data_error', { error: error.message });
       crashlytics().recordError(error);
-      return rejectWithValue(error);
+      return rejectWithValue(error.message);
     }
   },
 );

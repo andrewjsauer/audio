@@ -71,6 +71,7 @@
     "privacy": "Privacy Policy",
     "language": "Preferred Language",
     "relationshipStatus": "Relationship Status",
+    "relationshipTimeZone": "Relationship Time Zone",
     "deleteAccountModal": {
       "title": "Are you sure you want to end this relationship?",
       "description": "This will delete your account and your partner's account. You will no longer be able to access your history or recordings. Subscriptions will need to be cancelled via the App Store.",
@@ -96,6 +97,10 @@
     },
     "request": {
       "title": "Request Your Data Form"
+    },
+    "timeZoneScreen": {
+      "title": "Change your relationship time zone",
+      "success": "Your relationship time zone has been updated!"
     }
   },
   "questionScreen": {
@@ -113,7 +118,7 @@
     "subscriberScreen": {
       "redo": "Redo",
       "submit": "Submit",
-      "timeRemaining": "{{ time }} remaining...",
+      "timeRemaining": "{{ time }} ({{ countryCode }}) remaining...",
       "lock": {
         "title": "{{ name }} answered",
         "description": "Record your answer to hear it!"

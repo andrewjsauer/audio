@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { getTimeZone } from 'react-native-localize';
 
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -12,6 +13,7 @@ import {
   PartnerDetailsType,
 } from '@lib/types';
 import { trackEvent, initializeAnalytics } from '@lib/analytics';
+import { formatCreatedAt } from '@lib/dateUtils';
 
 import { signOut } from '@store/app/thunks';
 
@@ -21,7 +23,7 @@ export const submitPhoneNumber = createAsyncThunk<FirebaseAuthTypes.Confirmation
     try {
       return await auth().signInWithPhoneNumber(phoneNumber);
     } catch (error) {
-      trackEvent('submit_phone_number_error', { error });
+      trackEvent('submit_phone_number_error', { error: error.message });
       crashlytics().recordError(error);
 
       const errorMessage = error?.toString();
@@ -46,7 +48,7 @@ export const resendCode = createAsyncThunk<FirebaseAuthTypes.ConfirmationResult,
     try {
       return await auth().signInWithPhoneNumber(phoneNumber, true);
     } catch (error) {
-      trackEvent('resend_code_error', { error });
+      trackEvent('resend_code_error', { error: error.message });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);
@@ -84,7 +86,7 @@ export const verifyCode = createAsyncThunk(
       initializeAnalytics(userData);
       return { user: currentUser, userData };
     } catch (error) {
-      trackEvent('verify_code_error', { error });
+      trackEvent('verify_code_error', { error: error.message });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);
@@ -105,6 +107,7 @@ export const generatePartnership = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
+      const timeZone = getTimeZone();
       const birthDate = firestore.Timestamp.fromDate(userDetails.birthDate as Date);
       const startDate = firestore.Timestamp.fromDate(partnershipDetails.startDate as Date);
 
@@ -117,6 +120,7 @@ export const generatePartnership = createAsyncThunk(
         partnershipDetails: {
           ...partnershipDetails,
           startDate,
+          timeZone,
         },
       });
 
@@ -127,12 +131,12 @@ export const generatePartnership = createAsyncThunk(
         partnerData: partnerPayload,
         partnershipData: {
           ...partnershipPayload,
-          createdAt: new Date(partnershipPayload.createdAt._seconds * 1000),
-          startDate: new Date(partnershipPayload.startDate._seconds * 1000),
+          createdAt: formatCreatedAt(partnershipPayload.createdAt, timeZone),
+          startDate: formatCreatedAt(partnershipPayload.startDate, timeZone),
         },
       };
     } catch (error) {
-      trackEvent('generate_partnership_error', { error });
+      trackEvent('generate_partnership_error', { error: error.message });
       crashlytics().recordError(error);
 
       const errorMessage = error?.toString();
@@ -159,7 +163,7 @@ export const updateUser = createAsyncThunk(
 
       return userDetails;
     } catch (error) {
-      trackEvent('update_user_data_error', { error });
+      trackEvent('update_user_data_error', { error: error.message });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);
@@ -169,7 +173,7 @@ export const updateUser = createAsyncThunk(
 
 export const updateNewUser = createAsyncThunk(
   'auth/updateNewUser',
-  async ({ id, userDetails, tempId }: UpdateUserArgs, { rejectWithValue, dispatch }) => {
+  async ({ id, userDetails, tempId }: UpdateUserArgs, { rejectWithValue }) => {
     const userPayload = {
       ...userDetails,
       birthDate: firestore.Timestamp.fromDate(userDetails.birthDate as Date),
@@ -201,7 +205,7 @@ export const updateNewUser = createAsyncThunk(
         partnershipData,
       };
     } catch (error) {
-      trackEvent('update_new_user_data_error', { error });
+      trackEvent('update_new_user_data_error', { error: error.message });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);
@@ -229,7 +233,7 @@ export const deleteRelationship = createAsyncThunk(
 
       return null;
     } catch (error) {
-      trackEvent('delete_relationship_error', { error });
+      trackEvent('delete_relationship_error', { error: error.message });
       crashlytics().recordError(error);
 
       return rejectWithValue(error.message);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { format, isToday, isValid } from 'date-fns';
+import moment from 'moment-timezone';
 
 import { ReactionTypeIcons, QuestionStatusType as StatusTypes, ReactionType } from '@lib/types';
 
@@ -25,15 +25,32 @@ type QuestionRowProps = {
   isPartner?: boolean;
   name: string;
   onPress: () => void;
+  partnerColor: string;
   reaction?: ReactionType | null;
   status: StatusTypes;
-  partnerColor: string;
+  timeZone: string;
 };
 
-function getStatusOptions(status, createdAt, name, isPartner, t) {
-  const validDate = createdAt && isValid(new Date(createdAt));
-  const formattedDate = validDate ? format(new Date(createdAt), 'PP') : '';
-  const formattedTime = validDate ? format(new Date(createdAt), 'p') : '';
+function getStatusOptions({
+  createdAt,
+  isPartner,
+  name,
+  status,
+  t,
+  timeZone,
+}: {
+  createdAt: Date | number | null;
+  isPartner: boolean;
+  name: string;
+  status: StatusTypes;
+  t: any;
+  timeZone: string;
+}) {
+  const date = moment(createdAt);
+  const validDate = date.isValid();
+  const formattedDate = validDate ? date.tz(timeZone).format('LL') : '';
+  const formattedTime = validDate ? date.tz(timeZone).format('LT') : '';
+  const isToday = validDate ? date.tz(timeZone).isSame(moment().tz(timeZone), 'day') : false;
 
   return {
     [StatusTypes.Lock]: {
@@ -50,7 +67,7 @@ function getStatusOptions(status, createdAt, name, isPartner, t) {
       icon: PlayIcon,
       title: t('questionScreen.subscriberScreen.play.title', { name: isPartner ? name : t('you') }),
       description: t('questionScreen.subscriberScreen.play.description', {
-        date: validDate && isToday(new Date(createdAt)) ? t('today') : formattedDate,
+        date: isToday ? t('today') : formattedDate,
         time: formattedTime,
       }),
     },
@@ -68,9 +85,10 @@ function QuestionRow({
   isPartner = false,
   name,
   onPress,
+  partnerColor,
   reaction,
   status,
-  partnerColor,
+  timeZone,
 }: QuestionRowProps) {
   const { t } = useTranslation();
 
@@ -78,7 +96,7 @@ function QuestionRow({
     icon: Icon,
     title,
     description,
-  } = getStatusOptions(status, createdAt, name, isPartner, t);
+  } = getStatusOptions({ status, createdAt, name, isPartner, t, timeZone });
   return (
     <Container>
       <IconButton

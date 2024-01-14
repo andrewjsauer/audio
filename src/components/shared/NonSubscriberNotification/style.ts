@@ -5,7 +5,7 @@ export const Container = styled.View`
   padding: 12px 18px;
   border-radius: 10px;
   flex-direction: column;
-  background-color: ${(p) => p.theme.colors.success};
+  background-color: ${(p) => p.theme.colors.green};
 `;
 
 export const Title = styled.Text`
@@ -36,7 +36,7 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
-  color: ${(p) => p.theme.colors.success};
+  color: ${(p) => p.theme.colors.green};
   font-family: ${(props) => props.theme.fonts.bold};
   font-size: ${(props) => props.theme.fontSizes.small};
 `;

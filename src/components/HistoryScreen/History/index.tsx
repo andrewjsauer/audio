@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectIsSubscribed, selectUserData } from '@store/auth/selectors';
-import { selectPartnerData } from '@store/partnership/selectors';
+import { selectPartnerData, selectPartnershipTimeZone } from '@store/partnership/selectors';
 import {
   selectError,
   selectIsLoading,
@@ -29,6 +29,7 @@ function HistoryScreenContainer() {
   const questions = useSelector(selectFormattedQuestions);
   const userData = useSelector(selectUserData);
   const partnerData = useSelector(selectPartnerData);
+  const timeZone = useSelector(selectPartnershipTimeZone);
 
   useEffect(() => {
     trackScreen('HistoryScreen');
@@ -69,6 +70,7 @@ function HistoryScreenContainer() {
         partnerName={partnerData?.name}
         questions={questions}
         userId={userData?.id}
+        timeZone={timeZone}
       />
     </Layout>
   );

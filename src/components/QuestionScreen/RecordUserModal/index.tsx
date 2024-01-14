@@ -234,7 +234,7 @@ function RecordUserModal() {
   if (!recordPath) {
     buttonContent = (
       <RecordContainer>
-        <RecordButton onPress={handleRecordPress} disabled={!isPermissionGranted} type="record">
+        <RecordButton onPress={handleRecordPress} disabled={!isPermissionGranted} type="red">
           {isRecording ? <StopIcon width={30} height={30} /> : <MicIcon width={30} height={30} />}
         </RecordButton>
       </RecordContainer>
@@ -253,7 +253,7 @@ function RecordUserModal() {
             {t('questionScreen.subscriberScreen.redo')}
           </SecondaryButtonText>
         </SecondaryButton>
-        <RecordButton onPress={handlePlayPress} type="play" disabled={isLoading}>
+        <RecordButton onPress={handlePlayPress} type="turquoise" disabled={isLoading}>
           {isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : buttonIcon}
         </RecordButton>
         <SecondaryButton type="submit" onPress={onSubmit} disabled={isLoading}>

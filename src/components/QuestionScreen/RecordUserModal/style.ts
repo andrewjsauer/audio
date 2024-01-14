@@ -58,7 +58,7 @@ export const SecondaryButton = styled.TouchableOpacity<{ type: string }>`
       case 'redo':
         return theme.colors.transparentGray;
       case 'submit':
-        return theme.colors.success;
+        return theme.colors.green;
       default:
         return theme.colors.white;
     }
