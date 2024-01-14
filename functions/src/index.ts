@@ -1133,7 +1133,7 @@ async function sendReminderNotification(userId: string) {
   const userSnapshot = await admin.firestore().collection('users').doc(userId).get();
   if (!userSnapshot.exists) return;
 
-  const userData = userSnapshot.data();
+  const userData = userSnapshot.data() as any;
   if (!userData.deviceIds || userData.deviceIds.length === 0) return;
 
   await admin.messaging().sendMulticast({
@@ -1193,7 +1193,7 @@ async function checkUserActivity(userDoc: any, cutOffTime: any, timeZone: string
     return { userId, userData: null, active: false };
   }
 
-  const userData = userSnapshot.data();
+  const userData = userSnapshot.data() as any;
   const lastActiveAt = moment(userData.lastActiveAt._seconds * 1000)
     .tz(timeZone)
     .valueOf();
@@ -1213,7 +1213,7 @@ async function processActiveUserLogic(activeUser: any, latestQuestionId: string,
       return;
     }
 
-    questionData = questionSnapshot.data();
+    questionData = questionSnapshot.data() as any;
   } catch (error) {
     functions.logger.error(`Error getting question: ${latestQuestionId}`, error);
     return;
