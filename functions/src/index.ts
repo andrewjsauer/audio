@@ -1324,7 +1324,7 @@ async function processPartnership(partnershipDoc: any) {
   }
 }
 
-exports.checkTimeZones = functions.pubsub.schedule('every 60 minutes').onRun(async () => {
+exports.checkTimeZones = functions.pubsub.schedule('0 * * * *').onRun(async () => {
   try {
     const db = admin.firestore();
     const partnerships = await db.collection('partnership').get();
