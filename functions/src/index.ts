@@ -1075,7 +1075,11 @@ function getTimeZonesForReminder() {
   });
 }
 
-async function sendReminderNotificationIfNeeded(userDoc: any, timeZone: string, cutOffTime: any) {
+async function sendAfternoonReminderNotificationIfNeeded(
+  userDoc: any,
+  timeZone: string,
+  cutOffTime: any,
+) {
   const db = admin.firestore();
 
   const userId = userDoc.data()?.userId;
@@ -1113,7 +1117,9 @@ async function sendReminderNotificationIfNeeded(userDoc: any, timeZone: string, 
       });
 
       functions.logger.info(
-        `Notification sent successfully for user: ${userId}, response: ${JSON.stringify(response)}`,
+        `Afternoon reminder sent successfully for user: ${userId}, response: ${JSON.stringify(
+          response,
+        )}`,
       );
     } else {
       functions.logger.info(`No notification needed for user: ${userId}`);
@@ -1137,6 +1143,8 @@ async function sendReminderNotification(userId: string) {
       body: 'Tap to see what question you are getting today',
     },
   });
+
+  functions.logger.info(`Evening reminder notification sent for user: ${userId}`);
 }
 
 async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
@@ -1155,13 +1163,17 @@ async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
 
   if (!userData.deviceIds || userData.deviceIds.length === 0) return;
 
-  await admin.messaging().sendMulticast({
-    tokens: userData.deviceIds,
-    notification: {
-      title: `${partnerName} has answered!,`,
-      body: 'Tap to hear their response to today’s question.',
-    },
-  });
+  // await admin.messaging().sendMulticast({
+  //   tokens: userData.deviceIds,
+  //   notification: {
+  //     title: `${partnerName} has answered!,`,
+  //     body: 'Tap to hear their response to today’s question.',
+  //   },
+  // });
+
+  functions.logger.info(
+    `Evening partner recording reminder notification sent for user: ${userData.id} to ${partnerName}`,
+  );
 }
 
 async function checkUserActivity(userDoc: any, cutOffTime: any, timeZone: string) {
@@ -1268,7 +1280,7 @@ async function handleAfternoonLogic(partnershipUsers: any, timeZone: string) {
   const afternoonCutOffTime = moment().tz(timeZone).hour(12);
 
   const notificationPromises = partnershipUsers.docs.map((userDoc: any) =>
-    sendReminderNotificationIfNeeded(userDoc, timeZone, afternoonCutOffTime),
+    sendAfternoonReminderNotificationIfNeeded(userDoc, timeZone, afternoonCutOffTime),
   );
 
   await Promise.all(notificationPromises);
@@ -1301,8 +1313,10 @@ async function processPartnership(partnershipDoc: any) {
     const isEvening = currentTime.hour() === 20 && currentTime.minute() <= 5;
 
     if (isAfternoon) {
+      functions.logger.info('Afternoon', partnershipId);
       await handleAfternoonLogic(partnershipUsers, timeZone);
     } else if (isEvening) {
+      functions.logger.info('Evening', partnershipId);
       await handleEveningLogic(partnershipUsers, timeZone, latestQuestionId);
     }
   } catch (error) {
