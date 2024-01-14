@@ -96,6 +96,11 @@
     },
     "request": {
       "title": "Formulaire de demande de vos données"
+    },
+    "relationshipTimeZone": "Fuseau horaire de la relation",
+    "timeZoneScreen": {
+      "title": "Changer le fuseau horaire de votre relation.",
+      "success": "Votre fuseau horaire de relation a été mis à jour !"
     }
   },
   "questionScreen": {

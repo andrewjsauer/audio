@@ -96,6 +96,11 @@
     },
     "request": {
       "title": "데이터 요청 양식"
+    },
+    "relationshipTimeZone": "관계 시간대",
+    "timeZoneScreen": {
+      "title": "당신의 관계 시간대를 변경하세요.",
+      "success": "당신의 관계 시간대가 업데이트되었습니다!"
     }
   },
   "questionScreen": {

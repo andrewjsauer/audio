@@ -96,6 +96,11 @@
     },
     "request": {
       "title": "データのリクエストフォーム"
+    },
+    "relationshipTimeZone": "関係のタイムゾーン",
+    "timeZoneScreen": {
+      "title": "あなたの関係の時差を変更してください。",
+      "success": "あなたの関係のタイムゾーンが更新されました！"
     }
   },
   "questionScreen": {

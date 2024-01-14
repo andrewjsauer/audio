@@ -96,6 +96,11 @@
     },
     "request": {
       "title": "Modulo di Richiesta dei Tuoi Dati"
+    },
+    "relationshipTimeZone": "Fuso orario delle relazioni",
+    "timeZoneScreen": {
+      "title": "Cambia il fuso orario della tua relazione",
+      "success": "Il fuso orario della tua relazione è stato aggiornato!"
     }
   },
   "questionScreen": {

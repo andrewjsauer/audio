@@ -96,6 +96,11 @@
     },
     "request": {
       "title": "आपका डेटा फॉर्म अनुरोध करना"
+    },
+    "relationshipTimeZone": "संबंध समय क्षेत्र",
+    "timeZoneScreen": {
+      "title": "अपने संबंध का समय क्षेत्र बदलें",
+      "success": "आपकी संबंध समय क्षेत्र अपडेट की गई है!"
     }
   },
   "questionScreen": {

@@ -96,6 +96,11 @@
     },
     "request": {
       "title": "نموذج طلب بياناتك"
+    },
+    "relationshipTimeZone": "وقت المنطقة الزمنية في العلاقة",
+    "timeZoneScreen": {
+      "title": "قم بتغيير المنطقة الزمنية لعلاقتك",
+      "success": "تم تحديث منطقة زمن علاقتك!"
     }
   },
   "questionScreen": {

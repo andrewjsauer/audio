@@ -96,6 +96,11 @@
     },
     "request": {
       "title": "Anforderungsformular für Ihre Daten"
+    },
+    "relationshipTimeZone": "Zeitzone der Beziehung",
+    "timeZoneScreen": {
+      "title": "Ändern Sie Ihre Beziehung zur Zeitzone.",
+      "success": "Deine Beziehungsuhrzeitzone wurde aktualisiert!"
     }
   },
   "questionScreen": {

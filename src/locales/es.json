@@ -96,6 +96,11 @@
     },
     "request": {
       "title": "Formulario de solicitud de tus datos"
+    },
+    "relationshipTimeZone": "Zona horaria de la relación",
+    "timeZoneScreen": {
+      "title": "Cambia la zona horaria de tu relación.",
+      "success": "¡Se ha actualizado tu zona horaria de relación!"
     }
   },
   "questionScreen": {

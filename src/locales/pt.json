@@ -96,6 +96,11 @@
     },
     "request": {
       "title": "Formulário de Solicitação dos Seus Dados"
+    },
+    "relationshipTimeZone": "Fuso Horário de Relacionamento",
+    "timeZoneScreen": {
+      "title": "Altere o fuso horário do seu relacionamento.",
+      "success": "O fuso horário do seu relacionamento foi atualizado!"
     }
   },
   "questionScreen": {

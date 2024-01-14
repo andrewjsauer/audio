@@ -96,6 +96,11 @@
     },
     "request": {
       "title": "请求您的数据表格"
+    },
+    "relationshipTimeZone": "关系时区",
+    "timeZoneScreen": {
+      "title": "调整你的关系时区",
+      "success": "您的关系时区已经更新！"
     }
   },
   "questionScreen": {
