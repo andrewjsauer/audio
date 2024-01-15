@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getTimeZone } from 'react-native-localize';
 
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 import functions from '@react-native-firebase/functions';
 
@@ -23,8 +22,7 @@ export const submitPhoneNumber = createAsyncThunk<FirebaseAuthTypes.Confirmation
     try {
       return await auth().signInWithPhoneNumber(phoneNumber);
     } catch (error) {
-      trackEvent('submit_phone_number_error', { error: error.message });
-      crashlytics().recordError(error);
+      trackEvent('submit_phone_number_error', { error });
 
       const errorMessage = error?.toString();
       if (errorMessage && errorMessage.includes('too many attempts')) {
@@ -48,10 +46,8 @@ export const resendCode = createAsyncThunk<FirebaseAuthTypes.ConfirmationResult,
     try {
       return await auth().signInWithPhoneNumber(phoneNumber, true);
     } catch (error) {
-      trackEvent('resend_code_error', { error: error.message });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error.message);
+      trackEvent('resend_code_error', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -86,10 +82,8 @@ export const verifyCode = createAsyncThunk(
       initializeAnalytics(userData);
       return { user: currentUser, userData };
     } catch (error) {
-      trackEvent('verify_code_error', { error: error.message });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error.message);
+      trackEvent('verify_code_error', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -136,14 +130,12 @@ export const generatePartnership = createAsyncThunk(
         },
       };
     } catch (error) {
-      trackEvent('generate_partnership_error', { error: error.message });
-      crashlytics().recordError(error);
-
       const errorMessage = error?.toString();
       if (errorMessage && errorMessage.includes('Partner already has a partner')) {
         return rejectWithValue('errors.partnerAlreadyInUse');
       }
 
+      trackEvent('generate_partnership_error', { error });
       return rejectWithValue('errors.partnershipGenerationFailed');
     }
   },
@@ -163,10 +155,8 @@ export const updateUser = createAsyncThunk(
 
       return userDetails;
     } catch (error) {
-      trackEvent('update_user_data_error', { error: error.message });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error.message);
+      trackEvent('update_user_data_error', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -205,10 +195,8 @@ export const updateNewUser = createAsyncThunk(
         partnershipData,
       };
     } catch (error) {
-      trackEvent('update_new_user_data_error', { error: error.message });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error.message);
+      trackEvent('update_new_user_data_error', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -233,10 +221,8 @@ export const deleteRelationship = createAsyncThunk(
 
       return null;
     } catch (error) {
-      trackEvent('delete_relationship_error', { error: error.message });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error.message);
+      trackEvent('delete_relationship_error', { error });
+      return rejectWithValue(error);
     }
   },
 );

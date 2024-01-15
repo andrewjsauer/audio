@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
-import crashlytics from '@react-native-firebase/crashlytics';
 import functions from '@react-native-firebase/functions';
 import i18n from 'i18next';
 import moment from 'moment-timezone';
@@ -91,8 +90,7 @@ const generateQuestion = async ({
     ({ data } = await functions().httpsCallable('generateQuestion')(payload));
     return formatQuestion(data, timeZone);
   } catch (error) {
-    crashlytics().recordError(error);
-    trackEvent('question_generation_error', { error: error.message });
+    trackEvent('question_generation_error', { error });
 
     return null;
   }
@@ -212,10 +210,8 @@ export const fetchLatestQuestion = createAsyncThunk<
         isNewQuestion: boolean;
       };
     } catch (error) {
-      crashlytics().recordError(error);
-      trackEvent('question_fetch_error', { error: error.message });
-
-      return rejectWithValue(error.message);
+      trackEvent('question_fetch_error', { error });
+      return rejectWithValue(error);
     }
   },
 );

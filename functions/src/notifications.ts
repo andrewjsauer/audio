@@ -103,7 +103,7 @@ async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
     tokens: userData.deviceIds,
     notification: {
       title: `Daily Q’s`,
-      body: `${partnerName} has answered! Tap to listen.`,
+      body: `Record and listen to ${partnerName}'s answer!`,
     },
   });
 

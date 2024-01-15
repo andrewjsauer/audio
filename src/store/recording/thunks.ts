@@ -47,9 +47,13 @@ export const saveUserRecording = createAsyncThunk(
         createdAt: formatCreatedAt(data.createdAt, timeZone),
       };
     } catch (error) {
-      trackEvent('save_recording_error', { error: error.message });
+      const errorMessage = error?.toString();
+      if (errorMessage && errorMessage.includes('Memory limit of')) {
+        return rejectWithValue('errors.recordingSaveMemoryLimitExceeded');
+      }
 
-      return rejectWithValue(error.message);
+      trackEvent('save_recording_error', { error });
+      return rejectWithValue('errors.recordingSaveFailed');
     }
   },
 );

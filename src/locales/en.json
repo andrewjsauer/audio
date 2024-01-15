@@ -52,7 +52,8 @@
       "title": "Update Required",
       "description": "Please update to the latest version of Daily Q's to continue using the app.",
       "buttonText": "Update"
-    }
+    },
+    "recordingSaveMemoryLimitExceeded": "Your recording exceeded the maximum memory limit."
   },
   "browserScreen": {
     "title": "Browser"

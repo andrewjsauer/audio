@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
-import crashlytics from '@react-native-firebase/crashlytics';
 
 import { RecordingType, QuestionStatusType } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
@@ -26,8 +25,7 @@ async function getRecordingData(recordings: RecordingType[], userId: string, par
 
       return listeningSnapshot.empty ? null : listeningSnapshot.docs[0].data().reaction;
     } catch (error) {
-      trackEvent('fetch_reaction_error', { error: error.message });
-      crashlytics().recordError(error);
+      trackEvent('fetch_reaction_error', { error });
       return null;
     }
   };
@@ -186,8 +184,7 @@ export const fetchHistoryData = createAsyncThunk(
 
       return { questions: historyData, lastDocSnapshot: lastDocData };
     } catch (error) {
-      trackEvent('history_fetch_error', { error: error.message });
-      crashlytics().recordError(error);
+      trackEvent('history_fetch_error', { error });
       return rejectWithValue(error);
     }
   },
@@ -295,9 +292,8 @@ export const fetchMoreHistoryData = createAsyncThunk(
 
       return { questions: moreHistoryData, lastDocSnapshot: lastDocData };
     } catch (error) {
-      trackEvent('history_fetch_more_history_data_error', { error: error.message });
-      crashlytics().recordError(error);
-      return rejectWithValue(error.message);
+      trackEvent('history_fetch_more_history_data_error', { error });
+      return rejectWithValue(error);
     }
   },
 );

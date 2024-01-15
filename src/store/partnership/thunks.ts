@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 
 import { trackEvent } from '@lib/analytics';
@@ -25,10 +24,8 @@ export const updatePartnership = createAsyncThunk(
       await firestore().collection('partnership').doc(id).set(partnershipDetails, { merge: true });
       return partnershipDetails;
     } catch (error) {
-      trackEvent('update_partnership_failed', { error: error.message });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error.message);
+      trackEvent('update_partnership_failed', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -61,10 +58,8 @@ export const fetchPartnership = createAsyncThunk(
       trackEvent('partnership_not_found');
       return rejectWithValue('Partnership not found');
     } catch (error) {
-      trackEvent('partnership_fetch_error', { error: error.message });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error.message);
+      trackEvent('partnership_fetch_error', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -88,10 +83,8 @@ export const fetchPartnershipUser = createAsyncThunk(
       trackEvent('partnership_user_not_found');
       return null;
     } catch (error) {
-      trackEvent('partnership_user_fetch_error', { error: error.message });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error.message);
+      trackEvent('partnership_user_fetch_error', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -118,9 +111,8 @@ export const fetchPartnerData = createAsyncThunk(
 
       return null;
     } catch (error) {
-      trackEvent('partnership_data_fetch_error', { error: error.message });
-      crashlytics().recordError(error);
-      return rejectWithValue(error.message);
+      trackEvent('partnership_data_fetch_error', { error });
+      return rejectWithValue(error);
     }
   },
 );
