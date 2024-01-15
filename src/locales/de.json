@@ -137,7 +137,8 @@
         "title": "Erlaube Berechtigungen zum Aufnehmen",
         "description": "Du musst Berechtigungen erteilen, um deine Antwort aufzunehmen",
         "buttonText": "Erlauben"
-      }
+      },
+      "timeRemainingExplained": "Zurücksetzen um Mitternacht {{ timeZone }}"
     },
     "recordScreen": {
       "note": "Alle Aufnahmen sind privat und verschlüsselt."

@@ -118,7 +118,8 @@
     "subscriberScreen": {
       "redo": "Redo",
       "submit": "Submit",
-      "timeRemaining": "{{ time }} ({{ countryCode }}) remaining...",
+      "timeRemaining": "{{ time }} remaining...",
+      "timeRemainingExplained": "Resets at midnight {{ timeZone }}",
       "lock": {
         "title": "{{ name }} answered",
         "description": "Record your answer to hear it!"

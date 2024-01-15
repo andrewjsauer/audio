@@ -137,7 +137,8 @@
         "title": "録音のための許可を許可する",
         "description": "回答を録音するためには、許可を与えなければなりません",
         "buttonText": "許可"
-      }
+      },
+      "timeRemainingExplained": "深夜にリセットします。{{ timeZone }}でのリセットです。"
     },
     "recordScreen": {
       "note": "すべての録音はプライベートで暗号化されています。"

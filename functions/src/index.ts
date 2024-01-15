@@ -13,14 +13,14 @@ admin.initializeApp({
 
 export {
   checkTimeZones,
+  deletePartnership,
+  generatePartnership,
+  generateQuestion,
+  getRecording,
+  handleSubscriptionEvents,
+  saveRecording,
   sendNotification,
   sendSMS,
-  getRecording,
-  saveRecording,
-  generatePartnership,
   updateNewUser,
-  deletePartnership,
-  handleSubscriptionEvents,
   updatePartnershipPurchase,
-  generateQuestion,
 };

@@ -137,7 +137,8 @@
         "title": "Permitir permisos para grabar",
         "description": "Debes permitir permisos para grabar tu respuesta",
         "buttonText": "Permitir"
-      }
+      },
+      "timeRemainingExplained": "Reseteo a medianoche {{ timeZone }}"
     },
     "recordScreen": {
       "note": "Todas las grabaciones son privadas y encriptadas"

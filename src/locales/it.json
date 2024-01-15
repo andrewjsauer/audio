@@ -137,7 +137,8 @@
         "title": "Permetti l'autorizzazione a registrare",
         "description": "Devi permettere l'autorizzazione per registrare la tua risposta",
         "buttonText": "Permetti"
-      }
+      },
+      "timeRemainingExplained": "Resetta a mezzanotte {{ timeZone }}"
     },
     "recordScreen": {
       "note": "Tutte le registrazioni sono private e criptate."

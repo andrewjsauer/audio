@@ -137,7 +137,8 @@
         "title": "Autoriser les permissions d'enregistrement",
         "description": "Vous devez autoriser les permissions pour enregistrer votre réponse",
         "buttonText": "Autoriser"
-      }
+      },
+      "timeRemainingExplained": "Réinitialise à minuit {{ timeZone }}"
     },
     "recordScreen": {
       "note": "Toutes les enregistrements sont privés et chiffrés."

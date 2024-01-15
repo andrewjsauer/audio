@@ -137,7 +137,8 @@
         "title": "允许录音权限",
         "description": "你必须允许录音权限以录下你的回答",
         "buttonText": "允许"
-      }
+      },
+      "timeRemainingExplained": "午夜{{ timeZone }}重置"
     },
     "recordScreen": {
       "note": "所有录音是私密且经过加密的。"

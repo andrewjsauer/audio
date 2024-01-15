@@ -47,7 +47,7 @@ function QuestionView({
 
   const timeZone = useSelector(selectPartnershipTimeZone);
 
-  const { time, countryCode } = useTimeRemainingToMidnight(timeZone);
+  const { time, relationshipTimeZone, localTimeZone } = useTimeRemainingToMidnight(timeZone);
 
   const handleNavigation = (isPartner: boolean) => {
     if (isPartner && partnerStatus === QuestionStatusType.Play) {
@@ -87,11 +87,15 @@ function QuestionView({
   return (
     <Container>
       <TimerText>
-        {t('questionScreen.subscriberScreen.timeRemaining', {
-          time: time || '00h 00m 00s',
-          countryCode,
-        })}
+        {t('questionScreen.subscriberScreen.timeRemaining', { time: time || '00h 00m 00s' })}
       </TimerText>
+      {relationshipTimeZone !== localTimeZone && (
+        <TimerText>
+          {t('questionScreen.subscriberScreen.timeRemainingExplained', {
+            timeZone: relationshipTimeZone,
+          })}
+        </TimerText>
+      )}
       <QuestionText>{text}</QuestionText>
       <QuestionRowContainers>
         <QuestionRowView

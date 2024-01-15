@@ -137,7 +137,8 @@
         "title": "녹음을 위한 권한 허용",
         "description": "답변을 녹음하려면 권한을 허용해야 합니다",
         "buttonText": "허용"
-      }
+      },
+      "timeRemainingExplained": "자정에 재설정됩니다. {{ timeZone }}"
     },
     "recordScreen": {
       "note": "모든 녹음은 개인적이며 암호화되어 있습니다."

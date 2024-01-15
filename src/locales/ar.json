@@ -137,7 +137,8 @@
         "title": "السماح بأذونات التسجيل",
         "description": "يجب السماح بالأذونات لتسجيل إجابتك",
         "buttonText": "السماح"
-      }
+      },
+      "timeRemainingExplained": "يتم إعادة الضبط في منتصف الليل {{ timeZone }}"
     },
     "recordScreen": {
       "note": "جميع التسجيلات خاصة ومشفرة."

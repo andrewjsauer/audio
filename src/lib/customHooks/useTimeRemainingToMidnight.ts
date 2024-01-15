@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment-timezone';
+import { getTimeZone } from 'react-native-localize';
 
 const useTimeRemainingToMidnight = (timeZone: string) => {
   const [timeRemaining, setTimeRemaining] = useState('');
+  const localTimeZone = getTimeZone();
 
   const formatTime = (totalSeconds: number) => {
     const hours = Math.floor(totalSeconds / 3600);
@@ -31,7 +33,13 @@ const useTimeRemainingToMidnight = (timeZone: string) => {
   }, [timeZone]);
 
   const timeZoneAbbreviation = moment.tz(timeZone).zoneAbbr();
-  return { time: timeRemaining, countryCode: timeZoneAbbreviation };
+  const localTimeZoneAbbreviation = moment.tz(localTimeZone).zoneAbbr();
+
+  return {
+    time: timeRemaining,
+    relationshipTimeZone: timeZoneAbbreviation,
+    localTimeZone: localTimeZoneAbbreviation,
+  };
 };
 
 export default useTimeRemainingToMidnight;
