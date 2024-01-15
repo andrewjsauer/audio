@@ -51,8 +51,8 @@ async function sendAfternoonReminderNotificationIfNeeded(userDoc: any, timeZone:
       const response = await admin.messaging().sendEachForMulticast({
         tokens: userData.deviceIds,
         notification: {
-          title: 'Daily Q’s -  New question available!',
-          body: 'Tap to see what question you are getting today',
+          title: 'Daily Q’s',
+          body: 'Today’s question is ready!',
         },
       });
 
@@ -75,8 +75,8 @@ async function sendEveningReminderNotification(userData: any) {
   await admin.messaging().sendEachForMulticast({
     tokens: userData.deviceIds,
     notification: {
-      title: 'Daily Q’s - Don’t forget to answer!',
-      body: 'Tap to answer your question for today.',
+      title: 'Daily Q’s',
+      body: 'Today’s question is ready!',
     },
   });
 
@@ -102,8 +102,8 @@ async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
   await admin.messaging().sendEachForMulticast({
     tokens: userData.deviceIds,
     notification: {
-      title: `Daily Q’s - ${partnerName} has answered!,`,
-      body: 'Tap to hear their response to today’s question.',
+      title: `Daily Q’s`,
+      body: `${partnerName} has answered! Tap to listen.`,
     },
   });
 
