@@ -52,7 +52,8 @@
       "title": "Actualización requerida",
       "description": "Por favor, actualiza a la última versión de Daily Q's para seguir usando la aplicación.",
       "buttonText": "Actualización"
-    }
+    },
+    "recordingSaveMemoryLimitExceeded": "Su grabación excedió el límite máximo de memoria."
   },
   "browserScreen": {
     "title": "Navegador"
@@ -141,7 +142,8 @@
       "timeRemainingExplained": "Reseteo a medianoche {{ timeZone }}"
     },
     "recordScreen": {
-      "note": "Todas las grabaciones son privadas y encriptadas"
+      "note": "Todas las grabaciones son privadas y encriptadas",
+      "timeRunningOut": "Atención, te quedan {{ time }} segundos."
     }
   },
   "trialScreen": {
@@ -179,9 +181,9 @@
     "signInScreen": {
       "title": "Preguntas diarias",
       "subtitle": "Edición para Parejas",
-      "description": "Descubrir las respuestas del otro a\n preguntas diarias personalizadas",
       "buttonText": "Obtener Código",
-      "terms": "Al registrarte, aceptas nuestros"
+      "terms": "Al registrarte, aceptas nuestros",
+      "description": "Descubre las respuestas de cada uno a preguntas diarias personalizadas."
     },
     "phoneNumberScreen": {
       "title": "¡Bienvenido! Inicia sesión para comenzar",

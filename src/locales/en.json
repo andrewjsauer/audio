@@ -142,7 +142,8 @@
       }
     },
     "recordScreen": {
-      "note": "All recordings are private and encrypted"
+      "note": "All recordings are private and encrypted",
+      "timeRunningOut": "Heads up, you have {{ time }}s left"
     }
   },
   "trialScreen": {
@@ -180,7 +181,7 @@
     "signInScreen": {
       "title": "Daily Q’s",
       "subtitle": "Couples Edition",
-      "description": "Reveal each others’ answers to\n daily personalized questions",
+      "description": "Discover each other’s answers to\n daily personalized questions",
       "buttonText": "Get Code",
       "terms": "By signing up, you agree to our"
     },

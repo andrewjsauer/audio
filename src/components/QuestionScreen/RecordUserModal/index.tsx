@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Vibration } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import KeepAwake from 'react-native-keep-awake';
 
@@ -30,25 +30,31 @@ import StopIcon from '@assets/icons/stop.svg';
 import Modal from '@components/shared/Modal';
 import { trackEvent } from '@lib/analytics';
 
+import { max } from 'date-fns';
 import PermissionNotification from './PermissionNotification';
 import {
   PermissionNotificationContainer,
   PostRecordContainer,
-  SubTitle,
   RecordButton,
   RecordContainer,
   SecondaryButton,
   SecondaryButtonText,
+  SubTitle,
   Title,
 } from './style';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
-const MAX_RECORDING_DURATION = 10 * 60 * 1000; // 10 minutes
+
+const MAX_RECORDING_DURATION = 5 * 60 * 1000; // 5 minutes
+const COUNTDOWN_START = 4 * 60 * 1000 + 30 * 1000; // 4:30 minutes
 
 function RecordUserModal() {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation();
+
+  const recordTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hasVibratedRef = useRef<boolean>(false);
 
   const userData = useSelector(selectUserData);
   const partnerData = useSelector(selectPartnerData);
@@ -59,6 +65,7 @@ function RecordUserModal() {
   const [recordTime, setRecordTime] = useState('00m 00s');
   const [maxRecordTime, setMaxRecordTime] = useState('');
   const [recordPath, setRecordPath] = useState('');
+  const [isCountdown, setIsCountdown] = useState(false);
 
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -74,24 +81,28 @@ function RecordUserModal() {
 
   useEffect(() => {
     return () => {
-      if (isRecording) {
-        audioRecorderPlayer.stopRecorder();
-        audioRecorderPlayer.removeRecordBackListener();
+      audioRecorderPlayer.stopRecorder();
+      audioRecorderPlayer.removeRecordBackListener();
+
+      audioRecorderPlayer.stopPlayer();
+      audioRecorderPlayer.removePlayBackListener();
+
+      if (recordTimeoutRef.current) {
+        clearTimeout(recordTimeoutRef.current);
+        recordTimeoutRef.current = null;
       }
 
-      if (isPlaying) {
-        audioRecorderPlayer.stopPlayer();
-        audioRecorderPlayer.removePlayBackListener();
-      }
+      setIsCountdown(false);
       setIsRecording(false);
       setIsPlaying(false);
       setRecordTime('00m 00s');
       setRecordPath('');
+      hasVibratedRef.current = false;
       KeepAwake.deactivate();
     };
   }, []);
 
-  const formatRecordTime = (milliseconds) => {
+  const formatTime = (milliseconds: number) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
@@ -100,6 +111,19 @@ function RecordUserModal() {
     const paddedSeconds = seconds < 10 ? `0${seconds}` : seconds;
 
     return `${paddedMinutes}m ${paddedSeconds}s`;
+  };
+
+  const formatRecordTime = (milliseconds: number) => {
+    if (milliseconds >= COUNTDOWN_START) {
+      const countdownMilliseconds = MAX_RECORDING_DURATION - milliseconds;
+      const countdownSeconds = Math.floor(countdownMilliseconds / 1000);
+
+      setIsCountdown(true);
+      return t('questionScreen.recordScreen.timeRunningOut', { time: countdownSeconds });
+    }
+
+    setIsCountdown(false);
+    return formatTime(milliseconds);
   };
 
   const onStopRecord = async () => {
@@ -111,6 +135,12 @@ function RecordUserModal() {
     setRecordPath(result);
     KeepAwake.deactivate();
     setIsRecording(false);
+    hasVibratedRef.current = false;
+
+    if (recordTimeoutRef.current) {
+      clearTimeout(recordTimeoutRef.current);
+      recordTimeoutRef.current = null;
+    }
   };
 
   const onStartRecord = async () => {
@@ -127,15 +157,32 @@ function RecordUserModal() {
     await audioRecorderPlayer.startRecorder(undefined, audioSet);
 
     audioRecorderPlayer.addRecordBackListener((e: any) => {
+      if (e.currentPosition >= MAX_RECORDING_DURATION) {
+        trackEvent('question_record_max_duration_reached', { question_id: currentQuestion.id });
+
+        setMaxRecordTime(formatTime(e.currentPosition));
+        onStopRecord();
+        return;
+      }
+
+      if (e.currentPosition >= COUNTDOWN_START && !hasVibratedRef.current) {
+        trackEvent('question_record_countdown_started', { question_id: currentQuestion.id });
+        Vibration.vibrate([500, 500, 500]);
+        hasVibratedRef.current = true;
+      }
+
       setRecordTime(formatRecordTime(e.currentPosition));
-      setMaxRecordTime(formatRecordTime(e.currentPosition));
-      // Update visualizer here
+      setMaxRecordTime(formatTime(e.currentPosition));
     });
 
     KeepAwake.activate();
     setIsRecording(true);
 
-    setTimeout(() => {
+    if (recordTimeoutRef.current) {
+      clearTimeout(recordTimeoutRef.current);
+    }
+
+    recordTimeoutRef.current = setTimeout(() => {
       if (isRecording) {
         onStopRecord();
       }
@@ -150,8 +197,10 @@ function RecordUserModal() {
       setIsPlaying(false);
     }
 
+    setIsCountdown(false);
     setRecordTime('00m 00s');
     setRecordPath('');
+    hasVibratedRef.current = false;
   };
 
   const onPlayBack = async () => {
@@ -177,6 +226,7 @@ function RecordUserModal() {
     audioRecorderPlayer.removePlayBackListener();
 
     setIsPlaying(false);
+    setIsCountdown(false);
     setRecordTime(maxRecordTime);
   };
 
@@ -269,7 +319,7 @@ function RecordUserModal() {
     <Modal>
       <Title>{currentQuestion.text}</Title>
       {isRecording || isPlaying ? (
-        <SubTitle>{recordTime}</SubTitle>
+        <SubTitle isWarningColor={isCountdown}>{recordTime}</SubTitle>
       ) : (
         <SubTitle>{t('questionScreen.recordScreen.note')}</SubTitle>
       )}

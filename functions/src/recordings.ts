@@ -8,7 +8,7 @@ import crypto from 'crypto-js';
 const recordingEncryptionKey = defineSecret('RECORDING_ENCRYPTION_KEY');
 
 export const getRecording = functions
-  .runWith({ secrets: [recordingEncryptionKey] })
+  .runWith({ secrets: [recordingEncryptionKey], memory: '512MB' })
   .https.onCall(async (data, context) => {
     if (!context.auth) {
       throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
@@ -35,7 +35,7 @@ export const getRecording = functions
   });
 
 export const saveRecording = functions
-  .runWith({ secrets: [recordingEncryptionKey] })
+  .runWith({ secrets: [recordingEncryptionKey], memory: '512MB' })
   .https.onCall(async (data, context) => {
     if (!context.auth) {
       throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
