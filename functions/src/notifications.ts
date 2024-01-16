@@ -76,7 +76,7 @@ async function sendEveningReminderNotification(userData: any) {
     tokens: userData.deviceIds,
     notification: {
       title: 'Daily Q’s',
-      body: 'Today’s question is ready!',
+      body: `Don't forget to answer today's question!`,
     },
   });
 
@@ -92,6 +92,8 @@ async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
 
     const partnerData = partnerSnapshot.data();
     partnerName = partnerData?.name || 'Your partner';
+
+    functions.logger.info(`Partner name: ${partnerName}`);
   } catch (error) {
     functions.logger.error(`Error getting partner: ${partnerId}`, error);
     return;
@@ -134,13 +136,12 @@ async function checkUserActivity(userDoc: any, timeZone: string) {
     return { userId, userData: null, active: false };
   }
 
-  functions.logger.info(`Checking user last active time: ${userData?.lastActiveAt}`);
   const usersLastActiveAt = userData.lastActiveAt?._seconds || userData.lastActiveAt?.seconds;
 
   const lastActiveAt = moment(usersLastActiveAt * 1000).tz(timeZone);
   const startOfToday = moment().tz(timeZone).startOf('day');
 
-  return { userId, userData, active: lastActiveAt.isBefore(startOfToday) };
+  return { userId, userData, active: lastActiveAt.isSameOrAfter(startOfToday) };
 }
 
 async function sendInactivePartnerReminder(
@@ -208,6 +209,53 @@ async function sendInactivePartnerReminder(
   );
 }
 
+async function checkAndSendRecordingReminders(activeUsers: any, latestQuestionId: string) {
+  try {
+    const db = admin.firestore();
+    const recordingsSnapshot = await db
+      .collection('recordings')
+      .where('questionId', '==', latestQuestionId)
+      .get();
+
+    if (recordingsSnapshot.empty) {
+      functions.logger.info('No recordings found');
+
+      await Promise.all(
+        activeUsers.map((user: any) => sendEveningReminderNotification(user.userData)),
+      );
+
+      return;
+    }
+
+    functions.logger.info('Recordings found');
+    const recordedUserIds = recordingsSnapshot.docs.map((doc) => doc.data().userId);
+
+    if (recordingsSnapshot.docs.length === 1) {
+      functions.logger.info('One recording found');
+
+      const userToNotify = activeUsers.find(
+        (user: any) => !recordedUserIds.includes(user.userData.id),
+      );
+
+      if (userToNotify) {
+        const userWhoRecorded = activeUsers.find((user: any) =>
+          recordedUserIds.includes(user.userData.id),
+        );
+
+        if (userWhoRecorded) {
+          functions.logger.info(
+            `Sending recording reminder to user: ${userToNotify.userData.id} for user: ${userWhoRecorded.userData.id}`,
+          );
+
+          await sendPartnerRecordingReminder(userToNotify.userData, userWhoRecorded.userData.id);
+        }
+      }
+    }
+  } catch (error) {
+    functions.logger.error(`Error getting recordings for question: ${latestQuestionId}`, error);
+  }
+}
+
 async function handleEveningLogic(
   partnershipUsers: any,
   timeZone: string,
@@ -244,6 +292,7 @@ async function handleEveningLogic(
     );
   } else if (inactiveUsers.length === 0) {
     functions.logger.info('Both users are active');
+    await checkAndSendRecordingReminders(activeUsers, latestQuestionId);
   }
 }
 
@@ -282,10 +331,8 @@ async function processPartnership(partnershipDoc: any) {
     const isEvening = currentTime.hour() === 20 && currentTime.minute() <= 5;
 
     if (isAfternoon) {
-      functions.logger.info('Afternoon', partnershipId);
       await handleAfternoonLogic(partnershipUsers, timeZone);
     } else if (isEvening) {
-      functions.logger.info('Evening', partnershipId);
       await handleEveningLogic(partnershipUsers, timeZone, latestQuestionId);
     }
   } catch (error) {
