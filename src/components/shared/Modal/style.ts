@@ -1,4 +1,7 @@
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
+
+const deviceWidth = Dimensions.get('window').width;
 
 export const ModalWrapper = styled.View`
   flex: 1;
@@ -14,8 +17,11 @@ export const ModalDismiss = styled.TouchableOpacity`
 
 export const ModalContainer = styled.View`
   height: 400px;
-  background-color: white;
+  background-color: ${(p) => p.theme.colors.white};
   border-radius: 20px;
   padding: 30px 14px 0 14px;
   margin-bottom: 12px;
+  width: ${deviceWidth * 0.9}px;
+  max-width: ${deviceWidth * 0.9}px;
+  min-width: 280px;
 `;
