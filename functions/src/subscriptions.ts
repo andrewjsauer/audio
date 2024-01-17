@@ -101,15 +101,15 @@ async function updateSubscriptions(userId: string, hasAccess: boolean) {
   }
 }
 
-function checkTrialPeriod(eventData: any) {
-  if (eventData.period_type === 'TRIAL') {
-    const now = new Date().getTime();
-    const expirationAtMs = eventData.expiration_at_ms;
+function isSubscriptionActive(eventData: any) {
+  const now = new Date().getTime();
+  const expirationAtMs = eventData.expiration_at_ms;
 
-    return now < expirationAtMs;
-  }
+  return now < expirationAtMs;
+}
 
-  return false;
+function isTrailPeriod(eventData: any) {
+  return eventData.period_type === 'TRIAL';
 }
 
 export const handleSubscriptionEvents = functions.firestore
@@ -122,7 +122,8 @@ export const handleSubscriptionEvents = functions.firestore
 
       functions.logger.info('Event Type', eventType);
 
-      const isTrialPeriod = checkTrialPeriod(eventData);
+      const isTrial = isTrailPeriod(eventData);
+      const isActive = isSubscriptionActive(eventData);
 
       switch (eventType) {
         case 'INITIAL_PURCHASE':
@@ -133,7 +134,9 @@ export const handleSubscriptionEvents = functions.firestore
           await updateSubscriptions(userId, true);
           break;
         case 'CANCELLATION':
-          if (!isTrialPeriod) {
+          if (isTrial && !isActive) {
+            await updateSubscriptions(userId, false);
+          } else if (!isTrial && !isActive) {
             await updateSubscriptions(userId, false);
           }
           break;
@@ -145,6 +148,13 @@ export const handleSubscriptionEvents = functions.firestore
           break;
         case 'BILLING_ISSUE':
           // Handle billing issue, but do not revoke access
+          break;
+        case 'RESTORE_PURCHASES':
+          if (isActive) {
+            await updateSubscriptions(userId, true);
+          } else {
+            await updateSubscriptions(userId, false);
+          }
           break;
         default:
           break;
