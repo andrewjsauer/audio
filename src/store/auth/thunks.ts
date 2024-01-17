@@ -104,13 +104,19 @@ export const generatePartnership = createAsyncThunk(
       const timeZone = getTimeZone();
       const birthDate = firestore.Timestamp.fromDate(userDetails.birthDate as Date);
       const startDate = firestore.Timestamp.fromDate(partnershipDetails.startDate as Date);
+      const usersName = userDetails.name?.trim();
+      const partnersName = partnerDetails.name?.trim();
 
       const { data } = await functions().httpsCallable('generatePartnership')({
         userDetails: {
           ...userDetails,
           birthDate,
+          name: usersName,
         },
-        partnerDetails,
+        partnerDetails: {
+          ...partnerDetails,
+          name: partnersName,
+        },
         partnershipDetails: {
           ...partnershipDetails,
           startDate,

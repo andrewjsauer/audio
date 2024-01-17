@@ -26,11 +26,23 @@ function PartnerNameScreen() {
   const { name, color } = partnerDetails;
 
   const handleNameChange = (typedName: string) => {
-    const nameWithoutWhitespace = typedName.replace(/\s+/g, '');
-    handlePartnerDetails({ name: nameWithoutWhitespace });
+    handlePartnerDetails({ name: typedName });
   };
 
   const handleSubmit = () => {
+    if (!color) {
+      dispatch(
+        showNotification({
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.colorEmpty',
+          type: 'error',
+        }),
+      );
+
+      trackEvent('partners_color_empty_error');
+      return;
+    }
+
     if (!name) {
       dispatch(
         showNotification({

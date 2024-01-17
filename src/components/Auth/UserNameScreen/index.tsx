@@ -58,8 +58,7 @@ function UserNameScreen() {
   };
 
   const handleNameChange = (typedName: string) => {
-    const nameWithoutWhitespace = typedName.replace(/\s+/g, '');
-    handleUserDetails({ name: nameWithoutWhitespace });
+    handleUserDetails({ name: typedName });
   };
 
   return (
