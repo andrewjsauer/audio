@@ -186,8 +186,8 @@
       "terms": "By signing up, you agree to our"
     },
     "phoneNumberScreen": {
-      "title": "Welcome! Sign In to get started",
-      "inputTitle": "Sign In *",
+      "title": "Welcome! Sign in to get started.",
+      "inputTitle": "Sign in *",
       "inputDescription": "To sign in, type your phone number for a verification code."
     },
     "verificationCodeScreen": {
