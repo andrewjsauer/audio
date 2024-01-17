@@ -3,12 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-native';
+import moment from 'moment-timezone';
+import i18n from 'i18next';
 
 import { deleteRelationship } from '@store/auth/thunks';
-import { selectPartnerData, selectPartnershipData } from '@store/partnership/selectors';
+import {
+  selectPartnerData,
+  selectPartnershipData,
+  selectPartnershipTimeZone,
+} from '@store/partnership/selectors';
 import { selectUserData, selectIsLoading } from '@store/auth/selectors';
 import { signOut } from '@store/app/thunks';
-import i18n from 'i18next';
 
 import { AppDispatch } from '@store/index';
 
@@ -48,6 +53,7 @@ function SettingsScreen() {
   const partnerData = useSelector(selectPartnerData);
   const partnershipData = useSelector(selectPartnershipData);
   const isLoading = useSelector(selectIsLoading);
+  const timeZone = useSelector(selectPartnershipTimeZone);
 
   useEffect(() => {
     trackScreen('AccountScreen');
@@ -83,6 +89,11 @@ function SettingsScreen() {
     navigation.navigate(AccountScreens.RelationshipTypeScreen);
   };
 
+  const handleTimeZoneTypeChange = () => {
+    trackEvent('timeZone_change_button_clicked');
+    navigation.navigate(AccountScreens.TimeZoneScreen);
+  };
+
   const handleDeleteAccount = () => {
     trackEvent('delete_account_button_clicked');
 
@@ -110,6 +121,7 @@ function SettingsScreen() {
       { cancelable: false },
     );
   };
+
   const types = t('auth.partnerDetails.relationshipTypeScreen.types', {
     returnObjects: true,
   }) as { [key in RelationshipType]: string }[];
@@ -149,6 +161,13 @@ function SettingsScreen() {
               <OptionTitle>{t('accountScreen.relationshipStatus')}</OptionTitle>
               <OptionButton onPress={handleRelationshipTypeChange}>
                 <OptionName>{relationshipType}</OptionName>
+                <ChevronRight width={24} height={24} />
+              </OptionButton>
+            </OptionContainer>
+            <OptionContainer>
+              <OptionTitle>{t('accountScreen.relationshipTimeZone')}</OptionTitle>
+              <OptionButton onPress={handleTimeZoneTypeChange}>
+                <OptionName>{moment.tz(timeZone).zoneAbbr()}</OptionName>
                 <ChevronRight width={24} height={24} />
               </OptionButton>
             </OptionContainer>

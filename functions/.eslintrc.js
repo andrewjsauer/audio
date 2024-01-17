@@ -35,6 +35,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
     'react/require-default-props': 'off',
+    'no-underscore-dangle': 'off',
     'no-param-reassign': [
       'error',
       {

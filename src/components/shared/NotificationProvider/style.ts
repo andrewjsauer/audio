@@ -28,9 +28,9 @@ export const Container = styled.View<TypeProps>`
   background-color: ${({ type, theme }) => {
     switch (type) {
       case 'error':
-        return theme.colors.error;
+        return theme.colors.burntOrange;
       case 'success':
-        return theme.colors.success;
+        return theme.colors.green;
       default:
         return theme.colors.white;
     }
@@ -71,9 +71,9 @@ export const ButtonText = styled.Text<TypeProps>`
   color: ${({ type, theme }) => {
     switch (type) {
       case 'error':
-        return theme.colors.error;
+        return theme.colors.burntOrange;
       case 'success':
-        return theme.colors.success;
+        return theme.colors.green;
       default:
         return theme.colors.white;
     }

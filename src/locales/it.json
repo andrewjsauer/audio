@@ -52,7 +52,8 @@
       "title": "Aggiornamento richiesto",
       "description": "Per favore, aggiorna all'ultima versione di Daily Q's per continuare a utilizzare l'app.",
       "buttonText": "Aggiornamento"
-    }
+    },
+    "recordingSaveMemoryLimitExceeded": "La tua registrazione ha superato il limite massimo di memoria."
   },
   "browserScreen": {
     "title": "Browser"
@@ -96,6 +97,11 @@
     },
     "request": {
       "title": "Modulo di Richiesta dei Tuoi Dati"
+    },
+    "relationshipTimeZone": "Fuso orario delle relazioni",
+    "timeZoneScreen": {
+      "title": "Cambia il fuso orario della tua relazione",
+      "success": "Il fuso orario della tua relazione è stato aggiornato!"
     }
   },
   "questionScreen": {
@@ -132,10 +138,12 @@
         "title": "Permetti l'autorizzazione a registrare",
         "description": "Devi permettere l'autorizzazione per registrare la tua risposta",
         "buttonText": "Permetti"
-      }
+      },
+      "timeRemainingExplained": "Resetta a mezzanotte {{ timeZone }}"
     },
     "recordScreen": {
-      "note": "Tutte le registrazioni sono private e criptate."
+      "note": "Tutte le registrazioni sono private e criptate.",
+      "timeRunningOut": "Attenzione, ti restano {{ time }} secondi."
     }
   },
   "trialScreen": {
@@ -173,9 +181,9 @@
     "signInScreen": {
       "title": "Domande Quotidiane",
       "subtitle": "Edizione Coppie",
-      "description": "Svela le risposte l'uno dell'altro\n a domande personalizzate ogni giorno",
       "buttonText": "Ottieni Codice",
-      "terms": "Iscrivendoti, accetti i nostri"
+      "terms": "Iscrivendoti, accetti i nostri",
+      "description": "Scoprite le risposte personalizzate l'uno dell'altro alle domande giornaliere."
     },
     "phoneNumberScreen": {
       "title": "Benvenuto! Accedi per iniziare",

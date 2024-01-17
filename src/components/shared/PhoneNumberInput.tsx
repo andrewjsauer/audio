@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import PhoneNumberInput from 'react-native-phone-number-input';
 import { AsYouType } from 'libphonenumber-js';
+import { getCountry } from 'react-native-localize';
 
 const styles = StyleSheet.create({
   label: {
@@ -45,7 +46,7 @@ type Props = {
 function PhoneNumberInputContainer({ phoneInputRef, setPhoneNumber }: Props) {
   const { t } = useTranslation();
 
-  const [countryCode, setCountryCode] = useState<any>('US');
+  const [countryCode, setCountryCode] = useState<any>(getCountry() || 'US');
   const [phoneNumberValue, setPhoneNumberValue] = useState<string>('');
 
   const handlePhoneNumberChange = (number: string) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { format, addDays } from 'date-fns';
+import moment from 'moment-timezone';
 
 import { trackEvent } from '@lib/analytics';
 
@@ -49,7 +49,7 @@ function TrialScreen() {
     dispatch(restorePurchases());
   };
 
-  const date30DaysFromNow = addDays(new Date(), 30);
+  const date30DaysFromNow = moment().add(30, 'days');
   return (
     <Container>
       <Header>
@@ -63,7 +63,7 @@ function TrialScreen() {
           <Benefit2Container>
             <Benefit2Description>{t('trialScreen.benefit2')}</Benefit2Description>
             <Benefit2SubDescription>
-              {t('trialScreen.benefit2Description', { date: format(date30DaysFromNow, 'PPP') })}
+              {t('trialScreen.benefit2Description', { date: date30DaysFromNow.format('LL') })}
             </Benefit2SubDescription>
           </Benefit2Container>
           <Benefit2Item>{t('trialScreen.price')}</Benefit2Item>

@@ -3,7 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import analytics from '@react-native-firebase/analytics';
-import crashlytics from '@react-native-firebase/crashlytics';
 import Purchases from 'react-native-purchases';
 import functions from '@react-native-firebase/functions';
 
@@ -52,10 +51,8 @@ export const initializeSubscriber = createAsyncThunk(
 
       return null;
     } catch (error) {
-      crashlytics().log('Error initializing subscriber');
-      trackEvent('error_initializing_subscriber', { error: error.message });
-
-      return rejectWithValue(error.message);
+      trackEvent('error_initializing_subscriber', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -97,7 +94,8 @@ export const signOut = createAsyncThunk(
 
       return null;
     } catch (error) {
-      return rejectWithValue(error.message);
+      trackEvent('error_signing_out', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -127,10 +125,8 @@ export const initializeSession = createAsyncThunk(
 
       return null;
     } catch (error) {
-      crashlytics().log('Error initializing session');
-      trackEvent('error_initializing_session', { error: error.message });
-
-      return rejectWithValue(error.message);
+      trackEvent('error_initializing_session', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -176,7 +172,7 @@ export const purchaseProduct = createAsyncThunk(
             );
           }
         } catch (error) {
-          trackEvent('error_purchasing_promo', { error: error.message });
+          trackEvent('error_purchasing_promo', { error });
         }
       }
 
@@ -203,10 +199,8 @@ export const purchaseProduct = createAsyncThunk(
         return null;
       }
 
-      crashlytics().log('Error purchasing product');
-      trackEvent('error_purchasing_product', { error: error.message });
-
-      return rejectWithValue(error.message);
+      trackEvent('error_purchasing_product', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -224,10 +218,8 @@ export const restorePurchases = createAsyncThunk(
         return null;
       }
 
-      crashlytics().log('Error restoring purchases');
-      trackEvent('error_restoring_purchases', { error: error.message });
-
-      return rejectWithValue(error.message);
+      trackEvent('error_restoring_purchases', { error });
+      return rejectWithValue(error);
     }
   },
 );

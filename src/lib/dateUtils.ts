@@ -1,13 +1,23 @@
-import { parseISO } from 'date-fns';
+import moment from 'moment-timezone';
 
-export const convertDateToLocal = (date: Date) => {
-  const createdAtDate = typeof date === 'string' ? parseISO(date) : new Date(date);
+export const differenceInYears = (date1: string, date2: string) => {
+  return moment(date1).diff(moment(date2), 'years');
+};
 
-  // Get the timezone offset in minutes, then convert it to milliseconds.
-  // We subtract this from the UTC time to get the local time.
-  const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+export const differenceInMonths = (date1: string, date2: string) => {
+  return moment(date1).diff(moment(date2), 'months');
+};
 
-  // Adjust createdAtDate to local time.
-  const createdAtLocal = new Date(createdAtDate.getTime() - timezoneOffset);
-  return createdAtLocal;
+export const differenceInDays = (date1: string, date2: string) => {
+  return moment(date1).diff(moment(date2), 'days');
+};
+
+export const startOfDayInTimeZone = (date: Date, timeZone: string) => {
+  return moment(date).tz(timeZone).startOf('day');
+};
+
+export const formatCreatedAt = (createdAt: string, timeZone: string) => {
+  return moment(createdAt._seconds * 1000)
+    .tz(timeZone)
+    .toDate();
 };

@@ -10,10 +10,10 @@ export const Title = styled.Text`
   min-width: 200px;
 `;
 
-export const SubTitle = styled.Text`
+export const SubTitle = styled.Text<{ isWarningColor?: boolean }>`
   font-family: ${(p) => p.theme.fonts.bold};
   font-size: ${(p) => p.theme.fontSizes.regular};
-  color: ${(p) => p.theme.colors.lightGray};
+  color: ${(p) => (p.isWarningColor ? p.theme.colors.red : p.theme.colors.lightGray)};
   text-align: center;
 `;
 
@@ -58,7 +58,7 @@ export const SecondaryButton = styled.TouchableOpacity<{ type: string }>`
       case 'redo':
         return theme.colors.transparentGray;
       case 'submit':
-        return theme.colors.success;
+        return theme.colors.green;
       default:
         return theme.colors.white;
     }

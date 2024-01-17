@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { format, isToday, isBefore } from 'date-fns';
+import moment from 'moment-timezone';
 
 import LoadingView from '@components/shared/LoadingView';
 import ErrorView from '@components/shared/ErrorView';
@@ -63,6 +63,7 @@ function HistoryScreen({
   partnerId,
   partnerName,
   questions,
+  timeZone,
   userId,
 }: {
   error: string | null;
@@ -73,6 +74,7 @@ function HistoryScreen({
   partnerId: string;
   partnerName: string;
   questions: HistoryType[];
+  timeZone: string;
   userId: string;
 }) {
   const { t } = useTranslation();
@@ -147,13 +149,16 @@ function HistoryScreen({
     let isDatePast = false;
 
     if (createdAt) {
-      isDateToday = isToday(new Date(createdAt));
-      isDatePast = isBefore(new Date(createdAt), new Date());
+      const dateInTimeZone = moment(createdAt).tz(timeZone);
+      const todayInTimeZone = moment().tz(timeZone);
 
-      formatDate = isDateToday ? t('today') : format(new Date(createdAt), 'PP');
+      isDateToday = dateInTimeZone.isSame(todayInTimeZone, 'day');
+      isDatePast = dateInTimeZone.isBefore(todayInTimeZone);
+
+      formatDate = isDateToday ? t('today') : dateInTimeZone.format('LL');
     }
 
-    const shouldBlurr = !isDateToday && isItemBlurred;
+    const shouldBlur = !isDateToday && isItemBlurred;
     const isPartnerButtonDisabled =
       partnerStatus !== StatusTypes.Play || (isDatePast && userStatus !== StatusTypes.Play);
 
@@ -164,7 +169,7 @@ function HistoryScreen({
       <ItemContainer key={id}>
         <ItemQuestionContainer>
           <ItemDate>{formatDate}</ItemDate>
-          {shouldBlurr ? (
+          {shouldBlur ? (
             <View>
               <BlurredItemRow
                 blurType="light"

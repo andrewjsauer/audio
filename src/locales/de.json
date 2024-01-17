@@ -52,7 +52,8 @@
       "title": "Aktualisierung erforderlich",
       "description": "Bitte aktualisieren Sie die App auf die neueste Version von Daily Q's, um sie weiterhin verwenden zu können.",
       "buttonText": "Aktualisierung"
-    }
+    },
+    "recordingSaveMemoryLimitExceeded": "Ihre Aufnahme hat den maximalen Speicherplatz überschritten."
   },
   "browserScreen": {
     "title": "Browser"
@@ -96,6 +97,11 @@
     },
     "request": {
       "title": "Anforderungsformular für Ihre Daten"
+    },
+    "relationshipTimeZone": "Zeitzone der Beziehung",
+    "timeZoneScreen": {
+      "title": "Ändern Sie Ihre Beziehung zur Zeitzone.",
+      "success": "Deine Beziehungsuhrzeitzone wurde aktualisiert!"
     }
   },
   "questionScreen": {
@@ -132,10 +138,12 @@
         "title": "Erlaube Berechtigungen zum Aufnehmen",
         "description": "Du musst Berechtigungen erteilen, um deine Antwort aufzunehmen",
         "buttonText": "Erlauben"
-      }
+      },
+      "timeRemainingExplained": "Zurücksetzen um Mitternacht {{ timeZone }}"
     },
     "recordScreen": {
-      "note": "Alle Aufnahmen sind privat und verschlüsselt."
+      "note": "Alle Aufnahmen sind privat und verschlüsselt.",
+      "timeRunningOut": "Achtung, du hast noch {{ time }} Sekunden übrig."
     }
   },
   "trialScreen": {
@@ -173,9 +181,9 @@
     "signInScreen": {
       "title": "Tägliche Fragen",
       "subtitle": "Paar-Edition",
-      "description": "Entdecke die Antworten des anderen auf\n täglich personalisierte Fragen",
       "buttonText": "Code anfordern",
-      "terms": "Mit der Anmeldung stimmst du unseren"
+      "terms": "Mit der Anmeldung stimmst du unseren",
+      "description": "Entdecke die Antworten auf täglich gestellte personalisierte Fragen"
     },
     "phoneNumberScreen": {
       "title": "Willkommen! Melde dich an, um zu beginnen",

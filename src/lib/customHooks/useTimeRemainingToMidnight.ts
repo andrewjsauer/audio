@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { endOfDay, differenceInSeconds } from 'date-fns';
+import moment from 'moment-timezone';
+import { getTimeZone } from 'react-native-localize';
 
-const useTimeRemainingToMidnight = () => {
+const useTimeRemainingToMidnight = (timeZone: string) => {
   const [timeRemaining, setTimeRemaining] = useState('');
+  const localTimeZone = getTimeZone();
 
   const formatTime = (totalSeconds: number) => {
     const hours = Math.floor(totalSeconds / 3600);
@@ -16,9 +18,9 @@ const useTimeRemainingToMidnight = () => {
 
   useEffect(() => {
     const calculateTimeRemaining = () => {
-      const now = new Date();
-      const midnight = endOfDay(now);
-      const diffInSeconds = differenceInSeconds(midnight, now);
+      const now = moment.tz(timeZone);
+      const midnight = now.clone().endOf('day');
+      const diffInSeconds = midnight.diff(now, 'seconds');
 
       return formatTime(diffInSeconds);
     };
@@ -28,9 +30,16 @@ const useTimeRemainingToMidnight = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [timeZone]);
 
-  return timeRemaining;
+  const timeZoneAbbreviation = moment.tz(timeZone).zoneAbbr();
+  const localTimeZoneAbbreviation = moment.tz(localTimeZone).zoneAbbr();
+
+  return {
+    time: timeRemaining,
+    relationshipTimeZone: timeZoneAbbreviation,
+    localTimeZone: localTimeZoneAbbreviation,
+  };
 };
 
 export default useTimeRemainingToMidnight;

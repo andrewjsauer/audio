@@ -52,7 +52,8 @@
       "title": "업데이트가 필요합니다 ",
       "description": "앱을 계속 사용하려면 최신 버전의 Daily Q's로 업데이트해주세요.",
       "buttonText": "업데이트하다"
-    }
+    },
+    "recordingSaveMemoryLimitExceeded": "녹음이 최대 메모리 제한을 초과했습니다."
   },
   "browserScreen": {
     "title": "브라우저"
@@ -96,6 +97,11 @@
     },
     "request": {
       "title": "데이터 요청 양식"
+    },
+    "relationshipTimeZone": "관계 시간대",
+    "timeZoneScreen": {
+      "title": "당신의 관계 시간대를 변경하세요.",
+      "success": "당신의 관계 시간대가 업데이트되었습니다!"
     }
   },
   "questionScreen": {
@@ -132,10 +138,12 @@
         "title": "녹음을 위한 권한 허용",
         "description": "답변을 녹음하려면 권한을 허용해야 합니다",
         "buttonText": "허용"
-      }
+      },
+      "timeRemainingExplained": "자정에 재설정됩니다. {{ timeZone }}"
     },
     "recordScreen": {
-      "note": "모든 녹음은 개인적이며 암호화되어 있습니다."
+      "note": "모든 녹음은 개인적이며 암호화되어 있습니다.",
+      "timeRunningOut": "주의하세요, {{ time }}초 남았습니다."
     }
   },
   "trialScreen": {
@@ -173,9 +181,9 @@
     "signInScreen": {
       "title": "Daily Q's",
       "subtitle": "커플용",
-      "description": "매일 맞춤형 질문에 대한 서로의 답변을 공개하세요",
       "buttonText": "코드 받기",
-      "terms": "가입함으로써 당사의 이용 약관에 동의합니다"
+      "terms": "가입함으로써 당사의 이용 약관에 동의합니다",
+      "description": "매일 개인화된 질문에 대한 각자의 답을 알아보세요."
     },
     "phoneNumberScreen": {
       "title": "환영합니다! 시작하기 위해 로그인하세요",

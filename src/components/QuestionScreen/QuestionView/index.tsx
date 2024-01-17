@@ -1,6 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+
+import { selectPartnershipTimeZone } from '@store/partnership/selectors';
 
 import { trackEvent } from '@lib/analytics';
 import useTimeRemainingToMidnight from '@lib/customHooks/useTimeRemainingToMidnight';
@@ -42,7 +45,9 @@ function QuestionView({
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const timeRemaining = useTimeRemainingToMidnight();
+  const timeZone = useSelector(selectPartnershipTimeZone);
+
+  const { time, relationshipTimeZone, localTimeZone } = useTimeRemainingToMidnight(timeZone);
 
   const handleNavigation = (isPartner: boolean) => {
     if (isPartner && partnerStatus === QuestionStatusType.Play) {
@@ -82,10 +87,15 @@ function QuestionView({
   return (
     <Container>
       <TimerText>
-        {t('questionScreen.subscriberScreen.timeRemaining', {
-          time: timeRemaining || '00h 00m 00s',
-        })}
+        {t('questionScreen.subscriberScreen.timeRemaining', { time: time || '00h 00m 00s' })}
       </TimerText>
+      {relationshipTimeZone !== localTimeZone && (
+        <TimerText>
+          {t('questionScreen.subscriberScreen.timeRemainingExplained', {
+            timeZone: relationshipTimeZone,
+          })}
+        </TimerText>
+      )}
       <QuestionText>{text}</QuestionText>
       <QuestionRowContainers>
         <QuestionRowView
@@ -94,9 +104,10 @@ function QuestionView({
           key={`user_${user?.id}`}
           name={user?.name as string}
           onPress={() => handleNavigation(false)}
-          status={userStatus}
-          reaction={partnerReactionToUser}
           partnerColor={partner?.color as string}
+          reaction={partnerReactionToUser}
+          status={userStatus}
+          timeZone={timeZone}
         />
         <QuestionRowView
           color={partner?.color as string}
@@ -105,9 +116,10 @@ function QuestionView({
           key={`partner_${partner?.id}`}
           name={partner?.name as string}
           onPress={() => handleNavigation(true)}
-          status={partnerStatus}
-          reaction={userReactionToPartner}
           partnerColor={user?.color as string}
+          reaction={userReactionToPartner}
+          status={partnerStatus}
+          timeZone={timeZone}
         />
       </QuestionRowContainers>
     </Container>

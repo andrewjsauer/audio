@@ -12,10 +12,10 @@ import RecordUserModal from '@components/QuestionScreen/RecordUserModal';
 import PlayUserModal from '@components/shared/PlayUserModal';
 
 export type QuestionStackParamList = {
-  [QuestionScreens.QuestionSubscriberScreen]: typeof SubscriberScreen;
-  [QuestionScreens.QuestionNonSubscriberScreen]: typeof NonSubscriberScreen;
-  [ModalScreens.RecordUserModal]: typeof RecordUserModal;
   [ModalScreens.PlayUserModal]: typeof PlayUserModal;
+  [ModalScreens.RecordUserModal]: typeof RecordUserModal;
+  [QuestionScreens.QuestionNonSubscriberScreen]: typeof NonSubscriberScreen;
+  [QuestionScreens.QuestionSubscriberScreen]: typeof SubscriberScreen;
 };
 
 const Stack = createStackNavigator<QuestionStackParamList>();

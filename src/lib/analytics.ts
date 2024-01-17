@@ -1,5 +1,6 @@
 import { createClient } from '@segment/analytics-react-native';
 import Config from 'react-native-config';
+import moment from 'moment-timezone';
 
 import { UserDataType } from '@lib/types';
 
@@ -7,7 +8,8 @@ let analyticsInstance: any | null = null;
 
 const convertToDate = (timestamp: any) => {
   if (!timestamp) return null;
-  return new Date((timestamp.seconds || timestamp._seconds) * 1000);
+  const seconds = timestamp.seconds || timestamp._seconds;
+  return seconds ? moment.unix(seconds).toDate() : null;
 };
 
 export const initializeAnalytics = (userData?: UserDataType | null) => {

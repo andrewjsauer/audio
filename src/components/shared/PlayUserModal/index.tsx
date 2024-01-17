@@ -95,16 +95,18 @@ function PlayUserModal() {
 
   useEffect(() => {
     trackScreen('PlayUserModal');
+
+    return () => {
+      audioRecorderPlayer.stopPlayer();
+      audioRecorderPlayer.removePlayBackListener();
+
+      KeepAwake.deactivate();
+    };
   }, []);
 
   useEffect(() => {
     return () => {
       if (tempFilePath) {
-        KeepAwake.deactivate();
-
-        audioRecorderPlayer.stopPlayer();
-        audioRecorderPlayer.removePlayBackListener();
-
         RNFS.unlink(tempFilePath)
           .then(() => {
             setTempFilePath(null);
@@ -188,7 +190,8 @@ function PlayUserModal() {
         }
 
         audioRecorderPlayer.addPlayBackListener((e: any) => {
-          setCurrentTime(formatTime(parseDuration(duration), e.currentPosition));
+          const time = formatTime(parseDuration(duration), e.currentPosition);
+          setCurrentTime(time);
 
           if (e.currentPosition === e.duration) {
             audioRecorderPlayer.stopPlayer();

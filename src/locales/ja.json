@@ -52,7 +52,8 @@
       "title": "アップデートが必要です。",
       "description": "アプリを使用するには、Daily Q'sの最新バージョンにアップデートしてください。",
       "buttonText": "アップデート"
-    }
+    },
+    "recordingSaveMemoryLimitExceeded": "録音が最大メモリ制限を超えました。"
   },
   "browserScreen": {
     "title": "ブラウザ"
@@ -96,6 +97,11 @@
     },
     "request": {
       "title": "データのリクエストフォーム"
+    },
+    "relationshipTimeZone": "関係のタイムゾーン",
+    "timeZoneScreen": {
+      "title": "あなたの関係の時差を変更してください。",
+      "success": "あなたの関係のタイムゾーンが更新されました！"
     }
   },
   "questionScreen": {
@@ -132,10 +138,12 @@
         "title": "録音のための許可を許可する",
         "description": "回答を録音するためには、許可を与えなければなりません",
         "buttonText": "許可"
-      }
+      },
+      "timeRemainingExplained": "深夜にリセットします。{{ timeZone }}でのリセットです。"
     },
     "recordScreen": {
-      "note": "すべての録音はプライベートで暗号化されています。"
+      "note": "すべての録音はプライベートで暗号化されています。",
+      "timeRunningOut": "ご注意ください、残り{{ time }}秒です"
     }
   },
   "trialScreen": {
@@ -173,9 +181,9 @@
     "signInScreen": {
       "title": "デイリーQ's",
       "subtitle": "カップルエディション",
-      "description": "毎日のパーソナライズされた質問に対するお互いの回答を明らかにする",
       "buttonText": "コードを取得",
-      "terms": "サインアップすることで、当社の"
+      "terms": "サインアップすることで、当社の",
+      "description": "日々の個人的な質問の答えを、お互いに探り合いましょう。"
     },
     "phoneNumberScreen": {
       "title": "ようこそ！サインインして始めましょう",

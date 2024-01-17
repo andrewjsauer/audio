@@ -11,6 +11,7 @@ import { trackEvent } from '@lib/analytics';
 
 import { AppDispatch } from '@store/index';
 import { shouldUpdateAppVersion } from '@store/app/slice';
+import { selectIsUserLoggedIn } from '@store/auth/selectors';
 import { selectShouldUpdateApp } from '@store/app/selectors';
 
 const useAppVersionCheck = () => {
@@ -20,6 +21,8 @@ const useAppVersionCheck = () => {
 
   const [isPromptOpen, setIsPromptOpen] = useState(false);
   const [cloudVersion, setCloudVersion] = useState('');
+
+  const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
   const shouldUpdateApp = useSelector(selectShouldUpdateApp);
 
   const compareVersions = (cloud: string) => {
@@ -92,20 +95,25 @@ const useAppVersionCheck = () => {
   }, [shouldUpdateApp, isPromptOpen]);
 
   useEffect(() => {
-    const unsubscribe = firestore()
-      .collection('app')
-      .doc('dailyQCouplesEdition')
-      .onSnapshot(
-        (snapshot) => {
-          if (snapshot && snapshot.exists) {
-            const data = snapshot.data();
-            compareVersions(data?.version);
-          }
-        },
-        (error) => trackEvent('app_version_check_error', { error: error.message }),
-      );
+    let unsubscribe = () => {};
+
+    if (isUserLoggedIn) {
+      unsubscribe = firestore()
+        .collection('app')
+        .doc('dailyQCouplesEdition')
+        .onSnapshot(
+          (snapshot) => {
+            if (snapshot && snapshot.exists) {
+              const data = snapshot.data();
+              compareVersions(data?.version);
+            }
+          },
+          (error) => trackEvent('app_version_check_error', { error: error.message }),
+        );
+    }
+
     return () => unsubscribe();
-  }, []);
+  }, [isUserLoggedIn]);
 
   return null;
 };

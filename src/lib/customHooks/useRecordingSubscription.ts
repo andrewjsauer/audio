@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
+
+import { selectPartnershipTimeZone } from '@store/partnership/selectors';
 
 import { setUserRecording, setPartnerRecording } from '@store/recording/slice';
 import { UserDataType, RecordingType } from '@lib/types';
+import { formatCreatedAt } from '@lib/dateUtils';
 
 type UseRecordingSubscriptionProps = {
   userData: UserDataType;
@@ -17,6 +20,7 @@ const useRecordingSubscription = ({
   questionId,
 }: UseRecordingSubscriptionProps) => {
   const dispatch = useDispatch();
+  const timeZone = useSelector(selectPartnershipTimeZone);
 
   useEffect(() => {
     let userRecordingUnsubscribe = () => {};
@@ -32,7 +36,7 @@ const useRecordingSubscription = ({
             const latestRecording = snapshot.docs[0].data() as RecordingType;
             const payload = {
               ...latestRecording,
-              createdAt: new Date(latestRecording.createdAt._seconds * 1000),
+              createdAt: formatCreatedAt(latestRecording.createdAt, timeZone),
             };
 
             dispatch(setUserRecording(payload));
@@ -52,7 +56,7 @@ const useRecordingSubscription = ({
             const latestRecording = snapshot.docs[0].data() as RecordingType;
             const payload = {
               ...latestRecording,
-              createdAt: new Date(),
+              createdAt: formatCreatedAt(latestRecording.createdAt, timeZone),
             };
 
             dispatch(setPartnerRecording(payload));

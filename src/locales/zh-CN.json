@@ -52,7 +52,8 @@
       "title": "更新要求",
       "description": "请更新到最新版本的每日问题来继续使用该应用。",
       "buttonText": "更新"
-    }
+    },
+    "recordingSaveMemoryLimitExceeded": "您的录音超过了最大存储限制。"
   },
   "browserScreen": {
     "title": "浏览器"
@@ -96,6 +97,11 @@
     },
     "request": {
       "title": "请求您的数据表格"
+    },
+    "relationshipTimeZone": "关系时区",
+    "timeZoneScreen": {
+      "title": "调整你的关系时区",
+      "success": "您的关系时区已经更新！"
     }
   },
   "questionScreen": {
@@ -132,10 +138,12 @@
         "title": "允许录音权限",
         "description": "你必须允许录音权限以录下你的回答",
         "buttonText": "允许"
-      }
+      },
+      "timeRemainingExplained": "午夜{{ timeZone }}重置"
     },
     "recordScreen": {
-      "note": "所有录音是私密且经过加密的。"
+      "note": "所有录音是私密且经过加密的。",
+      "timeRunningOut": "注意，你还剩下 {{ time }} 秒"
     }
   },
   "trialScreen": {
@@ -173,9 +181,9 @@
     "signInScreen": {
       "title": "每日问答",
       "subtitle": "情侣版",
-      "description": "揭示对方对每日个性化问题的回答",
       "buttonText": "获取验证码",
-      "terms": "通过注册，你同意我们的"
+      "terms": "通过注册，你同意我们的",
+      "description": "发现彼此每天的个性化问题的答案"
     },
     "phoneNumberScreen": {
       "title": "欢迎！登录以开始",

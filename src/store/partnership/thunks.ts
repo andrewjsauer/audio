@@ -1,15 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 
 import { trackEvent } from '@lib/analytics';
-import {
-  PartnershipDetailsType,
-  PartnershipDataType,
-  PartnershipUserDataType,
-  UserDataType,
-} from '@lib/types';
+import { formatCreatedAt } from '@lib/dateUtils';
+import { PartnershipDataType, PartnershipUserDataType, UserDataType } from '@lib/types';
+
+import { selectPartnershipTimeZone } from '@store/partnership/selectors';
 
 export const updatePartnership = createAsyncThunk(
   'partnership/updatePartnership',
@@ -19,7 +16,7 @@ export const updatePartnership = createAsyncThunk(
       partnershipDetails,
     }: {
       id: string;
-      partnershipDetails: PartnershipDetailsType;
+      partnershipDetails: PartnershipDataType;
     },
     { rejectWithValue },
   ) => {
@@ -27,18 +24,19 @@ export const updatePartnership = createAsyncThunk(
       await firestore().collection('partnership').doc(id).set(partnershipDetails, { merge: true });
       return partnershipDetails;
     } catch (error) {
-      trackEvent('update_partnership_failed', { error: error.message });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error.message);
+      trackEvent('update_partnership_failed', { error });
+      return rejectWithValue(error);
     }
   },
 );
 
 export const fetchPartnership = createAsyncThunk(
   'partnership/fetchPartnership',
-  async (partnershipId: string, { rejectWithValue }) => {
+  async (partnershipId: string, { rejectWithValue, getState }) => {
     try {
+      const state = getState();
+      const timeZone = selectPartnershipTimeZone(state);
+
       const partnershipSnapshot = await firestore()
         .collection('partnership')
         .doc(partnershipId)
@@ -50,8 +48,8 @@ export const fetchPartnership = createAsyncThunk(
         const partnershipData = partnershipSnapshot.data();
         const payload = {
           ...partnershipData,
-          startDate: new Date(partnershipData.startDate._seconds * 1000),
-          createdAt: new Date(partnershipData.createdAt._seconds * 1000),
+          startDate: formatCreatedAt(partnershipData.startDate, timeZone),
+          createdAt: formatCreatedAt(partnershipData.createdAt, timeZone),
         };
 
         return payload as PartnershipDataType;
@@ -60,10 +58,8 @@ export const fetchPartnership = createAsyncThunk(
       trackEvent('partnership_not_found');
       return rejectWithValue('Partnership not found');
     } catch (error) {
-      trackEvent('partnership_fetch_error', { error: error.message });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error.message);
+      trackEvent('partnership_fetch_error', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -87,10 +83,8 @@ export const fetchPartnershipUser = createAsyncThunk(
       trackEvent('partnership_user_not_found');
       return null;
     } catch (error) {
-      trackEvent('partnership_user_fetch_error', { error: error.message });
-      crashlytics().recordError(error);
-
-      return rejectWithValue(error.message);
+      trackEvent('partnership_user_fetch_error', { error });
+      return rejectWithValue(error);
     }
   },
 );
@@ -117,9 +111,8 @@ export const fetchPartnerData = createAsyncThunk(
 
       return null;
     } catch (error) {
-      trackEvent('partnership_data_fetch_error', { error: error.message });
-      crashlytics().recordError(error);
-      return rejectWithValue(error.message);
+      trackEvent('partnership_data_fetch_error', { error });
+      return rejectWithValue(error);
     }
   },
 );

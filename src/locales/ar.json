@@ -52,7 +52,8 @@
       "title": "تحديث مطلوب",
       "description": "يرجى تحديث تطبيق \"Daily Q's\" إلى أحدث إصدار للاستمرار في استخدام التطبيق.",
       "buttonText": "تحديث"
-    }
+    },
+    "recordingSaveMemoryLimitExceeded": "تجاوز تسجيلك الحد الأقصى للذاكرة."
   },
   "browserScreen": {
     "title": "المتصفح"
@@ -96,6 +97,11 @@
     },
     "request": {
       "title": "نموذج طلب بياناتك"
+    },
+    "relationshipTimeZone": "وقت المنطقة الزمنية في العلاقة",
+    "timeZoneScreen": {
+      "title": "قم بتغيير المنطقة الزمنية لعلاقتك",
+      "success": "تم تحديث منطقة زمن علاقتك!"
     }
   },
   "questionScreen": {
@@ -132,10 +138,12 @@
         "title": "السماح بأذونات التسجيل",
         "description": "يجب السماح بالأذونات لتسجيل إجابتك",
         "buttonText": "السماح"
-      }
+      },
+      "timeRemainingExplained": "يتم إعادة الضبط في منتصف الليل {{ timeZone }}"
     },
     "recordScreen": {
-      "note": "جميع التسجيلات خاصة ومشفرة."
+      "note": "جميع التسجيلات خاصة ومشفرة.",
+      "timeRunningOut": "تنبيه، لديك {{ time }} ثوانٍ متبقية"
     }
   },
   "trialScreen": {
@@ -173,9 +181,9 @@
     "signInScreen": {
       "title": "أسئلة اليومية",
       "subtitle": "نسخة الأزواج",
-      "description": "كشف إجابات بعضكما لأسئلة يومية مخصصة",
       "buttonText": "احصل على الرمز",
-      "terms": "من خلال التسجيل، فإنك توافق على"
+      "terms": "من خلال التسجيل، فإنك توافق على",
+      "description": "اكتشف إجابات بعضنا البعض على أسئلة يومية شخصية"
     },
     "phoneNumberScreen": {
       "title": "أهلا بك! سجل دخولك للبدء",

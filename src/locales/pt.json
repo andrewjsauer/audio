@@ -52,7 +52,8 @@
       "title": "Atualização necessária",
       "description": "Por favor, atualize para a versão mais recente do Daily Q's para continuar usando o aplicativo.",
       "buttonText": "Atualização"
-    }
+    },
+    "recordingSaveMemoryLimitExceeded": "A sua gravação excedeu o limite máximo de memória."
   },
   "browserScreen": {
     "title": "Navegador"
@@ -96,6 +97,11 @@
     },
     "request": {
       "title": "Formulário de Solicitação dos Seus Dados"
+    },
+    "relationshipTimeZone": "Fuso Horário de Relacionamento",
+    "timeZoneScreen": {
+      "title": "Altere o fuso horário do seu relacionamento.",
+      "success": "O fuso horário do seu relacionamento foi atualizado!"
     }
   },
   "questionScreen": {
@@ -132,10 +138,12 @@
         "title": "Permitir permissões para gravar",
         "description": "Você deve permitir as permissões para gravar sua resposta",
         "buttonText": "Permitir"
-      }
+      },
+      "timeRemainingExplained": "Reseta à meia-noite {{ timeZone }}"
     },
     "recordScreen": {
-      "note": "Todas as gravações são privadas e criptografadas."
+      "note": "Todas as gravações são privadas e criptografadas.",
+      "timeRunningOut": "Atenção, você tem {{ time }}s restantes"
     }
   },
   "trialScreen": {
@@ -173,9 +181,9 @@
     "signInScreen": {
       "title": "Perguntas Diárias",
       "subtitle": "Edição para Casais",
-      "description": "Revele as respostas um do outro para\n perguntas diárias personalizadas",
       "buttonText": "Obter Código",
-      "terms": "Ao se registrar, você concorda com os nossos"
+      "terms": "Ao se registrar, você concorda com os nossos",
+      "description": "Descubra as respostas um do outro para perguntas personalizadas diárias"
     },
     "phoneNumberScreen": {
       "title": "Bem-vindo! Entre para começar",

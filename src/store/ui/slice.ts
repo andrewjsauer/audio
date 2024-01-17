@@ -83,10 +83,10 @@ export const uiSlice = createSlice({
           type: 'error',
         };
       })
-      .addCase(saveUserRecording.rejected, (state) => {
+      .addCase(saveUserRecording.rejected, (state, action) => {
         state.notification = {
           title: 'errors.pleaseTryAgain',
-          description: 'errors.recordingSaveFailed',
+          description: action.payload as string,
           type: 'error',
         };
       })

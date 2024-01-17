@@ -1,92 +1,14 @@
 import { createSelector } from 'reselect';
-import { eachDayOfInterval, startOfDay, endOfDay, format } from 'date-fns';
+import moment from 'moment-timezone';
 
 import { QuestionType } from '@lib/types';
+import { selectPartnershipTimeZone } from '@store/partnership/selectors';
 
 export const selectIsLoading = (state) => state.history.isLoading;
 export const selectQuestions = (state) => state.history.questions;
 export const selectLastDocSnapshot = (state) => state.history.lastDocSnapshot;
 export const selectError = (state) => state.history.error;
 export const selectLastFailedAction = (state) => state.history.lastFailedAction;
-
-const sampleQuestions = [
-  {
-    createdAt: new Date('2023-12-15T00:15:48.000Z'),
-    id: Math.random().toString(),
-    partnerAudioUrl: null,
-    partnerColor: '#937AC8',
-    partnerDuration: null,
-    partnerReactionToUser: null,
-    partnerRecordingId: null,
-    partnerStatus: 'PendingRecord',
-    partnershipTextKey: 'bothDidNotAnswer',
-    questionId: 'e5eaa784-0887-4e7d-a6e8-663015dc0afb',
-    text: 'What is your partner incredibly good at?',
-    userAudioUrl: null,
-    userColor: '#397729',
-    userDuration: null,
-    userReactionToPartner: null,
-    userRecordingId: null,
-    userStatus: 'Record',
-  },
-  {
-    createdAt: new Date('2023-12-20T00:15:48.000Z'),
-    id: Math.random().toString(),
-    partnerAudioUrl: null,
-    partnerColor: '#937AC8',
-    partnerDuration: null,
-    partnerReactionToUser: null,
-    partnerRecordingId: null,
-    partnerStatus: 'Play',
-    partnershipTextKey: 'bothDidNotAnswer',
-    questionId: 'e5eaa784-0887-4e7d-a6e8-663015dc0afb',
-    text: 'What is your partner incredibly good at?',
-    userAudioUrl: null,
-    userColor: '#397729',
-    userDuration: null,
-    userReactionToPartner: null,
-    userRecordingId: null,
-    userStatus: 'Play',
-  },
-  {
-    createdAt: new Date('2023-12-25T00:15:48.000Z'),
-    id: Math.random().toString(),
-    partnerAudioUrl: null,
-    partnerColor: '#937AC8',
-    partnerDuration: null,
-    partnerReactionToUser: null,
-    partnerRecordingId: null,
-    partnerStatus: 'PendingRecord',
-    partnershipTextKey: 'bothDidNotAnswer',
-    questionId: 'e5eaa784-0887-4e7d-a6e8-663015dc0afb',
-    text: 'What is your partner incredibly good at?',
-    userAudioUrl: null,
-    userColor: '#397729',
-    userDuration: null,
-    userReactionToPartner: null,
-    userRecordingId: null,
-    userStatus: 'PendingRecord',
-  },
-  {
-    createdAt: new Date('2024-01-03T00:15:48.000Z'),
-    id: Math.random().toString(),
-    partnerAudioUrl: null,
-    partnerColor: '#937AC8',
-    partnerDuration: null,
-    partnerReactionToUser: null,
-    partnerRecordingId: null,
-    partnerStatus: 'Play',
-    partnershipTextKey: 'bothDidNotAnswer',
-    questionId: 'e5eaa784-0887-4e7d-a6e8-663015dc0afb',
-    text: 'What is your partner incredibly good at?',
-    userAudioUrl: null,
-    userColor: '#397729',
-    userDuration: null,
-    userReactionToPartner: null,
-    userRecordingId: null,
-    userStatus: 'PendingRecord',
-  },
-];
 
 const defaultQuestions = [
   'What is your partner incredibly good at?',
@@ -110,7 +32,7 @@ const defaultQuestions = [
   'What is something you admire about your partner?',
 ];
 
-const getMostRecentColor = (questions, colorType: string) => {
+const getMostRecentColor = (questions: any[], colorType: string) => {
   const lastQuestion = questions[questions.length - 1];
   return lastQuestion ? lastQuestion[colorType] : null;
 };
@@ -140,38 +62,48 @@ const createDefaultQuestion = (date: Date, partnerColor: string, userColor: stri
   };
 };
 
-const findMissingDates = (questions: QuestionType[]) => {
+const findMissingDates = (questions: QuestionType[], timeZone: string) => {
   if (questions.length === 0) return [];
 
   const datesSet = new Set(
-    questions.map((q) => format(startOfDay(new Date(q.createdAt)), 'yyyy-MM-dd')),
+    questions.map((q) => moment.tz(q.createdAt, timeZone).startOf('day').format('YYYY-MM-DD')),
   );
 
-  const firstDate = startOfDay(new Date(questions[0].createdAt));
-  const lastDate = endOfDay(new Date());
-  const dateRange = eachDayOfInterval({ start: firstDate, end: lastDate });
+  const firstDate = moment.tz(questions[0].createdAt, timeZone).startOf('day');
+  const lastDate = moment.tz(timeZone).endOf('day');
+  const dateRange = [];
 
-  return dateRange.filter((date) => !datesSet.has(format(date, 'yyyy-MM-dd')));
+  for (let m = moment(firstDate); m.isBefore(lastDate); m.add(1, 'days')) {
+    dateRange.push(m.clone());
+  }
+
+  return dateRange.filter((date) => !datesSet.has(date.format('YYYY-MM-DD')));
 };
 
-export const selectFormattedQuestions = createSelector(selectQuestions, (questions) => {
-  const formattedQuestions = questions.map((question) => {
-    const isBlurred = question.partnerStatus !== 'Play' && question.userStatus !== 'Play';
+export const selectFormattedQuestions = createSelector(
+  selectQuestions,
+  selectPartnershipTimeZone,
+  (questions, timeZone) => {
+    const formattedQuestions = questions.map((question) => {
+      const isBlurred = question.partnerStatus !== 'Play' && question.userStatus !== 'Play';
 
-    return {
-      ...question,
-      createdAt: new Date(question.createdAt),
-      isItemBlurred: isBlurred,
-    };
-  });
+      return {
+        ...question,
+        createdAt: question.createdAt,
+        isItemBlurred: isBlurred,
+      };
+    });
 
-  const missingDates = findMissingDates(formattedQuestions);
-  const partnerColor = getMostRecentColor(formattedQuestions, 'partnerColor');
-  const userColor = getMostRecentColor(formattedQuestions, 'userColor');
+    const missingDates = findMissingDates(formattedQuestions, timeZone);
+    const partnerColor = getMostRecentColor(formattedQuestions, 'partnerColor');
+    const userColor = getMostRecentColor(formattedQuestions, 'userColor');
 
-  missingDates.forEach((date) => {
-    formattedQuestions.push(createDefaultQuestion(date, partnerColor, userColor));
-  });
+    missingDates.forEach((date) => {
+      formattedQuestions.push(createDefaultQuestion(date.toDate(), partnerColor, userColor));
+    });
 
-  return formattedQuestions.sort((a, b) => b.createdAt - a.createdAt);
-});
+    return formattedQuestions.sort((a, b) =>
+      moment(b.createdAt).tz(timeZone).diff(moment(a.createdAt).tz(timeZone)),
+    );
+  },
+);
