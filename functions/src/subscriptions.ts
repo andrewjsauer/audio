@@ -1,6 +1,8 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 
+import { trackEvent } from './analytics';
+
 async function fetchPartnerId(userId: string) {
   try {
     const partnerRef = admin
@@ -67,6 +69,8 @@ async function updateSubscriptions(userId: string, hasAccess: boolean) {
       functions.logger.error(`Partner document with ID ${partnerId} does not exist`);
       return;
     }
+
+    trackEvent('Subscription Updated', userId, { hasAccess });
 
     batch.set(userDocRef, { isSubscribed: hasAccess }, { merge: true });
     batch.set(partnerDocRef, { isSubscribed: hasAccess }, { merge: true });
