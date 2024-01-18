@@ -15,6 +15,7 @@ import { StyledDatePicker } from './style';
 function RelationshipDateScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const currentDate = new Date();
 
   useEffect(() => {
     trackScreen('RelationshipDateScreen');
@@ -53,8 +54,9 @@ function RelationshipDateScreen() {
           <InputTitle>{t('auth.partnerDetails.relationshipDateScreen.inputTitle')}</InputTitle>
           <StyledDatePicker
             date={relationshipDate}
-            onDateChange={(date) => handlePartnershipDetails({ startDate: date })}
+            maximumDate={currentDate}
             mode="date"
+            onDateChange={(date) => handlePartnershipDetails({ startDate: date })}
             textColor="#000"
           />
           <InputSubtitle>

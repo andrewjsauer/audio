@@ -18,6 +18,7 @@ import { StyledDatePicker } from './style';
 function BirthdayScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const currentDate = new Date();
 
   const isLoading = useSelector(selectIsLoading);
 
@@ -27,7 +28,7 @@ function BirthdayScreen() {
 
   const { goToPreviousStep, goToNextStep, userDetails, handleUserDetails } = useAuthFlow();
 
-  const birthday = userDetails.birthDate || new Date();
+  const birthday = userDetails.birthDate || currentDate;
 
   const handleSubmit = async () => {
     if (!birthday) {
@@ -58,8 +59,9 @@ function BirthdayScreen() {
           <InputTitle>{t('auth.userDetails.birthdayScreen.inputTitle')}</InputTitle>
           <StyledDatePicker
             date={birthday}
-            onDateChange={(date) => handleUserDetails({ birthDate: date })}
+            maximumDate={currentDate}
             mode="date"
+            onDateChange={(date) => handleUserDetails({ birthDate: date })}
             textColor="#000"
           />
           <InputSubtitle>{t('auth.userDetails.birthdayScreen.inputDescription')}</InputSubtitle>
