@@ -159,11 +159,11 @@ function HistoryScreen({
     }
 
     const shouldBlur = !isDateToday && isItemBlurred;
+
     const isPartnerButtonDisabled =
       partnerStatus !== StatusTypes.Play || (isDatePast && userStatus !== StatusTypes.Play);
 
-    const isUserButtonDisabled =
-      userStatus !== StatusTypes.Play || (isDatePast && partnerStatus !== StatusTypes.Play);
+    const isUserButtonDisabled = userStatus !== StatusTypes.Play;
 
     return (
       <ItemContainer key={id}>
