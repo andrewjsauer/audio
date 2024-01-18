@@ -25,7 +25,7 @@ function RelationshipDateScreen() {
   const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =
     useAuthFlow();
 
-  const relationshipDate = partnershipDetails.startDate || new Date();
+  const relationshipDate = partnershipDetails.startDate;
 
   const handleSubmit = () => {
     if (!relationshipDate) {
@@ -54,7 +54,7 @@ function RelationshipDateScreen() {
         <InputWrapper>
           <InputTitle>{t('auth.partnerDetails.relationshipDateScreen.inputTitle')}</InputTitle>
           <StyledDatePicker
-            date={relationshipDate}
+            date={relationshipDate || currentDate}
             maximumDate={currentDate}
             mode="date"
             onDateChange={(date) => handlePartnershipDetails({ startDate: date })}

@@ -29,7 +29,7 @@ function BirthdayScreen() {
 
   const { goToPreviousStep, goToNextStep, userDetails, handleUserDetails } = useAuthFlow();
 
-  const birthday = userDetails.birthDate || currentDate;
+  const birthday = userDetails.birthDate;
 
   const handleSubmit = async () => {
     if (!birthday) {
@@ -59,7 +59,7 @@ function BirthdayScreen() {
         <InputWrapper>
           <InputTitle>{t('auth.userDetails.birthdayScreen.inputTitle')}</InputTitle>
           <StyledDatePicker
-            date={birthday}
+            date={birthday || currentDate}
             maximumDate={currentDate}
             mode="date"
             onDateChange={(date) => handleUserDetails({ birthDate: date })}
