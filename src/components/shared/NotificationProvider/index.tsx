@@ -48,7 +48,7 @@ function Notification() {
         useNativeDriver: true,
       }).start();
 
-      timer = setTimeout(dismissNotification, 20000);
+      timer = setTimeout(dismissNotification, 4000);
     } else {
       Animated.timing(fadeAnim, {
         toValue: 0,
