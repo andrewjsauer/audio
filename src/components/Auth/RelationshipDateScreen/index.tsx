@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import i18n from 'i18next';
 
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/Auth/AuthFlowContext';
@@ -58,6 +59,7 @@ function RelationshipDateScreen() {
             mode="date"
             onDateChange={(date) => handlePartnershipDetails({ startDate: date })}
             textColor="#000"
+            locale={i18n.language}
           />
           <InputSubtitle>
             {t('auth.partnerDetails.relationshipDateScreen.inputDescription')}

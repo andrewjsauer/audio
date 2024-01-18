@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import i18n from 'i18next';
 
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/Auth/AuthFlowContext';
@@ -63,6 +64,7 @@ function BirthdayScreen() {
             mode="date"
             onDateChange={(date) => handleUserDetails({ birthDate: date })}
             textColor="#000"
+            locale={i18n.language}
           />
           <InputSubtitle>{t('auth.userDetails.birthdayScreen.inputDescription')}</InputSubtitle>
         </InputWrapper>
