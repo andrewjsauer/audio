@@ -20,10 +20,10 @@ export const BlurredBackground = styled(BlurView)`
 
 export const BlurredItemRow = styled(BlurView)`
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -10px;
-  right: -10px;
+  top: 0px;
+  bottom: 0px;
+  left: -12px;
+  right: -12px;
   height: 100%;
   z-index: 9999;
 `;
