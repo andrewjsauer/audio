@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import moment from 'moment-timezone';
 
-import { TimeZoneItem, TimeZoneLabel, TimeZoneCode, Checkmark } from './style';
+import {
+  TimeZoneItem,
+  Container,
+  SearchInput,
+  TimeZoneLabel,
+  TimeZoneCode,
+  Checkmark,
+} from './style';
 
 function TimeZonePicker({
   value,
@@ -11,6 +18,7 @@ function TimeZonePicker({
   value: string;
   onChange: (option: string) => void;
 }) {
+  const [searchText, setSearchText] = useState('');
   const timeZones = moment.tz.names();
 
   const getAbbreviation = (zone: string) => {
@@ -21,6 +29,20 @@ function TimeZonePicker({
   const abbreviateZoneName = (zone: string) => {
     return zone.length > 25 ? `${zone.substring(0, 22)}...` : zone;
   };
+
+  const normalizeText = (text) => text.toLowerCase().replace(/[_\- ]+/g, '');
+
+  const filteredAndSortedTimeZones = useMemo(() => {
+    const filtered = timeZones.filter((zone) =>
+      normalizeText(zone).includes(normalizeText(searchText)),
+    );
+
+    if (value) {
+      filtered.sort((a, b) => (a === value ? -1 : b === value ? 1 : 0));
+    }
+
+    return filtered;
+  }, [timeZones, searchText, value]);
 
   const renderItem = ({ item: zone }) => {
     const isSelected = value === zone;
@@ -38,12 +60,19 @@ function TimeZonePicker({
   };
 
   return (
-    <FlatList
-      data={timeZones}
-      renderItem={renderItem}
-      keyExtractor={(item) => item}
-      extraData={value}
-    />
+    <Container>
+      <SearchInput
+        placeholder="Search Time Zones"
+        onChangeText={setSearchText}
+        value={searchText}
+      />
+      <FlatList
+        data={filteredAndSortedTimeZones}
+        renderItem={renderItem}
+        keyExtractor={(item) => item}
+        extraData={value}
+      />
+    </Container>
   );
 }
 

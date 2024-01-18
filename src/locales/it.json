@@ -102,7 +102,8 @@
     "timeZoneScreen": {
       "title": "Cambia il fuso orario della tua relazione",
       "success": "Il fuso orario della tua relazione è stato aggiornato!"
-    }
+    },
+    "partnershipUpdateSuccess": "I dettagli della tua relazione sono stati aggiornati!"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

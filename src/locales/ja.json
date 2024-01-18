@@ -102,7 +102,8 @@
     "timeZoneScreen": {
       "title": "あなたの関係の時差を変更してください。",
       "success": "あなたの関係のタイムゾーンが更新されました！"
-    }
+    },
+    "partnershipUpdateSuccess": "あなたの関係の詳細が更新されました！"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

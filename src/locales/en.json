@@ -93,16 +93,15 @@
       "success": "Your name has been updated!"
     },
     "relationshipTypeScreen": {
-      "title": "Change your relationship status",
-      "success": "Your relationship status has been updated!"
+      "title": "Change your relationship status"
     },
     "request": {
       "title": "Request Your Data Form"
     },
     "timeZoneScreen": {
-      "title": "Change your relationship time zone",
-      "success": "Your relationship time zone has been updated!"
-    }
+      "title": "Change your relationship time zone"
+    },
+    "partnershipUpdateSuccess": "Your relationship details have been updated!"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

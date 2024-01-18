@@ -99,7 +99,7 @@ export const uiSlice = createSlice({
       })
       .addCase(updatePartnership.fulfilled, (state) => {
         state.notification = {
-          title: 'accountScreen.relationshipTypeScreen.success',
+          title: 'accountScreen.partnershipUpdateSuccess',
           type: 'success',
         };
       })

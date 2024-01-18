@@ -102,7 +102,8 @@
     "timeZoneScreen": {
       "title": "अपने संबंध का समय क्षेत्र बदलें",
       "success": "आपकी संबंध समय क्षेत्र अपडेट की गई है!"
-    }
+    },
+    "partnershipUpdateSuccess": "आपके संबंध विवरण अपडेट कर दिए गए हैं!"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

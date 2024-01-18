@@ -102,7 +102,8 @@
     "timeZoneScreen": {
       "title": "당신의 관계 시간대를 변경하세요.",
       "success": "당신의 관계 시간대가 업데이트되었습니다!"
-    }
+    },
+    "partnershipUpdateSuccess": "당신의 관계 세부 사항이 업데이트되었습니다!"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

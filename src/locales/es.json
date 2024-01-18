@@ -102,7 +102,8 @@
     "timeZoneScreen": {
       "title": "Cambia la zona horaria de tu relación.",
       "success": "¡Se ha actualizado tu zona horaria de relación!"
-    }
+    },
+    "partnershipUpdateSuccess": "¡Los detalles de tu relación han sido actualizados!"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

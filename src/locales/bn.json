@@ -102,7 +102,8 @@
     "timeZoneScreen": {
       "title": "আপনার সম্পর্কের সময় অঞ্চল পরিবর্তন করুন।",
       "success": "আপনার সম্পর্কের সময়ক্ষেত্র আপডেট হয়েছে!"
-    }
+    },
+    "partnershipUpdateSuccess": "আপনার সম্পর্কের বিবরণ আপডেট করা হয়েছে!"
   },
   "questionScreen": {
     "nonSubscriberScreen": {
