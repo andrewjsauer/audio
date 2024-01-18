@@ -22,8 +22,9 @@ function PartnerNameScreen() {
     trackScreen('PartnerNameScreen');
   }, []);
 
-  const { goToNextStep, partnerDetails, handlePartnerDetails } = useAuthFlow();
+  const { goToNextStep, partnerDetails, userDetails, handlePartnerDetails } = useAuthFlow();
   const { name, color } = partnerDetails;
+  const { color: colorOffLimits } = userDetails;
 
   const handleNameChange = (typedName: string) => {
     handlePartnerDetails({ name: typedName });
@@ -64,6 +65,7 @@ function PartnerNameScreen() {
       <Container>
         <ColorPicker
           color={color}
+          colorOffLimits={colorOffLimits}
           onChange={(colorOption) => handlePartnerDetails({ color: colorOption })}
         />
         <InputWrapper>

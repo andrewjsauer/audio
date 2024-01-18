@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@store/index';
 import { updateUser } from '@store/auth/thunks';
 import { selectUserData, selectIsLoading } from '@store/auth/selectors';
+import { selectPartnerData } from '@store/partnership/selectors';
 import { showNotification } from '@store/ui/slice';
 
 import { trackEvent } from '@lib/analytics';
@@ -19,6 +20,7 @@ function ColorScreen() {
   const dispatch = useDispatch<AppDispatch>();
 
   const { color, id } = useSelector(selectUserData);
+  const { color: colorOffLimits } = useSelector(selectPartnerData);
   const isLoading = useSelector(selectIsLoading);
 
   const handleChange = (selectedColor: string) => {
@@ -41,7 +43,7 @@ function ColorScreen() {
         <LoadingView />
       ) : (
         <ScreenContainer>
-          <ColorPicker color={color} onChange={handleChange} />
+          <ColorPicker colorOffLimits={colorOffLimits} color={color} onChange={handleChange} />
         </ScreenContainer>
       )}
     </Layout>

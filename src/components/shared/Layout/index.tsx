@@ -11,12 +11,14 @@ import { Container, BackButton, Header, Title } from './style';
 
 function Layout({
   children,
-  titleKey,
+  isLoading,
   screen,
+  titleKey,
 }: {
   children: React.ReactNode;
-  titleKey: string;
+  isLoading?: boolean;
   screen: string;
+  titleKey: string;
 }) {
   const { t } = useTranslation();
 
@@ -31,7 +33,7 @@ function Layout({
   return (
     <Container style={{ paddingTop: Math.max(insets.top, 28) }}>
       <Header>
-        <BackButton onPress={handleGoBack}>
+        <BackButton onPress={handleGoBack} disabled={isLoading}>
           <ChevronLeft width={30} height={30} />
         </BackButton>
         <Title>{t(titleKey)}</Title>

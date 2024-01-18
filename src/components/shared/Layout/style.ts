@@ -10,6 +10,10 @@ export const BackButton = styled.TouchableOpacity`
   flex: 1;
   align-items: flex-start;
   z-index: 1;
+
+  &:disabled {
+    opacity: 0.4;
+  }
 `;
 
 export const Header = styled.View`

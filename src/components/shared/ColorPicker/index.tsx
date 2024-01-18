@@ -25,18 +25,20 @@ const row2 = [
 
 type ColorPickerType = {
   color?: string;
+  colorOffLimits?: string;
   onChange: (color: string) => void;
 };
 
-function ColorPicker({ color, onChange }: ColorPickerType) {
+function ColorPicker({ color, colorOffLimits, onChange }: ColorPickerType) {
   return (
     <ColorPickerContainer>
       <ColorPickerRow>
         {row1.map((colorOption) => (
           <ColorOption
-            key={colorOption}
             color={colorOption}
+            disabled={colorOption === colorOffLimits}
             isSelected={colorOption === color}
+            key={colorOption}
             onPress={() => onChange(colorOption)}
           />
         ))}
@@ -44,9 +46,10 @@ function ColorPicker({ color, onChange }: ColorPickerType) {
       <ColorPickerRow>
         {row2.map((colorOption) => (
           <ColorOption
-            key={colorOption}
             color={colorOption}
+            disabled={colorOption === colorOffLimits}
             isSelected={colorOption === color}
+            key={colorOption}
             onPress={() => onChange(colorOption)}
           />
         ))}
