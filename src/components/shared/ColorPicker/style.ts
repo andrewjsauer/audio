@@ -13,7 +13,7 @@ export const ColorOption = styled.TouchableOpacity<ColorOptionProps>`
   margin: 5px;
   elevation: ${(props) => (props.isSelected ? 3 : 0)};
   border: ${(p) => (p.isSelected ? '3px solid rgba(255, 255, 255, 0.5)' : 'none')};
-  opacity: ${(props) => (props.disabled ? 0.4 : 1)};
+  opacity: ${(props) => (props.disabled ? 0.1 : 1)};
 `;
 
 export const ColorPickerRow = styled.View`

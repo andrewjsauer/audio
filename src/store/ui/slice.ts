@@ -18,6 +18,7 @@ interface UIState {
     onButtonPress?: () => void;
     title: string;
     type: 'error' | 'success';
+    duration?: string;
   } | null;
 }
 
