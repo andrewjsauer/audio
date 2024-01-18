@@ -54,6 +54,7 @@ const useNotificationPermissions = () => {
           type: 'error',
           buttonText: t('permissions.notifications.buttonText'),
           onButtonPress: () => requestNotifications(['alert', 'badge', 'sound', 'carPlay']),
+          duration: 'long',
         }),
       );
 
