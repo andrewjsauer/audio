@@ -30,7 +30,6 @@ import StopIcon from '@assets/icons/stop.svg';
 import Modal from '@components/shared/Modal';
 import { trackEvent } from '@lib/analytics';
 
-import { max } from 'date-fns';
 import PermissionNotification from './PermissionNotification';
 import {
   PermissionNotificationContainer,
@@ -165,7 +164,11 @@ function RecordUserModal() {
         return;
       }
 
-      if (e.currentPosition >= COUNTDOWN_START && !hasVibratedRef.current) {
+      if (
+        e.currentPosition >= COUNTDOWN_START &&
+        e.currentPosition < COUNTDOWN_START + 1000 &&
+        !hasVibratedRef.current
+      ) {
         trackEvent('question_record_countdown_started', { question_id: currentQuestion.id });
         Vibration.vibrate([500, 500, 500]);
         hasVibratedRef.current = true;
