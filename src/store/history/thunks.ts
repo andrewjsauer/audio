@@ -9,7 +9,7 @@ import { showNotification } from '@store/ui/slice';
 
 import { selectUserData } from '@store/auth/selectors';
 import { selectPartnerData, selectPartnershipTimeZone } from '@store/partnership/selectors';
-import { selectLastDocSnapshot } from './selectors';
+import { selectLastDocData } from './selectors';
 
 async function getRecordingData(recordings: RecordingType[], userId: string, partnerId: string) {
   const userRecording = recordings.find((rec) => rec.userId === userId);
@@ -182,7 +182,7 @@ export const fetchHistoryData = createAsyncThunk(
       const lastDoc = questionsSnapshot.docs[questionsSnapshot.docs.length - 1];
       const lastDocData = lastDoc.exists ? { id: lastDoc.id, ...lastDoc.data() } : null;
 
-      return { questions: historyData, lastDocSnapshot: lastDocData };
+      return { questions: historyData, lastDocData };
     } catch (error) {
       trackEvent('history_fetch_error', { error });
       return rejectWithValue(error);
@@ -196,15 +196,15 @@ export const fetchMoreHistoryData = createAsyncThunk(
     try {
       const state = getState();
       const userData = selectUserData(state);
-      const lastDocSnapshot = selectLastDocSnapshot(state);
+      const lastDoc = selectLastDocData(state);
       const partnerData = selectPartnerData(state);
       const timeZone = selectPartnershipTimeZone(state);
 
-      if (!lastDocSnapshot) {
+      if (!lastDoc) {
         trackEvent('last_doc_snapshot_not_found');
         return {
           questions: [],
-          lastDocSnapshot: null,
+          lastDocData: null,
         };
       }
 
@@ -212,7 +212,7 @@ export const fetchMoreHistoryData = createAsyncThunk(
         .collection('questions')
         .where('partnershipId', '==', userData.partnershipId)
         .orderBy('createdAt', 'desc')
-        .startAfter(lastDocSnapshot)
+        .startAfter(lastDoc.createdAt)
         .limit(10)
         .get();
 
@@ -228,7 +228,7 @@ export const fetchMoreHistoryData = createAsyncThunk(
 
         return {
           questions: [],
-          lastDocSnapshot: null,
+          lastDocData: null,
         };
       }
 
@@ -287,10 +287,12 @@ export const fetchMoreHistoryData = createAsyncThunk(
 
       trackEvent('more_history_fetched');
 
-      const lastDoc = questionsSnapshot.docs[questionsSnapshot.docs.length - 1];
-      const lastDocData = lastDoc.exists ? { id: lastDoc.id, ...lastDoc.data() } : null;
+      const lastQuestion = questionsSnapshot.docs[questionsSnapshot.docs.length - 1];
+      const lastDocData = lastQuestion.exists
+        ? { id: lastQuestion.id, ...lastQuestion.data() }
+        : null;
 
-      return { questions: moreHistoryData, lastDocSnapshot: lastDocData };
+      return { questions: moreHistoryData, lastDocData };
     } catch (error) {
       trackEvent('history_fetch_more_history_data_error', { error });
       return rejectWithValue(error);

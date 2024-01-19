@@ -8,6 +8,7 @@ import {
   selectIsLoading,
   selectLastFailedAction,
   selectFormattedQuestions,
+  selectIsEndReached,
 } from '@store/history/selectors';
 
 import { fetchHistoryData, fetchMoreHistoryData } from '@store/history/thunks';
@@ -30,6 +31,7 @@ function HistoryScreenContainer() {
   const userData = useSelector(selectUserData);
   const partnerData = useSelector(selectPartnerData);
   const timeZone = useSelector(selectPartnershipTimeZone);
+  const isEndReached = useSelector(selectIsEndReached);
 
   useEffect(() => {
     trackScreen('HistoryScreen');
@@ -64,13 +66,14 @@ function HistoryScreenContainer() {
         error={error}
         handleRetry={handleRetry}
         isBlurred={false}
+        isEndReached={isEndReached}
         isLoading={isLoading}
         onEndReached={handleEndReached}
         partnerId={partnerData?.id}
         partnerName={partnerData?.name}
         questions={questions}
-        userId={userData?.id}
         timeZone={timeZone}
+        userId={userData?.id}
       />
     </Layout>
   );

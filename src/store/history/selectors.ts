@@ -4,11 +4,12 @@ import moment from 'moment-timezone';
 import { QuestionType } from '@lib/types';
 import { selectPartnershipTimeZone } from '@store/partnership/selectors';
 
-export const selectIsLoading = (state) => state.history.isLoading;
-export const selectQuestions = (state) => state.history.questions;
-export const selectLastDocSnapshot = (state) => state.history.lastDocSnapshot;
 export const selectError = (state) => state.history.error;
+export const selectIsLoading = (state) => state.history.isLoading;
+export const selectLastDocData = (state) => state.history.lastDocData;
 export const selectLastFailedAction = (state) => state.history.lastFailedAction;
+export const selectQuestions = (state) => state.history.questions;
+export const selectIsEndReached = (state) => state.history.isEndReached;
 
 const defaultQuestions = [
   'What is your partner incredibly good at?',
