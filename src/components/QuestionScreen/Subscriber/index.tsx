@@ -90,6 +90,8 @@ function SubscriberScreen() {
 
   if (error) {
     content = <ErrorView error={error} onRetry={handleRetry} />;
+  } else if (isInitializing || isLoadingQuestion) {
+    content = <LoadingView />;
   } else if (currentQuestion && currentQuestion.text) {
     content = (
       <Question
@@ -104,8 +106,6 @@ function SubscriberScreen() {
         userStatus={userStatus}
       />
     );
-  } else if (isInitializing || isLoadingQuestion) {
-    content = <LoadingView />;
   }
 
   return (
