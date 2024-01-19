@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 
 import Button from '@components/shared/Button';
 import Layout from '@components/Auth/Layout';
@@ -39,7 +39,7 @@ function SignInScreen() {
   const confirm = useSelector(selectConfirm);
 
   useEffect(() => {
-    trackScreen('SignInScreen');
+    trackEvent('Sign In Screen Seen');
 
     if (user) dispatch(setUser(null));
     if (code) dispatch(setCode(''));

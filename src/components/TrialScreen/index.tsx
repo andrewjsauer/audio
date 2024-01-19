@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment-timezone';
 
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 
 import { AppDispatch } from '@store/index';
 import { restorePurchases, purchaseProduct } from '@store/app/thunks';
@@ -40,7 +40,7 @@ function TrialScreen() {
   const user = useSelector(selectUser);
 
   useEffect(() => {
-    trackScreen('TrialScreen');
+    trackEvent('Trial Screen Seen');
   }, []);
 
   const handlePurchase = () => {

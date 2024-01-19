@@ -6,7 +6,7 @@ import i18n from 'i18next';
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 
-import { trackScreen, trackEvent } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 import { showNotification } from '@store/ui/slice';
 
 import Layout from '../Layout';
@@ -19,7 +19,7 @@ function RelationshipDateScreen() {
   const currentDate = new Date();
 
   useEffect(() => {
-    trackScreen('RelationshipDateScreen');
+    trackEvent('Relationship Date Screen Seen');
   }, []);
 
   const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =

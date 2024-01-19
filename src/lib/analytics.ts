@@ -67,23 +67,6 @@ export const initializeAnalytics = (userData?: UserDataType | null) => {
   }
 };
 
-export const trackScreen = (screen: string) => {
-  if (!analyticsInstance || __DEV__) {
-    console.log('Analytics Screen', screen);
-    return;
-  }
-
-  try {
-    analyticsInstance.screen(screen);
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log('trackScreen error', error.message);
-    } else {
-      console.log('trackScreen error', error);
-    }
-  }
-};
-
 export const trackIdentify = (userData: UserDataType) => {
   if (!analyticsInstance || __DEV__) {
     console.log('Analytics Identify', userData);

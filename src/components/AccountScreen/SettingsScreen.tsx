@@ -17,7 +17,7 @@ import { signOut } from '@store/app/thunks';
 
 import { AppDispatch } from '@store/index';
 
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 import { AccountScreens, RelationshipType } from '@lib/types';
 
 import ChevronRight from '@assets/icons/chevron-right.svg';
@@ -56,7 +56,7 @@ function SettingsScreen() {
   const timeZone = useSelector(selectPartnershipTimeZone);
 
   useEffect(() => {
-    trackScreen('AccountScreen');
+    trackEvent('Settings Screen Seen');
   }, []);
 
   const handleLogout = () => {

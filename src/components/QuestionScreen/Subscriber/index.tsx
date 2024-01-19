@@ -25,7 +25,7 @@ import { AppDispatch } from '@store/index';
 
 import { fetchLatestQuestion } from '@store/question/thunks';
 
-import { trackScreen, trackEvent } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
 import useRecordingSubscription from '@lib/customHooks/useRecordingSubscription';
 import useListeningSubscription from '@lib/customHooks/useListeningSubscription';
@@ -56,7 +56,7 @@ function SubscriberScreen() {
   const userStatus = useSelector(selectUserRecordingStatus);
 
   useEffect(() => {
-    trackScreen('SubscriberScreen');
+    trackEvent('Home Screen Seen');
   }, []);
 
   useFetchQuestion();

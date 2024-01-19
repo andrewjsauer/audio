@@ -9,7 +9,7 @@ import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 import { showNotification } from '@store/ui/slice';
 import { selectIsLoading } from '@store/auth/selectors';
 
-import { trackScreen, trackEvent } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 
 import Layout from '../Layout';
 import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
@@ -24,7 +24,7 @@ function BirthdayScreen() {
   const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
-    trackScreen('BirthdayScreen');
+    trackEvent('Birthday Screen Seen');
   }, []);
 
   const { goToPreviousStep, goToNextStep, userDetails, handleUserDetails } = useAuthFlow();

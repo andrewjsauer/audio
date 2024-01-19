@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PhoneInput from 'react-native-phone-number-input';
 
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 
 import { resendCode, submitPhoneNumber, verifyCode } from '@store/auth/thunks';
 
@@ -31,7 +31,7 @@ function PhoneNumberScreenContainer() {
   const user = useSelector(selectUser);
 
   useEffect(() => {
-    trackScreen('PhoneNumberScreen');
+    trackEvent('Phone Number Screen Seen');
   }, []);
 
   useEffect(() => {

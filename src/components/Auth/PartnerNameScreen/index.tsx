@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 import { showNotification } from '@store/ui/slice';
 
 import Button from '@components/shared/Button';
@@ -19,7 +19,7 @@ function PartnerNameScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    trackScreen('PartnerNameScreen');
+    trackEvent('Partner Name Screen Seen');
   }, []);
 
   const { goToNextStep, partnerDetails, userDetails, handlePartnerDetails } = useAuthFlow();

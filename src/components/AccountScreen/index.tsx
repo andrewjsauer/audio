@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { trackScreen } from '@lib/analytics';
 import { AccountScreens } from '@lib/types';
 
 import SettingsScreen from './SettingsScreen';
@@ -23,10 +22,6 @@ export type AccountStackParamList = {
 const Stack = createStackNavigator<AccountStackParamList>();
 
 function AccountScreenContainer() {
-  useEffect(() => {
-    trackScreen('AccountScreen');
-  }, []);
-
   return (
     <Stack.Navigator initialRouteName={AccountScreens.SettingsScreen}>
       <Stack.Screen

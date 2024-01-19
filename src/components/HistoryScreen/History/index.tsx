@@ -15,7 +15,7 @@ import { fetchHistoryData, fetchMoreHistoryData } from '@store/history/thunks';
 import { AppDispatch } from '@store/index';
 
 import NonSubscriberNotification from '@components/shared/NonSubscriberNotification';
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 
 import Layout from '@components/shared/Layout';
 import HistoryScreen from './HistoryScreen';
@@ -34,7 +34,7 @@ function HistoryScreenContainer() {
   const isEndReached = useSelector(selectIsEndReached);
 
   useEffect(() => {
-    trackScreen('HistoryScreen');
+    trackEvent('History Screen Seen');
     dispatch(fetchHistoryData());
   }, []);
 

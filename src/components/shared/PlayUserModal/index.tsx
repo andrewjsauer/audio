@@ -10,7 +10,7 @@ import functions from '@react-native-firebase/functions';
 import RNFS from 'react-native-fs';
 import base64 from 'react-native-base64';
 
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 import { ReactionType } from '@lib/types';
 
 import { saveListeningReaction } from '@store/recording/thunks';
@@ -94,7 +94,7 @@ function PlayUserModal() {
   const [currentTime, setCurrentTime] = useState(duration);
 
   useEffect(() => {
-    trackScreen('PlayUserModal');
+    trackEvent('Play User Modal Seen');
 
     return () => {
       audioRecorderPlayer.stopPlayer();
