@@ -2,33 +2,38 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment-timezone';
+import { View } from 'react-native';
 
 import { trackEvent } from '@lib/analytics';
 
 import { AppDispatch } from '@store/index';
 import { restorePurchases, purchaseProduct } from '@store/app/thunks';
 import { selectIsPurchasing } from '@store/app/selectors';
-import { selectUser } from '@store/auth/selectors';
+import { selectUser, selectUserData } from '@store/auth/selectors';
 import { selectPartnerData } from '@store/partnership/selectors';
 
 import Button from '@components/shared/Button';
 import {
-  Header,
-  SubTitle,
-  Container,
-  Title,
-  Footer,
   Benefit1Description,
-  Benefit2Description,
-  BenefitContainer,
   Benefit1Item,
+  Benefit2Container,
+  Benefit2Description,
   Benefit2Item,
+  Benefit2SubDescription,
+  BenefitContainer,
+  ColorCircle,
+  ColorTextContainer,
+  Container,
+  Footer,
   FooterSubTitle,
   FooterTitle,
+  Header,
+  MonthlyPrice,
+  MonthlyText,
   RestoreButton,
   RestoreButtonText,
-  Benefit2SubDescription,
-  Benefit2Container,
+  SubTitle,
+  Title,
 } from './style';
 
 function TrialScreen() {
@@ -38,6 +43,7 @@ function TrialScreen() {
   const isPurchasing = useSelector(selectIsPurchasing);
   const partnerData = useSelector(selectPartnerData);
   const user = useSelector(selectUser);
+  const userData = useSelector(selectUserData);
 
   useEffect(() => {
     trackEvent('Trial Screen Seen');
@@ -60,22 +66,48 @@ function TrialScreen() {
         <Title>{t('trialScreen.title')}</Title>
         <SubTitle>{t('trialScreen.subTitle')}</SubTitle>
         <BenefitContainer noTopBorder={false}>
-          <Benefit1Description>{t('trialScreen.benefit1')}</Benefit1Description>
+          <ColorTextContainer>
+            <ColorCircle color={userData.color} />
+            <ColorCircle isSecond color={partnerData.color} />
+            <Benefit1Description>{t('trialScreen.benefit1')}</Benefit1Description>
+          </ColorTextContainer>
           <Benefit1Item>{t('trialScreen.free')}</Benefit1Item>
         </BenefitContainer>
         <BenefitContainer noTopBorder>
+          <ColorTextContainer>
+            <ColorCircle color={partnerData.color} />
+            <MonthlyText>{t('trialScreen.benefitMonthly')}</MonthlyText>
+          </ColorTextContainer>
+          <MonthlyPrice>({t('trialScreen.perPersonPrice')})</MonthlyPrice>
+        </BenefitContainer>
+        <BenefitContainer noTopBorder>
+          <ColorTextContainer>
+            <ColorCircle color={userData.color} />
+            <MonthlyText>{t('trialScreen.benefitMonthly')}</MonthlyText>
+          </ColorTextContainer>
+          <MonthlyPrice>({t('trialScreen.perPersonPrice')})</MonthlyPrice>
+        </BenefitContainer>
+        <BenefitContainer noTopBorder>
           <Benefit2Container>
-            <Benefit2Description>{t('trialScreen.benefit2')}</Benefit2Description>
-            <Benefit2SubDescription>
-              {t('trialScreen.benefit2Description', { date: date30DaysFromNow.format('LL') })}
-            </Benefit2SubDescription>
+            <ColorTextContainer>
+              <ColorCircle color={userData.color} />
+              <ColorCircle isSecond color={partnerData.color} />
+              <View>
+                <Benefit2Description>{t('trialScreen.benefit2')}</Benefit2Description>
+                <Benefit2SubDescription>
+                  {t('trialScreen.benefit2Description', { date: date30DaysFromNow.format('LL') })}
+                </Benefit2SubDescription>
+              </View>
+            </ColorTextContainer>
           </Benefit2Container>
           <Benefit2Item>{t('trialScreen.price')}</Benefit2Item>
         </BenefitContainer>
       </Header>
       <Footer>
         <FooterTitle>{t('trialScreen.footer.title')}</FooterTitle>
-        <FooterSubTitle>{t('trialScreen.footer.description')}</FooterSubTitle>
+        <FooterSubTitle>
+          {t('trialScreen.footer.description', { partnerName: partnerData.name })}
+        </FooterSubTitle>
         <Button
           isLoading={isPurchasing}
           onPress={handlePurchase}

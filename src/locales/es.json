@@ -157,10 +157,12 @@
     "price": "$9.99",
     "footer": {
       "title": "Cancela en cualquier momento. ¡Pruébalo!",
-      "description": "¡Tu regalo! Estarás pagando $9.99 al mes por ti y tu pareja. Pruébalo gratis este mes. Cancela en cualquier momento.",
       "buttonText": "Empezar Prueba Gratuita",
-      "restoreButtonText": "Restaurar Compras"
-    }
+      "restoreButtonText": "Restaurar Compras",
+      "description": "Después de la prueba gratuita, si no cancelas, se te cobrará $9.99 al mes por ambos. {{ partnerName }} nunca será cobrado."
+    },
+    "benefitMonthly": "Mensual por persona",
+    "perPersonPrice": "$4.99 se traduce al español como \"4,99 dólares\"."
   },
   "historyScreen": {
     "title": "Historial",

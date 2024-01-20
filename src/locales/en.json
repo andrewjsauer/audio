@@ -149,13 +149,15 @@
     "title": "Okay, you're all set!",
     "subTitle": "Start your 30-day trial",
     "benefit1": "First 30 days",
-    "free": "free",
+    "free": "free!",
+    "benefitMonthly": "Monthly per person",
     "benefit2": "Monthly per couple",
     "benefit2Description": "Starting {{ date }}",
     "price": "$9.99",
+    "perPersonPrice": "$4.99",
     "footer": {
       "title": "Cancel Anytime. Try it out!",
-      "description": "Your treat! You'll be paying $9.99 month for both you and your partner. Try it for free this month. Cancel anytime.",
+      "description": "After the free trial, if you don't cancel, you'll be charged $9.99/month for both of your. {{ partnerName }} will never be charged.",
       "buttonText": "Start Free Trial",
       "restoreButtonText": "Restore Purchases"
     }

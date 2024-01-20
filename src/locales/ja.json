@@ -157,10 +157,12 @@
     "price": "$9.99",
     "footer": {
       "title": "いつでもキャンセル可能。試してみてください！",
-      "description": "ごちそうさまです！あなたとあなたのパートナーのために、月々$9.99をお支払いいただきます。今月は無料でお試しいただけます。いつでもキャンセルできます。",
       "buttonText": "無料トライアルを開始",
-      "restoreButtonText": "購入を復元"
-    }
+      "restoreButtonText": "購入を復元",
+      "description": "無料トライアル終了後、キャンセルされない場合、{{ partnerName }} の料金は発生しませんが、あなた自身には月額9.99ドルが請求されます。"
+    },
+    "benefitMonthly": "月額1人あたり",
+    "perPersonPrice": "4.99ドル"
   },
   "historyScreen": {
     "title": "履歴",

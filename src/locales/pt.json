@@ -157,10 +157,12 @@
     "price": "$9.99",
     "footer": {
       "title": "Cancele a qualquer momento. Experimente!",
-      "description": "Por nossa conta! Você pagará $9.99 por mês para você e seu parceiro. Experimente de graça este mês. Cancele a qualquer hora.",
       "buttonText": "Começar Teste Gratuito",
-      "restoreButtonText": "Restaurar Compras"
-    }
+      "restoreButtonText": "Restaurar Compras",
+      "description": "Após o período de teste gratuito, se você não cancelar, será cobrado $9.99 por mês para ambos. {{ partnerName }} nunca será cobrado."
+    },
+    "benefitMonthly": "Mensal por pessoa",
+    "perPersonPrice": "$4.99"
   },
   "historyScreen": {
     "title": "Histórico",

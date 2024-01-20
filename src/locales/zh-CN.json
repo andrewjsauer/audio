@@ -157,10 +157,12 @@
     "price": "¥9.99",
     "footer": {
       "title": "随时取消。尝试一下！",
-      "description": "你的款待！你将为你和你的伴侣支付每月¥9.99。这个月免费试用。随时取消。",
       "buttonText": "开始免费试用",
-      "restoreButtonText": "恢复购买"
-    }
+      "restoreButtonText": "恢复购买",
+      "description": "试用期结束后，如果您不取消订阅，您将每月支付9.99美元费用。{{ partnerName }} 永远不会被收费。"
+    },
+    "benefitMonthly": "每人每月",
+    "perPersonPrice": "现价为4.99美元。"
   },
   "historyScreen": {
     "title": "历史",

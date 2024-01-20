@@ -157,10 +157,12 @@
     "price": "9,99 $",
     "footer": {
       "title": "Jederzeit kündbar. Probier es aus!",
-      "description": "Dein Angebot! Du zahlst 9,99 $ pro Monat für dich und deinen Partner. Probier es diesen Monat kostenlos. Jederzeit kündbar.",
       "buttonText": "Kostenlose Testphase starten",
-      "restoreButtonText": "Käufe wiederherstellen"
-    }
+      "restoreButtonText": "Käufe wiederherstellen",
+      "description": "Nach der kostenlosen Testphase werden Ihnen monatlich 9,99 US-Dollar in Rechnung gestellt, sofern Sie nicht kündigen. {{ partnerName }} wird nie belastet."
+    },
+    "benefitMonthly": "Monatlich pro Person",
+    "perPersonPrice": "4,99 US-Dollar"
   },
   "historyScreen": {
     "title": "Historie",

@@ -157,10 +157,12 @@
     "price": "9,99 $",
     "footer": {
       "title": "Annulation à tout moment. Essayez-le !",
-      "description": "C'est pour vous ! Vous payerez 9,99 $ par mois pour vous et votre partenaire. Essayez gratuitement ce mois-ci. Annulation à tout moment.",
       "buttonText": "Commencer l'Essai Gratuit",
-      "restoreButtonText": "Restaurer les Achats"
-    }
+      "restoreButtonText": "Restaurer les Achats",
+      "description": "Après l'essai gratuit, si vous ne l'annulez pas, vous serez facturé 9,99 $ par mois pour les deux personnes. {{ partnerName }} ne sera jamais facturé."
+    },
+    "benefitMonthly": "Mensuel par personne",
+    "perPersonPrice": "4,99 dollars"
   },
   "historyScreen": {
     "title": "Historique",
