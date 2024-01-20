@@ -5,6 +5,8 @@ import { defineSecret } from 'firebase-functions/params';
 import fetch from 'cross-fetch';
 import crypto from 'crypto-js';
 
+import { trackEvent } from './analytics';
+
 const recordingEncryptionKey = defineSecret('RECORDING_ENCRYPTION_KEY');
 
 export const getRecording = functions
@@ -88,8 +90,8 @@ export const saveRecording = functions
         await admin.messaging().sendEachForMulticast({
           tokens: partnerData.deviceIds,
           notification: {
-            title: `Daily Q’s - ${userData.name} answered today's question!`,
-            body: 'Tap to listen to their answer.',
+            title: `Daily Q’s`,
+            body: `${userData.name} answered today's question!`,
           },
         });
       } else {
@@ -101,6 +103,12 @@ export const saveRecording = functions
             body: `${userData.name} answered today's question on Daily Q’s! Download the app to listen to their answer. Link: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822`,
           });
       }
+
+      trackEvent('Recorded Answer', userId, {
+        questionId,
+        duration,
+        partnerId: partnerData.id,
+      });
 
       return { ...recordingData };
     } catch (error: unknown) {

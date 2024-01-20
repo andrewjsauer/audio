@@ -3,6 +3,8 @@ import * as admin from 'firebase-admin';
 
 import { v4 as uuidv4 } from 'uuid';
 
+import { trackEvent } from './analytics';
+
 async function getPartnerIdByPhoneNumber(phoneNumber: string) {
   const partnerQuery = await admin
     .firestore()
@@ -144,6 +146,10 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
 
     await batch.commit();
 
+    trackEvent('Account Created', userId, {
+      ...userPayload,
+    });
+
     return {
       userPayload: {
         ...userPayload,
@@ -248,6 +254,11 @@ export const updateNewUser = functions.https.onCall(async (data, context) => {
     }
 
     await batch.commit();
+
+    trackEvent('Account Created', id, {
+      ...userPayload,
+    });
+
     return userPayload;
   } catch (error: unknown) {
     const e = error as {

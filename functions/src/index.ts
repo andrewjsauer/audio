@@ -22,8 +22,8 @@ export {
   saveRecording,
   sendNotification,
   sendSMS,
-  trackNewUserCreatedEvent,
   trackAnswerRecordedEvent,
+  trackNewUserCreatedEvent,
   updateNewUser,
   updatePartnershipPurchase,
 };

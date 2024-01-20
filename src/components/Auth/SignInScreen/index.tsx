@@ -42,13 +42,13 @@ function SignInScreen() {
   useEffect(() => {
     trackEvent('Sign In Screen Seen');
 
-    const anonymousId = uuidv4();
-    trackIdentify(anonymousId);
-
     if (user) dispatch(setUser(null));
     if (code) dispatch(setCode(''));
     if (confirm) dispatch(setConfirm(null));
     if (userData) dispatch(setUserData(null));
+
+    const anonymousId = uuidv4();
+    trackIdentify(anonymousId);
   }, []);
 
   return (

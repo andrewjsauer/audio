@@ -19,8 +19,10 @@ import { setTransactionError } from '@store/app/slice';
 import { AppDispatch } from '@store/index';
 
 import { trackEvent } from '@lib/analytics';
-import useInitializeSession from '@lib/customHooks/useInitializeSession';
 import { AppScreens } from '@lib/types';
+
+import useInitializeSession from '@lib/customHooks/useInitializeSession';
+import useAppVersionCheck from '@lib/customHooks/useAppVersionCheck';
 
 import LoadingView from '@components/shared/LoadingView';
 import ErrorView from '@components/shared/ErrorView';
@@ -49,6 +51,8 @@ function App(): JSX.Element {
   const transactionError = useSelector(selectTransactionError);
   const lastFailedAction = useSelector(selectLastFailedAction);
   const shouldUpdateApp = useSelector(selectShouldUpdateApp);
+
+  useAppVersionCheck();
 
   useInitializeSession();
 

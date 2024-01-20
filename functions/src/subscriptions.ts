@@ -70,8 +70,6 @@ async function updateSubscriptions(userId: string, hasAccess: boolean) {
       return;
     }
 
-    trackEvent('Subscription Updated', userId, { hasAccess });
-
     batch.set(userDocRef, { isSubscribed: hasAccess }, { merge: true });
     batch.set(partnerDocRef, { isSubscribed: hasAccess }, { merge: true });
 
@@ -136,16 +134,20 @@ export const handleSubscriptionEvents = functions.firestore
         case 'NON_RENEWING_PURCHASE':
         case 'SUBSCRIPTION_EXTENDED':
           await updateSubscriptions(userId, true);
+          trackEvent(`Subscribed via event: ${eventType}`, userId);
           break;
         case 'CANCELLATION':
           if (isTrial && !isActive) {
             await updateSubscriptions(userId, false);
+            trackEvent(`Unsubscribed via event: ${eventType}`, userId);
           } else if (!isTrial && !isActive) {
             await updateSubscriptions(userId, false);
+            trackEvent(`Unsubscribed via event: ${eventType}`, userId);
           }
           break;
         case 'EXPIRATION':
           await updateSubscriptions(userId, false);
+          trackEvent(`Unsubscribed via event: ${eventType}`, userId);
           break;
         case 'SUBSCRIPTION_PAUSED':
           // Handle paused subscription, but do not revoke access
@@ -156,8 +158,10 @@ export const handleSubscriptionEvents = functions.firestore
         case 'RESTORE_PURCHASES':
           if (isActive) {
             await updateSubscriptions(userId, true);
+            trackEvent(`Subscribed via event: ${eventType}`, userId);
           } else {
             await updateSubscriptions(userId, false);
+            trackEvent(`Unsubscribed via event: ${eventType}`, userId);
           }
           break;
         default:
