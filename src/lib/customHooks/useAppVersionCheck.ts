@@ -104,8 +104,10 @@ const useAppVersionCheck = () => {
         .onSnapshot(
           (snapshot) => {
             if (snapshot && snapshot.exists) {
-              const data = snapshot.data();
-              compareVersions(data?.version);
+              setTimeout(() => {
+                const data = snapshot.data();
+                compareVersions(data?.version);
+              }, 1000 * 10); // 10 seconds
             }
           },
           (error) => trackEvent('app_version_check_error', { error: error.message }),
