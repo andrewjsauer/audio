@@ -14,7 +14,7 @@ import {
 import { trackEvent, initializeAnalytics } from '@lib/analytics';
 import { formatCreatedAt } from '@lib/dateUtils';
 
-import { signOut } from '@store/app/thunks';
+import { signOut, initializeSubscriber } from '@store/app/thunks';
 
 export const submitPhoneNumber = createAsyncThunk<FirebaseAuthTypes.ConfirmationResult, string>(
   'auth/submitPhoneNumber',
@@ -65,7 +65,7 @@ interface VerifyCodeArgs {
 
 export const verifyCode = createAsyncThunk(
   'auth/verifyCode',
-  async ({ confirm, code, phoneNumber }: VerifyCodeArgs, { rejectWithValue }) => {
+  async ({ confirm, code, phoneNumber }: VerifyCodeArgs, { rejectWithValue, dispatch }) => {
     try {
       await confirm.confirm(code);
       const { currentUser } = auth();
@@ -82,6 +82,17 @@ export const verifyCode = createAsyncThunk(
       } else {
         const responseData = userSnapshot.docs[0].data() as UserDataType;
         userData = responseData;
+
+        if (userData?.isRegistered && userData?.isSubscribed && userData?.hasSubscribed) {
+          // If user is already registered, subscribed and has subscribed, then initialize subscriber
+          const resultAction = await dispatch(initializeSubscriber());
+
+          if (initializeSubscriber.fulfilled.match(resultAction)) {
+            trackEvent('verify_code_init_subscriber_fetched');
+          } else if (initializeSubscriber.rejected.match(resultAction)) {
+            trackEvent('verify_code_init_subscriber_error', { error: resultAction.payload });
+          }
+        }
       }
 
       initializeAnalytics(userData);
