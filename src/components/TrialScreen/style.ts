@@ -9,7 +9,7 @@ export const Container = styled.View`
 
 export const Header = styled.View`
   align-items: center;
-  margin-top: 50px;
+  margin-top: 20%;
 `;
 
 export const Footer = styled.View`
@@ -121,7 +121,7 @@ export const ColorCircle = styled.View<{ color: string; isSecond?: boolean }>`
   width: 30px;
   height: 30px;
   border-radius: 15px;
-  background-color: ${(props) => props.color};
+  background-color: ${(props) => props.color || '#BC5252'};
   display: flex;
   align-items: center;
   justify-content: center;

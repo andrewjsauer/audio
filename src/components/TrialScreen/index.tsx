@@ -8,11 +8,15 @@ import { trackEvent } from '@lib/analytics';
 
 import { AppDispatch } from '@store/index';
 import { restorePurchases, purchaseProduct } from '@store/app/thunks';
+import { fetchPartnerData } from '@store/partnership/thunks';
+
 import { selectIsPurchasing } from '@store/app/selectors';
 import { selectUser, selectUserData } from '@store/auth/selectors';
-import { selectPartnerData } from '@store/partnership/selectors';
+import { selectPartnerData, selectIsLoadingPartnerData } from '@store/partnership/selectors';
 
 import Button from '@components/shared/Button';
+import LoadingView from '@components/shared/LoadingView';
+
 import {
   Benefit1Description,
   Benefit1Item,
@@ -44,9 +48,13 @@ function TrialScreen() {
   const partnerData = useSelector(selectPartnerData);
   const user = useSelector(selectUser);
   const userData = useSelector(selectUserData);
+  const isLoadingPartnerData = useSelector(selectIsLoadingPartnerData);
 
   useEffect(() => {
     trackEvent('Trial Screen Seen');
+    if (!partnerData) {
+      dispatch(fetchPartnerData(user.uid));
+    }
   }, []);
 
   const handlePurchase = () => {
@@ -60,7 +68,9 @@ function TrialScreen() {
   };
 
   const date30DaysFromNow = moment().add(30, 'days');
-  return (
+  return isLoadingPartnerData ? (
+    <LoadingView />
+  ) : (
     <Container>
       <Header>
         <Title>{t('trialScreen.title')}</Title>
@@ -68,14 +78,14 @@ function TrialScreen() {
         <BenefitContainer noTopBorder={false}>
           <ColorTextContainer>
             <ColorCircle color={userData.color} />
-            <ColorCircle isSecond color={partnerData.color} />
+            <ColorCircle isSecond color={partnerData?.color} />
             <Benefit1Description>{t('trialScreen.benefit1')}</Benefit1Description>
           </ColorTextContainer>
           <Benefit1Item>{t('trialScreen.free')}</Benefit1Item>
         </BenefitContainer>
         <BenefitContainer noTopBorder>
           <ColorTextContainer>
-            <ColorCircle color={partnerData.color} />
+            <ColorCircle color={partnerData?.color} />
             <MonthlyText>{t('trialScreen.benefitMonthly')}</MonthlyText>
           </ColorTextContainer>
           <MonthlyPrice>({t('trialScreen.perPersonPrice')})</MonthlyPrice>
@@ -91,7 +101,7 @@ function TrialScreen() {
           <Benefit2Container>
             <ColorTextContainer>
               <ColorCircle color={userData.color} />
-              <ColorCircle isSecond color={partnerData.color} />
+              <ColorCircle isSecond color={partnerData?.color} />
               <View>
                 <Benefit2Description>{t('trialScreen.benefit2')}</Benefit2Description>
                 <Benefit2SubDescription>
@@ -106,7 +116,7 @@ function TrialScreen() {
       <Footer>
         <FooterTitle>{t('trialScreen.footer.title')}</FooterTitle>
         <FooterSubTitle>
-          {t('trialScreen.footer.description', { partnerName: partnerData.name })}
+          {t('trialScreen.footer.description', { partnerName: partnerData?.name })}
         </FooterSubTitle>
         <Button
           isLoading={isPurchasing}

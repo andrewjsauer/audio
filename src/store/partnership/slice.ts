@@ -9,11 +9,17 @@ import {
 import { signOut } from '@store/app/thunks';
 import { generatePartnership, updateNewUser } from '@store/auth/thunks';
 import { fetchLatestQuestion } from '@store/question/thunks';
-import { updatePartnership, fetchPartnership, fetchPartnershipUser } from './thunks';
+import {
+  updatePartnership,
+  fetchPartnership,
+  fetchPartnershipUser,
+  fetchPartnerData,
+} from './thunks';
 
 interface PartnershipState {
   error: string | undefined | null;
   isLoading: boolean;
+  isLoadingPartnerData: boolean;
   lastFailedAction: object | null;
   partnerData: PartnerDataType | null;
   partnershipData: PartnershipDataType | null;
@@ -23,6 +29,7 @@ interface PartnershipState {
 const initialState: PartnershipState = {
   error: null,
   isLoading: false,
+  isLoadingPartnerData: false,
   lastFailedAction: null,
   partnerData: null,
   partnershipData: null,
@@ -95,6 +102,16 @@ const partnershipSlice = createSlice({
     });
     builder.addCase(fetchPartnershipUser.fulfilled, (state, action) => {
       state.partnershipUserData = action.payload as PartnershipUserDataType;
+    });
+    builder.addCase(fetchPartnerData.pending, (state) => {
+      state.isLoadingPartnerData = true;
+    });
+    builder.addCase(fetchPartnerData.rejected, (state) => {
+      state.isLoadingPartnerData = false;
+    });
+    builder.addCase(fetchPartnerData.fulfilled, (state, action) => {
+      state.partnerData = action.payload as PartnerDataType;
+      state.isLoadingPartnerData = false;
     });
   },
 });
