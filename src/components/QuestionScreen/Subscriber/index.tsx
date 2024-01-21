@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { selectUserData } from '@store/auth/selectors';
+import { selectShouldShowPrivateReminder } from '@store/app/selectors';
 import {
   selectError,
   selectLastFailedAction,
@@ -36,7 +37,7 @@ import ErrorView from '@components/shared/ErrorView';
 
 import Layout from '../Layout';
 import Question from '../QuestionView';
-import { Container } from './style';
+import { Container, ReminderTitle, ReminderText, ReminderContainer } from './style';
 
 function SubscriberScreen() {
   const dispatch = useDispatch<AppDispatch>();
@@ -54,6 +55,7 @@ function SubscriberScreen() {
   const userReactionToPartner = useSelector(selectUserReactionToPartnerType);
   const userRecording = useSelector(selectUserRecording);
   const userStatus = useSelector(selectUserRecordingStatus);
+  const shouldShowPrivateReminder = useSelector(selectShouldShowPrivateReminder);
 
   useEffect(() => {
     trackEvent('Home Screen Seen');
@@ -94,17 +96,28 @@ function SubscriberScreen() {
     content = <LoadingView />;
   } else if (currentQuestion && currentQuestion.text) {
     content = (
-      <Question
-        partner={partnerData}
-        partnerReactionToUser={partnerReactionToUser}
-        partnerRecording={partnerRecording}
-        partnerStatus={partnerStatus}
-        text={currentQuestion.text}
-        user={userData}
-        userReactionToPartner={userReactionToPartner}
-        userRecording={userRecording}
-        userStatus={userStatus}
-      />
+      <>
+        <Question
+          partner={partnerData}
+          partnerReactionToUser={partnerReactionToUser}
+          partnerRecording={partnerRecording}
+          partnerStatus={partnerStatus}
+          text={currentQuestion.text}
+          user={userData}
+          userReactionToPartner={userReactionToPartner}
+          userRecording={userRecording}
+          userStatus={userStatus}
+        />
+        {shouldShowPrivateReminder && (
+          <ReminderContainer>
+            <ReminderTitle>Your recordings are private 🗝️</ReminderTitle>
+            <ReminderText>
+              No one else, not even people who work at the app, can listen to your recordings,
+              because they are fully encrypted.
+            </ReminderText>
+          </ReminderContainer>
+        )}
+      </>
     );
   }
 
