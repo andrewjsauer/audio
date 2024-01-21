@@ -145,6 +145,10 @@
     "recordScreen": {
       "note": "Toutes les enregistrements sont privés et chiffrés.",
       "timeRunningOut": "Attention, il vous reste {{ time }} secondes."
+    },
+    "privacyReminder": {
+      "title": "Vos enregistrements sont privés",
+      "description": "Personne d'autre, même pas les personnes qui travaillent sur l'application, ne peut écouter vos enregistrements car ils sont entièrement cryptés."
     }
   },
   "trialScreen": {

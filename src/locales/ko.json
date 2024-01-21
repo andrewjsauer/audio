@@ -145,6 +145,10 @@
     "recordScreen": {
       "note": "모든 녹음은 개인적이며 암호화되어 있습니다.",
       "timeRunningOut": "주의하세요, {{ time }}초 남았습니다."
+    },
+    "privacyReminder": {
+      "title": "당신의 녹음은 비공개입니다.",
+      "description": "다른 사람들, 심지어 앱에서 일하는 사람들조차도 녹음을 들을 수 없습니다. 왜냐하면 그들은 완전히 암호화되어 있기 때문입니다."
     }
   },
   "trialScreen": {

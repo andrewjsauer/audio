@@ -145,6 +145,10 @@
     "recordScreen": {
       "note": "Alle Aufnahmen sind privat und verschlüsselt.",
       "timeRunningOut": "Achtung, du hast noch {{ time }} Sekunden übrig."
+    },
+    "privacyReminder": {
+      "title": "Ihre Aufzeichnungen sind privat.",
+      "description": "Niemand, auch nicht die Mitarbeiter der App, kann Ihre Aufnahmen anhören, da sie vollständig verschlüsselt sind."
     }
   },
   "trialScreen": {

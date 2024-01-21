@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { selectUserData } from '@store/auth/selectors';
 import { selectShouldShowPrivateReminder } from '@store/app/selectors';
@@ -40,6 +41,7 @@ import Question from '../QuestionView';
 import { Container, ReminderTitle, ReminderText, ReminderContainer } from './style';
 
 function SubscriberScreen() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
 
   const currentQuestion = useSelector(selectCurrentQuestion);
@@ -110,11 +112,8 @@ function SubscriberScreen() {
         />
         {shouldShowPrivateReminder && (
           <ReminderContainer>
-            <ReminderTitle>Your recordings are private 🗝️</ReminderTitle>
-            <ReminderText>
-              No one else, not even people who work at the app, can listen to your recordings,
-              because they are fully encrypted.
-            </ReminderText>
+            <ReminderTitle>{t('questionScreen.privacyReminder.title')} 🗝️</ReminderTitle>
+            <ReminderText>{t('questionScreen.privacyReminder.description')}</ReminderText>
           </ReminderContainer>
         )}
       </>

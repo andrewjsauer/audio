@@ -145,6 +145,10 @@
     "recordScreen": {
       "note": "すべての録音はプライベートで暗号化されています。",
       "timeRunningOut": "ご注意ください、残り{{ time }}秒です"
+    },
+    "privacyReminder": {
+      "title": "あなたの録音はプライベートです",
+      "description": "アプリの開発者でさえ、あなたの録音を聞くことはできません。それは完全に暗号化されています。"
     }
   },
   "trialScreen": {

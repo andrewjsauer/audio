@@ -145,6 +145,10 @@
     "recordScreen": {
       "note": "所有录音是私密且经过加密的。",
       "timeRunningOut": "注意，你还剩下 {{ time }} 秒"
+    },
+    "privacyReminder": {
+      "title": "您的记录是私密的",
+      "description": "没有其他人，甚至是应用程序工作人员，能够听取您的录音，因为它们是完全加密的。"
     }
   },
   "trialScreen": {

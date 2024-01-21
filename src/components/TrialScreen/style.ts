@@ -89,7 +89,7 @@ export const Benefit2Container = styled.View`
 `;
 
 export const Benefit2Item = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.regular};
+  font-size: ${(p) => p.theme.fontSizes.medium};
   font-family: ${(p) => p.theme.fonts.black};
 `;
 

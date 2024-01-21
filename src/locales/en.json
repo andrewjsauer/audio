@@ -104,6 +104,10 @@
     "partnershipUpdateSuccess": "Your relationship details have been updated!"
   },
   "questionScreen": {
+    "privacyReminder": {
+      "title": "Your recordings are private",
+      "description": "No one else, not even people who work at the app, can listen to your recordings, because they are fully encrypted."
+    },
     "nonSubscriberScreen": {
       "default": {
         "text": "Whats the best date you two have been on together?"

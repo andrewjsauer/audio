@@ -145,6 +145,10 @@
     "recordScreen": {
       "note": "Todas as gravações são privadas e criptografadas.",
       "timeRunningOut": "Atenção, você tem {{ time }}s restantes"
+    },
+    "privacyReminder": {
+      "title": "Suas gravações são particulares.",
+      "description": "Ninguém mais, nem mesmo as pessoas que trabalham no aplicativo, pode ouvir suas gravações, pois elas são totalmente criptografadas."
     }
   },
   "trialScreen": {
