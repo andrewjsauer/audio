@@ -26,10 +26,8 @@ export const submitPhoneNumber = createAsyncThunk<FirebaseAuthTypes.Confirmation
 
       const errorMessage = error?.toString();
       if (
-        (errorMessage && errorMessage.includes('too many attempts')) ||
-        errorMessage.includes(
-          'We have blocked all requests from this device due to unusual activity',
-        )
+        errorMessage?.includes('too many attempts') ||
+        errorMessage?.includes('We have blocked all requests')
       ) {
         return rejectWithValue({
           title: 'errors.pleaseTryAgainLater',
