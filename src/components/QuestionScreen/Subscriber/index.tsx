@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { selectUserData } from '@store/auth/selectors';
-import { selectShouldShowPrivateReminder } from '@store/app/selectors';
+import { selectUserData, selectHasSeenPrivacyReminder } from '@store/auth/selectors';
 import {
   selectError,
   selectLastFailedAction,
@@ -57,7 +56,7 @@ function SubscriberScreen() {
   const userReactionToPartner = useSelector(selectUserReactionToPartnerType);
   const userRecording = useSelector(selectUserRecording);
   const userStatus = useSelector(selectUserRecordingStatus);
-  const shouldShowPrivateReminder = useSelector(selectShouldShowPrivateReminder);
+  const hasSeenPrivacyReminder = useSelector(selectHasSeenPrivacyReminder);
 
   useEffect(() => {
     trackEvent('Home Screen Seen');
@@ -110,7 +109,7 @@ function SubscriberScreen() {
           userRecording={userRecording}
           userStatus={userStatus}
         />
-        {shouldShowPrivateReminder && (
+        {!hasSeenPrivacyReminder && (
           <ReminderContainer>
             <ReminderTitle>{t('questionScreen.privacyReminder.title')} 🗝️</ReminderTitle>
             <ReminderText>{t('questionScreen.privacyReminder.description')}</ReminderText>

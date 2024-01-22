@@ -23,7 +23,7 @@ export const ErrorContainer = styled.View`
 export const ReminderContainer = styled.View`
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 14px 16px;
   margin: 0 20px;
   border-radius: 20px;
   background: ${(p) => p.theme.colors.transparentGray};
@@ -32,14 +32,14 @@ export const ReminderContainer = styled.View`
 export const ReminderTitle = styled.Text`
   color: ${(p) => p.theme.colors.darkGray};
   font-family: ${(p) => p.theme.fonts.black};
-  font-size: ${(p) => p.theme.fontSizes.regular};
+  font-size: ${(p) => p.theme.fontSizes.small};
   text-align: center;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 `;
 
 export const ReminderText = styled.Text`
   color: ${(p) => p.theme.colors.darkGray};
   font-family: ${(p) => p.theme.fonts.regular};
-  font-size: ${(p) => p.theme.fontSizes.regular};
+  font-size: ${(p) => p.theme.fontSizes.small};
   text-align: center;
 `;

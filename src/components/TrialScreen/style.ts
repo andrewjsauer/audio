@@ -108,7 +108,7 @@ export const Benefit2SubDescription = styled.Text`
 export const RestoreButton = styled.TouchableOpacity`
   border-bottom-width: 1px;
   border-bottom-color: ${(p) => p.theme.colors.black};
-  margin-top: 16px;
+  margin-top: 12px;
   opacity: ${(p) => (p.disabled ? 0.5 : 1)};
 `;
 
@@ -122,6 +122,7 @@ export const ColorCircle = styled.View<{ color: string; isSecond?: boolean }>`
   height: 30px;
   border-radius: 15px;
   background-color: ${(props) => props.color || '#BC5252'};
+  border: 2px solid rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,6 +132,11 @@ export const ColorCircle = styled.View<{ color: string; isSecond?: boolean }>`
     `
     margin-left: -14px;
   `}
+`;
+
+export const ColorCircleText = styled.Text`
+  font-size: ${(p) => p.theme.fontSizes.xsmall};
+  color: ${(p) => p.theme.colors.white};
 `;
 
 export const ColorTextContainer = styled.View`

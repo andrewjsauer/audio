@@ -48,7 +48,7 @@ export const saveRecording = functions
     const { base64Data, questionId, userData, duration, partnerData } = data;
     functions.logger.info(`Data: ${JSON.stringify(data)}`);
 
-    const { id: userId, partnershipId } = userData;
+    const { id: userId, partnershipId, hasSeenPrivacyReminder = false } = userData;
     const recordingId = `${userId}_${questionId}`;
 
     try {
@@ -85,6 +85,14 @@ export const saveRecording = functions
         .collection('recordings')
         .doc(recordingId)
         .set(recordingData, { merge: true });
+
+      if (!hasSeenPrivacyReminder) {
+        await admin
+          .firestore()
+          .collection('users')
+          .doc(userId)
+          .set({ hasSeenPrivacyReminder: true }, { merge: true });
+      }
 
       if (partnerData.deviceIds && partnerData.deviceIds.length > 0) {
         await admin.messaging().sendEachForMulticast({

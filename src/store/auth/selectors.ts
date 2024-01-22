@@ -35,3 +35,8 @@ export const selectHasSubscribed = createSelector(
   selectUserData,
   (userData) => (!!userData && userData.hasSubscribed) ?? false,
 );
+
+export const selectHasSeenPrivacyReminder = createSelector(
+  selectUserData,
+  (userData) => (!!userData && userData?.hasSeenPrivacyReminder) ?? false,
+);
