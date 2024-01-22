@@ -21,13 +21,14 @@ import { selectPartnershipData, selectPartnerData } from '@store/partnership/sel
 
 export const initializeSubscriber = createAsyncThunk(
   'app/initializeSubscriber',
-  async (_, { getState, rejectWithValue, dispatch }) => {
+  async (fetchedUserData?: UserDataType, { getState, rejectWithValue, dispatch }) => {
     const state = getState();
     const partnershipData = selectPartnershipData(state);
-    const userData = selectUserData(state);
+    const storedUserData = selectUserData(state);
     const partnerData = selectPartnerData(state);
 
     let partnership = partnershipData;
+    const userData = fetchedUserData || storedUserData;
 
     try {
       if (!partnershipData) {

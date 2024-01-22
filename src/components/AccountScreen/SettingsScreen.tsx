@@ -202,7 +202,6 @@ function SettingsScreen() {
               <SignOutText>{t('accountScreen.signOut')}</SignOutText>
             </SignOutButton>
             <LegalContainer>
-              <LegalText>{t('accountScreen.legal')}</LegalText>
               <ButtonURL url="https://forms.gle/Ah9nKKj8RN7AAu1G7">
                 {t('accountScreen.request.title')}
               </ButtonURL>

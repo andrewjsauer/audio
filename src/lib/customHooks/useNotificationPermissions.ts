@@ -71,15 +71,11 @@ const useNotificationPermissions = () => {
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState === 'active') {
-        setTimeout(() => {
-          checkNotificationPermission(partnersName);
-        }, 2000);
+        checkNotificationPermission(partnersName);
       }
     });
 
-    setTimeout(() => {
-      checkNotificationPermission(partnersName);
-    }, 3000);
+    checkNotificationPermission(partnersName);
 
     return () => {
       subscription.remove();

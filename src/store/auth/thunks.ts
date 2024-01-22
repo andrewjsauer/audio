@@ -81,9 +81,12 @@ export const verifyCode = createAsyncThunk(
         const responseData = userSnapshot.docs[0].data() as UserDataType;
         userData = responseData;
 
-        if (userData?.isRegistered && userData?.isSubscribed && userData?.hasSubscribed) {
-          // If user is already registered, subscribed and has subscribed, then initialize subscriber
-          const resultAction = await dispatch(initializeSubscriber());
+        if (
+          responseData?.isRegistered &&
+          responseData?.isSubscribed &&
+          responseData?.hasSubscribed
+        ) {
+          const resultAction = await dispatch(initializeSubscriber(userData));
 
           if (initializeSubscriber.fulfilled.match(resultAction)) {
             trackEvent('verify_code_init_subscriber_fetched');
