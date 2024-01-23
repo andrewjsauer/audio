@@ -67,60 +67,47 @@ export const initializeAnalytics = (userData?: UserDataType | null) => {
   }
 };
 
-export const trackScreen = (screen: string) => {
-  if (!analyticsInstance || __DEV__) {
-    console.log('Analytics Screen', screen);
-    return;
-  }
-
-  try {
-    analyticsInstance.screen(screen);
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log('trackScreen error', error.message);
-    } else {
-      console.log('trackScreen error', error);
-    }
-  }
-};
-
-export const trackIdentify = (userData: UserDataType) => {
+export const trackIdentify = (userData: UserDataType | string) => {
   if (!analyticsInstance || __DEV__) {
     console.log('Analytics Identify', userData);
     return;
   }
 
   try {
-    const {
-      birthDate,
-      createdAt,
-      hasSubscribed,
-      isRegistered,
-      isSubscribed,
-      lastActiveAt,
-      name,
-      partnershipId,
-      phoneNumber,
-      id,
-    } = userData;
+    if (typeof userData === 'string') {
+      analyticsInstance.identify(userData);
+    } else {
+      const {
+        birthDate,
+        createdAt,
+        hasSubscribed,
+        isRegistered,
+        isSubscribed,
+        lastActiveAt,
+        name,
+        partnershipId,
+        phoneNumber,
+        id,
+      } = userData as UserDataType;
 
-    const birthDateConverted = convertToDate(birthDate);
-    const createdAtConverted = convertToDate(createdAt);
-    const lastActiveAtConverted = convertToDate(lastActiveAt);
+      const birthDateConverted = convertToDate(birthDate);
+      const createdAtConverted = convertToDate(createdAt);
+      const lastActiveAtConverted = convertToDate(lastActiveAt);
 
-    const userId = userData.id;
-    analyticsInstance.identify(userId, {
-      birthDate: birthDateConverted,
-      createdAt: createdAtConverted,
-      hasSubscribed,
-      isRegistered,
-      isSubscribed,
-      lastActiveAt: lastActiveAtConverted,
-      name,
-      partnershipId,
-      phoneNumber,
-      id,
-    });
+      const userId = userData.id;
+      analyticsInstance.identify(userId, {
+        birthDate: birthDateConverted,
+        createdAt: createdAtConverted,
+        hasSubscribed,
+        isRegistered,
+        isSubscribed,
+        lastActiveAt: lastActiveAtConverted,
+        name,
+        partnershipId,
+        phoneNumber,
+        id,
+      });
+    }
   } catch (error) {
     if (error instanceof Error) {
       console.log('trackIdentify error', error.message);

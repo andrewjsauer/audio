@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/Auth/AuthFlowContext';
@@ -21,7 +21,7 @@ function UserNameScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    trackScreen('UserNameScreen');
+    trackEvent('Use rName Screen Seen');
   }, []);
 
   const { goToNextStep, userDetails, handleUserDetails } = useAuthFlow();
@@ -58,8 +58,7 @@ function UserNameScreen() {
   };
 
   const handleNameChange = (typedName: string) => {
-    const nameWithoutWhitespace = typedName.replace(/\s+/g, '');
-    handleUserDetails({ name: nameWithoutWhitespace });
+    handleUserDetails({ name: typedName });
   };
 
   return (

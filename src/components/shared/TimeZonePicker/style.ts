@@ -1,8 +1,7 @@
 import styled from 'styled-components/native';
 
-export const TimeZoneList = styled.ScrollView`
-  width: 100%;
-  height: 100%;
+export const Container = styled.View`
+  flex: 1;
 `;
 
 export const TimeZoneItem = styled.TouchableOpacity<{ selected: boolean }>`
@@ -29,4 +28,13 @@ export const Checkmark = styled.Text`
   color: ${(p) => p.theme.colors.blue};
   font-weight: bold;
   margin-right: 10px;
+`;
+
+export const SearchInput = styled.TextInput`
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  border-bottom-width: 1px;
+  border-bottom-color: #ccc;
+  margin-bottom: 10px;
 `;

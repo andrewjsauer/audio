@@ -18,6 +18,7 @@ export const Title = styled.Text<{ isLeftMargin: boolean }>`
   font-family: ${(p) => p.theme.fonts.bold};
   font-size: ${(p) => p.theme.fontSizes.medium};
   color: ${(p) => p.theme.colors.black};
+  padding-right: 12px;
 
   ${(p) => p.isLeftMargin && 'margin-left: 20px;'}
 `;

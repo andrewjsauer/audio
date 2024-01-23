@@ -14,7 +14,7 @@ import {
 import { trackEvent, initializeAnalytics } from '@lib/analytics';
 import { formatCreatedAt } from '@lib/dateUtils';
 
-import { signOut } from '@store/app/thunks';
+import { signOut, initializeSubscriber } from '@store/app/thunks';
 
 export const submitPhoneNumber = createAsyncThunk<FirebaseAuthTypes.ConfirmationResult, string>(
   'auth/submitPhoneNumber',
@@ -25,7 +25,10 @@ export const submitPhoneNumber = createAsyncThunk<FirebaseAuthTypes.Confirmation
       trackEvent('submit_phone_number_error', { error });
 
       const errorMessage = error?.toString();
-      if (errorMessage && errorMessage.includes('too many attempts')) {
+      if (
+        errorMessage?.includes('too many attempts') ||
+        errorMessage?.includes('We have blocked all requests')
+      ) {
         return rejectWithValue({
           title: 'errors.pleaseTryAgainLater',
           description: 'errors.tooManyAttempts',
@@ -60,7 +63,7 @@ interface VerifyCodeArgs {
 
 export const verifyCode = createAsyncThunk(
   'auth/verifyCode',
-  async ({ confirm, code, phoneNumber }: VerifyCodeArgs, { rejectWithValue }) => {
+  async ({ confirm, code, phoneNumber }: VerifyCodeArgs, { rejectWithValue, dispatch }) => {
     try {
       await confirm.confirm(code);
       const { currentUser } = auth();
@@ -77,6 +80,20 @@ export const verifyCode = createAsyncThunk(
       } else {
         const responseData = userSnapshot.docs[0].data() as UserDataType;
         userData = responseData;
+
+        if (
+          responseData?.isRegistered &&
+          responseData?.isSubscribed &&
+          responseData?.hasSubscribed
+        ) {
+          const resultAction = await dispatch(initializeSubscriber(userData));
+
+          if (initializeSubscriber.fulfilled.match(resultAction)) {
+            trackEvent('verify_code_init_subscriber_fetched');
+          } else if (initializeSubscriber.rejected.match(resultAction)) {
+            trackEvent('verify_code_init_subscriber_error', { error: resultAction.payload });
+          }
+        }
       }
 
       initializeAnalytics(userData);
@@ -104,13 +121,19 @@ export const generatePartnership = createAsyncThunk(
       const timeZone = getTimeZone();
       const birthDate = firestore.Timestamp.fromDate(userDetails.birthDate as Date);
       const startDate = firestore.Timestamp.fromDate(partnershipDetails.startDate as Date);
+      const usersName = userDetails.name?.trim();
+      const partnersName = partnerDetails.name?.trim();
 
       const { data } = await functions().httpsCallable('generatePartnership')({
         userDetails: {
           ...userDetails,
           birthDate,
+          name: usersName,
         },
-        partnerDetails,
+        partnerDetails: {
+          ...partnerDetails,
+          name: partnersName,
+        },
         partnershipDetails: {
           ...partnershipDetails,
           startDate,

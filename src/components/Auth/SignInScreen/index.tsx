@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { v4 as uuidv4 } from 'uuid';
 
-import { trackScreen } from '@lib/analytics';
+import { trackEvent, trackIdentify } from '@lib/analytics';
 
 import Button from '@components/shared/Button';
 import Layout from '@components/Auth/Layout';
@@ -39,12 +40,15 @@ function SignInScreen() {
   const confirm = useSelector(selectConfirm);
 
   useEffect(() => {
-    trackScreen('SignInScreen');
+    trackEvent('Sign In Screen Seen');
 
     if (user) dispatch(setUser(null));
     if (code) dispatch(setCode(''));
     if (confirm) dispatch(setConfirm(null));
     if (userData) dispatch(setUserData(null));
+
+    const anonymousId = uuidv4();
+    trackIdentify(anonymousId);
   }, []);
 
   return (

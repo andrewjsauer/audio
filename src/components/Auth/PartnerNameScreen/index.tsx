@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 import { showNotification } from '@store/ui/slice';
 
 import Button from '@components/shared/Button';
@@ -19,18 +19,31 @@ function PartnerNameScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    trackScreen('PartnerNameScreen');
+    trackEvent('Partner Name Screen Seen');
   }, []);
 
-  const { goToNextStep, partnerDetails, handlePartnerDetails } = useAuthFlow();
+  const { goToNextStep, partnerDetails, userDetails, handlePartnerDetails } = useAuthFlow();
   const { name, color } = partnerDetails;
+  const { color: colorOffLimits } = userDetails;
 
   const handleNameChange = (typedName: string) => {
-    const nameWithoutWhitespace = typedName.replace(/\s+/g, '');
-    handlePartnerDetails({ name: nameWithoutWhitespace });
+    handlePartnerDetails({ name: typedName });
   };
 
   const handleSubmit = () => {
+    if (!color) {
+      dispatch(
+        showNotification({
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.colorEmpty',
+          type: 'error',
+        }),
+      );
+
+      trackEvent('partners_color_empty_error');
+      return;
+    }
+
     if (!name) {
       dispatch(
         showNotification({
@@ -52,6 +65,7 @@ function PartnerNameScreen() {
       <Container>
         <ColorPicker
           color={color}
+          colorOffLimits={colorOffLimits}
           onChange={(colorOption) => handlePartnerDetails({ color: colorOption })}
         />
         <InputWrapper>

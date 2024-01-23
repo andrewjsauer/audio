@@ -19,8 +19,9 @@ import { setTransactionError } from '@store/app/slice';
 import { AppDispatch } from '@store/index';
 
 import { trackEvent } from '@lib/analytics';
-import useInitializeSession from '@lib/customHooks/useInitializeSession';
 import { AppScreens } from '@lib/types';
+
+import useInitializeSession from '@lib/customHooks/useInitializeSession';
 
 import LoadingView from '@components/shared/LoadingView';
 import ErrorView from '@components/shared/ErrorView';

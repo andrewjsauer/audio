@@ -86,9 +86,11 @@ function QuestionView({
 
   return (
     <Container>
-      <TimerText>
-        {t('questionScreen.subscriberScreen.timeRemaining', { time: time || '00h 00m 00s' })}
-      </TimerText>
+      {time ? (
+        <TimerText>{t('questionScreen.subscriberScreen.timeRemaining', { time })}</TimerText>
+      ) : (
+        <TimerText> </TimerText>
+      )}
       {relationshipTimeZone !== localTimeZone && (
         <TimerText>
           {t('questionScreen.subscriberScreen.timeRemainingExplained', {

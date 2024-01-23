@@ -8,13 +8,14 @@ import {
   selectIsLoading,
   selectLastFailedAction,
   selectFormattedQuestions,
+  selectIsEndReached,
 } from '@store/history/selectors';
 
 import { fetchHistoryData, fetchMoreHistoryData } from '@store/history/thunks';
 import { AppDispatch } from '@store/index';
 
 import NonSubscriberNotification from '@components/shared/NonSubscriberNotification';
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 
 import Layout from '@components/shared/Layout';
 import HistoryScreen from './HistoryScreen';
@@ -30,9 +31,10 @@ function HistoryScreenContainer() {
   const userData = useSelector(selectUserData);
   const partnerData = useSelector(selectPartnerData);
   const timeZone = useSelector(selectPartnershipTimeZone);
+  const isEndReached = useSelector(selectIsEndReached);
 
   useEffect(() => {
-    trackScreen('HistoryScreen');
+    trackEvent('History Screen Seen');
     dispatch(fetchHistoryData());
   }, []);
 
@@ -64,13 +66,14 @@ function HistoryScreenContainer() {
         error={error}
         handleRetry={handleRetry}
         isBlurred={false}
+        isEndReached={isEndReached}
         isLoading={isLoading}
         onEndReached={handleEndReached}
         partnerId={partnerData?.id}
         partnerName={partnerData?.name}
         questions={questions}
-        userId={userData?.id}
         timeZone={timeZone}
+        userId={userData?.id}
       />
     </Layout>
   );

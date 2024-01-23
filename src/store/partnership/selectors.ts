@@ -8,6 +8,7 @@ export const selectPartnerData = (state) => state.partnership.partnerData;
 export const selectPartnerName = (state) => state.partnership.partnerData?.name;
 export const selectPartnershipData = (state) => state.partnership.partnershipData;
 export const selectPartnershipUserData = (state) => state.partnership.partnershipUserData;
+export const selectIsLoadingPartnerData = (state) => state.partnership.isLoadingPartnerData;
 
 export const selectPartnershipTimeZone = createSelector(
   selectPartnershipData,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
@@ -10,10 +10,16 @@ import functions from '@react-native-firebase/functions';
 import RNFS from 'react-native-fs';
 import base64 from 'react-native-base64';
 
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 import { ReactionType } from '@lib/types';
 
 import { saveListeningReaction } from '@store/recording/thunks';
+import { calculateQuestionIndex } from '@store/question/thunks';
+import {
+  selectPartnerData,
+  selectPartnershipData,
+  selectPartnershipTimeZone,
+} from '@store/partnership/selectors';
 import { AppDispatch } from '@store/index';
 
 import PlayIcon from '@assets/icons/play.svg';
@@ -61,6 +67,10 @@ function PlayUserModal() {
   const dispatch = useDispatch<AppDispatch>();
   const route = useRoute();
 
+  const partnerData = useSelector(selectPartnerData);
+  const partnershipData = useSelector(selectPartnershipData);
+  const partnershipTimeZone = useSelector(selectPartnershipTimeZone);
+
   const {
     audioUrl,
     color,
@@ -94,7 +104,7 @@ function PlayUserModal() {
   const [currentTime, setCurrentTime] = useState(duration);
 
   useEffect(() => {
-    trackScreen('PlayUserModal');
+    trackEvent('Play User Modal Seen');
 
     return () => {
       audioRecorderPlayer.stopPlayer();
@@ -180,6 +190,20 @@ function PlayUserModal() {
         if (fileUri) {
           try {
             await audioRecorderPlayer.startPlayer(fileUri);
+            if (isUsersPartner) {
+              const daysSinceSignUp = calculateQuestionIndex(
+                partnershipData?.createdAt,
+                partnershipTimeZone,
+              );
+
+              trackEvent('Played Partner Recording', {
+                userId,
+                partnerId: partnerData.id,
+                questionId,
+                recordingId,
+                daysSinceSignUp,
+              });
+            }
           } catch (e) {
             trackEvent('start_player_error', {
               error: e.message,

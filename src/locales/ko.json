@@ -102,7 +102,8 @@
     "timeZoneScreen": {
       "title": "당신의 관계 시간대를 변경하세요.",
       "success": "당신의 관계 시간대가 업데이트되었습니다!"
-    }
+    },
+    "partnershipUpdateSuccess": "당신의 관계 세부 사항이 업데이트되었습니다!"
   },
   "questionScreen": {
     "nonSubscriberScreen": {
@@ -144,6 +145,10 @@
     "recordScreen": {
       "note": "모든 녹음은 개인적이며 암호화되어 있습니다.",
       "timeRunningOut": "주의하세요, {{ time }}초 남았습니다."
+    },
+    "privacyReminder": {
+      "title": "당신의 녹음은 비공개입니다.",
+      "description": "다른 사람들, 심지어 앱에서 일하는 사람들조차도 녹음을 들을 수 없습니다. 왜냐하면 그들은 완전히 암호화되어 있기 때문입니다."
     }
   },
   "trialScreen": {
@@ -156,10 +161,12 @@
     "price": "$9.99",
     "footer": {
       "title": "언제든지 취소 가능. 시도해 보세요!",
-      "description": "당신의 혜택입니다! 당신과 파트너 모두를 위해 월 $9.99를 지불하게 됩니다. 이번 달은 무료로 체험해 보세요. 언제든지 취소 가능합니다.",
       "buttonText": "무료 체험 시작",
-      "restoreButtonText": "구매 복구"
-    }
+      "restoreButtonText": "구매 복구",
+      "description": "무료 체험 기간 이후에 취소하지 않으면 매달 9.99달러가 청구됩니다. {{ partnerName }}에게는 요금이 청구되지 않습니다."
+    },
+    "benefitMonthly": "월 평균 개인당",
+    "perPersonPrice": "$4.99를 한국어로 번역하면 \"4,990원\"입니다."
   },
   "historyScreen": {
     "title": "기록",

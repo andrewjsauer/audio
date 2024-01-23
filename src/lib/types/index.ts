@@ -71,7 +71,7 @@ export type PartnershipDataType = {
   type?: string;
   createdAt?: FirebaseFirestoreTypes.Timestamp | Date;
   latestQuestionId?: string;
-  timeZone: string;
+  timeZone?: string;
 };
 
 export type PartnershipUserDataType = {

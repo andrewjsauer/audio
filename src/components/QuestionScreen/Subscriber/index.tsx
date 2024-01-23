@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
-import { selectUserData } from '@store/auth/selectors';
+import { selectUserData, selectHasSeenPrivacyReminder } from '@store/auth/selectors';
 import {
   selectError,
   selectLastFailedAction,
@@ -25,7 +26,7 @@ import { AppDispatch } from '@store/index';
 
 import { fetchLatestQuestion } from '@store/question/thunks';
 
-import { trackScreen, trackEvent } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
 import useRecordingSubscription from '@lib/customHooks/useRecordingSubscription';
 import useListeningSubscription from '@lib/customHooks/useListeningSubscription';
@@ -36,9 +37,10 @@ import ErrorView from '@components/shared/ErrorView';
 
 import Layout from '../Layout';
 import Question from '../QuestionView';
-import { Container } from './style';
+import { Container, ReminderTitle, ReminderText, ReminderContainer } from './style';
 
 function SubscriberScreen() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
 
   const currentQuestion = useSelector(selectCurrentQuestion);
@@ -54,9 +56,10 @@ function SubscriberScreen() {
   const userReactionToPartner = useSelector(selectUserReactionToPartnerType);
   const userRecording = useSelector(selectUserRecording);
   const userStatus = useSelector(selectUserRecordingStatus);
+  const hasSeenPrivacyReminder = useSelector(selectHasSeenPrivacyReminder);
 
   useEffect(() => {
-    trackScreen('SubscriberScreen');
+    trackEvent('Home Screen Seen');
   }, []);
 
   useFetchQuestion();
@@ -94,17 +97,25 @@ function SubscriberScreen() {
     content = <LoadingView />;
   } else if (currentQuestion && currentQuestion.text) {
     content = (
-      <Question
-        partner={partnerData}
-        partnerReactionToUser={partnerReactionToUser}
-        partnerRecording={partnerRecording}
-        partnerStatus={partnerStatus}
-        text={currentQuestion.text}
-        user={userData}
-        userReactionToPartner={userReactionToPartner}
-        userRecording={userRecording}
-        userStatus={userStatus}
-      />
+      <>
+        <Question
+          partner={partnerData}
+          partnerReactionToUser={partnerReactionToUser}
+          partnerRecording={partnerRecording}
+          partnerStatus={partnerStatus}
+          text={currentQuestion.text}
+          user={userData}
+          userReactionToPartner={userReactionToPartner}
+          userRecording={userRecording}
+          userStatus={userStatus}
+        />
+        {!hasSeenPrivacyReminder && (
+          <ReminderContainer>
+            <ReminderTitle>{t('questionScreen.privacyReminder.title')} 🗝️</ReminderTitle>
+            <ReminderText>{t('questionScreen.privacyReminder.description')}</ReminderText>
+          </ReminderContainer>
+        )}
+      </>
     );
   }
 

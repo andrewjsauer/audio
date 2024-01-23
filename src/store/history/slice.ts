@@ -8,18 +8,20 @@ import { fetchHistoryData, fetchMoreHistoryData } from './thunks';
 
 interface HistoryState {
   error: string | undefined | null;
+  isEndReached: boolean;
   isLoading: boolean;
-  questions: HistoryType[];
+  lastDocData?: object | null;
   lastFailedAction: object | null;
-  lastDocSnapshot?: object | null;
+  questions: HistoryType[];
 }
 
 const initialState: HistoryState = {
   error: null,
+  isEndReached: false,
   isLoading: false,
+  lastDocData: null,
   lastFailedAction: null,
   questions: [],
-  lastDocSnapshot: null,
 };
 
 const historySlice = createSlice({
@@ -38,9 +40,10 @@ const historySlice = createSlice({
         state.questions = [];
       })
       .addCase(fetchHistoryData.fulfilled, (state, action) => {
+        state.isEndReached = action.payload.lastDocData === null;
         state.isLoading = false;
+        state.lastDocData = action.payload.lastDocData;
         state.questions = action.payload.questions;
-        state.lastDocSnapshot = action.payload.lastDocSnapshot;
       })
       .addCase(fetchMoreHistoryData.pending, (state) => {
         state.isLoading = true;
@@ -48,9 +51,10 @@ const historySlice = createSlice({
         state.lastFailedAction = null;
       })
       .addCase(fetchMoreHistoryData.fulfilled, (state, action) => {
+        state.isEndReached = action.payload.lastDocData === null;
         state.isLoading = false;
+        state.lastDocData = action.payload.lastDocData;
         state.questions = [...state.questions, ...action.payload.questions];
-        state.lastDocSnapshot = action.payload.lastDocSnapshot;
       })
       .addCase(fetchMoreHistoryData.rejected, (state, action) => {
         state.isLoading = false;

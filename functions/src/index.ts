@@ -5,6 +5,7 @@ import { getRecording, saveRecording } from './recordings';
 import { generatePartnership, updateNewUser, deletePartnership } from './partnership';
 import { handleSubscriptionEvents, updatePartnershipPurchase } from './subscriptions';
 import { generateQuestion } from './questions';
+import { trackNewUserCreatedEvent, trackAnswerRecordedEvent } from './analytics';
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
@@ -21,6 +22,8 @@ export {
   saveRecording,
   sendNotification,
   sendSMS,
+  trackAnswerRecordedEvent,
+  trackNewUserCreatedEvent,
   updateNewUser,
   updatePartnershipPurchase,
 };

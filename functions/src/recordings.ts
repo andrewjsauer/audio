@@ -5,6 +5,8 @@ import { defineSecret } from 'firebase-functions/params';
 import fetch from 'cross-fetch';
 import crypto from 'crypto-js';
 
+import { trackEvent } from './analytics';
+
 const recordingEncryptionKey = defineSecret('RECORDING_ENCRYPTION_KEY');
 
 export const getRecording = functions
@@ -46,7 +48,7 @@ export const saveRecording = functions
     const { base64Data, questionId, userData, duration, partnerData } = data;
     functions.logger.info(`Data: ${JSON.stringify(data)}`);
 
-    const { id: userId, partnershipId } = userData;
+    const { id: userId, partnershipId, hasSeenPrivacyReminder = false } = userData;
     const recordingId = `${userId}_${questionId}`;
 
     try {
@@ -84,12 +86,20 @@ export const saveRecording = functions
         .doc(recordingId)
         .set(recordingData, { merge: true });
 
+      if (!hasSeenPrivacyReminder) {
+        await admin
+          .firestore()
+          .collection('users')
+          .doc(userId)
+          .set({ hasSeenPrivacyReminder: true }, { merge: true });
+      }
+
       if (partnerData.deviceIds && partnerData.deviceIds.length > 0) {
         await admin.messaging().sendEachForMulticast({
           tokens: partnerData.deviceIds,
           notification: {
-            title: `Daily Q’s - ${userData.name} answered today's question!`,
-            body: 'Tap to listen to their answer.',
+            title: `Daily Q’s`,
+            body: `${userData.name} answered today's question!`,
           },
         });
       } else {
@@ -101,6 +111,12 @@ export const saveRecording = functions
             body: `${userData.name} answered today's question on Daily Q’s! Download the app to listen to their answer. Link: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822`,
           });
       }
+
+      trackEvent('Recorded Answer', userId, {
+        questionId,
+        duration,
+        partnerId: partnerData.id,
+      });
 
       return { ...recordingData };
     } catch (error: unknown) {

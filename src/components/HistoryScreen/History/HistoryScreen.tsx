@@ -58,6 +58,7 @@ function HistoryScreen({
   error,
   handleRetry,
   isBlurred,
+  isEndReached,
   isLoading,
   onEndReached,
   partnerId,
@@ -69,6 +70,7 @@ function HistoryScreen({
   error: string | null;
   handleRetry: () => void;
   isBlurred: boolean;
+  isEndReached: boolean;
   isLoading: boolean;
   onEndReached: () => void;
   partnerId: string;
@@ -107,7 +109,7 @@ function HistoryScreen({
   }
 
   const renderFooter = () => {
-    if (!questions?.length || questions.length < 10) {
+    if (!questions?.length || questions.length < 10 || isEndReached) {
       return null;
     }
 
@@ -159,11 +161,11 @@ function HistoryScreen({
     }
 
     const shouldBlur = !isDateToday && isItemBlurred;
+
     const isPartnerButtonDisabled =
       partnerStatus !== StatusTypes.Play || (isDatePast && userStatus !== StatusTypes.Play);
 
-    const isUserButtonDisabled =
-      userStatus !== StatusTypes.Play || (isDatePast && partnerStatus !== StatusTypes.Play);
+    const isUserButtonDisabled = userStatus !== StatusTypes.Play;
 
     return (
       <ItemContainer key={id}>

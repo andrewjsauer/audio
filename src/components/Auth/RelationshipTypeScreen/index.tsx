@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 import { RelationshipType } from '@lib/types';
 
 import Button from '@components/shared/Button';
@@ -21,7 +21,7 @@ function RelationshipTypeScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    trackScreen('RelationshipTypeScreen');
+    trackEvent('Relationship Type Screen Seen');
   }, []);
 
   const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =

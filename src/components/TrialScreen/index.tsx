@@ -1,43 +1,64 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment-timezone';
+import { View } from 'react-native';
 
 import { trackEvent } from '@lib/analytics';
 
 import { AppDispatch } from '@store/index';
 import { restorePurchases, purchaseProduct } from '@store/app/thunks';
+import { fetchPartnerData } from '@store/partnership/thunks';
+
 import { selectIsPurchasing } from '@store/app/selectors';
-import { selectUser } from '@store/auth/selectors';
-import { selectPartnerData } from '@store/partnership/selectors';
+import { selectUser, selectUserData } from '@store/auth/selectors';
+import { selectPartnerData, selectIsLoadingPartnerData } from '@store/partnership/selectors';
 
 import Button from '@components/shared/Button';
+import LoadingView from '@components/shared/LoadingView';
+
+import Checkmark from '@assets/icons/check.svg';
+
 import {
-  Header,
-  SubTitle,
-  Container,
-  Title,
-  Footer,
   Benefit1Description,
-  Benefit2Description,
-  BenefitContainer,
   Benefit1Item,
+  Benefit2Container,
+  Benefit2Description,
   Benefit2Item,
+  Benefit2SubDescription,
+  BenefitContainer,
+  ColorCircle,
+  ColorCircleText,
+  ColorTextContainer,
+  Container,
+  Footer,
   FooterSubTitle,
   FooterTitle,
+  Header,
+  MonthlyPrice,
+  MonthlyText,
   RestoreButton,
   RestoreButtonText,
-  Benefit2SubDescription,
-  Benefit2Container,
+  SubTitle,
+  Title,
 } from './style';
 
 function TrialScreen() {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
 
+  const isLoadingPartnerData = useSelector(selectIsLoadingPartnerData);
   const isPurchasing = useSelector(selectIsPurchasing);
   const partnerData = useSelector(selectPartnerData);
   const user = useSelector(selectUser);
+  const userData = useSelector(selectUserData);
+
+  useEffect(() => {
+    trackEvent('Trial Screen Seen');
+    if (!partnerData) {
+      dispatch(fetchPartnerData(user.uid));
+    }
+  }, []);
 
   const handlePurchase = () => {
     trackEvent('start_trial_button_clicked');
@@ -50,28 +71,68 @@ function TrialScreen() {
   };
 
   const date30DaysFromNow = moment().add(30, 'days');
-  return (
+  return isLoadingPartnerData ? (
+    <LoadingView />
+  ) : (
     <Container>
       <Header>
         <Title>{t('trialScreen.title')}</Title>
         <SubTitle>{t('trialScreen.subTitle')}</SubTitle>
         <BenefitContainer noTopBorder={false}>
-          <Benefit1Description>{t('trialScreen.benefit1')}</Benefit1Description>
+          <ColorTextContainer>
+            <ColorCircle color={userData?.color}>
+              <Checkmark width={16} height={16} />
+            </ColorCircle>
+            <ColorCircle isSecond color={partnerData?.color}>
+              <Checkmark width={16} height={16} />
+            </ColorCircle>
+            <Benefit1Description>{t('trialScreen.benefit1')}</Benefit1Description>
+          </ColorTextContainer>
           <Benefit1Item>{t('trialScreen.free')}</Benefit1Item>
         </BenefitContainer>
         <BenefitContainer noTopBorder>
+          <ColorTextContainer>
+            <ColorCircle color={partnerData?.color}>
+              <Checkmark width={16} height={16} />
+            </ColorCircle>
+            <MonthlyText>{t('trialScreen.benefitMonthly')}</MonthlyText>
+          </ColorTextContainer>
+          <MonthlyPrice>({t('trialScreen.perPersonPrice')})</MonthlyPrice>
+        </BenefitContainer>
+        <BenefitContainer noTopBorder>
+          <ColorTextContainer>
+            <ColorCircle color={userData?.color}>
+              <Checkmark width={16} height={16} />
+            </ColorCircle>
+            <MonthlyText>{t('trialScreen.benefitMonthly')}</MonthlyText>
+          </ColorTextContainer>
+          <MonthlyPrice>({t('trialScreen.perPersonPrice')})</MonthlyPrice>
+        </BenefitContainer>
+        <BenefitContainer noTopBorder>
           <Benefit2Container>
-            <Benefit2Description>{t('trialScreen.benefit2')}</Benefit2Description>
-            <Benefit2SubDescription>
-              {t('trialScreen.benefit2Description', { date: date30DaysFromNow.format('LL') })}
-            </Benefit2SubDescription>
+            <ColorTextContainer>
+              <ColorCircle color={userData?.color}>
+                <Checkmark width={16} height={16} />
+              </ColorCircle>
+              <ColorCircle isSecond color={partnerData?.color}>
+                <Checkmark width={16} height={16} />
+              </ColorCircle>
+              <View>
+                <Benefit2Description>{t('trialScreen.benefit2')}</Benefit2Description>
+                <Benefit2SubDescription>
+                  {t('trialScreen.benefit2Description', { date: date30DaysFromNow.format('LL') })}
+                </Benefit2SubDescription>
+              </View>
+            </ColorTextContainer>
           </Benefit2Container>
           <Benefit2Item>{t('trialScreen.price')}</Benefit2Item>
         </BenefitContainer>
       </Header>
       <Footer>
         <FooterTitle>{t('trialScreen.footer.title')}</FooterTitle>
-        <FooterSubTitle>{t('trialScreen.footer.description')}</FooterSubTitle>
+        <FooterSubTitle>
+          {t('trialScreen.footer.description', { partnerName: partnerData?.name })}
+        </FooterSubTitle>
         <Button
           isLoading={isPurchasing}
           onPress={handlePurchase}

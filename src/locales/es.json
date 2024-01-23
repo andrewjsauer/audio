@@ -102,7 +102,8 @@
     "timeZoneScreen": {
       "title": "Cambia la zona horaria de tu relación.",
       "success": "¡Se ha actualizado tu zona horaria de relación!"
-    }
+    },
+    "partnershipUpdateSuccess": "¡Los detalles de tu relación han sido actualizados!"
   },
   "questionScreen": {
     "nonSubscriberScreen": {
@@ -144,6 +145,10 @@
     "recordScreen": {
       "note": "Todas las grabaciones son privadas y encriptadas",
       "timeRunningOut": "Atención, te quedan {{ time }} segundos."
+    },
+    "privacyReminder": {
+      "title": "Tus grabaciones son privadas.",
+      "description": "Nadie más, ni siquiera las personas que trabajan en la aplicación, pueden escuchar tus grabaciones, ya que están completamente encriptadas."
     }
   },
   "trialScreen": {
@@ -156,10 +161,12 @@
     "price": "$9.99",
     "footer": {
       "title": "Cancela en cualquier momento. ¡Pruébalo!",
-      "description": "¡Tu regalo! Estarás pagando $9.99 al mes por ti y tu pareja. Pruébalo gratis este mes. Cancela en cualquier momento.",
       "buttonText": "Empezar Prueba Gratuita",
-      "restoreButtonText": "Restaurar Compras"
-    }
+      "restoreButtonText": "Restaurar Compras",
+      "description": "Después de la prueba gratuita, si no cancelas, se te cobrará $9.99 al mes por ambos. {{ partnerName }} nunca será cobrado."
+    },
+    "benefitMonthly": "Mensual por persona",
+    "perPersonPrice": "$4.99 se traduce al español como \"4,99 dólares\"."
   },
   "historyScreen": {
     "title": "Historial",

@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import i18n from 'i18next';
 
 import Button from '@components/shared/Button';
 import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 
-import { trackScreen, trackEvent } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 import { showNotification } from '@store/ui/slice';
 
 import Layout from '../Layout';
@@ -15,15 +16,16 @@ import { StyledDatePicker } from './style';
 function RelationshipDateScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const currentDate = new Date();
 
   useEffect(() => {
-    trackScreen('RelationshipDateScreen');
+    trackEvent('Relationship Date Screen Seen');
   }, []);
 
   const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =
     useAuthFlow();
 
-  const relationshipDate = partnershipDetails.startDate || new Date();
+  const relationshipDate = partnershipDetails.startDate;
 
   const handleSubmit = () => {
     if (!relationshipDate) {
@@ -52,10 +54,12 @@ function RelationshipDateScreen() {
         <InputWrapper>
           <InputTitle>{t('auth.partnerDetails.relationshipDateScreen.inputTitle')}</InputTitle>
           <StyledDatePicker
-            date={relationshipDate}
-            onDateChange={(date) => handlePartnershipDetails({ startDate: date })}
+            date={relationshipDate || currentDate}
+            maximumDate={currentDate}
             mode="date"
+            onDateChange={(date) => handlePartnershipDetails({ startDate: date })}
             textColor="#000"
+            locale={i18n.language}
           />
           <InputSubtitle>
             {t('auth.partnerDetails.relationshipDateScreen.inputDescription')}

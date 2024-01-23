@@ -93,18 +93,21 @@
       "success": "Your name has been updated!"
     },
     "relationshipTypeScreen": {
-      "title": "Change your relationship status",
-      "success": "Your relationship status has been updated!"
+      "title": "Change your relationship status"
     },
     "request": {
       "title": "Request Your Data Form"
     },
     "timeZoneScreen": {
-      "title": "Change your relationship time zone",
-      "success": "Your relationship time zone has been updated!"
-    }
+      "title": "Change your relationship time zone"
+    },
+    "partnershipUpdateSuccess": "Your relationship details have been updated!"
   },
   "questionScreen": {
+    "privacyReminder": {
+      "title": "Your recordings are private",
+      "description": "No one else, not even people who work at the app, can listen to your recordings, because they are fully encrypted."
+    },
     "nonSubscriberScreen": {
       "default": {
         "text": "Whats the best date you two have been on together?"
@@ -150,13 +153,15 @@
     "title": "Okay, you're all set!",
     "subTitle": "Start your 30-day trial",
     "benefit1": "First 30 days",
-    "free": "free",
+    "free": "free!",
+    "benefitMonthly": "Monthly per person",
     "benefit2": "Monthly per couple",
     "benefit2Description": "Starting {{ date }}",
     "price": "$9.99",
+    "perPersonPrice": "$4.99",
     "footer": {
       "title": "Cancel Anytime. Try it out!",
-      "description": "Your treat! You'll be paying $9.99 month for both you and your partner. Try it for free this month. Cancel anytime.",
+      "description": "After the free trial, if you don't cancel, you'll be charged $9.99/month for both of your. {{ partnerName }} will never be charged.",
       "buttonText": "Start Free Trial",
       "restoreButtonText": "Restore Purchases"
     }
@@ -186,8 +191,8 @@
       "terms": "By signing up, you agree to our"
     },
     "phoneNumberScreen": {
-      "title": "Welcome! Sign In to get started",
-      "inputTitle": "Sign In *",
+      "title": "Welcome! Sign in to get started.",
+      "inputTitle": "Sign in *",
       "inputDescription": "To sign in, type your phone number for a verification code."
     },
     "verificationCodeScreen": {

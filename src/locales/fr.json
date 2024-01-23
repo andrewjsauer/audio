@@ -102,7 +102,8 @@
     "timeZoneScreen": {
       "title": "Changer le fuseau horaire de votre relation.",
       "success": "Votre fuseau horaire de relation a été mis à jour !"
-    }
+    },
+    "partnershipUpdateSuccess": "Vos informations sur la relation ont été mises à jour !"
   },
   "questionScreen": {
     "nonSubscriberScreen": {
@@ -144,6 +145,10 @@
     "recordScreen": {
       "note": "Toutes les enregistrements sont privés et chiffrés.",
       "timeRunningOut": "Attention, il vous reste {{ time }} secondes."
+    },
+    "privacyReminder": {
+      "title": "Vos enregistrements sont privés",
+      "description": "Personne d'autre, même pas les personnes qui travaillent sur l'application, ne peut écouter vos enregistrements car ils sont entièrement cryptés."
     }
   },
   "trialScreen": {
@@ -156,10 +161,12 @@
     "price": "9,99 $",
     "footer": {
       "title": "Annulation à tout moment. Essayez-le !",
-      "description": "C'est pour vous ! Vous payerez 9,99 $ par mois pour vous et votre partenaire. Essayez gratuitement ce mois-ci. Annulation à tout moment.",
       "buttonText": "Commencer l'Essai Gratuit",
-      "restoreButtonText": "Restaurer les Achats"
-    }
+      "restoreButtonText": "Restaurer les Achats",
+      "description": "Après l'essai gratuit, si vous ne l'annulez pas, vous serez facturé 9,99 $ par mois pour les deux personnes. {{ partnerName }} ne sera jamais facturé."
+    },
+    "benefitMonthly": "Mensuel par personne",
+    "perPersonPrice": "4,99 dollars"
   },
   "historyScreen": {
     "title": "Historique",

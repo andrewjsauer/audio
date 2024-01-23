@@ -10,16 +10,10 @@ import PhoneNumberInput from '@components/shared/PhoneNumberInput';
 import { showNotification } from '@store/ui/slice';
 import { selectIsLoading } from '@store/auth/selectors';
 
-import { trackEvent, trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 
 import Layout from '../Layout';
-import {
-  Container,
-  ButtonWrapper,
-  InputTitle,
-  InputSubtitle,
-  InputWrapper,
-} from '../style';
+import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
 
 function InviteScreen() {
   const { t } = useTranslation();
@@ -29,15 +23,10 @@ function InviteScreen() {
   const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
-    trackScreen('InviteScreen');
+    trackEvent('Invite Partner Screen Seen');
   }, []);
 
-  const {
-    goToNextStep,
-    goToPreviousStep,
-    partnerDetails,
-    handlePartnerDetails,
-  } = useAuthFlow();
+  const { goToNextStep, goToPreviousStep, partnerDetails, handlePartnerDetails } = useAuthFlow();
 
   const { phoneNumber = '' } = partnerDetails;
 
@@ -72,16 +61,13 @@ function InviteScreen() {
     <Layout
       goBack={goToPreviousStep}
       isBackButtonEnabled
-      title={t('auth.partnerDetails.invitePartnerScreen.title')}>
+      title={t('auth.partnerDetails.invitePartnerScreen.title')}
+    >
       <Container>
         <InputWrapper>
-          <InputTitle>
-            {t('auth.partnerDetails.invitePartnerScreen.inputTitle')}
-          </InputTitle>
+          <InputTitle>{t('auth.partnerDetails.invitePartnerScreen.inputTitle')}</InputTitle>
           <PhoneNumberInput
-            setPhoneNumber={(number) =>
-              handlePartnerDetails({ phoneNumber: number })
-            }
+            setPhoneNumber={(number) => handlePartnerDetails({ phoneNumber: number })}
             phoneInputRef={phoneInputRef}
             phoneNumber={phoneNumber}
           />

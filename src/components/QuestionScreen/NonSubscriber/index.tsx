@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { trackScreen } from '@lib/analytics';
+import { trackEvent } from '@lib/analytics';
 import { QuestionStatusType } from '@lib/types';
 
 import { selectUserData } from '@store/auth/selectors';
@@ -21,7 +21,7 @@ function NonSubscribedScreen() {
   const partnerData = useSelector(selectPartnerData);
 
   useEffect(() => {
-    trackScreen('NonSubscribedScreen');
+    trackEvent('Non Subscriber Screen Seen');
   }, []);
 
   return (
