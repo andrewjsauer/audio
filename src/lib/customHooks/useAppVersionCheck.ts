@@ -81,12 +81,16 @@ const useAppVersionCheck = () => {
     dispatch(shouldUpdateAppVersion(needUpdate));
     setIsPromptOpen(needUpdate);
 
-    if (needUpdate) promptForUpdate();
+    if (needUpdate) {
+      trackEvent('opening_update_prompt_use_effect', { deviceVersion, cloudVersion });
+      promptForUpdate();
+    }
   }, [deviceVersion, cloudVersion]);
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: string) => {
       if (nextAppState === 'active' && shouldUpdateApp && !isPromptOpen) {
+        trackEvent('opening_update_prompt_app_state_change', { deviceVersion, cloudVersion });
         promptForUpdate();
       }
     };
