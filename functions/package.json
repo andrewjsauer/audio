@@ -8,6 +8,7 @@
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
+    "deploySingle": "firebase deploy --only functions:XXX",
     "logs": "firebase functions:log"
   },
   "engines": {

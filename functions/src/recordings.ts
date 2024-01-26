@@ -1,5 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+
+import { getDownloadURL } from 'firebase-admin/storage';
 import { defineSecret } from 'firebase-functions/params';
 
 import fetch from 'cross-fetch';
@@ -31,7 +33,8 @@ export const getRecording = functions
       functions.logger.debug(`Decrypted data size: ${decryptedData.length} bytes`);
 
       return { audioData: decryptedData };
-    } catch (error) {
+    } catch (error: any) {
+      functions.logger.error(`Error retrieving and decrypting recording: ${error.message}`);
       throw new functions.https.HttpsError('internal', 'Error retrieving and decrypting recording');
     }
   });
@@ -62,10 +65,7 @@ export const saveRecording = functions
         contentType: 'application/octet-stream',
       });
 
-      const [audioUrl] = await storageRef.getSignedUrl({
-        action: 'read',
-        expires: '03-09-2491',
-      });
+      const audioUrl = await getDownloadURL(storageRef);
 
       const recordingData = {
         audioUrl,

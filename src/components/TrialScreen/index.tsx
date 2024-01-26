@@ -28,7 +28,6 @@ import {
   Benefit2SubDescription,
   BenefitContainer,
   ColorCircle,
-  ColorCircleText,
   ColorTextContainer,
   Container,
   Footer,
@@ -55,7 +54,7 @@ function TrialScreen() {
 
   useEffect(() => {
     trackEvent('Trial Screen Seen');
-    if (!partnerData) {
+    if (!partnerData && user?.uid) {
       dispatch(fetchPartnerData(user.uid));
     }
   }, []);
