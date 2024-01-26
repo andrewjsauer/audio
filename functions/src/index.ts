@@ -4,7 +4,7 @@ import { checkTimeZones, sendNotification, sendSMS } from './notifications';
 import { getRecording, saveRecording } from './recordings';
 import { generatePartnership, updateNewUser, deletePartnership } from './partnership';
 import { handleSubscriptionEvents, updatePartnershipPurchase } from './subscriptions';
-import { generateQuestion } from './questions';
+import { generateQuestion, checkMidnightInTimeZones } from './questions';
 import { trackNewUserCreatedEvent, trackAnswerRecordedEvent } from './analytics';
 
 admin.initializeApp({
@@ -13,6 +13,7 @@ admin.initializeApp({
 });
 
 export {
+  checkMidnightInTimeZones,
   checkTimeZones,
   deletePartnership,
   generatePartnership,
