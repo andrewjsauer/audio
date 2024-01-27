@@ -434,6 +434,34 @@ async function processPartnership(doc: any) {
     }
   }
 
+  try {
+    const usersSnapshot = await db
+      .collection('users')
+      .where('partnershipId', '==', partnership.id)
+      .get();
+
+    if (usersSnapshot.empty) {
+      functions.logger.info('No users found for this partnership.');
+      return;
+    }
+
+    let allSubscribed = true;
+    usersSnapshot.forEach((userSnapshot) => {
+      const user = userSnapshot.data();
+
+      if (!user?.isSubscribed) {
+        allSubscribed = false;
+      }
+    });
+
+    if (!allSubscribed) {
+      functions.logger.info('One or both users are not subscribed. Exiting the process.');
+      return;
+    }
+  } catch (error) {
+    throw new functions.https.HttpsError('unknown', `Error fetching users: ${error}`, error);
+  }
+
   const questionId = uuidv4();
   const createdAtInTimeZone = moment.tz(new Date(), partnership.timeZone).toDate();
   const firestoreTimestamp = admin.firestore.Timestamp.fromDate(createdAtInTimeZone);
@@ -451,26 +479,19 @@ async function processPartnership(doc: any) {
   functions.logger.info(`Firebase timestamp is ${firestoreTimestamp?.toDate()}`);
 
   try {
-    // Andrew / Linda partnership ID
-    // Santi / Marley partnership ID
-    if (
-      partnership.id === 'f12665bc-b969-4877-9c6d-54ef5c23d86f' ||
-      partnership.id === '538e11b4-061e-489f-ae52-3bddb0cafe1d'
-    ) {
-      const batch = db.batch();
-      batch.set(
-        db.collection('partnership').doc(partnership.id),
-        {
-          latestQuestionId: questionId,
-        },
-        { merge: true },
-      );
-      batch.set(db.collection('questions').doc(questionId), question, {
-        merge: true,
-      });
+    const batch = db.batch();
+    batch.set(
+      db.collection('partnership').doc(partnership.id),
+      {
+        latestQuestionId: questionId,
+      },
+      { merge: true },
+    );
+    batch.set(db.collection('questions').doc(questionId), question, {
+      merge: true,
+    });
 
-      await batch.commit();
-    }
+    await batch.commit();
   } catch (error) {
     const e = error as {
       response?: { status?: string; data?: object };
