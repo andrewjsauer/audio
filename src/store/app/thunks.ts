@@ -109,11 +109,13 @@ export const initializeSession = createAsyncThunk(
 
       if (__DEV__) Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
 
+      const apiKey =
+        Platform.OS === 'ios'
+          ? (Config.revenueCatiOSKey as string)
+          : (Config.revenueCatAndroidKey as string);
+
       Purchases.configure({
-        apiKey:
-          Platform.OS === 'ios'
-            ? (Config.revenueCatiOSKey as string)
-            : (Config.revenueCatAndroidKey as string),
+        apiKey,
         appUserID: user.uid,
         observerMode: false,
         useAmazon: false,
