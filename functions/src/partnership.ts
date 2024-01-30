@@ -255,9 +255,7 @@ export const updateNewUser = functions.https.onCall(async (data, context) => {
 
     await batch.commit();
 
-    trackEvent('Account Created', id, {
-      ...userPayload,
-    });
+    trackEvent('Account Created', id, { ...userPayload });
 
     return userPayload;
   } catch (error: unknown) {

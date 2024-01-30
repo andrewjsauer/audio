@@ -30,10 +30,11 @@ function Layout({
 }: LayoutProps) {
   const insets = useSafeAreaInsets();
 
+  const paddingBottomValue = Platform.OS !== 'ios' ? 2 : 28;
   return (
-    <LayoutContainer style={{ paddingBottom: Math.max(insets.bottom, 28) }}>
+    <LayoutContainer style={{ paddingBottom: Math.max(insets.bottom, paddingBottomValue) }}>
       {isHeaderEnabled && (
-        <Header isAddedPadding={!isBackButtonEnabled}>
+        <Header isAddedPadding={!isBackButtonEnabled} isAndroidMarginTop={Platform.OS !== 'ios'}>
           {isBackButtonEnabled && (
             <BackButtonWrapper onPress={goBack}>
               <ChevronLeft width={30} height={30} />

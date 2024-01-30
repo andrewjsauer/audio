@@ -151,6 +151,7 @@ export const purchaseProduct = createAsyncThunk(
     try {
       const offerings = await Purchases.getOfferings();
       const availablePackages = offerings.current?.availablePackages;
+
       const targetPackage = availablePackages?.find(
         (p) => p.product.identifier === productIdentifier,
       );
