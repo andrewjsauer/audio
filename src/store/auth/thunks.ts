@@ -142,6 +142,9 @@ export const generatePartnership = createAsyncThunk(
       });
 
       const { userPayload, partnerPayload, partnershipPayload } = data;
+      console.log('userPayload', userPayload);
+      console.log('partnerPayload', partnerPayload);
+      console.log('partnershipPayload', partnershipPayload);
 
       return {
         userData: userPayload,

@@ -8,9 +8,11 @@
     "strict": true,
     "target": "es2017",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "rootDir": "./src",
+    "typeRoots": ["./functions/node_modules/@types"],
   },
   "compileOnSave": true,
   "include": ["src"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": ["node_modules", "**/*.spec.ts"],
 }

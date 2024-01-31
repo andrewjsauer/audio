@@ -6,21 +6,21 @@ import { v4 as uuidv4 } from 'uuid';
 import { trackEvent, trackIdentify, convertToDate } from './analytics';
 
 async function getPartnerIdByPhoneNumber(phoneNumber: string) {
-  const partnerQuery = await admin
+  const partnerSnapshot = await admin
     .firestore()
     .collection('users')
     .where('phoneNumber', '==', phoneNumber)
     .get();
 
-  if (!partnerQuery.empty) {
+  if (!partnerSnapshot.empty) {
     functions.logger.info('Partner found!');
-    const partnerData = partnerQuery.docs[0] as any;
+    const partnerData = partnerSnapshot.docs[0].data() as any;
 
-    return { partnerId: partnerData.id, partnerData, isNewUser: false };
+    return { partnerId: partnerData.id, partnerData };
   }
 
   const partnerId = uuidv4();
-  return { partnerId, partnerData: null, isNewUser: true };
+  return { partnerId, partnerData: null };
 }
 
 export const generatePartnership = functions.https.onCall(async (data, context) => {
@@ -34,34 +34,118 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
   const { type, startDate, timeZone = 'America/Los_Angeles' } = partnershipDetails;
 
   try {
-    const batch = admin.firestore().batch();
-    const partnershipId = uuidv4();
-    const { partnerId, partnerData, isNewUser } = await getPartnerIdByPhoneNumber(
-      partnerDetails.phoneNumber,
-    );
+    const { partnerId, partnerData } = await getPartnerIdByPhoneNumber(partnerDetails.phoneNumber);
 
-    functions.logger.info(`Partner ID: ${partnerId}`);
-
-    if (!isNewUser && partnerData) {
-      const partnershipUserRef = admin
+    if (partnerData) {
+      const partnershipUserSnapshot = await admin
         .firestore()
         .collection('partnershipUser')
-        .where('userId', '==', partnerData.id);
-      const partnershipUserData = await partnershipUserRef.get();
+        .where('userId', '==', partnerData.id)
+        .get();
 
-      if (!partnershipUserData.empty) {
-        const partnershipUser = partnershipUserData.docs[0].data();
+      if (!partnershipUserSnapshot.empty) {
+        const partnershipUserData = partnershipUserSnapshot.docs[0].data();
+        const otherUserDataSnapshot = await admin
+          .firestore()
+          .collection('users')
+          .where('id', '==', partnershipUserData.otherUserId)
+          .get();
 
-        if (partnershipUser.otherUserId !== userId) {
-          functions.logger.error('Partner already has a partner');
-          throw new functions.https.HttpsError(
-            'already-exists',
-            'Partner already has a partner',
-            partnershipUser,
-          );
+        if (!otherUserDataSnapshot.empty) {
+          const otherUserData = otherUserDataSnapshot.docs[0].data();
+
+          if (otherUserData.phoneNumber !== userDetails.phoneNumber) {
+            functions.logger.log(
+              'Phone number does not match current users. Let current user know',
+            );
+
+            throw new functions.https.HttpsError(
+              'already-exists',
+              'Partner already has a partner',
+              partnershipUserData,
+            );
+          } else if (otherUserData.phoneNumber === userDetails.phoneNumber) {
+            functions.logger.log('Partner has added current user as partner');
+
+            const batch = admin.firestore().batch();
+            const usersCollection = admin.firestore().collection('users');
+
+            const { isSubscribed, hasSubscribed, id: tempId } = otherUserData as any;
+
+            const userPayload = {
+              ...otherUserData,
+              ...userDetails,
+              isSubscribed,
+              hasSubscribed,
+              isRegistered: true,
+              id: userId,
+            };
+
+            const newUserRef = usersCollection.doc(userId);
+            batch.set(newUserRef, userPayload, { merge: true });
+
+            const tempDocRef = usersCollection.doc(tempId);
+            batch.delete(tempDocRef);
+
+            const partnershipUserRef = admin.firestore().collection('partnershipUser');
+
+            const pUserQuery = partnershipUserRef.where('userId', '==', tempId);
+            const pUserSnapshot = await pUserQuery.get();
+
+            if (!pUserSnapshot.empty) {
+              const partnershipDocRef = pUserSnapshot.docs[0].ref;
+              batch.set(partnershipDocRef, { userId }, { merge: true });
+            }
+
+            const pUserPartnerQuery = partnershipUserRef.where('otherUserId', '==', tempId);
+            const pUserPartnerSnapshot = await pUserPartnerQuery.get();
+
+            if (!pUserPartnerSnapshot.empty) {
+              const partnershipPartnerDocRef = pUserPartnerSnapshot.docs[0].ref;
+              batch.set(partnershipPartnerDocRef, { otherUserId: userId }, { merge: true });
+            }
+
+            await batch.commit();
+
+            const trackProperties = {
+              ...userPayload,
+              createdAt: convertToDate(userPayload?.createdAt),
+              lastActiveAt: convertToDate(userPayload?.lastActiveAt),
+            };
+
+            trackIdentify(userId, trackProperties);
+            trackEvent('New User Created', userId);
+
+            const partnershipRef = admin
+              .firestore()
+              .collection('partnership')
+              .where('id', '==', otherUserData.partnershipId);
+
+            const partnershipSnapshot = await partnershipRef.get();
+            const partnershipData = partnershipSnapshot.docs[0].data();
+
+            functions.logger.log('Partnership found', partnershipData);
+            functions.logger.log('Partner found', partnerData);
+            functions.logger.log('User found', userPayload);
+
+            return {
+              userPayload: {
+                ...userPayload,
+              },
+              partnerPayload: {
+                ...partnerData,
+              },
+              partnershipPayload: {
+                ...partnershipData,
+              },
+            };
+          }
         }
       }
     }
+
+    const batch = admin.firestore().batch();
+    const partnershipId = uuidv4();
 
     const partnershipRef = admin.firestore().collection('partnership').doc(partnershipId);
     const partnershipData = {
