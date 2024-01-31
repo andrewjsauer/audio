@@ -22,7 +22,7 @@ export const submitPhoneNumber = createAsyncThunk<FirebaseAuthTypes.Confirmation
     try {
       return await auth().signInWithPhoneNumber(phoneNumber);
     } catch (error) {
-      trackEvent('submit_phone_number_error', { error });
+      trackEvent('Submit Phone Number Failed', { error });
 
       const errorMessage = error?.toString();
       if (
@@ -49,7 +49,7 @@ export const resendCode = createAsyncThunk<FirebaseAuthTypes.ConfirmationResult,
     try {
       return await auth().signInWithPhoneNumber(phoneNumber, true);
     } catch (error) {
-      trackEvent('resend_code_error', { error });
+      trackEvent('Resend Code Failed', { error });
       return rejectWithValue(error);
     }
   },
@@ -76,7 +76,7 @@ export const verifyCode = createAsyncThunk(
       let userData = null;
 
       if (userSnapshot.empty) {
-        trackEvent('verify_code_no_user_found');
+        trackEvent('Verify Code User Not Found');
       } else {
         const responseData = userSnapshot.docs[0].data() as UserDataType;
         userData = responseData;
@@ -89,9 +89,9 @@ export const verifyCode = createAsyncThunk(
           const resultAction = await dispatch(initializeSubscriber(userData));
 
           if (initializeSubscriber.fulfilled.match(resultAction)) {
-            trackEvent('verify_code_init_subscriber_fetched');
+            trackEvent('Initialized Registered Subscriber');
           } else if (initializeSubscriber.rejected.match(resultAction)) {
-            trackEvent('verify_code_init_subscriber_error', { error: resultAction.payload });
+            trackEvent('Initialized Register Subscriber Failed', { error: resultAction.payload });
           }
         }
       }
@@ -99,7 +99,7 @@ export const verifyCode = createAsyncThunk(
       initializeAnalytics(userData);
       return { user: currentUser, userData };
     } catch (error) {
-      trackEvent('verify_code_error', { error });
+      trackEvent('Verify Code Error', { error });
       return rejectWithValue(error);
     }
   },
@@ -158,7 +158,7 @@ export const generatePartnership = createAsyncThunk(
         return rejectWithValue('errors.partnerAlreadyInUse');
       }
 
-      trackEvent('generate_partnership_error', { error });
+      trackEvent('Generate Partnership Failed', { error });
       return rejectWithValue('errors.partnershipGenerationFailed');
     }
   },
@@ -178,7 +178,7 @@ export const updateUser = createAsyncThunk(
 
       return userDetails;
     } catch (error) {
-      trackEvent('update_user_data_error', { error });
+      trackEvent('Update User Failed', { error });
       return rejectWithValue(error);
     }
   },
@@ -207,7 +207,7 @@ export const updateNewUser = createAsyncThunk(
       let partnershipData = null;
 
       if (partnershipSnapshot.empty) {
-        trackEvent('no_partnership_found_for_partner_user');
+        trackEvent('No Partnership Found for Partner User');
       } else {
         const responseData = partnershipSnapshot.docs[0].data() as PartnershipDetailsType;
         partnershipData = responseData;
@@ -218,7 +218,7 @@ export const updateNewUser = createAsyncThunk(
         partnershipData,
       };
     } catch (error) {
-      trackEvent('update_new_user_data_error', { error });
+      trackEvent('Update New User Failed', { error });
       return rejectWithValue(error);
     }
   },
@@ -244,7 +244,7 @@ export const deleteRelationship = createAsyncThunk(
 
       return null;
     } catch (error) {
-      trackEvent('delete_relationship_error', { error });
+      trackEvent('Delete Relationship Failed', { error });
       return rejectWithValue(error);
     }
   },

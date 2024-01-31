@@ -348,6 +348,8 @@ export const deletePartnership = functions.https.onCall(async (data, context) =>
 
     await batch.commit();
 
+    trackEvent('Account and Relationship Deleted', userId);
+
     return null;
   } catch (error: unknown) {
     const e = error as {

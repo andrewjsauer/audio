@@ -43,7 +43,7 @@ const useNotificationPermissions = () => {
         }),
       );
 
-      trackEvent('notification_permission_denied_shown');
+      trackEvent('Notification Permission Blocked Prompt Viewed');
     } else {
       dispatch(
         showNotification({
@@ -58,7 +58,7 @@ const useNotificationPermissions = () => {
         }),
       );
 
-      trackEvent('notification_permission_shown');
+      trackEvent('Request Notification Permission Request Prompt Viewed');
     }
   };
 

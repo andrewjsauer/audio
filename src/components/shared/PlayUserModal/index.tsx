@@ -104,7 +104,7 @@ function PlayUserModal() {
   const [currentTime, setCurrentTime] = useState(duration);
 
   useEffect(() => {
-    trackEvent('Play User Modal Seen');
+    trackEvent('Play Recording Modal Viewed');
 
     return () => {
       audioRecorderPlayer.stopPlayer();
@@ -122,7 +122,7 @@ function PlayUserModal() {
             setTempFilePath(null);
           })
           .catch((err) => {
-            trackEvent('unlink_error', {
+            trackEvent('Play Unlink Error', {
               error: err.message,
             });
 
@@ -137,7 +137,7 @@ function PlayUserModal() {
       const { data } = await functions().httpsCallable('getRecording')({ audioUrl: url });
       return data.audioData;
     } catch (e) {
-      trackEvent('error_fetching_decryption_audio', {
+      trackEvent('Fetching Audio Failed', {
         error: e.message,
       });
 
@@ -153,7 +153,7 @@ function PlayUserModal() {
 
       await RNFS.writeFile(path, binaryData, 'base64');
     } catch (err) {
-      trackEvent('decryption_date_to_file_error', {
+      trackEvent('Data To File Failed', {
         error: err.message,
       });
 
@@ -165,7 +165,7 @@ function PlayUserModal() {
   };
 
   const onPlayPause = async () => {
-    trackEvent('playback_button_clicked');
+    trackEvent('Playback Button Tapped');
     setIsLoading(true);
     setError(null);
 
@@ -178,7 +178,7 @@ function PlayUserModal() {
         setCurrentTime(duration);
 
         KeepAwake.deactivate();
-        trackEvent('playback_stopped');
+        trackEvent('Playback Stopped');
       } else {
         let fileUri = tempFilePath;
 
@@ -196,7 +196,7 @@ function PlayUserModal() {
                 partnershipTimeZone,
               );
 
-              trackEvent('Played Partner Recording', {
+              trackEvent('Listened to Partner Answer', {
                 userId,
                 partnerId: partnerData.id,
                 questionId,
@@ -205,7 +205,7 @@ function PlayUserModal() {
               });
             }
           } catch (e) {
-            trackEvent('start_player_error', {
+            trackEvent('Play Recording Error', {
               error: e.message,
             });
           }
@@ -233,7 +233,7 @@ function PlayUserModal() {
       setError(t('errors.audioPlayBackError'));
 
       crashlytics().recordError(error);
-      trackEvent('playback_error', {
+      trackEvent('Playback Error', {
         error: error.message,
       });
     }
@@ -243,7 +243,7 @@ function PlayUserModal() {
 
   const handleReaction = async (userSelectedReaction: ReactionType) => {
     if (selectedReaction !== userSelectedReaction) {
-      trackEvent('reaction_button_clicked', {
+      trackEvent('Reaction Button Tapped', {
         reaction: selectedReaction,
       });
 

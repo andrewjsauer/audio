@@ -19,7 +19,7 @@ function RelationshipDateScreen() {
   const currentDate = new Date();
 
   useEffect(() => {
-    trackEvent('Relationship Date Screen Seen');
+    trackEvent('Relationship Start Date Step Viewed');
   }, []);
 
   const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =
@@ -37,10 +37,11 @@ function RelationshipDateScreen() {
         }),
       );
 
-      trackEvent('relationship_date_empty_error');
+      trackEvent('Relationship Start Date Submitted Error');
       return;
     }
 
+    trackEvent('Relationship Start Date Submitted');
     goToNextStep();
   };
 

@@ -21,7 +21,7 @@ function UserNameScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    trackEvent('Use rName Screen Seen');
+    trackEvent('Name Step Viewed');
   }, []);
 
   const { goToNextStep, userDetails, handleUserDetails } = useAuthFlow();
@@ -37,7 +37,7 @@ function UserNameScreen() {
         }),
       );
 
-      trackEvent('users_color_empty_error');
+      trackEvent('Color Submitted User Error');
       return;
     }
 
@@ -50,10 +50,11 @@ function UserNameScreen() {
         }),
       );
 
-      trackEvent('users_name_empty_error');
+      trackEvent('Name Submitted User Error');
       return;
     }
 
+    trackEvent('Name Submitted');
     goToNextStep();
   };
 

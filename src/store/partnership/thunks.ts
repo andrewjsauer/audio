@@ -24,7 +24,7 @@ export const updatePartnership = createAsyncThunk(
       await firestore().collection('partnership').doc(id).set(partnershipDetails, { merge: true });
       return partnershipDetails;
     } catch (error) {
-      trackEvent('update_partnership_failed', { error });
+      trackEvent('Update Partnership Failed', { error });
       return rejectWithValue(error);
     }
   },
@@ -43,8 +43,6 @@ export const fetchPartnership = createAsyncThunk(
         .get();
 
       if (partnershipSnapshot.exists) {
-        trackEvent('partnership_fetched');
-
         const partnershipData = partnershipSnapshot.data();
         const payload = {
           ...partnershipData,
@@ -55,10 +53,10 @@ export const fetchPartnership = createAsyncThunk(
         return payload as PartnershipDataType;
       }
 
-      trackEvent('partnership_not_found');
+      trackEvent('Partnership Not Found');
       return rejectWithValue('Partnership not found');
     } catch (error) {
-      trackEvent('partnership_fetch_error', { error });
+      trackEvent('Fetch Partnership Failed', { error });
       return rejectWithValue(error);
     }
   },
@@ -74,16 +72,14 @@ export const fetchPartnershipUser = createAsyncThunk(
         .get();
 
       if (!partnershipUserSnapshot.empty) {
-        trackEvent('partnership_user_fetched');
-
         const partnershipUserData = partnershipUserSnapshot.docs[0].data();
         return partnershipUserData as PartnershipUserDataType;
       }
 
-      trackEvent('partnership_user_not_found');
+      trackEvent('Partnership User Not Found');
       return null;
     } catch (error) {
-      trackEvent('partnership_user_fetch_error', { error });
+      trackEvent('Fetch Partnership User Failed', { error });
       return rejectWithValue(error);
     }
   },
@@ -102,16 +98,15 @@ export const fetchPartnerData = createAsyncThunk(
         const partnerSnapshot = await firestore().collection('users').doc(partnerId).get();
 
         if (partnerSnapshot.exists) {
-          trackEvent('partnership_data_fetched');
           return partnerSnapshot.data() as UserDataType;
         }
       } else {
-        trackEvent('partnership_data_not_found');
+        trackEvent('Partner Data Not Found');
       }
 
       return null;
     } catch (error) {
-      trackEvent('partnership_data_fetch_error', { error });
+      trackEvent('Fetch Partner Data Failed', { error });
       return rejectWithValue(error);
     }
   },

@@ -51,7 +51,7 @@ function QuestionView({
 
   const handleNavigation = (isPartner: boolean) => {
     if (isPartner && partnerStatus === QuestionStatusType.Play) {
-      trackEvent('question_row_clicked', { action: 'play_partner' });
+      trackEvent('Play Partner Button Tapped', { action: 'play_partner' });
       navigation.navigate(ModalScreens.PlayUserModal, {
         audioUrl: partnerRecording.audioUrl,
         color: partner.color,
@@ -64,7 +64,7 @@ function QuestionView({
         reactionColor: user.color,
       });
     } else if (!isPartner) {
-      trackEvent('question_row_clicked', { action: 'play_user' });
+      trackEvent('Play User Button Tapped', { action: 'play_user' });
       if (userStatus === QuestionStatusType.Play) {
         navigation.navigate(ModalScreens.PlayUserModal, {
           audioUrl: userRecording.audioUrl,
@@ -78,7 +78,7 @@ function QuestionView({
           userId: user.id,
         });
       } else if (userStatus === QuestionStatusType.Record) {
-        trackEvent('question_row_clicked', { action: 'record_user' });
+        trackEvent('Record Answer Button Tapped', { action: 'record_user' });
         navigation.navigate(ModalScreens.RecordUserModal);
       }
     }

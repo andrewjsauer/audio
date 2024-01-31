@@ -19,7 +19,7 @@ function PartnerNameScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    trackEvent('Partner Name Screen Seen');
+    trackEvent('Partner Name Step Viewed');
   }, []);
 
   const { goToNextStep, partnerDetails, userDetails, handlePartnerDetails } = useAuthFlow();
@@ -40,7 +40,7 @@ function PartnerNameScreen() {
         }),
       );
 
-      trackEvent('partners_color_empty_error');
+      trackEvent('Color Submitted User Error');
       return;
     }
 
@@ -53,10 +53,11 @@ function PartnerNameScreen() {
         }),
       );
 
-      trackEvent('partner_name_empty_error');
+      trackEvent('Name Submitted Error');
       return;
     }
 
+    trackEvent('Name of Partner User Submitted');
     goToNextStep();
   };
 

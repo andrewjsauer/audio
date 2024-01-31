@@ -25,7 +25,7 @@ async function getRecordingData(recordings: RecordingType[], userId: string, par
 
       return listeningSnapshot.empty ? null : listeningSnapshot.docs[0].data().reaction;
     } catch (error) {
-      trackEvent('fetch_reaction_error', { error });
+      trackEvent('Fetch Reaction Failed', { error });
       return null;
     }
   };
@@ -121,7 +121,7 @@ export const fetchHistoryData = createAsyncThunk(
         .get();
 
       if (questionsSnapshot.empty) {
-        trackEvent('history_not_found');
+        trackEvent('History Not Found');
         return rejectWithValue('No history data found');
       }
 
@@ -178,13 +178,12 @@ export const fetchHistoryData = createAsyncThunk(
         }),
       );
 
-      trackEvent('history_fetched');
       const lastDoc = questionsSnapshot.docs[questionsSnapshot.docs.length - 1];
       const lastDocData = lastDoc.exists ? { id: lastDoc.id, ...lastDoc.data() } : null;
 
       return { questions: historyData, lastDocData };
     } catch (error) {
-      trackEvent('history_fetch_error', { error });
+      trackEvent('Fetch History Failed', { error });
       return rejectWithValue(error);
     }
   },
@@ -201,7 +200,6 @@ export const fetchMoreHistoryData = createAsyncThunk(
       const timeZone = selectPartnershipTimeZone(state);
 
       if (!lastDoc) {
-        trackEvent('last_doc_snapshot_not_found');
         return {
           questions: [],
           lastDocData: null,
@@ -217,7 +215,7 @@ export const fetchMoreHistoryData = createAsyncThunk(
         .get();
 
       if (questionsSnapshot.empty) {
-        trackEvent('more_history_not_found');
+        trackEvent('Fetch More History Empty');
         dispatch(
           showNotification({
             title: 'historyScreen.noMoreResults.title',
@@ -285,8 +283,6 @@ export const fetchMoreHistoryData = createAsyncThunk(
         }),
       );
 
-      trackEvent('more_history_fetched');
-
       const lastQuestion = questionsSnapshot.docs[questionsSnapshot.docs.length - 1];
       const lastDocData = lastQuestion.exists
         ? { id: lastQuestion.id, ...lastQuestion.data() }
@@ -294,7 +290,7 @@ export const fetchMoreHistoryData = createAsyncThunk(
 
       return { questions: moreHistoryData, lastDocData };
     } catch (error) {
-      trackEvent('history_fetch_more_history_data_error', { error });
+      trackEvent('Fetch More History Failed', { error });
       return rejectWithValue(error);
     }
   },

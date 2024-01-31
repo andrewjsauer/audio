@@ -59,7 +59,7 @@ function SubscriberScreen() {
   const hasSeenPrivacyReminder = useSelector(selectHasSeenPrivacyReminder);
 
   useEffect(() => {
-    trackEvent('Home Screen Seen');
+    trackEvent('Home Screen Viewed');
   }, []);
 
   useFetchQuestion();
@@ -80,7 +80,7 @@ function SubscriberScreen() {
   });
 
   const handleRetry = () => {
-    trackEvent('retry_button_clicked', {
+    trackEvent('Retry Button Tapped', {
       action: lastFailedAction.type,
     });
 

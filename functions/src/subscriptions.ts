@@ -134,20 +134,23 @@ export const handleSubscriptionEvents = functions.firestore
         case 'NON_RENEWING_PURCHASE':
         case 'SUBSCRIPTION_EXTENDED':
           await updateSubscriptions(userId, true);
-          trackEvent(`Subscribed via event: ${eventType}`, userId);
+
+          if (isTrial && eventType === 'INITIAL_PURCHASE') trackEvent(`Free Trial Started`, userId);
+          else trackEvent(`Subscribed Event: ${eventType}`, userId);
+
           break;
         case 'CANCELLATION':
           if (isTrial && !isActive) {
             await updateSubscriptions(userId, false);
-            trackEvent(`Unsubscribed via event: ${eventType}`, userId);
+            trackEvent(`Unsubscribed During Trial Event: ${eventType}`, userId);
           } else if (!isTrial && !isActive) {
             await updateSubscriptions(userId, false);
-            trackEvent(`Unsubscribed via event: ${eventType}`, userId);
+            trackEvent(`Unsubscribed Event: ${eventType}`, userId);
           }
           break;
         case 'EXPIRATION':
           await updateSubscriptions(userId, false);
-          trackEvent(`Unsubscribed via event: ${eventType}`, userId);
+          trackEvent(`Unsubscribed Event: ${eventType}`, userId);
           break;
         case 'SUBSCRIPTION_PAUSED':
           // Handle paused subscription, but do not revoke access

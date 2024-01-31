@@ -23,7 +23,7 @@ function InviteScreen() {
   const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
-    trackEvent('Invite Partner Screen Seen');
+    trackEvent('Phone Number of Partner Step Viewed');
   }, []);
 
   const { goToNextStep, goToPreviousStep, partnerDetails, handlePartnerDetails } = useAuthFlow();
@@ -54,6 +54,7 @@ function InviteScreen() {
       return;
     }
 
+    trackEvent('Phone Number of Partner Submitted');
     goToNextStep();
   };
 

@@ -13,8 +13,6 @@ import {
   UserDetailsType,
 } from '@lib/types';
 
-import { trackEvent } from '@lib/analytics';
-
 interface AuthFlowContextProps {
   currentStep: number;
   totalSteps: number;
@@ -89,18 +87,11 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
-  const pascalToSnakeCaseAnd40CharMax = (str: string) => {
-    return str
-      .replace(/([A-Z])/g, (_, p1, offset) => (offset > 0 ? '_' : '') + p1.toLowerCase())
-      .slice(0, 40);
-  };
-
   const navigateToStep = (stepIndex: number) => {
     const screen = steps[stepIndex - 1];
 
     if (screen) {
       navigation.navigate(screen);
-      trackEvent(`step_to_screen_${pascalToSnakeCaseAnd40CharMax(screen)}`);
     }
   };
 

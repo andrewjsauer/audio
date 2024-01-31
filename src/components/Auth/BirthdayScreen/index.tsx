@@ -24,7 +24,7 @@ function BirthdayScreen() {
   const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
-    trackEvent('Birthday Screen Seen');
+    trackEvent('Birthday Step Viewed');
   }, []);
 
   const { goToPreviousStep, goToNextStep, userDetails, handleUserDetails } = useAuthFlow();
@@ -41,11 +41,12 @@ function BirthdayScreen() {
         }),
       );
 
-      trackEvent('birthday_empty_error');
+      trackEvent('Birthday Submitted User Error');
 
       return;
     }
 
+    trackEvent('Birthdate Submitted');
     goToNextStep();
   };
 

@@ -21,7 +21,7 @@ function RelationshipTypeScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    trackEvent('Relationship Type Screen Seen');
+    trackEvent('Relationship Status Step Viewed');
   }, []);
 
   const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =
@@ -39,10 +39,11 @@ function RelationshipTypeScreen() {
         }),
       );
 
-      trackEvent('relationship_type_empty_error');
+      trackEvent('Relationship Status Submitted Error');
       return;
     }
 
+    trackEvent('Relationship Status Submitted');
     goToNextStep();
   };
 

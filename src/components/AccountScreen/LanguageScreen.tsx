@@ -30,11 +30,11 @@ function LanguageScreen() {
     setSelectedLanguage(languageCode);
     changeLanguage(languageCode);
 
-    trackEvent('language_change', { language: languageCode });
+    trackEvent('Language Changed', { language: languageCode });
   };
 
   return (
-    <Layout titleKey="accountScreen.languageScreen.title" screen="language_account_screen">
+    <Layout titleKey="accountScreen.languageScreen.title" screen="Language Screen">
       <Picker
         selectedValue={selectedLanguage}
         onValueChange={(itemValue) => handleLanguageChange(itemValue)}

@@ -52,7 +52,7 @@ export const saveUserRecording = createAsyncThunk(
         return rejectWithValue('errors.recordingSaveMemoryLimitExceeded');
       }
 
-      trackEvent('save_recording_error', { error });
+      trackEvent('Save Recording Failed', { error });
       return rejectWithValue('errors.recordingSaveFailed');
     }
   },
@@ -88,11 +88,11 @@ export const saveListeningReaction = createAsyncThunk(
         { merge: true },
       );
 
-      trackEvent('listening_reaction_saved');
+      trackEvent('Reaction Sent');
       return { reaction, questionId };
     } catch (error) {
       crashlytics().recordError(error);
-      trackEvent('listening_reaction_save_error', {
+      trackEvent('Save Listening Reaction Failed', {
         error: error.message,
       });
       return rejectWithValue(error);
