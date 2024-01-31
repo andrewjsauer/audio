@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { trackEvent } from './analytics';
+import { trackEvent, trackIdentify, convertToDate } from './analytics';
 
 async function getPartnerIdByPhoneNumber(phoneNumber: string) {
   const partnerQuery = await admin
@@ -146,9 +146,14 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
 
     await batch.commit();
 
-    trackEvent('Account Created', userId, {
+    const trackProperties = {
       ...userPayload,
-    });
+      createdAt: convertToDate(userPayload.createdAt),
+      lastActiveAt: convertToDate(userPayload.lastActiveAt),
+    };
+
+    trackIdentify(userId, trackProperties);
+    trackEvent('New User Created', userId);
 
     return {
       userPayload: {
@@ -255,7 +260,14 @@ export const updateNewUser = functions.https.onCall(async (data, context) => {
 
     await batch.commit();
 
-    trackEvent('Account Created', id, { ...userPayload });
+    const trackProperties = {
+      ...userPayload,
+      createdAt: convertToDate(userPayload.createdAt),
+      lastActiveAt: convertToDate(userPayload.lastActiveAt),
+    };
+
+    trackIdentify(id, trackProperties);
+    trackEvent('New User Created', id);
 
     return userPayload;
   } catch (error: unknown) {
