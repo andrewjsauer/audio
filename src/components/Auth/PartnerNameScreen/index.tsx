@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
@@ -17,10 +17,6 @@ import { TextInput } from './style';
 function PartnerNameScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    trackEvent('Partner Name Step Viewed');
-  }, []);
 
   const { goToNextStep, partnerDetails, userDetails, handlePartnerDetails } = useAuthFlow();
   const { name, color } = partnerDetails;

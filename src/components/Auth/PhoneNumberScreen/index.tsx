@@ -31,10 +31,6 @@ function PhoneNumberScreenContainer() {
   const user = useSelector(selectUser);
 
   useEffect(() => {
-    trackEvent('Phone Number Step Viewed');
-  }, []);
-
-  useEffect(() => {
     if (user) goToNextStep();
   }, [user]);
 

@@ -113,7 +113,7 @@ function SettingsScreen() {
               deleteRelationship({
                 userId: userData?.id,
                 partnerId: partnerData?.id,
-                partnershipId: userData?.partnershipId,
+                partnershipId: partnershipData?.id,
               }),
             );
           },

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
@@ -19,10 +19,6 @@ import { RelationshipPickerContainer } from './style';
 function RelationshipTypeScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    trackEvent('Relationship Status Step Viewed');
-  }, []);
 
   const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =
     useAuthFlow();

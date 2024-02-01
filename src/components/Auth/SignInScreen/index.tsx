@@ -40,8 +40,6 @@ function SignInScreen() {
   const confirm = useSelector(selectConfirm);
 
   useEffect(() => {
-    trackEvent('Sign In Step Viewed');
-
     if (user) dispatch(setUser(null));
     if (code) dispatch(setCode(''));
     if (confirm) dispatch(setConfirm(null));

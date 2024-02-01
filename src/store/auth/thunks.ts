@@ -142,9 +142,6 @@ export const generatePartnership = createAsyncThunk(
       });
 
       const { userPayload, partnerPayload, partnershipPayload } = data;
-      console.log('userPayload', userPayload);
-      console.log('partnerPayload', partnerPayload);
-      console.log('partnershipPayload', partnershipPayload);
 
       return {
         userData: userPayload,
@@ -242,6 +239,8 @@ export const deleteRelationship = createAsyncThunk(
     { rejectWithValue, dispatch },
   ) => {
     try {
+      trackEvent('Delete Relationship Payload', { userId, partnershipId, partnerId });
+
       await functions().httpsCallable('deletePartnership')({ partnershipId, userId, partnerId });
       dispatch(signOut({ userId, isDelete: true }));
 

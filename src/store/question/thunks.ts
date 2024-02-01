@@ -136,7 +136,7 @@ export const fetchLatestQuestion = createAsyncThunk<
         .where('partnershipId', '==', partnershipData?.id)
         .orderBy('createdAt', 'desc')
         .limit(1)
-        .get();
+        .get({ source: 'server' });
 
       if (queriedDescQuestionSnapshot.empty) {
         trackEvent('Fetched Question Empty');
@@ -168,7 +168,7 @@ export const fetchLatestQuestion = createAsyncThunk<
 
       const fetchQuestionCreatedAtLocal = moment(fetchedQuestionData.createdAt).tz(timeZone);
       if (fetchQuestionCreatedAtLocal >= today) {
-        trackEvent('Fetch Question Current', {
+        trackEvent('Fetched Question Current', {
           fetchedQuestionData,
           today,
         });
@@ -183,7 +183,7 @@ export const fetchLatestQuestion = createAsyncThunk<
         };
       }
 
-      trackEvent('Fetch Question Expired', {
+      trackEvent('Fetched Question Expired', {
         fetchQuestionCreatedAtLocal,
         fetchedQuestionData,
         today,

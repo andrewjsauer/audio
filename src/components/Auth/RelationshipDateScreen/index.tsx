@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import i18n from 'i18next';
@@ -17,10 +17,6 @@ function RelationshipDateScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const currentDate = new Date();
-
-  useEffect(() => {
-    trackEvent('Relationship Start Date Step Viewed');
-  }, []);
 
   const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =
     useAuthFlow();

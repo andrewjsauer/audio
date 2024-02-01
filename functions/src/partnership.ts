@@ -31,12 +31,13 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
   const { userDetails, partnerDetails, partnershipDetails } = data;
   const userId = context.auth.uid;
 
-  const { type, startDate, timeZone = 'America/Los_Angeles' } = partnershipDetails;
-
   try {
     const { partnerId, partnerData } = await getPartnerIdByPhoneNumber(partnerDetails.phoneNumber);
 
     if (partnerData) {
+      functions.logger.log('userDetails', JSON.stringify(userDetails));
+      functions.logger.log('partnerDetails', JSON.stringify(partnerDetails));
+
       const partnershipUserSnapshot = await admin
         .firestore()
         .collection('partnershipUser')
@@ -45,6 +46,7 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
 
       if (!partnershipUserSnapshot.empty) {
         const partnershipUserData = partnershipUserSnapshot.docs[0].data();
+
         const otherUserDataSnapshot = await admin
           .firestore()
           .collection('users')
@@ -53,6 +55,8 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
 
         if (!otherUserDataSnapshot.empty) {
           const otherUserData = otherUserDataSnapshot.docs[0].data();
+          functions.logger.log('otherUserData', JSON.stringify(otherUserData));
+          functions.logger.log('userId', JSON.stringify(userId));
 
           if (otherUserData.phoneNumber !== userDetails.phoneNumber) {
             functions.logger.log(
@@ -65,7 +69,7 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
               partnershipUserData,
             );
           } else if (otherUserData.phoneNumber === userDetails.phoneNumber) {
-            functions.logger.log('Partner has added current user as partner');
+            functions.logger.log('Partner added current user as partner so we should merge them');
 
             const batch = admin.firestore().batch();
             const usersCollection = admin.firestore().collection('users');
@@ -81,6 +85,8 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
               id: userId,
             };
 
+            functions.logger.log('userPayload', JSON.stringify(userPayload));
+
             const newUserRef = usersCollection.doc(userId);
             batch.set(newUserRef, userPayload, { merge: true });
 
@@ -89,63 +95,87 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
 
             const partnershipUserRef = admin.firestore().collection('partnershipUser');
 
-            const pUserQuery = partnershipUserRef.where('userId', '==', tempId);
-            const pUserSnapshot = await pUserQuery.get();
+            try {
+              const pUserQuery = partnershipUserRef.where('userId', '==', tempId);
+              const pUserSnapshot = await pUserQuery.get();
 
-            if (!pUserSnapshot.empty) {
-              const partnershipDocRef = pUserSnapshot.docs[0].ref;
-              batch.set(partnershipDocRef, { userId }, { merge: true });
-            }
+              if (!pUserSnapshot.empty) {
+                const partnershipDocRef = pUserSnapshot.docs[0].ref;
+                batch.set(partnershipDocRef, { userId: userPayload.id }, { merge: true });
+              } else {
+                throw new functions.https.HttpsError(
+                  'unknown',
+                  `Error updating user data: Temp partnership user not found`,
+                );
+              }
 
-            const pUserPartnerQuery = partnershipUserRef.where('otherUserId', '==', tempId);
-            const pUserPartnerSnapshot = await pUserPartnerQuery.get();
+              const pUserPartnerQuery = partnershipUserRef.where('otherUserId', '==', tempId);
+              const pUserPartnerSnapshot = await pUserPartnerQuery.get();
 
-            if (!pUserPartnerSnapshot.empty) {
-              const partnershipPartnerDocRef = pUserPartnerSnapshot.docs[0].ref;
-              batch.set(partnershipPartnerDocRef, { otherUserId: userId }, { merge: true });
-            }
+              if (!pUserPartnerSnapshot.empty) {
+                const partnershipPartnerDocRef = pUserPartnerSnapshot.docs[0].ref;
+                batch.set(
+                  partnershipPartnerDocRef,
+                  { otherUserId: userPayload.id },
+                  { merge: true },
+                );
+              } else {
+                throw new functions.https.HttpsError(
+                  'unknown',
+                  `Error updating user data: Temp partnership partner not found`,
+                );
+              }
 
-            await batch.commit();
+              await batch.commit();
 
-            const trackProperties = {
-              ...userPayload,
-              createdAt: convertToDate(userPayload?.createdAt),
-              lastActiveAt: convertToDate(userPayload?.lastActiveAt),
-            };
-
-            trackIdentify(userId, trackProperties);
-            trackEvent('New User Created', userId);
-
-            const partnershipRef = admin
-              .firestore()
-              .collection('partnership')
-              .where('id', '==', otherUserData.partnershipId);
-
-            const partnershipSnapshot = await partnershipRef.get();
-            const partnershipData = partnershipSnapshot.docs[0].data();
-
-            functions.logger.log('Partnership found', partnershipData);
-            functions.logger.log('Partner found', partnerData);
-            functions.logger.log('User found', userPayload);
-
-            return {
-              userPayload: {
+              const trackProperties = {
                 ...userPayload,
-              },
-              partnerPayload: {
-                ...partnerData,
-              },
-              partnershipPayload: {
-                ...partnershipData,
-              },
-            };
+                createdAt: convertToDate(userPayload?.createdAt),
+                lastActiveAt: convertToDate(userPayload?.lastActiveAt),
+              };
+
+              trackIdentify(userId, trackProperties);
+              trackEvent('New User Created', userId);
+
+              const partnershipRef = admin
+                .firestore()
+                .collection('partnership')
+                .where('id', '==', otherUserData.partnershipId);
+
+              const partnershipSnapshot = await partnershipRef.get();
+              const partnershipData = partnershipSnapshot.docs[0].data();
+
+              return {
+                userPayload: {
+                  ...userPayload,
+                },
+                partnerPayload: {
+                  ...partnerData,
+                },
+                partnershipPayload: {
+                  ...partnershipData,
+                },
+              };
+            } catch (error) {
+              functions.logger.error(`Error message ${error}`);
+
+              throw new functions.https.HttpsError(
+                'unknown',
+                `Error updating user data: ${error}`,
+                error,
+              );
+            }
           }
         }
       }
     }
 
+    functions.logger.log('Partner not found, creating new partnership');
+
     const batch = admin.firestore().batch();
     const partnershipId = uuidv4();
+
+    const { type, startDate, timeZone = 'America/Los_Angeles' } = partnershipDetails;
 
     const partnershipRef = admin.firestore().collection('partnership').doc(partnershipId);
     const partnershipData = {

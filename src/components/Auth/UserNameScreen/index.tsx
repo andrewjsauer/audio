@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
@@ -19,10 +19,6 @@ import { TextInput } from './style';
 function UserNameScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    trackEvent('Name Step Viewed');
-  }, []);
 
   const { goToNextStep, userDetails, handleUserDetails } = useAuthFlow();
   const { name, color } = userDetails;
