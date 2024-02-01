@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import firestore from '@react-native-firebase/firestore';
 import functions from '@react-native-firebase/functions';
 import i18n from 'i18next';
 import moment from 'moment-timezone';
@@ -80,7 +79,7 @@ const generateQuestion = async ({
   let data = null;
 
   try {
-    ({ data } = await functions().httpsCallable('generateQuestion')(payload));
+    ({ data } = await functions().httpsCallable('generateQuestionModified')(payload));
     return formatQuestion(data, timeZone);
   } catch (error) {
     trackEvent('Generate Question Failed', { error });
@@ -124,70 +123,12 @@ export const fetchLatestQuestion = createAsyncThunk<
           };
         }
 
-        trackEvent('Question Expired', {
+        trackEvent('Current Question Expired', {
           currentQuestion,
           currentQuestionLocalCreatedAt,
           today,
         });
       }
-
-      const queriedDescQuestionSnapshot = await firestore()
-        .collection('questions')
-        .where('partnershipId', '==', partnershipData?.id)
-        .orderBy('createdAt', 'desc')
-        .limit(1)
-        .get({ source: 'server' });
-
-      if (queriedDescQuestionSnapshot.empty) {
-        trackEvent('Fetched Question Empty');
-
-        const newQuestion = await generateQuestion({
-          partnerData,
-          partnershipData,
-          timeZone,
-          userData,
-          usersLanguage: currentLanguage,
-        });
-
-        trackEvent('Question Viewed');
-        return {
-          question: newQuestion,
-          isNewQuestion: true,
-        } as {
-          question: QuestionType;
-          isNewQuestion: boolean;
-        };
-      }
-
-      const doc = queriedDescQuestionSnapshot.docs[0];
-      const fetchedQuestionData = {
-        ...doc.data(),
-        id: doc.id,
-        createdAt: formatCreatedAt(doc.data().createdAt, timeZone),
-      };
-
-      const fetchQuestionCreatedAtLocal = moment(fetchedQuestionData.createdAt).tz(timeZone);
-      if (fetchQuestionCreatedAtLocal >= today) {
-        trackEvent('Fetched Question Current', {
-          fetchedQuestionData,
-          today,
-        });
-
-        trackEvent('Question Viewed');
-        return {
-          question: fetchedQuestionData,
-          isNewQuestion: true,
-        } as {
-          question: QuestionType;
-          isNewQuestion: boolean;
-        };
-      }
-
-      trackEvent('Fetched Question Expired', {
-        fetchQuestionCreatedAtLocal,
-        fetchedQuestionData,
-        today,
-      });
 
       const newQuestion = await generateQuestion({
         partnerData,
@@ -197,7 +138,8 @@ export const fetchLatestQuestion = createAsyncThunk<
         usersLanguage: currentLanguage,
       });
 
-      trackEvent('Question Viewed');
+      trackEvent('Question Viewed', { ...newQuestion });
+
       return {
         question: newQuestion,
         isNewQuestion: true,

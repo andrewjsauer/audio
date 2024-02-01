@@ -6,6 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { OpenAI } from 'openai';
 import moment from 'moment-timezone';
 
+import { trackEvent } from './analytics';
+
 import {
   differenceInDays,
   differenceInMonths,
@@ -105,6 +107,214 @@ const defaultQuestions = [
   "What is the best piece of advice you've received about relationships?",
   'What friend do you wish you would personally reconnect with?',
 ];
+
+export const generateQuestionModified = functions
+  .runWith({ secrets: [openApiKey] })
+  .https.onCall(async (data, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+    }
+
+    const { questionIndex, partnershipData, partnerData, userData, usersLanguage } = data;
+    functions.logger.info(`Data: ${JSON.stringify(data)}`);
+
+    const db = admin.firestore();
+
+    const queriedDescQuestionSnapshot = await db
+      .collection('questions')
+      .where('partnershipId', '==', partnershipData.id)
+      .orderBy('createdAt', 'desc')
+      .limit(1)
+      .get();
+
+    if (!queriedDescQuestionSnapshot.empty) {
+      const doc = queriedDescQuestionSnapshot.docs[0];
+      const fetchedQuestionData = doc.data();
+
+      const today = startOfDayInTimeZone(new Date(), partnershipData.timeZone).toDate();
+      const fetchedQuestionCreatedAtLocal = formatCreatedAt(
+        fetchedQuestionData.createdAt,
+        partnershipData.timeZone,
+      );
+
+      if (fetchedQuestionCreatedAtLocal >= today) {
+        functions.logger.log('Fetched Question Current');
+        trackEvent('Fetched Question Current', userData.id, {
+          fetchedQuestionData,
+          today,
+        });
+
+        return fetchedQuestionData;
+      }
+
+      functions.logger.log('Fetched Question Expired');
+      trackEvent('Fetched Question Expired', userData.id, {
+        fetchedQuestionCreatedAtLocal,
+        fetchedQuestionData,
+        today,
+      });
+    } else {
+      functions.logger.log('Fetched Question Empty');
+      trackEvent('Fetched Question Empty', userData.id);
+    }
+
+    functions.logger.log('Generating New Question');
+    trackEvent('Generating New Question', userData.id);
+
+    let questionText;
+
+    const apiKey = openApiKey.value();
+    const openai = new OpenAI({ apiKey });
+
+    const languageMap: { [key: string]: string } = {
+      en: 'English',
+      es: 'Spanish',
+      zhCN: 'Simplified Chinese',
+      hi: 'Hindi',
+      ar: 'Arabic',
+      bn: 'Bengali',
+      pt: 'Portuguese',
+      ru: 'Russian',
+      fr: 'French',
+      de: 'German',
+      ja: 'Japanese',
+      ko: 'Korean',
+      it: 'Italian',
+    };
+
+    if (questionIndex >= 0 && questionIndex < defaultQuestions.length) {
+      const englishQuestion = defaultQuestions[questionIndex];
+
+      if (usersLanguage !== 'en') {
+        try {
+          const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
+            messages: [
+              {
+                role: 'system',
+                content: `Convert the following question prompt into ${languageMap[usersLanguage]}`,
+              },
+              { role: 'user', content: englishQuestion },
+            ],
+            model: 'gpt-3.5-turbo',
+          });
+
+          const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
+          questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
+        } catch (error) {
+          functions.logger.error(`Error translating with OpenAI request: ${JSON.stringify(error)}`);
+
+          const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
+          questionText = defaultQuestions[backupIndex];
+        }
+      } else {
+        questionText = englishQuestion;
+      }
+    } else {
+      try {
+        const relationshipDuration = partnershipData.startDate;
+        const userName = userData.name;
+        const partnerName = partnerData.name;
+        const relationshipType = relationshipTypeMap[partnershipData?.type as RelationshipType];
+
+        const adjectives = [
+          'insightful',
+          'thought-provoking',
+          'fun',
+          'creative',
+          'unique',
+          'engaging',
+          'reflective',
+          'heartwarming',
+          'challenging',
+          'humorous',
+          'intimate',
+          'empathetic',
+          'curious',
+          'romantic',
+          'practical',
+          'inspirational',
+        ];
+
+        const timeFrames = ['past', 'present', 'future'];
+
+        const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+        const randomTimeFrame = timeFrames[Math.floor(Math.random() * timeFrames.length)];
+        const promptLanguage =
+          usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
+
+        const prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} for ${userName} and ${partnerName} who are ${relationshipType} and have been together for ${relationshipDuration}.`;
+        const systemPrompt = `As a couples expert, suggest a question that encourages ${userName} and ${partnerName} to explore new dimensions of their relationship, foster understanding, or share a meaningful moment.`;
+
+        functions.logger.info(`Prompt: ${prompt}`);
+
+        const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: prompt },
+          ],
+          model: 'gpt-4',
+        });
+
+        const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
+        questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
+      } catch (error: unknown) {
+        functions.logger.error(`Error with OpenAI request: ${JSON.stringify(error)}`);
+
+        const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
+        questionText = defaultQuestions[backupIndex];
+      }
+    }
+
+    const questionId = uuidv4();
+    const question = {
+      id: questionId,
+      partnershipId: partnershipData.id,
+      text: questionText,
+      createdAt: admin.firestore.Timestamp.now(),
+    };
+
+    try {
+      const batch = db.batch();
+      batch.set(
+        db.collection('partnership').doc(partnershipData.id),
+        {
+          latestQuestionId: questionId,
+        },
+        { merge: true },
+      );
+
+      batch.set(db.collection('questions').doc(questionId), question, {
+        merge: true,
+      });
+
+      await batch.commit();
+    } catch (error) {
+      const e = error as {
+        response?: { status?: string; data?: object };
+        message?: string;
+      };
+
+      if (e.response) {
+        functions.logger.error(`Error status ${e.response.status}`);
+        functions.logger.error(`Error data ${JSON.stringify(e.response.data)}`);
+
+        throw new functions.https.HttpsError(
+          'unknown',
+          `Error saving generated question: ${e.response.data}`,
+          e.response.data,
+        );
+      } else {
+        functions.logger.error(`Error message ${error}`);
+        throw new functions.https.HttpsError(
+          'unknown',
+          `Error saving generated question: ${error}`,
+          error,
+        );
+      }
+    }
+
+    return question;
+  });
 
 export const generateQuestion = functions
   .runWith({ secrets: [openApiKey] })
