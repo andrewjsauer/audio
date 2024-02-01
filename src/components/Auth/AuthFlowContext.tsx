@@ -1,9 +1,15 @@
-import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import { selectUserData, selectUserId, selectIsPartner } from '@store/auth/selectors';
+import {
+  selectUserData,
+  selectUserId,
+  selectIsPartner,
+  selectShouldResetUser,
+} from '@store/auth/selectors';
 import { generatePartnership, updateNewUser } from '@store/auth/thunks';
+import { setShouldResetUser } from '@store/auth/slice';
 import { AppDispatch } from '@store/index';
 
 import {
@@ -46,11 +52,24 @@ export function AuthFlowProvider({ children }: { children: React.ReactNode }) {
   const userData = useSelector(selectUserData);
   const userId = useSelector(selectUserId);
   const isPartner = useSelector(selectIsPartner);
+  const shouldResetUser = useSelector(selectShouldResetUser);
 
   const [userDetails, setUserDetails] = useState<UserDetailsType>({});
   const [partnerDetails, setPartnerDetails] = useState<PartnerDetailsType>({});
   const [partnershipDetails, setPartnershipDetails] = useState<PartnershipDetailsType>({});
   const [currentStep, setCurrentStep] = useState(1);
+
+  useEffect(() => {
+    if (shouldResetUser) {
+      setUserDetails({});
+      setPartnerDetails({});
+      setPartnershipDetails({});
+      setCurrentStep(1);
+      navigation.navigate(Steps.SignInScreen);
+
+      dispatch(setShouldResetUser(false));
+    }
+  }, [shouldResetUser]);
 
   const steps = useMemo(
     () => [

@@ -155,11 +155,17 @@ export const generatePartnership = createAsyncThunk(
     } catch (error) {
       const errorMessage = error?.toString();
       if (errorMessage && errorMessage.includes('Partner already has a partner')) {
-        return rejectWithValue('errors.partnerAlreadyInUse');
+        return rejectWithValue({
+          shouldResetUser: true,
+          message: 'errors.partnerAlreadyInUse',
+        });
       }
 
       trackEvent('Generate Partnership Failed', { error });
-      return rejectWithValue('errors.partnershipGenerationFailed');
+      return rejectWithValue({
+        shouldResetUser: false,
+        message: 'errors.partnershipGenerationFailed',
+      });
     }
   },
 );

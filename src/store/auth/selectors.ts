@@ -6,6 +6,7 @@ export const selectCode = (state) => state.auth.code;
 export const selectConfirm = (state) => state.auth.confirm;
 export const selectError = (state) => state.auth.error;
 export const selectIsLoading = (state) => state.auth.isLoading;
+export const selectShouldResetUser = (state) => state.auth.shouldResetUser;
 
 export const selectIsUserLoggedIn = createSelector(selectUser, (user) => !!user);
 
