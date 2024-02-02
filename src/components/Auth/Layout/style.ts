@@ -9,9 +9,9 @@ export const BackButtonWrapper = styled.TouchableOpacity`
   margin-bottom: 20px;
 `;
 
-export const Header = styled.View<{ isAddedPadding: boolean }>`
-  margin-top: 40px;
-  padding: ${(p) => (p.isAddedPadding ? '20px' : '10px')};
+export const Header = styled.View<{ isAddedPadding: boolean; isAndroidMarginTop: boolean }>`
+  margin-top: ${(p) => (p.isAndroidMarginTop ? '10px' : '40px')};
+  padding: ${(p) => (p.isAddedPadding ? '0 20px' : '0 10px')};
 `;
 
 export const Title = styled.Text<{ isLeftMargin: boolean }>`

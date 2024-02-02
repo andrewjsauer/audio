@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, ActivityIndicator } from 'react-native';
@@ -21,13 +21,17 @@ function NonSubscriberNotification() {
   const partnerData = useSelector(selectPartnerData);
   const isLoading = useSelector(selectIsPurchasing);
 
+  useEffect(() => {
+    trackEvent('Resubscribe Prompt Viewed');
+  }, []);
+
   const handleRestorePurchases = () => {
-    trackEvent('restore_purchases_button_clicked');
+    trackEvent('Restore Purchases Button Tapped');
     dispatch(restorePurchases());
   };
 
   const handleUpdatePayment = () => {
-    trackEvent('update_payment_button_clicked');
+    trackEvent('Subscribe Button Tapped');
     dispatch(purchaseProduct({ user, partnerData, productIdentifier: 'dq_999_1m_1m0' }));
   };
 

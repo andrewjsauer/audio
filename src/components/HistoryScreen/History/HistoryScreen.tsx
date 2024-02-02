@@ -198,7 +198,7 @@ function HistoryScreen({
             color={partnerColor}
             disabled={isPartnerButtonDisabled}
             onPress={() => {
-              trackEvent('question_row_clicked', { action: 'play_partner' });
+              trackEvent('History Play Partner Button Tapped', { action: 'play_partner' });
               navigation.navigate(HistoryScreens.PlayUserModal, {
                 audioUrl: partnerAudioUrl,
                 color: partnerColor,
@@ -224,7 +224,7 @@ function HistoryScreen({
             color={userColor}
             disabled={isUserButtonDisabled}
             onPress={() => {
-              trackEvent('question_row_clicked', { action: 'play_user' });
+              trackEvent('History Play User Button Tapped', { action: 'play_user' });
 
               navigation.navigate(HistoryScreens.PlayUserModal, {
                 audioUrl: userAudioUrl,

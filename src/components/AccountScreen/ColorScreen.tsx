@@ -25,7 +25,7 @@ function ColorScreen() {
 
   const handleChange = (selectedColor: string) => {
     if (color !== selectedColor) {
-      trackEvent('color_change_button_clicked');
+      trackEvent('Color Changed');
       dispatch(updateUser({ id, userDetails: { color: selectedColor } }));
 
       dispatch(
@@ -38,7 +38,7 @@ function ColorScreen() {
   };
 
   return (
-    <Layout titleKey="accountScreen.colorScreen.title" screen="color_account_screen">
+    <Layout titleKey="accountScreen.colorScreen.title" screen="Color Screen">
       {isLoading ? (
         <LoadingView />
       ) : (

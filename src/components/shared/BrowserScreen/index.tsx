@@ -14,7 +14,7 @@ type Props = {
 
 function BrowserScreen({ route }: Props) {
   return (
-    <Layout titleKey="browserScreen.title" screen="browser_screen">
+    <Layout titleKey="browserScreen.title" screen="Browser Screen">
       <WebViewStyled
         source={{
           uri: route.params.url,

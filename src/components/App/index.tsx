@@ -62,7 +62,7 @@ function App(): JSX.Element {
 
   const handleRetry = () => {
     if (lastFailedAction && lastFailedAction.type === initializeSession.typePrefix) {
-      trackEvent('retry_button_clicked', {
+      trackEvent('Retry Button Tapped', {
         action: lastFailedAction.type,
       });
 

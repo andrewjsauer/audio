@@ -21,13 +21,13 @@ function TimeZoneScreen() {
 
   const handleTimeZoneChange = (selectedTimeZone: string) => {
     if (timeZone !== selectedTimeZone) {
-      trackEvent('partnership_timezone_selected', { timeZone: selectedTimeZone });
+      trackEvent('Relationship Time Zone Changed', { timeZone: selectedTimeZone });
       dispatch(updatePartnership({ id, partnershipDetails: { timeZone: selectedTimeZone } }));
     }
   };
 
   return (
-    <Layout titleKey="accountScreen.timeZoneScreen.title" screen="timeZone_account_screen">
+    <Layout titleKey="accountScreen.timeZoneScreen.title" screen="Relationship Time Zone Screen">
       {isLoading ? (
         <LoadingView />
       ) : (

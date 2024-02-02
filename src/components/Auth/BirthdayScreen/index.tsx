@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import i18n from 'i18next';
@@ -23,10 +23,6 @@ function BirthdayScreen() {
 
   const isLoading = useSelector(selectIsLoading);
 
-  useEffect(() => {
-    trackEvent('Birthday Screen Seen');
-  }, []);
-
   const { goToPreviousStep, goToNextStep, userDetails, handleUserDetails } = useAuthFlow();
 
   const birthday = userDetails.birthDate;
@@ -41,11 +37,12 @@ function BirthdayScreen() {
         }),
       );
 
-      trackEvent('birthday_empty_error');
+      trackEvent('Birthday Submitted User Error');
 
       return;
     }
 
+    trackEvent('Birthdate Submitted');
     goToNextStep();
   };
 

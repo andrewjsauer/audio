@@ -45,14 +45,16 @@ export const initializeSubscriber = createAsyncThunk(
       const resultAction = await dispatch(fetchLatestQuestion({ partnershipData: partnership }));
 
       if (fetchLatestQuestion.fulfilled.match(resultAction)) {
-        trackEvent('subscriber_question_fetched');
+        trackEvent('Initializing Subscriber Fetch Latest Question Success');
       } else if (fetchLatestQuestion.rejected.match(resultAction)) {
-        trackEvent('subscriber_question_fetch_error', { error: resultAction.payload });
+        trackEvent('Initializing Subscriber Fetch Latest Question Failed', {
+          error: resultAction.payload,
+        });
       }
 
       return null;
     } catch (error) {
-      trackEvent('error_initializing_subscriber', { error });
+      trackEvent('Initializing Subscriber Failed', { error });
       return rejectWithValue(error);
     }
   },
@@ -95,7 +97,7 @@ export const signOut = createAsyncThunk(
 
       return null;
     } catch (error) {
-      trackEvent('error_signing_out', { error });
+      trackEvent('Signing Out Failed', { error });
       return rejectWithValue(error);
     }
   },
@@ -109,11 +111,13 @@ export const initializeSession = createAsyncThunk(
 
       if (__DEV__) Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
 
+      const apiKey =
+        Platform.OS === 'ios'
+          ? (Config.revenueCatiOSKey as string)
+          : (Config.revenueCatAndroidKey as string);
+
       Purchases.configure({
-        apiKey:
-          Platform.OS === 'ios'
-            ? (Config.revenueCatiOSKey as string)
-            : (Config.revenueCatAndroidKey as string),
+        apiKey,
         appUserID: user.uid,
         observerMode: false,
         useAmazon: false,
@@ -126,7 +130,7 @@ export const initializeSession = createAsyncThunk(
 
       return null;
     } catch (error) {
-      trackEvent('error_initializing_session', { error });
+      trackEvent('Initializing Session Failed', { error });
       return rejectWithValue(error);
     }
   },
@@ -149,6 +153,7 @@ export const purchaseProduct = createAsyncThunk(
     try {
       const offerings = await Purchases.getOfferings();
       const availablePackages = offerings.current?.availablePackages;
+
       const targetPackage = availablePackages?.find(
         (p) => p.product.identifier === productIdentifier,
       );
@@ -173,7 +178,7 @@ export const purchaseProduct = createAsyncThunk(
             );
           }
         } catch (error) {
-          trackEvent('error_purchasing_promo', { error });
+          trackEvent('Error Purchasing Promo', { error });
         }
       }
 
@@ -196,11 +201,11 @@ export const purchaseProduct = createAsyncThunk(
       return null;
     } catch (error: any) {
       if (error.userCancelled) {
-        trackEvent('user_cancelled_purchasing_product');
+        trackEvent('User Cancelled Purchasing Product');
         return null;
       }
 
-      trackEvent('error_purchasing_product', { error });
+      trackEvent('Purchasing Product Failed', { error });
       return rejectWithValue(error);
     }
   },
@@ -215,11 +220,11 @@ export const restorePurchases = createAsyncThunk(
       return null;
     } catch (error: any) {
       if (error.userCancelled) {
-        trackEvent('user_cancelled_restoring_purchases');
+        trackEvent('User Cancelled Restoring Purchases');
         return null;
       }
 
-      trackEvent('error_restoring_purchases', { error });
+      trackEvent('Restoring Purchases Failed', { error });
       return rejectWithValue(error);
     }
   },

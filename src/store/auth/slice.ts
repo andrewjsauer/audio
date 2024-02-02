@@ -21,6 +21,7 @@ interface AuthState {
   error: string | null;
   isLoading: boolean;
   isLoadingPartnerData: boolean;
+  shouldResetUser: boolean;
   user: FirebaseAuthTypes.User | null;
   userData: UserDataType | null;
 }
@@ -31,6 +32,7 @@ const initialState: AuthState = {
   error: null,
   isLoading: false,
   isLoadingPartnerData: false,
+  shouldResetUser: false,
   user: null,
   userData: null,
 };
@@ -50,6 +52,9 @@ const authSlice = createSlice({
     },
     setUserData: (state, action: PayloadAction<UserDataType | null>) => {
       state.userData = action.payload;
+    },
+    setShouldResetUser: (state, action: PayloadAction<boolean>) => {
+      state.shouldResetUser = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -96,7 +101,11 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.userData = action.payload.userData as UserDataType;
       })
-      .addCase(generatePartnership.rejected, (state) => {
+      .addCase(generatePartnership.rejected, (state, action) => {
+        if (action.payload?.shouldResetUser) {
+          return { ...initialState, shouldResetUser: true };
+        }
+
         state.isLoading = false;
       })
       .addCase(updateUser.pending, (state) => {
@@ -140,5 +149,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCode, setUser, setConfirm, setUserData } = authSlice.actions;
+export const { setCode, setUser, setConfirm, setUserData, setShouldResetUser } = authSlice.actions;
 export default authSlice.reducer;

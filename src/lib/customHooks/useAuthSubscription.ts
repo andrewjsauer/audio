@@ -51,7 +51,7 @@ function useAuthSubscription() {
           return saveTokenToUser(token, userId);
         });
     } catch (error) {
-      trackEvent('get_firebase_device_token_error', { error: error.message });
+      trackEvent('Device Token Error', { error: error.message });
       crashlytics().recordError(error);
     }
 

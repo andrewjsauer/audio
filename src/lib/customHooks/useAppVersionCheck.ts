@@ -32,7 +32,7 @@ const useAppVersionCheck = () => {
     setIsPromptOpen(needUpdate);
     setCloudVersion(cloud);
 
-    trackEvent('app_version_check', { deviceVersion, cloudVersion: cloud });
+    trackEvent('App Version Check Event', { deviceVersion, cloudVersion: cloud });
   };
 
   const promptForUpdate = () => {
@@ -43,7 +43,7 @@ const useAppVersionCheck = () => {
     });
 
     if (!url) {
-      trackEvent('app_version_check_error', {
+      trackEvent('App Version Check Error', {
         error: 'App store URL is not defined for this platform',
       });
       return;
@@ -59,7 +59,7 @@ const useAppVersionCheck = () => {
             Linking.canOpenURL(url)
               .then((supported) => {
                 if (!supported) {
-                  trackEvent('app_version_check_error', {
+                  trackEvent('App Version Check Error', {
                     error: "Can't handle URL:",
                   });
                   return Promise.reject(new Error(`Can't handle URL: ${url}`));
@@ -67,7 +67,7 @@ const useAppVersionCheck = () => {
                 setIsPromptOpen(false);
                 return Linking.openURL(url);
               })
-              .catch((err) => trackEvent('app_version_check_error', { error: err.message })),
+              .catch((err) => trackEvent('App Version Check Error', { error: err.message })),
         },
       ],
       { cancelable: false },
@@ -81,12 +81,24 @@ const useAppVersionCheck = () => {
     dispatch(shouldUpdateAppVersion(needUpdate));
     setIsPromptOpen(needUpdate);
 
-    if (needUpdate) promptForUpdate();
+    if (needUpdate) {
+      trackEvent('Need Update Prompt Triggered', {
+        from: 'useEffect',
+        deviceVersion,
+        cloudVersion,
+      });
+      promptForUpdate();
+    }
   }, [deviceVersion, cloudVersion]);
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: string) => {
       if (nextAppState === 'active' && shouldUpdateApp && !isPromptOpen) {
+        trackEvent('Need Update Prompt Triggered', {
+          from: 'appState',
+          deviceVersion,
+          cloudVersion,
+        });
         promptForUpdate();
       }
     };
@@ -110,7 +122,7 @@ const useAppVersionCheck = () => {
               }, 1000 * 8); // 8 seconds
             }
           },
-          (error) => trackEvent('app_version_check_error', { error: error.message }),
+          (error) => trackEvent('App Version Check Error', { error: error.message }),
         );
     }
 

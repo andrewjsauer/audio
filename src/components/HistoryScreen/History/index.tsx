@@ -40,13 +40,13 @@ function HistoryScreenContainer() {
 
   const handleRetry = () => {
     if (lastFailedAction && lastFailedAction.type === fetchHistoryData.typePrefix) {
-      trackEvent('retry_button_clicked', {
+      trackEvent('Retry Button Tapped', {
         action: lastFailedAction.type,
       });
 
       dispatch(fetchHistoryData());
     } else if (lastFailedAction && lastFailedAction.type === fetchMoreHistoryData.typePrefix) {
-      trackEvent('retry_button_clicked', {
+      trackEvent('Retry Button Tapped', {
         action: lastFailedAction.type,
       });
 
@@ -55,12 +55,12 @@ function HistoryScreenContainer() {
   };
 
   const handleEndReached = () => {
-    trackEvent('end_reached', { action: 'fetch_more_history_data' });
+    trackEvent('History List End Reached', { action: 'fetch_more_history_data' });
     dispatch(fetchMoreHistoryData());
   };
 
   return (
-    <Layout titleKey="historyScreen.title" screen="history_screen">
+    <Layout titleKey="historyScreen.title" screen="History Screen">
       {!isSubscribed && <NonSubscriberNotification />}
       <HistoryScreen
         error={error}

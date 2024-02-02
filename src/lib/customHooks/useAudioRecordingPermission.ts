@@ -16,16 +16,44 @@ const useAudioRecordingPermission = () => {
   const [permissionDenied, setPermissionDenied] = useState(false);
   const [isInitialCheck, setIsInitialCheck] = useState(true);
 
-  const handlePermissionStatus = (status: string) => {
-    setIsPermissionGranted(status === RESULTS.GRANTED);
+  const handlePermissionStatus = (status: any) => {
+    if (Platform.OS === 'android') {
+      const allPermissionsGranted = Object.values(status).every(
+        (result) => result === RESULTS.GRANTED,
+      );
+      setIsPermissionGranted(allPermissionsGranted);
+    } else {
+      setIsPermissionGranted(status === RESULTS.GRANTED);
+    }
 
     if (!isInitialCheck) {
-      setPermissionDenied(status === RESULTS.DENIED || status === RESULTS.BLOCKED);
+      const permission =
+        Platform.OS === 'android'
+          ? Object.values(status).some(
+              (result) => result === RESULTS.DENIED || result === RESULTS.BLOCKED,
+            )
+          : status === RESULTS.DENIED || status === RESULTS.BLOCKED;
+      setPermissionDenied(permission);
     }
   };
 
   const checkAudioPermission = async () => {
-    const status = await check(PERMISSIONS.IOS.MICROPHONE);
+    let status;
+
+    if (Platform.OS === 'android') {
+      const writeStatus = await check(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
+      const readStatus = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+      const recordStatus = await check(PERMISSIONS.ANDROID.RECORD_AUDIO);
+
+      status = {
+        [PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]: writeStatus,
+        [PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE]: readStatus,
+        [PERMISSIONS.ANDROID.RECORD_AUDIO]: recordStatus,
+      };
+    } else {
+      status = await check(PERMISSIONS.IOS.MICROPHONE);
+    }
+
     handlePermissionStatus(status);
     setIsInitialCheck(false);
   };

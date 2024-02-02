@@ -26,7 +26,7 @@ function Layout({
   const navigation = useNavigation();
 
   const handleGoBack = () => {
-    trackEvent(`${screen}_back_clicked`);
+    trackEvent(`${screen} Back Button Tapped`);
     navigation.goBack();
   };
 

@@ -28,7 +28,6 @@ import {
   Benefit2SubDescription,
   BenefitContainer,
   ColorCircle,
-  ColorCircleText,
   ColorTextContainer,
   Container,
   Footer,
@@ -54,19 +53,19 @@ function TrialScreen() {
   const userData = useSelector(selectUserData);
 
   useEffect(() => {
-    trackEvent('Trial Screen Seen');
-    if (!partnerData) {
+    trackEvent('Free Trial Screen Viewed');
+    if (!partnerData && user?.uid) {
       dispatch(fetchPartnerData(user.uid));
     }
   }, []);
 
   const handlePurchase = () => {
-    trackEvent('start_trial_button_clicked');
+    trackEvent('Start Trail Button Tapped');
     dispatch(purchaseProduct({ user, partnerData, productIdentifier: 'dq_999_1m_1m0' }));
   };
 
   const handleRestorePurchases = () => {
-    trackEvent('restore_purchases_button_clicked');
+    trackEvent('Restore Button Tapped');
     dispatch(restorePurchases());
   };
 

@@ -21,13 +21,16 @@ function RelationshipTypeScreen() {
 
   const handleChange = (selectedType: string) => {
     if (type !== selectedType) {
-      trackEvent('relationship_type_selected', { type: selectedType });
+      trackEvent('Relationship Status Changed', { type: selectedType });
       dispatch(updatePartnership({ id, partnershipDetails: { type: selectedType } }));
     }
   };
 
   return (
-    <Layout titleKey="accountScreen.relationshipTypeScreen.title" screen="color_account_screen">
+    <Layout
+      titleKey="accountScreen.relationshipTypeScreen.title"
+      screen="Relationship Status Screen"
+    >
       {isLoading ? (
         <LoadingView />
       ) : (

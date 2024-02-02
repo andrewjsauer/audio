@@ -23,12 +23,12 @@ function Layout({
   const { t } = useTranslation();
 
   const handleNavigateToSettings = () => {
-    trackEvent('settings_button_clicked');
+    trackEvent('Settings Button Tapped');
     navigation.navigate(AppScreens.AccountScreen);
   };
 
   const handleNavigateToHistory = () => {
-    trackEvent('view_history_button_clicked');
+    trackEvent('History Button Tapped');
     navigation.navigate(AppScreens.HistoryScreen);
   };
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
@@ -20,10 +20,6 @@ function RelationshipTypeScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    trackEvent('Relationship Type Screen Seen');
-  }, []);
-
   const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =
     useAuthFlow();
 
@@ -39,10 +35,11 @@ function RelationshipTypeScreen() {
         }),
       );
 
-      trackEvent('relationship_type_empty_error');
+      trackEvent('Relationship Status Submitted Error');
       return;
     }
 
+    trackEvent('Relationship Status Submitted');
     goToNextStep();
   };
 

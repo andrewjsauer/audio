@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import i18n from 'i18next';
@@ -18,10 +18,6 @@ function RelationshipDateScreen() {
   const dispatch = useDispatch();
   const currentDate = new Date();
 
-  useEffect(() => {
-    trackEvent('Relationship Date Screen Seen');
-  }, []);
-
   const { goToNextStep, goToPreviousStep, handlePartnershipDetails, partnershipDetails } =
     useAuthFlow();
 
@@ -37,10 +33,11 @@ function RelationshipDateScreen() {
         }),
       );
 
-      trackEvent('relationship_date_empty_error');
+      trackEvent('Relationship Start Date Submitted Error');
       return;
     }
 
+    trackEvent('Relationship Start Date Submitted');
     goToNextStep();
   };
 

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 
 import { UserDataType, PartnershipUserDataType } from '@lib/types';
-import { trackEvent } from '@lib/analytics';
 
 import { AppDispatch } from '@store/index';
 import { selectUserId } from '@store/auth/selectors';

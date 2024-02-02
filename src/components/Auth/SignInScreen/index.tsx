@@ -40,8 +40,6 @@ function SignInScreen() {
   const confirm = useSelector(selectConfirm);
 
   useEffect(() => {
-    trackEvent('Sign In Screen Seen');
-
     if (user) dispatch(setUser(null));
     if (code) dispatch(setCode(''));
     if (confirm) dispatch(setConfirm(null));
@@ -50,6 +48,11 @@ function SignInScreen() {
     const anonymousId = uuidv4();
     trackIdentify(anonymousId);
   }, []);
+
+  const handleSubmit = () => {
+    trackEvent('Sign In Button Tapped');
+    goToNextStep();
+  };
 
   return (
     <Layout isHeaderEnabled={false}>
@@ -62,7 +65,7 @@ function SignInScreen() {
         <FooterContainer>
           <LegalContainer>
             <ButtonWrapper>
-              <Button mode="dark" text={t('auth.signIn')} onPress={() => goToNextStep()} />
+              <Button mode="dark" text={t('auth.signIn')} onPress={handleSubmit} />
             </ButtonWrapper>
             <LegalText>{t('auth.signInScreen.terms')}</LegalText>
             <LegalButtonContainer>

@@ -25,7 +25,4 @@ const config = {
   },
 };
 
-module.exports = mergeConfig(
-  mergeConfig(defaultConfig, svgTransformerConfig),
-  config,
-);
+module.exports = mergeConfig(mergeConfig(defaultConfig, svgTransformerConfig), config);

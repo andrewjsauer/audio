@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
@@ -18,10 +18,6 @@ function PartnerNameScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    trackEvent('Partner Name Screen Seen');
-  }, []);
-
   const { goToNextStep, partnerDetails, userDetails, handlePartnerDetails } = useAuthFlow();
   const { name, color } = partnerDetails;
   const { color: colorOffLimits } = userDetails;
@@ -40,7 +36,7 @@ function PartnerNameScreen() {
         }),
       );
 
-      trackEvent('partners_color_empty_error');
+      trackEvent('Color Submitted User Error');
       return;
     }
 
@@ -53,10 +49,11 @@ function PartnerNameScreen() {
         }),
       );
 
-      trackEvent('partner_name_empty_error');
+      trackEvent('Name Submitted Error');
       return;
     }
 
+    trackEvent('Name of Partner User Submitted');
     goToNextStep();
   };
 

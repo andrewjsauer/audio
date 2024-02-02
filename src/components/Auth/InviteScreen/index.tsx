@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import PhoneInputProp from 'react-native-phone-number-input';
@@ -21,10 +21,6 @@ function InviteScreen() {
 
   const phoneInputRef = useRef<PhoneInputProp>(null);
   const isLoading = useSelector(selectIsLoading);
-
-  useEffect(() => {
-    trackEvent('Invite Partner Screen Seen');
-  }, []);
 
   const { goToNextStep, goToPreviousStep, partnerDetails, handlePartnerDetails } = useAuthFlow();
 
@@ -54,6 +50,7 @@ function InviteScreen() {
       return;
     }
 
+    trackEvent('Phone Number of Partner Submitted');
     goToNextStep();
   };
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
@@ -20,10 +20,6 @@ function UserNameScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    trackEvent('Use rName Screen Seen');
-  }, []);
-
   const { goToNextStep, userDetails, handleUserDetails } = useAuthFlow();
   const { name, color } = userDetails;
 
@@ -37,7 +33,7 @@ function UserNameScreen() {
         }),
       );
 
-      trackEvent('users_color_empty_error');
+      trackEvent('Color Submitted User Error');
       return;
     }
 
@@ -50,10 +46,11 @@ function UserNameScreen() {
         }),
       );
 
-      trackEvent('users_name_empty_error');
+      trackEvent('Name Submitted User Error');
       return;
     }
 
+    trackEvent('Name Submitted');
     goToNextStep();
   };
 

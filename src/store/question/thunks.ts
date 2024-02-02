@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import firestore from '@react-native-firebase/firestore';
 import functions from '@react-native-firebase/functions';
 import i18n from 'i18next';
 import moment from 'moment-timezone';
@@ -30,12 +29,6 @@ export const calculateQuestionIndex = (createdAt: Date, timeZone: string) => {
 
   let index = startOfDayToday.diff(startOfDayCreatedAt, 'days');
   index = Math.max(0, index);
-
-  trackEvent('calculate_question_index', {
-    today: startOfDayToday,
-    createdAt: startOfDayCreatedAt,
-    index,
-  });
 
   return index;
 };
@@ -71,7 +64,6 @@ const generateQuestion = async ({
   usersLanguage,
 }: any) => {
   const questionIndex = calculateQuestionIndex(partnershipData?.createdAt, timeZone);
-  trackEvent('generate_question', { questionIndex });
 
   const payload = {
     questionIndex,
@@ -87,10 +79,10 @@ const generateQuestion = async ({
   let data = null;
 
   try {
-    ({ data } = await functions().httpsCallable('generateQuestion')(payload));
+    ({ data } = await functions().httpsCallable('generateQuestionModified')(payload));
     return formatQuestion(data, timeZone);
   } catch (error) {
-    trackEvent('question_generation_error', { error });
+    trackEvent('Generate Question Failed', { error });
 
     return null;
   }
@@ -116,7 +108,7 @@ export const fetchLatestQuestion = createAsyncThunk<
         const currentQuestionLocalCreatedAt = moment(currentQuestion.createdAt).tz(timeZone);
 
         if (currentQuestionLocalCreatedAt >= today) {
-          trackEvent('current_question_within_date_limit', {
+          trackEvent('Question Current', {
             currentQuestion,
             currentQuestionLocalCreatedAt,
             today,
@@ -131,68 +123,12 @@ export const fetchLatestQuestion = createAsyncThunk<
           };
         }
 
-        trackEvent('current_question_out_of_date', {
+        trackEvent('Current Question Expired', {
           currentQuestion,
           currentQuestionLocalCreatedAt,
           today,
         });
       }
-
-      const queriedDescQuestionSnapshot = await firestore()
-        .collection('questions')
-        .where('partnershipId', '==', partnershipData?.id)
-        .orderBy('createdAt', 'desc')
-        .limit(1)
-        .get();
-
-      if (queriedDescQuestionSnapshot.empty) {
-        trackEvent('fetched_desc_question_not_found');
-
-        const newQuestion = await generateQuestion({
-          partnerData,
-          partnershipData,
-          timeZone,
-          userData,
-          usersLanguage: currentLanguage,
-        });
-
-        return {
-          question: newQuestion,
-          isNewQuestion: true,
-        } as {
-          question: QuestionType;
-          isNewQuestion: boolean;
-        };
-      }
-
-      const doc = queriedDescQuestionSnapshot.docs[0];
-      const fetchedQuestionData = {
-        ...doc.data(),
-        id: doc.id,
-        createdAt: formatCreatedAt(doc.data().createdAt, timeZone),
-      };
-
-      const fetchQuestionCreatedAtLocal = moment(fetchedQuestionData.createdAt).tz(timeZone);
-      if (fetchQuestionCreatedAtLocal >= today) {
-        trackEvent('fetched_desc_question_within_date_limit', {
-          fetchedQuestionData,
-          today,
-        });
-
-        return {
-          question: fetchedQuestionData,
-          isNewQuestion: true,
-        } as {
-          question: QuestionType;
-          isNewQuestion: boolean;
-        };
-      }
-
-      trackEvent('fetched_desc_question_out_of_date', {
-        fetchQuestionCreatedAtLocal,
-        fetchedQuestionData,
-        today,
-      });
 
       const newQuestion = await generateQuestion({
         partnerData,
@@ -202,6 +138,8 @@ export const fetchLatestQuestion = createAsyncThunk<
         usersLanguage: currentLanguage,
       });
 
+      trackEvent('Question Viewed', { ...newQuestion });
+
       return {
         question: newQuestion,
         isNewQuestion: true,
@@ -210,7 +148,7 @@ export const fetchLatestQuestion = createAsyncThunk<
         isNewQuestion: boolean;
       };
     } catch (error) {
-      trackEvent('question_fetch_error', { error });
+      trackEvent('Fetch Latest Question Failed', { error });
       return rejectWithValue(error);
     }
   },

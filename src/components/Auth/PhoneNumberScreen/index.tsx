@@ -31,10 +31,6 @@ function PhoneNumberScreenContainer() {
   const user = useSelector(selectUser);
 
   useEffect(() => {
-    trackEvent('Phone Number Screen Seen');
-  }, []);
-
-  useEffect(() => {
     if (user) goToNextStep();
   }, [user]);
 
@@ -62,7 +58,7 @@ function PhoneNumberScreenContainer() {
       return;
     }
 
-    trackEvent('phone_number_submit_pressed');
+    trackEvent('Phone Number Submitted');
     dispatch(submitPhoneNumber(phoneNumber));
   };
 
@@ -72,6 +68,7 @@ function PhoneNumberScreenContainer() {
       return;
     }
 
+    trackEvent('Verification Code Submitted');
     dispatch(verifyCode({ confirm, code, phoneNumber }));
   };
 

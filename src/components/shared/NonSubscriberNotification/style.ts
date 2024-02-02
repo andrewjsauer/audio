@@ -33,6 +33,7 @@ export const Button = styled.TouchableOpacity`
   justify-content: center;
   margin-right: 12px;
   padding: 6px 18px;
+  min-width: 128px;
 `;
 
 export const ButtonText = styled.Text`

@@ -35,16 +35,16 @@ function NameScreen() {
         }),
       );
 
+      trackEvent('Name Changed');
       setUpdateAttempted(false);
     }
   }, [name, newName, dispatch, updateAttempted]);
 
   const handleSubmit = () => {
-    trackEvent('name_change_submit_clicked');
-
     if (newName.trim() && name !== newName) {
       dispatch(updateUser({ id, userDetails: { name: newName.trim() } }));
       setUpdateAttempted(true);
+      trackEvent('New Name Save Button Tapped');
     } else {
       dispatch(
         showNotification({
@@ -60,7 +60,7 @@ function NameScreen() {
   };
 
   return (
-    <Layout titleKey="accountScreen.nameScreen.title" screen="name_account_screen">
+    <Layout titleKey="accountScreen.nameScreen.title" screen="Name Screen">
       {isLoading ? (
         <LoadingView />
       ) : (

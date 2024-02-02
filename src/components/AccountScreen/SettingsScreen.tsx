@@ -60,7 +60,7 @@ function SettingsScreen() {
   }, []);
 
   const handleLogout = () => {
-    trackEvent('sign_out_button_clicked');
+    trackEvent('Sign Out Button Tapped');
     dispatch(
       signOut({
         userId: userData?.id,
@@ -70,32 +70,32 @@ function SettingsScreen() {
   };
 
   const handleNameChange = () => {
-    trackEvent('name_change_button_clicked');
+    trackEvent('Account Name Button Tapped');
     navigation.navigate(AccountScreens.NameScreen);
   };
 
   const handleColorChange = () => {
-    trackEvent('color_change_button_clicked');
+    trackEvent('Account Color Button Tapped');
     navigation.navigate(AccountScreens.ColorScreen);
   };
 
   const handleLanguageChange = () => {
-    trackEvent('language_change_button_clicked');
+    trackEvent('Account Language Button Tapped');
     navigation.navigate(AccountScreens.LanguageScreen);
   };
 
   const handleRelationshipTypeChange = () => {
-    trackEvent('relationship_type_change_button_clicked');
+    trackEvent('Account Relationship Type Button Tapped');
     navigation.navigate(AccountScreens.RelationshipTypeScreen);
   };
 
   const handleTimeZoneTypeChange = () => {
-    trackEvent('timeZone_change_button_clicked');
+    trackEvent('Account Time Zone Button Tapped');
     navigation.navigate(AccountScreens.TimeZoneScreen);
   };
 
   const handleDeleteAccount = () => {
-    trackEvent('delete_account_button_clicked');
+    trackEvent('Delete Button Tapped');
 
     Alert.alert(
       t('accountScreen.deleteAccountModal.title'),
@@ -108,11 +108,12 @@ function SettingsScreen() {
         {
           text: t('accountScreen.deleteAccountModal.delete'),
           onPress: () => {
+            trackEvent('Confirm Account Deleted Tapped');
             dispatch(
               deleteRelationship({
                 userId: userData?.id,
                 partnerId: partnerData?.id,
-                partnershipId: userData?.partnershipId,
+                partnershipId: partnershipData?.id,
               }),
             );
           },
@@ -144,7 +145,7 @@ function SettingsScreen() {
   }, [types, partnershipData]);
 
   return (
-    <Layout titleKey="accountScreen.title" screen="account_screen">
+    <Layout titleKey="accountScreen.title" screen="Settings Screen">
       {isLoading ? (
         <LoadingView />
       ) : (

@@ -73,7 +73,7 @@ export const uiSlice = createSlice({
       .addCase(generatePartnership.rejected, (state, action) => {
         state.notification = {
           title: 'errors.pleaseTryAgain',
-          description: action.payload as string,
+          description: action.payload?.message as string,
           type: 'error',
         };
       })

@@ -134,11 +134,6 @@ export const ColorCircle = styled.View<{ color: string; isSecond?: boolean }>`
   `}
 `;
 
-export const ColorCircleText = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.xsmall};
-  color: ${(p) => p.theme.colors.white};
-`;
-
 export const ColorTextContainer = styled.View`
   flex-direction: row;
   align-items: center;

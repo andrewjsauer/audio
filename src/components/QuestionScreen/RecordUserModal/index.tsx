@@ -73,7 +73,7 @@ function RecordUserModal() {
 
   useEffect(() => {
     if (userRecording) {
-      trackEvent('question_recorded', { question_id: currentQuestion.id });
+      trackEvent('Answer Recorded', { question_id: currentQuestion.id });
       setTimeout(() => navigation.goBack(), 0);
     }
   }, [userRecording]);
@@ -126,7 +126,7 @@ function RecordUserModal() {
   };
 
   const onStopRecord = async () => {
-    trackEvent('question_record_stopped', { question_id: currentQuestion.id });
+    trackEvent('Record Stopped', { question_id: currentQuestion.id });
 
     const result = await audioRecorderPlayer.stopRecorder();
     audioRecorderPlayer.removeRecordBackListener();
@@ -143,7 +143,7 @@ function RecordUserModal() {
   };
 
   const onStartRecord = async () => {
-    trackEvent('question_record_started', { question_id: currentQuestion.id });
+    trackEvent('Record Started', { question_id: currentQuestion.id });
 
     const audioSet: AudioSet = {
       AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
@@ -157,7 +157,7 @@ function RecordUserModal() {
 
     audioRecorderPlayer.addRecordBackListener((e: any) => {
       if (e.currentPosition >= MAX_RECORDING_DURATION) {
-        trackEvent('question_record_max_duration_reached', { question_id: currentQuestion.id });
+        trackEvent('Record Max Duration Reached', { question_id: currentQuestion.id });
 
         setMaxRecordTime(formatTime(e.currentPosition));
         onStopRecord();
@@ -169,7 +169,7 @@ function RecordUserModal() {
         e.currentPosition < COUNTDOWN_START + 1000 &&
         !hasVibratedRef.current
       ) {
-        trackEvent('question_record_countdown_started', { question_id: currentQuestion.id });
+        trackEvent('Record Countdown Started', { question_id: currentQuestion.id });
         Vibration.vibrate([500, 500, 500]);
         hasVibratedRef.current = true;
       }
@@ -194,7 +194,7 @@ function RecordUserModal() {
 
   const onRedo = async () => {
     if (isPlaying) {
-      trackEvent('question_record_redo', { question_id: currentQuestion.id });
+      trackEvent('Record Redo', { question_id: currentQuestion.id });
 
       await audioRecorderPlayer.stopPlayer();
       setIsPlaying(false);
@@ -208,7 +208,7 @@ function RecordUserModal() {
 
   const onPlayBack = async () => {
     if (!recordPath) return;
-    trackEvent('question_record_playback', { question_id: currentQuestion.id });
+    trackEvent('Record Playback Started', { question_id: currentQuestion.id });
     setIsPlaying(true);
 
     await audioRecorderPlayer.startPlayer(recordPath);
@@ -223,7 +223,7 @@ function RecordUserModal() {
   };
 
   const onStopPlay = async () => {
-    trackEvent('question_record_playback_stopped', { question_id: currentQuestion.id });
+    trackEvent('Record Playback Stopped', { question_id: currentQuestion.id });
 
     await audioRecorderPlayer.stopPlayer();
     audioRecorderPlayer.removePlayBackListener();
@@ -242,6 +242,8 @@ function RecordUserModal() {
     }
 
     if (recordPath) {
+      trackEvent('Record Submitted', { question_id: currentQuestion.id });
+
       dispatch(
         saveUserRecording({
           duration: maxRecordTime,
@@ -256,20 +258,16 @@ function RecordUserModal() {
 
   const handlePlayPress = () => {
     if (isPlaying) {
-      trackEvent('question_record_stop_play', { question_id: currentQuestion.id });
       onStopPlay();
     } else {
-      trackEvent('question_record_play_back', { question_id: currentQuestion.id });
       onPlayBack();
     }
   };
 
   const handleRecordPress = () => {
     if (isRecording) {
-      trackEvent('question_record_stop', { question_id: currentQuestion.id });
       onStopRecord();
     } else {
-      trackEvent('question_record_start', { question_id: currentQuestion.id });
       onStartRecord();
     }
   };
