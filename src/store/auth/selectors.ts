@@ -14,7 +14,7 @@ export const selectUserId = createSelector(selectUser, (user) => user?.uid);
 
 export const selectIsUserRegistered = createSelector(
   selectUserData,
-  (userData) => !!userData && userData.isRegistered,
+  (userData) => (!!userData && userData.isRegistered) ?? false,
 );
 
 export const selectPartnershipId = createSelector(

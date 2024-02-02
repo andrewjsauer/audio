@@ -7,10 +7,15 @@ import { UserDataType } from '@lib/types';
 
 import { AppDispatch } from '@store/index';
 import { setUserData } from '@store/auth/slice';
-import { initializeSession } from '@store/app/thunks';
+import { initializeSession, signOut } from '@store/app/thunks';
 
-import { selectUserId, selectUser } from '@store/auth/selectors';
-import { trackIdentify } from '@lib/analytics';
+import {
+  selectUser,
+  selectUserId,
+  selectHasSubscribed,
+  selectIsUserRegistered,
+} from '@store/auth/selectors';
+import { trackEvent, trackIdentify } from '@lib/analytics';
 
 import usePartnerSubscription from '@lib/customHooks/usePartnerSubscription';
 import usePartnershipSubscription from '@lib/customHooks/usePartnershipSubscription';
@@ -21,6 +26,8 @@ const useInitializeSession = () => {
 
   const user = useSelector(selectUser);
   const userId = useSelector(selectUserId);
+  const hasUserSubscribed = useSelector(selectHasSubscribed);
+  const isUserRegistered = useSelector(selectIsUserRegistered);
 
   useAuthSubscription();
 
@@ -39,6 +46,15 @@ const useInitializeSession = () => {
 
             dispatch(setUserData(data));
             trackIdentify(data);
+          } else if (snapshot && snapshot.empty && hasUserSubscribed && isUserRegistered) {
+            trackEvent('User Partnership Deletion Detected');
+
+            dispatch(
+              signOut({
+                isDelete: true,
+                userId,
+              }),
+            );
           }
         });
 
@@ -48,7 +64,7 @@ const useInitializeSession = () => {
     return () => {
       userUnsubscribe();
     };
-  }, [userId, dispatch]);
+  }, [userId, hasUserSubscribed, isUserRegistered]);
 
   usePartnerSubscription();
 
