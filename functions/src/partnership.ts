@@ -32,6 +32,15 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
   const userId = context.auth.uid;
 
   try {
+    if (userDetails.phoneNumber === partnerDetails.phoneNumber) {
+      functions.logger.error('Phone numbers are the same');
+      throw new functions.https.HttpsError(
+        'invalid-argument',
+        'Phone numbers are the same',
+        userDetails.phoneNumber,
+      );
+    }
+
     const { partnerId, partnerData } = await getPartnerIdByPhoneNumber(partnerDetails.phoneNumber);
 
     if (partnerData) {
