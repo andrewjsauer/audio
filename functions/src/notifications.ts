@@ -3,6 +3,8 @@ import * as admin from 'firebase-admin';
 
 import moment from 'moment-timezone';
 
+import { formatCreatedAt } from './utils/dateUtils';
+
 function getTimeZonesForReminder() {
   const timeZones = moment.tz.names();
 
@@ -48,11 +50,36 @@ async function sendAfternoonReminderNotificationIfNeeded(userDoc: any, timeZone:
     const startOfToday = moment().tz(timeZone).startOf('day');
 
     if (lastActiveAt.isBefore(startOfToday)) {
+      let title = 'Daily Q’s';
+      let body = 'Today’s question is ready!';
+
+      if (userData?.partnershipId) {
+        const queriedDescQuestionSnapshot = await db
+          .collection('questions')
+          .where('partnershipId', '==', userData?.partnershipId)
+          .orderBy('createdAt', 'desc')
+          .limit(1)
+          .get();
+
+        if (!queriedDescQuestionSnapshot.empty) {
+          const questionSnapshot = queriedDescQuestionSnapshot.docs[0];
+          const questionData = questionSnapshot.data();
+
+          const today = startOfToday.toDate();
+          const questionCreatedAtLocal = formatCreatedAt(questionData?.createdAt, timeZone);
+
+          if (questionCreatedAtLocal >= today) {
+            title = questionData?.text ? 'Daily Q’s - Today’s Question' : 'Daily Q’s';
+            body = questionData?.text || 'Today’s question is ready!';
+          }
+        }
+      }
+
       const response = await admin.messaging().sendEachForMulticast({
         tokens: userData.deviceIds,
         notification: {
-          title: 'Daily Q’s',
-          body: 'Today’s question is ready!',
+          title,
+          body,
         },
       });
 

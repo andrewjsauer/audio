@@ -264,7 +264,11 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
     const smsRef = admin.firestore().collection('sms').doc();
     batch.set(smsRef, {
       to: partnerDetails.phoneNumber,
-      body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join Daily Q’s. Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822 😊`,
+      body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join Daily Q’s. Have fun 😊!
+        
+      iOS: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822
+      Android: https://play.google.com/store/apps/details?id=com.sauerapple.audio
+      `,
     });
 
     await batch.commit();
