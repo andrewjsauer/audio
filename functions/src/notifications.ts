@@ -84,7 +84,7 @@ async function sendAfternoonReminderNotificationIfNeeded(userDoc: any, timeZone:
       });
 
       functions.logger.info(
-        `Afternoon reminder sent successfully for user: ${userId}, response: ${JSON.stringify(
+        `Afternoon reminder sent successfully for user: ${userId}, body: ${body}, response: ${JSON.stringify(
           response,
         )}`,
       );
