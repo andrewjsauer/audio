@@ -18,7 +18,11 @@ function getTimeZonesForReminder() {
   });
 }
 
-async function sendAfternoonReminderNotificationIfNeeded(userDoc: any, timeZone: string) {
+async function sendAfternoonReminderNotificationIfNeeded(
+  userDoc: any,
+  timeZone: string,
+  questionId: string,
+) {
   const db = admin.firestore();
 
   const userId = userDoc.data()?.userId;
@@ -44,19 +48,27 @@ async function sendAfternoonReminderNotificationIfNeeded(userDoc: any, timeZone:
   }
 
   try {
-    const usersLastActiveAt = userData.lastActiveAt?._seconds || userData.lastActiveAt?.seconds;
+    const recordingsSnapshot = await db
+      .collection('recordings')
+      .where('questionId', '==', questionId)
+      .get();
 
+    const areRecordingsEmpty = recordingsSnapshot.empty;
+    const recordings = !areRecordingsEmpty ? recordingsSnapshot.docs.map((doc) => doc.data()) : [];
+    const hasUserRecorded = recordings.some((recording) => recording.userId === userId);
+
+    const usersLastActiveAt = userData.lastActiveAt?._seconds || userData.lastActiveAt?.seconds;
     const lastActiveAt = moment(usersLastActiveAt * 1000).tz(timeZone);
     const startOfToday = moment().tz(timeZone).startOf('day');
 
-    if (lastActiveAt.isBefore(startOfToday)) {
-      let title = 'Daily Q’s';
+    if (lastActiveAt.isBefore(startOfToday) || !hasUserRecorded) {
       let body = 'Today’s question is ready!';
+      let apnsPayload;
 
-      if (userData?.partnershipId) {
+      if (userData.partnershipId) {
         const queriedDescQuestionSnapshot = await db
           .collection('questions')
-          .where('partnershipId', '==', userData?.partnershipId)
+          .where('partnershipId', '==', userData.partnershipId)
           .orderBy('createdAt', 'desc')
           .limit(1)
           .get();
@@ -66,11 +78,23 @@ async function sendAfternoonReminderNotificationIfNeeded(userDoc: any, timeZone:
           const questionData = questionSnapshot.data();
 
           const today = startOfToday.toDate();
-          const questionCreatedAtLocal = formatCreatedAt(questionData?.createdAt, timeZone);
+          const questionCreatedAtLocal = formatCreatedAt(questionData.createdAt, timeZone);
 
           if (questionCreatedAtLocal >= today) {
-            title = questionData?.text ? 'Daily Q’s - Today’s Question' : 'Daily Q’s';
-            body = questionData?.text || 'Today’s question is ready!';
+            body = questionData.text || 'Today’s question is ready!';
+            apnsPayload = questionData.text
+              ? {
+                  apns: {
+                    payload: {
+                      aps: {
+                        alert: {
+                          subtitle: 'Today’s Question',
+                        },
+                      },
+                    },
+                  },
+                }
+              : undefined;
           }
         }
       }
@@ -78,9 +102,10 @@ async function sendAfternoonReminderNotificationIfNeeded(userDoc: any, timeZone:
       const response = await admin.messaging().sendEachForMulticast({
         tokens: userData.deviceIds,
         notification: {
-          title,
+          title: 'Daily Q’s',
           body,
         },
+        ...apnsPayload,
       });
 
       functions.logger.info(
@@ -323,9 +348,13 @@ async function handleEveningLogic(
   }
 }
 
-async function handleAfternoonLogic(partnershipUsers: any, timeZone: string) {
+async function handleAfternoonLogic(
+  partnershipUsers: any,
+  timeZone: string,
+  latestQuestionId: string,
+) {
   const notificationPromises = partnershipUsers.docs.map((userDoc: any) =>
-    sendAfternoonReminderNotificationIfNeeded(userDoc, timeZone),
+    sendAfternoonReminderNotificationIfNeeded(userDoc, timeZone, latestQuestionId),
   );
 
   await Promise.all(notificationPromises);
@@ -358,7 +387,7 @@ async function processPartnership(partnershipDoc: any) {
     const isEvening = currentTime.hour() === 20 && currentTime.minute() <= 5;
 
     if (isAfternoon) {
-      await handleAfternoonLogic(partnershipUsers, timeZone);
+      await handleAfternoonLogic(partnershipUsers, timeZone, latestQuestionId);
     } else if (isEvening) {
       await handleEveningLogic(partnershipUsers, timeZone, latestQuestionId);
     }
