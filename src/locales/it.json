@@ -53,7 +53,8 @@
       "description": "Per favore, aggiorna all'ultima versione di Daily Q's per continuare a utilizzare l'app.",
       "buttonText": "Aggiornamento"
     },
-    "recordingSaveMemoryLimitExceeded": "La tua registrazione ha superato il limite massimo di memoria."
+    "recordingSaveMemoryLimitExceeded": "La tua registrazione ha superato il limite massimo di memoria.",
+    "offline": "Sei offline. Controlla la tua connessione a internet e riprova."
   },
   "browserScreen": {
     "title": "Browser"
@@ -103,7 +104,8 @@
       "title": "Cambia il fuso orario della tua relazione",
       "success": "Il fuso orario della tua relazione è stato aggiornato!"
     },
-    "partnershipUpdateSuccess": "I dettagli della tua relazione sono stati aggiornati!"
+    "partnershipUpdateSuccess": "I dettagli della tua relazione sono stati aggiornati!",
+    "relationshipLanguage": "Linguaggio delle relazioni"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

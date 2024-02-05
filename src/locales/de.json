@@ -53,7 +53,8 @@
       "description": "Bitte aktualisieren Sie die App auf die neueste Version von Daily Q's, um sie weiterhin verwenden zu können.",
       "buttonText": "Aktualisierung"
     },
-    "recordingSaveMemoryLimitExceeded": "Ihre Aufnahme hat den maximalen Speicherplatz überschritten."
+    "recordingSaveMemoryLimitExceeded": "Ihre Aufnahme hat den maximalen Speicherplatz überschritten.",
+    "offline": "Du bist offline. Bitte überprüfe deine Internetverbindung und versuche es erneut."
   },
   "browserScreen": {
     "title": "Browser"
@@ -103,7 +104,8 @@
       "title": "Ändern Sie Ihre Beziehung zur Zeitzone.",
       "success": "Deine Beziehungsuhrzeitzone wurde aktualisiert!"
     },
-    "partnershipUpdateSuccess": "Ihre Beziehungsdetails wurden aktualisiert!"
+    "partnershipUpdateSuccess": "Ihre Beziehungsdetails wurden aktualisiert!",
+    "relationshipLanguage": "Beziehungssprache"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

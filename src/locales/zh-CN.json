@@ -53,7 +53,8 @@
       "description": "请更新到最新版本的每日问题来继续使用该应用。",
       "buttonText": "更新"
     },
-    "recordingSaveMemoryLimitExceeded": "您的录音超过了最大存储限制。"
+    "recordingSaveMemoryLimitExceeded": "您的录音超过了最大存储限制。",
+    "offline": "您处于离线状态，请检查您的网络连接并重试。"
   },
   "browserScreen": {
     "title": "浏览器"
@@ -103,7 +104,8 @@
       "title": "调整你的关系时区",
       "success": "您的关系时区已经更新！"
     },
-    "partnershipUpdateSuccess": "您的关系细节已更新！"
+    "partnershipUpdateSuccess": "您的关系细节已更新！",
+    "relationshipLanguage": "关系语言"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

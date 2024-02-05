@@ -53,7 +53,8 @@
       "description": "অ্যাপ ব্যবহার করতে চালিয়ে যাওয়ার জন্য দৈনিক কিউসটে নতুনতম সংস্করণে আপডেট করুন।",
       "buttonText": "আপডেট করুন"
     },
-    "recordingSaveMemoryLimitExceeded": "আপনার রেকর্ডিংটি সর্বাধিক মেমোরি সীমা অতিক্রম করেছে।"
+    "recordingSaveMemoryLimitExceeded": "আপনার রেকর্ডিংটি সর্বাধিক মেমোরি সীমা অতিক্রম করেছে।",
+    "offline": "আপনি অফলাইনে আছেন। আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন।"
   },
   "browserScreen": {
     "title": "ব্রাউজার"
@@ -103,7 +104,8 @@
       "title": "আপনার সম্পর্কের সময় অঞ্চল পরিবর্তন করুন।",
       "success": "আপনার সম্পর্কের সময়ক্ষেত্র আপডেট হয়েছে!"
     },
-    "partnershipUpdateSuccess": "আপনার সম্পর্কের বিবরণ আপডেট করা হয়েছে!"
+    "partnershipUpdateSuccess": "আপনার সম্পর্কের বিবরণ আপডেট করা হয়েছে!",
+    "relationshipLanguage": "সম্পর্ক ভাষা"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

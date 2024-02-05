@@ -53,7 +53,8 @@
       "description": "Por favor, actualiza a la última versión de Daily Q's para seguir usando la aplicación.",
       "buttonText": "Actualización"
     },
-    "recordingSaveMemoryLimitExceeded": "Su grabación excedió el límite máximo de memoria."
+    "recordingSaveMemoryLimitExceeded": "Su grabación excedió el límite máximo de memoria.",
+    "offline": "Estás desconectado. Por favor, verifica tu conexión a internet e intenta de nuevo."
   },
   "browserScreen": {
     "title": "Navegador"
@@ -103,7 +104,8 @@
       "title": "Cambia la zona horaria de tu relación.",
       "success": "¡Se ha actualizado tu zona horaria de relación!"
     },
-    "partnershipUpdateSuccess": "¡Los detalles de tu relación han sido actualizados!"
+    "partnershipUpdateSuccess": "¡Los detalles de tu relación han sido actualizados!",
+    "relationshipLanguage": "Lenguaje de las relaciones"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

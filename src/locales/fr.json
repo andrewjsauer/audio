@@ -53,7 +53,8 @@
       "description": "Veuillez mettre à jour vers la dernière version de Daily Q's pour continuer à utiliser l'application.",
       "buttonText": "Mise à jour"
     },
-    "recordingSaveMemoryLimitExceeded": "Votre enregistrement a dépassé la limite maximale de mémoire."
+    "recordingSaveMemoryLimitExceeded": "Votre enregistrement a dépassé la limite maximale de mémoire.",
+    "offline": "Vous êtes hors ligne. Veuillez vérifier votre connexion internet et réessayer."
   },
   "browserScreen": {
     "title": "Navigateur"
@@ -103,7 +104,8 @@
       "title": "Changer le fuseau horaire de votre relation.",
       "success": "Votre fuseau horaire de relation a été mis à jour !"
     },
-    "partnershipUpdateSuccess": "Vos informations sur la relation ont été mises à jour !"
+    "partnershipUpdateSuccess": "Vos informations sur la relation ont été mises à jour !",
+    "relationshipLanguage": "Langage des relations"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

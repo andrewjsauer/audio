@@ -53,7 +53,8 @@
       "description": "Для продолжения использования приложения, пожалуйста, обновите его до последней версии Daily Q's.",
       "buttonText": "Обновление"
     },
-    "recordingSaveMemoryLimitExceeded": "Запись превысила максимальный лимит памяти."
+    "recordingSaveMemoryLimitExceeded": "Запись превысила максимальный лимит памяти.",
+    "offline": "Вы не в сети. Пожалуйста, проверьте ваше интернет-соединение и попробуйте снова."
   },
   "browserScreen": {
     "title": "Браузер"
@@ -103,7 +104,8 @@
       "title": "Измените часовой пояс вашего отношения.",
       "success": "Ваш часовой пояс отношений был обновлен!"
     },
-    "partnershipUpdateSuccess": "Информация о вашей связи была обновлена!"
+    "partnershipUpdateSuccess": "Информация о вашей связи была обновлена!",
+    "relationshipLanguage": "Язык отношений"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

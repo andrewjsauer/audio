@@ -53,7 +53,8 @@
       "description": "アプリを使用するには、Daily Q'sの最新バージョンにアップデートしてください。",
       "buttonText": "アップデート"
     },
-    "recordingSaveMemoryLimitExceeded": "録音が最大メモリ制限を超えました。"
+    "recordingSaveMemoryLimitExceeded": "録音が最大メモリ制限を超えました。",
+    "offline": "オフラインです。インターネット接続を確認して、もう一度試してください。"
   },
   "browserScreen": {
     "title": "ブラウザ"
@@ -103,7 +104,8 @@
       "title": "あなたの関係の時差を変更してください。",
       "success": "あなたの関係のタイムゾーンが更新されました！"
     },
-    "partnershipUpdateSuccess": "あなたの関係の詳細が更新されました！"
+    "partnershipUpdateSuccess": "あなたの関係の詳細が更新されました！",
+    "relationshipLanguage": "関係言語"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

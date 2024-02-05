@@ -53,7 +53,8 @@
       "description": "앱을 계속 사용하려면 최신 버전의 Daily Q's로 업데이트해주세요.",
       "buttonText": "업데이트하다"
     },
-    "recordingSaveMemoryLimitExceeded": "녹음이 최대 메모리 제한을 초과했습니다."
+    "recordingSaveMemoryLimitExceeded": "녹음이 최대 메모리 제한을 초과했습니다.",
+    "offline": "인터넷이 연결되지 않았습니다. 인터넷 연결 상태를 확인한 후 다시 시도해주세요."
   },
   "browserScreen": {
     "title": "브라우저"
@@ -103,7 +104,8 @@
       "title": "당신의 관계 시간대를 변경하세요.",
       "success": "당신의 관계 시간대가 업데이트되었습니다!"
     },
-    "partnershipUpdateSuccess": "당신의 관계 세부 사항이 업데이트되었습니다!"
+    "partnershipUpdateSuccess": "당신의 관계 세부 사항이 업데이트되었습니다!",
+    "relationshipLanguage": "관계 언어"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

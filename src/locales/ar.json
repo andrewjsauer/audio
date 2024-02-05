@@ -53,7 +53,8 @@
       "description": "يرجى تحديث تطبيق \"Daily Q's\" إلى أحدث إصدار للاستمرار في استخدام التطبيق.",
       "buttonText": "تحديث"
     },
-    "recordingSaveMemoryLimitExceeded": "تجاوز تسجيلك الحد الأقصى للذاكرة."
+    "recordingSaveMemoryLimitExceeded": "تجاوز تسجيلك الحد الأقصى للذاكرة.",
+    "offline": "أنت غير متصل بالإنترنت. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى."
   },
   "browserScreen": {
     "title": "المتصفح"
@@ -103,7 +104,8 @@
       "title": "قم بتغيير المنطقة الزمنية لعلاقتك",
       "success": "تم تحديث منطقة زمن علاقتك!"
     },
-    "partnershipUpdateSuccess": "تم تحديث تفاصيل علاقتك!"
+    "partnershipUpdateSuccess": "تم تحديث تفاصيل علاقتك!",
+    "relationshipLanguage": "لغة العلاقات"
   },
   "questionScreen": {
     "nonSubscriberScreen": {

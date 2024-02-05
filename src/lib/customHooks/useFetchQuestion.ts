@@ -10,6 +10,7 @@ const useFetchQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [isFirstMount, setIsFirstMount] = useState(true);
   const [appState, setAppState] = useState(AppState.currentState);
+
   const hasInitializedRef = useRef(false);
   const navigation = useNavigation();
 
