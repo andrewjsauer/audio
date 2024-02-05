@@ -184,12 +184,18 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
     const batch = admin.firestore().batch();
     const partnershipId = uuidv4();
 
-    const { type, startDate, timeZone = 'America/Los_Angeles' } = partnershipDetails;
+    const {
+      language = 'en',
+      startDate,
+      timeZone = 'America/Los_Angeles',
+      type,
+    } = partnershipDetails;
 
     const partnershipRef = admin.firestore().collection('partnership').doc(partnershipId);
     const partnershipData = {
       createdAt: admin.firestore.Timestamp.now(),
       id: partnershipId,
+      language,
       latestQuestionId: null,
       startDate,
       timeZone,

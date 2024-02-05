@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Picker } from '@react-native-picker/picker';
-import i18n from 'i18next';
 
-import { changeLanguage } from '@locales/index';
 import { trackEvent } from '@lib/analytics';
 
+import { AppDispatch } from '@store/index';
+import { updatePartnership } from '@store/partnership/thunks';
+import { selectPartnershipData, selectIsLoading } from '@store/partnership/selectors';
+
 import Layout from '@components/shared/Layout';
+import LoadingView from '@components/shared/LoadingView';
 
 export const languageMap: { [key: string]: string } = {
   en: 'English',
@@ -24,26 +28,36 @@ export const languageMap: { [key: string]: string } = {
 };
 
 function LanguageScreen() {
-  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+  const dispatch = useDispatch<AppDispatch>();
+  const { language, id } = useSelector(selectPartnershipData);
+
+  const [selectedLanguage, setSelectedLanguage] = useState(language || 'en');
+  const isLoading = useSelector(selectIsLoading);
 
   const handleLanguageChange = (languageCode: string) => {
-    setSelectedLanguage(languageCode);
-    changeLanguage(languageCode);
+    if (language !== languageCode) {
+      dispatch(updatePartnership({ id, partnershipDetails: { language: languageCode } }));
+      setSelectedLanguage(languageCode);
 
-    trackEvent('Language Changed', { language: languageCode });
+      trackEvent('Relationship Language Changed', { language: languageCode });
+    }
   };
 
   return (
-    <Layout titleKey="accountScreen.languageScreen.title" screen="Language Screen">
-      <Picker
-        selectedValue={selectedLanguage}
-        onValueChange={(itemValue) => handleLanguageChange(itemValue)}
-        mode="dropdown"
-      >
-        {Object.entries(languageMap).map(([code, name]) => (
-          <Picker.Item key={code} label={name} value={code} />
-        ))}
-      </Picker>
+    <Layout titleKey="accountScreen.languageScreen.title" screen="Relationship Language Screen">
+      {isLoading ? (
+        <LoadingView />
+      ) : (
+        <Picker
+          selectedValue={selectedLanguage}
+          onValueChange={(itemValue) => handleLanguageChange(itemValue)}
+          mode="dropdown"
+        >
+          {Object.entries(languageMap).map(([code, name]) => (
+            <Picker.Item key={code} label={name} value={code} />
+          ))}
+        </Picker>
+      )}
     </Layout>
   );
 }
