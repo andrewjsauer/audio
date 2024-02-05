@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from 'react-native';
+import i18n from 'i18next';
 
 import messaging from '@react-native-firebase/messaging';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
@@ -68,6 +69,7 @@ function useAuthSubscription() {
             updateUser({
               id: userId,
               userDetails: {
+                deviceLanguage: i18n.language,
                 lastActiveAt: firestore.FieldValue.serverTimestamp(),
               },
             }),
