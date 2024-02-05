@@ -40,8 +40,6 @@ const useRecordingSubscription = ({
             };
 
             dispatch(setUserRecording(payload));
-          } else if (snapshot && snapshot.empty) {
-            dispatch(setUserRecording(null));
           }
         });
     }
@@ -60,8 +58,6 @@ const useRecordingSubscription = ({
             };
 
             dispatch(setPartnerRecording(payload));
-          } else if (snapshot && snapshot.empty) {
-            dispatch(setPartnerRecording(null));
           }
         });
     }

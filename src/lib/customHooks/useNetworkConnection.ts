@@ -9,7 +9,6 @@ const useNetworkConnection = () => {
   const dispatch = useDispatch();
 
   const handleConnectivityChange = (state: any) => {
-    console.log('Connection type', state.type);
     dispatch(setConnectionStatus(state.isConnected));
 
     if (!state.isConnected) {

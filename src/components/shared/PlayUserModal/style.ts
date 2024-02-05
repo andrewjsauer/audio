@@ -23,6 +23,18 @@ export const PlayBackContainer = styled.View`
   flex-direction: row;
 `;
 
+export const PlayContainer = styled.View`
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+`;
+
+export const SliderContainer = styled.View`
+  height: 40px;
+  width: 100%;
+`;
+
 export const PlayBackButton = styled.TouchableOpacity<{ color: string }>`
   background-color: ${(p) => p.color};
   border: 6px solid rgba(255, 255, 255, 0.5);
@@ -32,6 +44,7 @@ export const PlayBackButton = styled.TouchableOpacity<{ color: string }>`
   align-items: center;
   justify-content: center;
   opacity: ${(p) => (p.disabled ? 0.5 : 1)};
+  margin-bottom: 20px;
 `;
 
 export const ReactionButton = styled.TouchableOpacity<{
