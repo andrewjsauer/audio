@@ -88,7 +88,7 @@ async function sendAfternoonReminderNotificationIfNeeded(
                     payload: {
                       aps: {
                         alert: {
-                          subtitle: 'Today’s Question',
+                          subtitle: '✨ Question of the Day ✨',
                         },
                       },
                     },
@@ -121,18 +121,65 @@ async function sendAfternoonReminderNotificationIfNeeded(
   }
 }
 
-async function sendEveningReminderNotification(userData: any) {
+async function sendEveningReminderNotification(userData: any, timeZone: string) {
   if ((!userData && !userData.deviceIds) || userData.deviceIds.length === 0) return;
 
-  await admin.messaging().sendEachForMulticast({
-    tokens: userData.deviceIds,
+  const db = admin.firestore();
+
+  const startOfToday = moment().tz(timeZone).startOf('day');
+  const { id: userId, partnershipId, deviceIds } = userData;
+
+  let body = 'Don’t forget to answer!';
+  let apnsPayload;
+
+  if (partnershipId) {
+    const queriedDescQuestionSnapshot = await db
+      .collection('questions')
+      .where('partnershipId', '==', partnershipId)
+      .orderBy('createdAt', 'desc')
+      .limit(1)
+      .get();
+
+    if (!queriedDescQuestionSnapshot.empty) {
+      const questionSnapshot = queriedDescQuestionSnapshot.docs[0];
+      const questionData = questionSnapshot.data();
+
+      const today = startOfToday.toDate();
+      const questionCreatedAtLocal = formatCreatedAt(questionData.createdAt, timeZone);
+
+      if (questionCreatedAtLocal >= today) {
+        body = questionData.text || '✨ Don’t forget to answer! ✨';
+        apnsPayload = questionData.text
+          ? {
+              apns: {
+                payload: {
+                  aps: {
+                    alert: {
+                      subtitle: '✨ Don’t forget to answer! ✨',
+                    },
+                  },
+                },
+              },
+            }
+          : undefined;
+      }
+    }
+  }
+
+  const response = await admin.messaging().sendEachForMulticast({
+    tokens: deviceIds,
     notification: {
       title: 'Daily Q’s',
-      body: `Don't forget to answer today's question!`,
+      body,
     },
+    ...apnsPayload,
   });
 
-  functions.logger.info(`Evening reminder notification sent for user: ${userData.id}`);
+  functions.logger.info(
+    `Evening reminder sent successfully for user: ${userId}, body: ${body}, response: ${JSON.stringify(
+      response,
+    )}`,
+  );
 }
 
 async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
@@ -243,11 +290,24 @@ async function sendInactivePartnerReminder(
   if (recordingSnapshot.empty) {
     functions.logger.info('No recordings found');
     await Promise.all([
-      sendEveningReminderNotification(inactiveUserData),
-      sendEveningReminderNotification(activeUserData),
+      sendEveningReminderNotification(inactiveUserData, timeZone),
+      sendEveningReminderNotification(activeUserData, timeZone),
     ]);
 
     return;
+  }
+
+  const recordings = !recordingSnapshot.empty
+    ? recordingSnapshot.docs.map((doc) => doc.data())
+    : [];
+
+  const hasActiveUserRecorded = recordings.some(
+    (recording) => recording.userId === activeUserData.id,
+  );
+
+  if (!hasActiveUserRecorded) {
+    functions.logger.info('Active user has not recorded');
+    await sendEveningReminderNotification(activeUserData, timeZone);
   }
 
   await Promise.all(
@@ -261,7 +321,11 @@ async function sendInactivePartnerReminder(
   );
 }
 
-async function checkAndSendRecordingReminders(activeUsers: any, latestQuestionId: string) {
+async function checkAndSendRecordingReminders(
+  activeUsers: any,
+  latestQuestionId: string,
+  timeZone: string,
+) {
   try {
     const db = admin.firestore();
     const recordingsSnapshot = await db
@@ -273,7 +337,7 @@ async function checkAndSendRecordingReminders(activeUsers: any, latestQuestionId
       functions.logger.info('No recordings found');
 
       await Promise.all(
-        activeUsers.map((user: any) => sendEveningReminderNotification(user.userData)),
+        activeUsers.map((user: any) => sendEveningReminderNotification(user.userData, timeZone)),
       );
 
       return;
@@ -327,7 +391,7 @@ async function handleEveningLogic(
     await Promise.all(
       inactiveUsers.map(({ userData }) => {
         if (userData) {
-          sendEveningReminderNotification(userData);
+          sendEveningReminderNotification(userData, timeZone);
           return null;
         }
 
@@ -344,7 +408,7 @@ async function handleEveningLogic(
     );
   } else if (inactiveUsers.length === 0) {
     functions.logger.info('Both users are active');
-    await checkAndSendRecordingReminders(activeUsers, latestQuestionId);
+    await checkAndSendRecordingReminders(activeUsers, latestQuestionId, timeZone);
   }
 }
 
