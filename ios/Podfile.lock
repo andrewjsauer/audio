@@ -1792,6 +1792,8 @@ PODS:
     - React-Core
   - react-native-keep-awake (4.0.0):
     - React
+  - react-native-netinfo (11.2.1):
+    - React-Core
   - react-native-safe-area-context (4.7.4):
     - React-Core
   - react-native-splash-screen (3.3.0):
@@ -2072,6 +2074,7 @@ DEPENDENCIES:
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-keep-awake (from `../node_modules/react-native-keep-awake`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -2225,6 +2228,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-get-random-values"
   react-native-keep-awake:
     :path: "../node_modules/react-native-keep-awake"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
@@ -2384,6 +2389,7 @@ SPEC CHECKSUMS:
   react-native-date-picker: 90d1d60802a20085125657940b944f2bb4e5c113
   react-native-get-random-values: 384787fd76976f5aec9465aff6fa9e9129af1e74
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
+  react-native-netinfo: 8a7fd3f7130ef4ad2fb4276d5c9f8d3f28d2df3d
   react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-webview: 88293a0f23eca8465c0433c023ec632930e644d0

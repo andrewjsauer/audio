@@ -21,7 +21,7 @@ async function getRecordingData(recordings: RecordingType[], userId: string, par
         .collection('listenings')
         .where('userId', '==', id)
         .where('recordingId', '==', recordingId)
-        .get();
+        .get({ source: 'server' });
 
       return listeningSnapshot.empty ? null : listeningSnapshot.docs[0].data().reaction;
     } catch (error) {
@@ -118,7 +118,7 @@ export const fetchHistoryData = createAsyncThunk(
         .where('partnershipId', '==', partnershipId)
         .orderBy('createdAt', 'desc')
         .limit(10)
-        .get();
+        .get({ source: 'server' });
 
       if (questionsSnapshot.empty) {
         trackEvent('History Not Found');
@@ -135,7 +135,7 @@ export const fetchHistoryData = createAsyncThunk(
           const recordingsSnapshot = await firestore()
             .collection('recordings')
             .where('questionId', '==', question.id)
-            .get();
+            .get({ source: 'server' });
 
           const recordings = recordingsSnapshot.docs.map((doc) => ({
             id: doc.id,
@@ -212,7 +212,7 @@ export const fetchMoreHistoryData = createAsyncThunk(
         .orderBy('createdAt', 'desc')
         .startAfter(lastDoc.createdAt)
         .limit(10)
-        .get();
+        .get({ source: 'server' });
 
       if (questionsSnapshot.empty) {
         trackEvent('Fetch More History Empty');
@@ -240,7 +240,7 @@ export const fetchMoreHistoryData = createAsyncThunk(
           const recordingsSnapshot = await firestore()
             .collection('recordings')
             .where('questionId', '==', question.id)
-            .get();
+            .get({ source: 'server' });
 
           const recordings = recordingsSnapshot.docs.map((doc) => ({
             id: doc.id,

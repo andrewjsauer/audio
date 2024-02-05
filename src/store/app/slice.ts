@@ -9,6 +9,7 @@ export interface AppState {
   lastFailedAction: object | null;
   transactionError: string | undefined | null;
   shouldUpdateApp: boolean;
+  isConnected: boolean;
 }
 
 const initialState: AppState = {
@@ -18,6 +19,7 @@ const initialState: AppState = {
   lastFailedAction: null,
   transactionError: null,
   shouldUpdateApp: false,
+  isConnected: true,
 };
 
 const appSlice = createSlice({
@@ -32,6 +34,9 @@ const appSlice = createSlice({
     },
     shouldUpdateAppVersion: (state, action: PayloadAction<boolean>) => {
       state.shouldUpdateApp = action.payload;
+    },
+    setConnectionStatus: (state, action: PayloadAction<boolean>) => {
+      state.isConnected = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -86,5 +91,6 @@ const appSlice = createSlice({
   },
 });
 
-export const { setError, setTransactionError, shouldUpdateAppVersion } = appSlice.actions;
+export const { setError, setConnectionStatus, setTransactionError, shouldUpdateAppVersion } =
+  appSlice.actions;
 export default appSlice.reducer;

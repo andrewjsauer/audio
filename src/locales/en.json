@@ -53,7 +53,8 @@
       "description": "Please update to the latest version of Daily Q's to continue using the app.",
       "buttonText": "Update"
     },
-    "recordingSaveMemoryLimitExceeded": "Your recording exceeded the maximum memory limit."
+    "recordingSaveMemoryLimitExceeded": "Your recording exceeded the maximum memory limit.",
+    "offline": "You are offline. Please check your internet connection and try again."
   },
   "browserScreen": {
     "title": "Browser"

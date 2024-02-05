@@ -6,3 +6,4 @@ export const selectTransactionError = (state: AppState) => state.app.transaction
 export const selectLastFailedAction = (state: AppState) => state.app.lastFailedAction;
 export const selectIsPurchasing = (state: AppState) => state.app.isPurchasing;
 export const selectShouldUpdateApp = (state: AppState) => state.app.shouldUpdateApp;
+export const selectIsConnected = (state: AppState) => state.app.isConnected;
