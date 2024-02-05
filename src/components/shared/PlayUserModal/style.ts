@@ -19,20 +19,21 @@ export const SubTitle = styled.Text`
 export const PlayBackContainer = styled.View`
   align-items: center;
   justify-content: space-around;
-  flex: 1;
   flex-direction: row;
+  width: 100%;
 `;
 
 export const PlayContainer = styled.View`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 80%;
+  flex: 1;
 `;
 
 export const SliderContainer = styled.View`
   height: 40px;
-  width: 100%;
+  width: 80%;
+  margin-top: 20px;
 `;
 
 export const PlayBackButton = styled.TouchableOpacity<{ color: string }>`
@@ -44,7 +45,6 @@ export const PlayBackButton = styled.TouchableOpacity<{ color: string }>`
   align-items: center;
   justify-content: center;
   opacity: ${(p) => (p.disabled ? 0.5 : 1)};
-  margin-bottom: 20px;
 `;
 
 export const ReactionButton = styled.TouchableOpacity<{

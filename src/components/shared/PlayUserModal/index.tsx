@@ -30,13 +30,13 @@ import Modal from '@components/shared/Modal';
 import ErrorView from '@components/shared/ErrorView';
 
 import {
+  PlayContainer,
   PlayBackButton,
   PlayBackContainer,
   ReactionButton,
   ReactionIcon,
   SubTitle,
   Title,
-  PlayContainer,
   SliderContainer,
 } from './style';
 
@@ -293,68 +293,68 @@ function PlayUserModal() {
           ) : (
             <SubTitle>{t('questionScreen.recordScreen.note')}</SubTitle>
           )}
-          <PlayBackContainer>
-            {isUsersPartner && (
-              <>
-                <ReactionButton
-                  disabled={isLoading}
-                  isFaded={!!selectedReaction && selectedReaction !== ReactionType.Love}
-                  isSelected={selectedReaction === ReactionType.Love}
-                  onPress={() => handleReaction(ReactionType.Love)}
-                  reactionColor={reactionColor}
-                >
-                  <ReactionIcon>❤️</ReactionIcon>
-                </ReactionButton>
-                <ReactionButton
-                  disabled={isLoading}
-                  isFaded={!!selectedReaction && selectedReaction !== ReactionType.Laugh}
-                  isSelected={selectedReaction === ReactionType.Laugh}
-                  onPress={() => handleReaction(ReactionType.Laugh)}
-                  reactionColor={reactionColor}
-                >
-                  <ReactionIcon>😂</ReactionIcon>
-                </ReactionButton>
-              </>
-            )}
-            <PlayContainer>
+          <PlayContainer>
+            <PlayBackContainer>
+              {isUsersPartner && (
+                <>
+                  <ReactionButton
+                    disabled={isLoading}
+                    isFaded={!!selectedReaction && selectedReaction !== ReactionType.Love}
+                    isSelected={selectedReaction === ReactionType.Love}
+                    onPress={() => handleReaction(ReactionType.Love)}
+                    reactionColor={reactionColor}
+                  >
+                    <ReactionIcon>❤️</ReactionIcon>
+                  </ReactionButton>
+                  <ReactionButton
+                    disabled={isLoading}
+                    isFaded={!!selectedReaction && selectedReaction !== ReactionType.Laugh}
+                    isSelected={selectedReaction === ReactionType.Laugh}
+                    onPress={() => handleReaction(ReactionType.Laugh)}
+                    reactionColor={reactionColor}
+                  >
+                    <ReactionIcon>😂</ReactionIcon>
+                  </ReactionButton>
+                </>
+              )}
               <PlayBackButton color={color} onPress={onPlayPause} disabled={isLoading}>
                 {isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : buttonIcon}
               </PlayBackButton>
-              <SliderContainer>
-                <Slider
-                  disabled={isLoading}
-                  minimumValue={0}
-                  maximumValue={1}
-                  value={sliderValue}
-                  onSlidingComplete={onSliderValueChange}
-                  minimumTrackTintColor="#D9D9D9"
-                  maximumTrackTintColor="#D9D9D9"
-                />
-              </SliderContainer>
-            </PlayContainer>
-            {isUsersPartner && (
-              <>
-                <ReactionButton
-                  disabled={isLoading}
-                  isFaded={!!selectedReaction && selectedReaction !== ReactionType.Cute}
-                  isSelected={selectedReaction === ReactionType.Cute}
-                  onPress={() => handleReaction(ReactionType.Cute)}
-                  reactionColor={reactionColor}
-                >
-                  <ReactionIcon>🥹</ReactionIcon>
-                </ReactionButton>
-                <ReactionButton
-                  disabled={isLoading}
-                  isFaded={!!selectedReaction && selectedReaction !== ReactionType.Fire}
-                  isSelected={selectedReaction === ReactionType.Fire}
-                  onPress={() => handleReaction(ReactionType.Fire)}
-                  reactionColor={reactionColor}
-                >
-                  <ReactionIcon>🔥</ReactionIcon>
-                </ReactionButton>
-              </>
-            )}
-          </PlayBackContainer>
+              {isUsersPartner && (
+                <>
+                  <ReactionButton
+                    disabled={isLoading}
+                    isFaded={!!selectedReaction && selectedReaction !== ReactionType.Cute}
+                    isSelected={selectedReaction === ReactionType.Cute}
+                    onPress={() => handleReaction(ReactionType.Cute)}
+                    reactionColor={reactionColor}
+                  >
+                    <ReactionIcon>🥹</ReactionIcon>
+                  </ReactionButton>
+                  <ReactionButton
+                    disabled={isLoading}
+                    isFaded={!!selectedReaction && selectedReaction !== ReactionType.Fire}
+                    isSelected={selectedReaction === ReactionType.Fire}
+                    onPress={() => handleReaction(ReactionType.Fire)}
+                    reactionColor={reactionColor}
+                  >
+                    <ReactionIcon>🔥</ReactionIcon>
+                  </ReactionButton>
+                </>
+              )}
+            </PlayBackContainer>
+            <SliderContainer>
+              <Slider
+                disabled={isLoading}
+                minimumValue={0}
+                maximumValue={1}
+                value={sliderValue}
+                onSlidingComplete={onSliderValueChange}
+                minimumTrackTintColor="#D9D9D9"
+                maximumTrackTintColor="#D9D9D9"
+              />
+            </SliderContainer>
+          </PlayContainer>
         </>
       )}
     </Modal>
