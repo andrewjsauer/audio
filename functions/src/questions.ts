@@ -215,7 +215,7 @@ export const generateQuestionModified = functions
       }
     } else {
       try {
-        const relationshipDuration = partnershipData.startDate;
+        const duration = partnershipData.startDate;
         const relationshipType = relationshipTypeMap[partnershipData.type as RelationshipType];
 
         const adjectives = [
@@ -237,15 +237,12 @@ export const generateQuestionModified = functions
           'inspirational',
         ];
 
-        const timeFrames = ['past', 'present', 'future'];
-
         const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-        const randomTimeFrame = timeFrames[Math.floor(Math.random() * timeFrames.length)];
         const promptLanguage =
           usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-        const prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} who are ${relationshipType} and have been together for ${relationshipDuration}. Only include the question`;
-        const systemPrompt = `As a couples expert, suggest a question that encourages couples to explore new dimensions of their relationship, foster understanding, or share a meaningful moment. Drawing from the methodologies of Dr. John Gottman, consider a question that promotes open communication and deepens emotional connection. From Dr. Gary Chapman's perspective, think about a question that helps couples understand or express their love languages more effectively. Lastly, incorporating the PREP Approach, frame a question that enhances couples' skills in conflict resolution and mutual understanding.`;
+        const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Question only. No hashtags or additional text.`;
+        const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. The question should be appropriate for the stage of the relationship, should encourage sharing and exploration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from Dr. John and Julie Schwartz Gottman's communication techniques.`;
 
         functions.logger.info(`Prompt: ${prompt}`);
 
@@ -385,7 +382,7 @@ export const generateQuestion = functions
       }
     } else {
       try {
-        const relationshipDuration = partnershipData.startDate;
+        const duration = partnershipData.startDate;
         const relationshipType = relationshipTypeMap[partnershipData.type as RelationshipType];
 
         const adjectives = [
@@ -407,15 +404,12 @@ export const generateQuestion = functions
           'inspirational',
         ];
 
-        const timeFrames = ['past', 'present', 'future'];
-
         const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-        const randomTimeFrame = timeFrames[Math.floor(Math.random() * timeFrames.length)];
         const promptLanguage =
           usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-        const prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} who are ${relationshipType} and have been together for ${relationshipDuration}. Only include the question`;
-        const systemPrompt = `As a couples expert, suggest a question that encourages couples to explore new dimensions of their relationship, foster understanding, or share a meaningful moment. Drawing from the methodologies of Dr. John Gottman, consider a question that promotes open communication and deepens emotional connection. From Dr. Gary Chapman's perspective, think about a question that helps couples understand or express their love languages more effectively. Lastly, incorporating the PREP Approach, frame a question that enhances couples' skills in conflict resolution and mutual understanding.`;
+        const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Question only. No hashtags or additional text.`;
+        const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. The question should be appropriate for the stage of the relationship, should encourage sharing and exploration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from Dr. John and Julie Schwartz Gottman's communication techniques.`;
 
         functions.logger.info(`Prompt: ${prompt}`);
 
@@ -628,15 +622,12 @@ async function processPartnership(doc: any) {
         'inspirational',
       ];
 
-      const timeFrames = ['past', 'present', 'future'];
-
       const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-      const randomTimeFrame = timeFrames[Math.floor(Math.random() * timeFrames.length)];
       const promptLanguage =
         usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-      const prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} who are ${relationshipType} and have been together for ${duration}. Only include the question`;
-      const systemPrompt = `As a couples expert, suggest a question that encourages couples to explore new dimensions of their relationship, foster understanding, or share a meaningful moment. Drawing from the methodologies of Dr. John Gottman, consider a question that promotes open communication and deepens emotional connection. From Dr. Gary Chapman's perspective, think about a question that helps couples understand or express their love languages more effectively. Lastly, incorporating the PREP Approach, frame a question that enhances couples' skills in conflict resolution and mutual understanding.`;
+      const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Question only. No hashtags or additional text.`;
+      const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. The question should be appropriate for the stage of the relationship, should encourage sharing and exploration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from Dr. John and Julie Schwartz Gottman's communication techniques.`;
 
       functions.logger.info(`Prompt: ${prompt}`);
 
