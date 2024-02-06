@@ -115,7 +115,7 @@ export const generateQuestionModified = functions
       throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
     }
 
-    const { questionIndex, partnershipData, partnerData, userData, usersLanguage } = data;
+    const { questionIndex, partnershipData, userData, usersLanguage } = data;
     functions.logger.info(`Data: ${JSON.stringify(data)}`);
 
     const db = admin.firestore();
@@ -182,7 +182,11 @@ export const generateQuestionModified = functions
       it: 'Italian',
     };
 
-    if (questionIndex >= 0 && questionIndex < defaultQuestions.length) {
+    if (
+      (questionIndex >= 0 && questionIndex < defaultQuestions.length) ||
+      partnershipData.id !== '538e11b4-061e-489f-ae52-3bddb0cafe1d' ||
+      partnershipData.id !== 'f12665bc-b969-4877-9c6d-54ef5c23d86f'
+    ) {
       const englishQuestion = defaultQuestions[questionIndex];
 
       if (usersLanguage !== 'en') {
@@ -212,9 +216,7 @@ export const generateQuestionModified = functions
     } else {
       try {
         const relationshipDuration = partnershipData.startDate;
-        const userName = userData.name;
-        const partnerName = partnerData.name;
-        const relationshipType = relationshipTypeMap[partnershipData?.type as RelationshipType];
+        const relationshipType = relationshipTypeMap[partnershipData.type as RelationshipType];
 
         const adjectives = [
           'insightful',
@@ -242,8 +244,8 @@ export const generateQuestionModified = functions
         const promptLanguage =
           usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-        const prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} for ${userName} and ${partnerName} who are ${relationshipType} and have been together for ${relationshipDuration}.`;
-        const systemPrompt = `As a couples expert, suggest a question that encourages ${userName} and ${partnerName} to explore new dimensions of their relationship, foster understanding, or share a meaningful moment.`;
+        const prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} who are ${relationshipType} and have been together for ${relationshipDuration}. Only include the question`;
+        const systemPrompt = `As a couples expert, suggest a question that encourages couples to explore new dimensions of their relationship, foster understanding, or share a meaningful moment. Drawing from the methodologies of Dr. John Gottman, consider a question that promotes open communication and deepens emotional connection. From Dr. Gary Chapman's perspective, think about a question that helps couples understand or express their love languages more effectively. Lastly, incorporating the PREP Approach, frame a question that enhances couples' skills in conflict resolution and mutual understanding.`;
 
         functions.logger.info(`Prompt: ${prompt}`);
 
@@ -252,11 +254,13 @@ export const generateQuestionModified = functions
             { role: 'system', content: systemPrompt },
             { role: 'user', content: prompt },
           ],
-          model: 'gpt-4',
+          model: 'gpt-3.5-turbo',
         });
 
         const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
         questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
+
+        functions.logger.info(`OpenAI question: ${questionText}`);
       } catch (error: unknown) {
         functions.logger.error(`Error with OpenAI request: ${JSON.stringify(error)}`);
 
@@ -323,7 +327,7 @@ export const generateQuestion = functions
       throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
     }
 
-    const { questionIndex, partnershipData, partnerData, userData, usersLanguage } = data;
+    const { questionIndex, partnershipData, usersLanguage } = data;
     functions.logger.info(`Data: ${JSON.stringify(data)}`);
 
     const db = admin.firestore();
@@ -348,7 +352,11 @@ export const generateQuestion = functions
       it: 'Italian',
     };
 
-    if (questionIndex >= 0 && questionIndex < defaultQuestions.length) {
+    if (
+      (questionIndex >= 0 && questionIndex < defaultQuestions.length) ||
+      partnershipData.id !== '538e11b4-061e-489f-ae52-3bddb0cafe1d' ||
+      partnershipData.id !== 'f12665bc-b969-4877-9c6d-54ef5c23d86f'
+    ) {
       const englishQuestion = defaultQuestions[questionIndex];
 
       if (usersLanguage !== 'en') {
@@ -378,9 +386,7 @@ export const generateQuestion = functions
     } else {
       try {
         const relationshipDuration = partnershipData.startDate;
-        const userName = userData.name;
-        const partnerName = partnerData.name;
-        const relationshipType = relationshipTypeMap[partnershipData?.type as RelationshipType];
+        const relationshipType = relationshipTypeMap[partnershipData.type as RelationshipType];
 
         const adjectives = [
           'insightful',
@@ -408,8 +414,8 @@ export const generateQuestion = functions
         const promptLanguage =
           usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-        const prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} for ${userName} and ${partnerName} who are ${relationshipType} and have been together for ${relationshipDuration}.`;
-        const systemPrompt = `As a couples expert, suggest a question that encourages ${userName} and ${partnerName} to explore new dimensions of their relationship, foster understanding, or share a meaningful moment.`;
+        const prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} who are ${relationshipType} and have been together for ${relationshipDuration}. Only include the question`;
+        const systemPrompt = `As a couples expert, suggest a question that encourages couples to explore new dimensions of their relationship, foster understanding, or share a meaningful moment. Drawing from the methodologies of Dr. John Gottman, consider a question that promotes open communication and deepens emotional connection. From Dr. Gary Chapman's perspective, think about a question that helps couples understand or express their love languages more effectively. Lastly, incorporating the PREP Approach, frame a question that enhances couples' skills in conflict resolution and mutual understanding.`;
 
         functions.logger.info(`Prompt: ${prompt}`);
 
@@ -418,11 +424,13 @@ export const generateQuestion = functions
             { role: 'system', content: systemPrompt },
             { role: 'user', content: prompt },
           ],
-          model: 'gpt-4',
+          model: 'gpt-3.5-turbo',
         });
 
         const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
         questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
+
+        functions.logger.info(`OpenAI question: ${questionText}`);
       } catch (error: unknown) {
         functions.logger.error(`Error with OpenAI request: ${JSON.stringify(error)}`);
 
@@ -564,7 +572,11 @@ async function processPartnership(doc: any) {
     it: 'Italian',
   };
 
-  if (questionIndex >= 0 && questionIndex < defaultQuestions.length) {
+  if (
+    (questionIndex >= 0 && questionIndex < defaultQuestions.length) ||
+    partnership.id !== '538e11b4-061e-489f-ae52-3bddb0cafe1d' ||
+    partnership.id !== 'f12665bc-b969-4877-9c6d-54ef5c23d86f'
+  ) {
     const englishQuestion = defaultQuestions[questionIndex];
 
     if (usersLanguage !== 'en') {
@@ -582,6 +594,8 @@ async function processPartnership(doc: any) {
 
         const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
         questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
+
+        functions.logger.info(`OpenAI question: ${questionText}`);
       } catch (error) {
         functions.logger.error(`Error translating with OpenAI request: ${JSON.stringify(error)}`);
 
@@ -593,7 +607,7 @@ async function processPartnership(doc: any) {
     }
   } else {
     try {
-      const relationshipType = relationshipTypeMap[partnership?.type as RelationshipType];
+      const relationshipType = relationshipTypeMap[partnership.type as RelationshipType];
 
       const adjectives = [
         'insightful',
@@ -621,7 +635,7 @@ async function processPartnership(doc: any) {
       const promptLanguage =
         usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-      const prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} who are ${relationshipType} and have been together for ${duration}.`;
+      const prompt = `Craft a ${randomAdjective} question${promptLanguage} (90 characters max) about their ${randomTimeFrame} who are ${relationshipType} and have been together for ${duration}. Only include the question`;
       const systemPrompt = `As a couples expert, suggest a question that encourages couples to explore new dimensions of their relationship, foster understanding, or share a meaningful moment. Drawing from the methodologies of Dr. John Gottman, consider a question that promotes open communication and deepens emotional connection. From Dr. Gary Chapman's perspective, think about a question that helps couples understand or express their love languages more effectively. Lastly, incorporating the PREP Approach, frame a question that enhances couples' skills in conflict resolution and mutual understanding.`;
 
       functions.logger.info(`Prompt: ${prompt}`);
@@ -631,7 +645,7 @@ async function processPartnership(doc: any) {
           { role: 'system', content: systemPrompt },
           { role: 'user', content: prompt },
         ],
-        model: 'gpt-4',
+        model: 'gpt-3.5-turbo',
       });
 
       const openAIQuestion: string | null = chatCompletion.choices[0].message.content;

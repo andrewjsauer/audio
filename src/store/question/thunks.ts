@@ -72,7 +72,7 @@ const generateQuestion = async ({
     usersLanguage,
     partnershipData: {
       ...partnershipData,
-      startDate: calculateDuration(partnershipData?.startDate, timeZone),
+      startDate: calculateDuration(partnershipData.startDate, timeZone),
     },
   };
 
