@@ -122,7 +122,12 @@ async function sendAfternoonReminderNotificationIfNeeded(
 }
 
 async function sendEveningReminderNotification(userData: any, timeZone: string) {
-  if ((!userData && !userData.deviceIds) || userData.deviceIds.length === 0) return;
+  if (
+    (!userData && !userData.deviceIds) ||
+    userData.deviceIds.length === 0 ||
+    !userData.isRegistered
+  )
+    return;
 
   const db = admin.firestore();
 
@@ -190,7 +195,7 @@ async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
     if (!partnerSnapshot.exists) return;
 
     const partnerData = partnerSnapshot.data();
-    partnerName = partnerData?.name || 'Your partner';
+    partnerName = partnerData?.name ?? 'Your partner';
 
     functions.logger.info(`Partner name: ${partnerName}`);
   } catch (error) {
@@ -198,7 +203,7 @@ async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
     return;
   }
 
-  if (!userData.deviceIds || userData.deviceIds.length === 0) return;
+  if (!userData.deviceIds || userData.deviceIds?.length === 0) return;
 
   await admin.messaging().sendEachForMulticast({
     tokens: userData.deviceIds,
