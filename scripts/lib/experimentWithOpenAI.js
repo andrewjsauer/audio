@@ -47,8 +47,8 @@ const adjectives = [
 ];
 const generateAndAppendPrompt = () => __awaiter(void 0, void 0, void 0, function* () {
     const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-    const prompt = `Generate a ${randomAdjective} question under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Question only. No hashtags or additional text.`;
-    const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. The question should be appropriate for the stage of the relationship, should encourage sharing and exploration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from Dr. John and Julie Schwartz Gottman's communication techniques.`;
+    const prompt = `Generate a ${randomAdjective} question for a couple who are ${relationshipType} and have been together for ${duration}. The question should foster deeper understanding and connection, reflecting their relationship stage. Ensure it's concise (under 90 characters), clear, and free from hashtags or comments. Only include the question.`;
+    const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from leading couples experts like Dr. John and Julie Schwartz Gottman's.`;
     try {
         console.log(`Prompt: ${prompt}`);
         const chatCompletion = yield openai.chat.completions.create({

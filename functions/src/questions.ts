@@ -213,8 +213,8 @@ export const generateQuestionModified = functions
         const promptLanguage =
           usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-        const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Only include the question. Exclude hashtags, additional text, or comments.`;
-        const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. The question should be appropriate for the stage of the relationship, should encourage sharing and exploration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from Dr. John and Julie Schwartz Gottman's communication techniques.`;
+        const prompt = `Generate a ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} and have been together for ${duration}. The question should foster deeper understanding and connection, reflecting their relationship stage. Ensure it's concise (under 90 characters), clear, and does not include hashtags or comments, only the question itself.`;
+        const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from leading couples experts like Dr. John and Julie Schwartz Gottman's.`;
 
         functions.logger.info(`Prompt: ${prompt}`);
 
@@ -382,8 +382,8 @@ export const generateQuestion = functions
         const promptLanguage =
           usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-        const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Only include the question. Exclude hashtags, additional text, or comments.`;
-        const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. The question should be appropriate for the stage of the relationship, should encourage sharing and exploration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from Dr. John and Julie Schwartz Gottman's communication techniques.`;
+        const prompt = `Generate a ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} and have been together for ${duration}. The question should foster deeper understanding and connection, reflecting their relationship stage. Ensure it's concise (under 90 characters), clear, and does not include hashtags or comments, only the question itself.`;
+        const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from leading couples experts like Dr. John and Julie Schwartz Gottman's.`;
 
         functions.logger.info(`Prompt: ${prompt}`);
 
@@ -600,8 +600,8 @@ async function processPartnership(doc: any) {
       const promptLanguage =
         usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-      const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Only include the question. Exclude hashtags, additional text, or comments.`;
-      const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. The question should be appropriate for the stage of the relationship, should encourage sharing and exploration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from Dr. John and Julie Schwartz Gottman's communication techniques.`;
+      const prompt = `Generate a ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} and have been together for ${duration}. The question should foster deeper understanding and connection, reflecting their relationship stage. Ensure it's concise (under 90 characters), clear, and does not include hashtags or comments, only the question itself.`;
+      const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from leading couples experts like Dr. John and Julie Schwartz Gottman's.`;
 
       functions.logger.info(`Prompt: ${prompt}`);
 
