@@ -7,9 +7,9 @@ import path from 'path';
 const apiKey = process.env.OPENAI_API_KEY;
 const openai = new OpenAI({ apiKey });
 
-const relationshipType = 'engaged';
+const relationshipType = 'married';
 const duration = '4 years';
-const iterations = 25;
+const iterations = 5;
 const outputFile = path.join(__dirname, '../experimentOutput/questions.txt');
 
 const outputDir = path.dirname(outputFile);

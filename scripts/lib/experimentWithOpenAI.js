@@ -19,9 +19,9 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const apiKey = process.env.OPENAI_API_KEY;
 const openai = new openai_1.OpenAI({ apiKey });
-const relationshipType = 'engaged';
+const relationshipType = 'married';
 const duration = '4 years';
-const iterations = 25;
+const iterations = 5;
 const outputFile = path_1.default.join(__dirname, '../experimentOutput/questions.txt');
 const outputDir = path_1.default.dirname(outputFile);
 if (!fs_1.default.existsSync(outputDir)) {

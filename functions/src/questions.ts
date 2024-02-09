@@ -183,37 +183,9 @@ export const generateQuestionModified = functions
     };
 
     if (
-      (questionIndex >= 0 && questionIndex < defaultQuestions.length) ||
-      partnershipData.id !== '538e11b4-061e-489f-ae52-3bddb0cafe1d' ||
-      partnershipData.id !== 'f12665bc-b969-4877-9c6d-54ef5c23d86f'
+      partnershipData.id === '538e11b4-061e-489f-ae52-3bddb0cafe1d' ||
+      partnershipData.id === 'f12665bc-b969-4877-9c6d-54ef5c23d86f'
     ) {
-      const englishQuestion = defaultQuestions[questionIndex];
-
-      if (usersLanguage !== 'en') {
-        try {
-          const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
-            messages: [
-              {
-                role: 'system',
-                content: `Convert the following question prompt into ${languageMap[usersLanguage]}`,
-              },
-              { role: 'user', content: englishQuestion },
-            ],
-            model: 'gpt-3.5-turbo',
-          });
-
-          const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
-          questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
-        } catch (error) {
-          functions.logger.error(`Error translating with OpenAI request: ${JSON.stringify(error)}`);
-
-          const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
-          questionText = defaultQuestions[backupIndex];
-        }
-      } else {
-        questionText = englishQuestion;
-      }
-    } else {
       try {
         const duration = partnershipData.startDate;
         const relationshipType = relationshipTypeMap[partnershipData.type as RelationshipType];
@@ -241,7 +213,7 @@ export const generateQuestionModified = functions
         const promptLanguage =
           usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-        const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Question only. No hashtags or additional text.`;
+        const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Only include the question. Exclude hashtags, additional text, or comments.`;
         const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. The question should be appropriate for the stage of the relationship, should encourage sharing and exploration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from Dr. John and Julie Schwartz Gottman's communication techniques.`;
 
         functions.logger.info(`Prompt: ${prompt}`);
@@ -264,6 +236,36 @@ export const generateQuestionModified = functions
         const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
         questionText = defaultQuestions[backupIndex];
       }
+    } else if (questionIndex >= 0 && questionIndex < defaultQuestions.length) {
+      const englishQuestion = defaultQuestions[questionIndex];
+
+      if (usersLanguage !== 'en') {
+        try {
+          const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
+            messages: [
+              {
+                role: 'system',
+                content: `Convert the following question prompt into ${languageMap[usersLanguage]}`,
+              },
+              { role: 'user', content: englishQuestion },
+            ],
+            model: 'gpt-3.5-turbo',
+          });
+
+          const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
+          questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
+        } catch (error) {
+          functions.logger.error(`Error translating with OpenAI request: ${JSON.stringify(error)}`);
+
+          const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
+          questionText = defaultQuestions[backupIndex];
+        }
+      } else {
+        questionText = englishQuestion;
+      }
+    } else {
+      const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
+      questionText = defaultQuestions[backupIndex];
     }
 
     const questionId = uuidv4();
@@ -350,37 +352,9 @@ export const generateQuestion = functions
     };
 
     if (
-      (questionIndex >= 0 && questionIndex < defaultQuestions.length) ||
-      partnershipData.id !== '538e11b4-061e-489f-ae52-3bddb0cafe1d' ||
-      partnershipData.id !== 'f12665bc-b969-4877-9c6d-54ef5c23d86f'
+      partnershipData.id === '538e11b4-061e-489f-ae52-3bddb0cafe1d' ||
+      partnershipData.id === 'f12665bc-b969-4877-9c6d-54ef5c23d86f'
     ) {
-      const englishQuestion = defaultQuestions[questionIndex];
-
-      if (usersLanguage !== 'en') {
-        try {
-          const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
-            messages: [
-              {
-                role: 'system',
-                content: `Convert the following question prompt into ${languageMap[usersLanguage]}`,
-              },
-              { role: 'user', content: englishQuestion },
-            ],
-            model: 'gpt-3.5-turbo',
-          });
-
-          const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
-          questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
-        } catch (error) {
-          functions.logger.error(`Error translating with OpenAI request: ${JSON.stringify(error)}`);
-
-          const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
-          questionText = defaultQuestions[backupIndex];
-        }
-      } else {
-        questionText = englishQuestion;
-      }
-    } else {
       try {
         const duration = partnershipData.startDate;
         const relationshipType = relationshipTypeMap[partnershipData.type as RelationshipType];
@@ -408,7 +382,7 @@ export const generateQuestion = functions
         const promptLanguage =
           usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-        const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Question only. No hashtags or additional text.`;
+        const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Only include the question. Exclude hashtags, additional text, or comments.`;
         const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. The question should be appropriate for the stage of the relationship, should encourage sharing and exploration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from Dr. John and Julie Schwartz Gottman's communication techniques.`;
 
         functions.logger.info(`Prompt: ${prompt}`);
@@ -431,6 +405,36 @@ export const generateQuestion = functions
         const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
         questionText = defaultQuestions[backupIndex];
       }
+    } else if (questionIndex >= 0 && questionIndex < defaultQuestions.length) {
+      const englishQuestion = defaultQuestions[questionIndex];
+
+      if (usersLanguage !== 'en') {
+        try {
+          const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
+            messages: [
+              {
+                role: 'system',
+                content: `Convert the following question prompt into ${languageMap[usersLanguage]}`,
+              },
+              { role: 'user', content: englishQuestion },
+            ],
+            model: 'gpt-3.5-turbo',
+          });
+
+          const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
+          questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
+        } catch (error) {
+          functions.logger.error(`Error translating with OpenAI request: ${JSON.stringify(error)}`);
+
+          const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
+          questionText = defaultQuestions[backupIndex];
+        }
+      } else {
+        questionText = englishQuestion;
+      }
+    } else {
+      const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
+      questionText = defaultQuestions[backupIndex];
     }
 
     const questionId = uuidv4();
@@ -567,10 +571,57 @@ async function processPartnership(doc: any) {
   };
 
   if (
-    (questionIndex >= 0 && questionIndex < defaultQuestions.length) ||
-    partnership.id !== '538e11b4-061e-489f-ae52-3bddb0cafe1d' ||
-    partnership.id !== 'f12665bc-b969-4877-9c6d-54ef5c23d86f'
+    partnership.id === '538e11b4-061e-489f-ae52-3bddb0cafe1d' ||
+    partnership.id === 'f12665bc-b969-4877-9c6d-54ef5c23d86f'
   ) {
+    try {
+      const relationshipType = relationshipTypeMap[partnership.type as RelationshipType];
+
+      const adjectives = [
+        'insightful',
+        'thought-provoking',
+        'fun',
+        'creative',
+        'unique',
+        'engaging',
+        'reflective',
+        'heartwarming',
+        'challenging',
+        'humorous',
+        'intimate',
+        'empathetic',
+        'curious',
+        'romantic',
+        'practical',
+        'inspirational',
+      ];
+
+      const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+      const promptLanguage =
+        usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
+
+      const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Only include the question. Exclude hashtags, additional text, or comments.`;
+      const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. The question should be appropriate for the stage of the relationship, should encourage sharing and exploration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from Dr. John and Julie Schwartz Gottman's communication techniques.`;
+
+      functions.logger.info(`Prompt: ${prompt}`);
+
+      const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: prompt },
+        ],
+        model: 'gpt-3.5-turbo',
+      });
+
+      const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
+      questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
+    } catch (error: unknown) {
+      functions.logger.error(`Error with OpenAI request: ${JSON.stringify(error)}`);
+
+      const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
+      questionText = defaultQuestions[backupIndex];
+    }
+  } else if (questionIndex >= 0 && questionIndex < defaultQuestions.length) {
     const englishQuestion = defaultQuestions[questionIndex];
 
     if (usersLanguage !== 'en') {
@@ -600,53 +651,8 @@ async function processPartnership(doc: any) {
       questionText = englishQuestion;
     }
   } else {
-    try {
-      const relationshipType = relationshipTypeMap[partnership.type as RelationshipType];
-
-      const adjectives = [
-        'insightful',
-        'thought-provoking',
-        'fun',
-        'creative',
-        'unique',
-        'engaging',
-        'reflective',
-        'heartwarming',
-        'challenging',
-        'humorous',
-        'intimate',
-        'empathetic',
-        'curious',
-        'romantic',
-        'practical',
-        'inspirational',
-      ];
-
-      const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-      const promptLanguage =
-        usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
-
-      const prompt = `Generate a ${randomAdjective} question${promptLanguage} under 90 characters for a couple who are ${relationshipType} and have been together for ${duration}. Question only. No hashtags or additional text.`;
-      const systemPrompt = `As a relationship expert, generate a question that is based on the relationship type and duration. The question should be appropriate for the stage of the relationship, should encourage sharing and exploration. Adjust the tone and content to match the relationship stage and if appropriate incorporate concepts from Dr. John and Julie Schwartz Gottman's communication techniques.`;
-
-      functions.logger.info(`Prompt: ${prompt}`);
-
-      const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: prompt },
-        ],
-        model: 'gpt-3.5-turbo',
-      });
-
-      const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
-      questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
-    } catch (error: unknown) {
-      functions.logger.error(`Error with OpenAI request: ${JSON.stringify(error)}`);
-
-      const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
-      questionText = defaultQuestions[backupIndex];
-    }
+    const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
+    questionText = defaultQuestions[backupIndex];
   }
 
   try {
@@ -666,11 +672,14 @@ async function processPartnership(doc: any) {
 
       if (!user?.isSubscribed) {
         allSubscribed = false;
+        functions.logger.info(`User ${user.id} is not subscribed.`);
       }
     });
 
     if (!allSubscribed) {
-      functions.logger.info('One or both users are not subscribed. Exiting the process.');
+      functions.logger.info(
+        `One or both users are not subscribed. Exiting the process for partnership ${partnership.id}`,
+      );
       return;
     }
   } catch (error) {
@@ -691,7 +700,6 @@ async function processPartnership(doc: any) {
   functions.logger.info(
     `Saving question ${questionId} for partnership ${partnership.id}. Question is ${question.text} for time created at ${createdAtInTimeZone}`,
   );
-  functions.logger.info(`Firebase timestamp is ${firestoreTimestamp?.toDate()}`);
 
   try {
     const batch = db.batch();
