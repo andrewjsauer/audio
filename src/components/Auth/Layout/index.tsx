@@ -19,18 +19,21 @@ type LayoutProps = {
   isBackButtonEnabled?: boolean;
   isHeaderEnabled?: boolean;
   title?: string;
+  isBackgroundImage?: boolean;
 };
 
 function Layout({
   children,
   goBack,
   isBackButtonEnabled = true,
+  isBackgroundImage = false,
   isHeaderEnabled = true,
   title,
 }: LayoutProps) {
   const insets = useSafeAreaInsets();
 
-  const paddingBottomValue = Platform.OS !== 'ios' ? 2 : 28;
+  const bottomPadding = Platform.OS !== 'ios' ? 2 : 28;
+  const paddingBottomValue = isBackgroundImage ? 0 : bottomPadding;
   return (
     <LayoutContainer style={{ paddingBottom: Math.max(insets.bottom, paddingBottomValue) }}>
       {isHeaderEnabled && (
