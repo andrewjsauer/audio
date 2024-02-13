@@ -42,7 +42,7 @@ export const Subtitle = styled.Text`
 `;
 
 export const SubtitleDescription = styled.Text`
-  font-family: ${(p) => p.theme.fonts.bold};
+  font-family: ${(p) => p.theme.fonts.semiBold};
   font-size: ${(p) => p.theme.fontSizes.medium};
   color: ${(p) => p.theme.colors.white};
   text-align: center;

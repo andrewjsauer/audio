@@ -11,8 +11,8 @@ import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 import ColorPicker from '@components/shared/ColorPicker';
 import Layout from '../Layout';
 
-import { Container, ButtonWrapper, InputSubtitle, InputWrapper } from '../style';
-import { TextInput } from './style';
+import { Container, Title, ButtonWrapper, InputSubtitle, InputWrapper } from '../style';
+import { TextInput, TitleContainer } from './style';
 
 function PartnerNameScreen() {
   const { t } = useTranslation();
@@ -58,8 +58,11 @@ function PartnerNameScreen() {
   };
 
   return (
-    <Layout isBackButtonEnabled={false} title={t('auth.partnerDetails.nameScreen.title')}>
+    <Layout isBackButtonEnabled={false}>
       <Container>
+        <TitleContainer>
+          <Title>{t('auth.partnerDetails.nameScreen.title')}</Title>
+        </TitleContainer>
         <ColorPicker
           color={color}
           colorOffLimits={colorOffLimits}

@@ -9,3 +9,8 @@ export const TextInput = styled.TextInput`
   border-radius: 4px;
   background-color: ${(p) => p.theme.colors.white};
 `;
+
+export const TitleContainer = styled.View`
+  flex: 1;
+  justify-content: flex-end;
+`;

@@ -59,7 +59,7 @@ function SignInScreen() {
   };
 
   return (
-    <Layout>
+    <Layout isHeaderDisabled>
       <BackgroundImage source={Image} resizeMode="cover" />
       <Container>
         <Header>

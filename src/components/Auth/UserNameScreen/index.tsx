@@ -12,9 +12,9 @@ import { showNotification } from '@store/ui/slice';
 import ColorPicker from '@components/shared/ColorPicker';
 import Layout from '../Layout';
 
-import { Container, ButtonWrapper, InputSubtitle, InputWrapper } from '../style';
+import { Container, ButtonWrapper, InputSubtitle, InputWrapper, Title } from '../style';
 
-import { TextInput } from './style';
+import { TextInput, TitleContainer } from './style';
 
 function UserNameScreen() {
   const { t } = useTranslation();
@@ -59,8 +59,11 @@ function UserNameScreen() {
   };
 
   return (
-    <Layout isBackButtonEnabled={false} title={t('auth.userDetails.userNameScreen.title')}>
+    <Layout isBackButtonEnabled={false}>
       <Container>
+        <TitleContainer>
+          <Title>{t('auth.userDetails.userNameScreen.title')}</Title>
+        </TitleContainer>
         <ColorPicker
           color={color}
           onChange={(colorOption) => handleUserDetails({ color: colorOption })}

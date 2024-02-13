@@ -10,8 +10,8 @@ import { trackEvent } from '@lib/analytics';
 import { showNotification } from '@store/ui/slice';
 
 import Layout from '../Layout';
-import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
-import { StyledDatePicker } from './style';
+import { Container, Title, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
+import { StyledDatePicker, TitleContainer } from './style';
 
 function RelationshipDateScreen() {
   const { t } = useTranslation();
@@ -42,12 +42,11 @@ function RelationshipDateScreen() {
   };
 
   return (
-    <Layout
-      goBack={goToPreviousStep}
-      isBackButtonEnabled
-      title={t('auth.partnerDetails.relationshipDateScreen.title')}
-    >
+    <Layout goBack={goToPreviousStep} isHeaderDisabled={false}>
       <Container>
+        <TitleContainer>
+          <Title>{t('auth.partnerDetails.relationshipDateScreen.title')}</Title>
+        </TitleContainer>
         <InputWrapper>
           <InputTitle>{t('auth.partnerDetails.relationshipDateScreen.inputTitle')}</InputTitle>
           <StyledDatePicker

@@ -15,11 +15,11 @@ function Layout({
   children,
   goBack,
   isBackButtonEnabled = true,
-  isHeaderDisabled = false,
+  isHeaderDisabled = true,
 }: LayoutProps) {
   return (
     <LayoutContainer>
-      {isHeaderDisabled && (
+      {!isHeaderDisabled && (
         <Header isAddedPadding={!isBackButtonEnabled} isAndroidMarginTop={Platform.OS !== 'ios'}>
           <BackButtonWrapper onPress={goBack}>
             <ChevronLeft width={30} height={30} />

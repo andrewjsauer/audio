@@ -12,9 +12,9 @@ import { selectIsLoading } from '@store/auth/selectors';
 import { trackEvent } from '@lib/analytics';
 
 import Layout from '../Layout';
-import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
+import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper, Title } from '../style';
 
-import { StyledDatePicker } from './style';
+import { StyledDatePicker, TitleContainer } from './style';
 
 function BirthdayScreen() {
   const { t } = useTranslation();
@@ -47,12 +47,11 @@ function BirthdayScreen() {
   };
 
   return (
-    <Layout
-      goBack={goToPreviousStep}
-      isBackButtonEnabled
-      title={t('auth.userDetails.birthdayScreen.title')}
-    >
+    <Layout goBack={goToPreviousStep} isHeaderDisabled={false}>
       <Container>
+        <TitleContainer>
+          <Title>{t('auth.userDetails.birthdayScreen.title')}</Title>
+        </TitleContainer>
         <InputWrapper>
           <InputTitle>{t('auth.userDetails.birthdayScreen.inputTitle')}</InputTitle>
           <StyledDatePicker
