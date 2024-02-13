@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native';
 import Button from '@components/shared/Button';
 
 import Layout from '../Layout';
-import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
+import { Title, Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
 
 import { CodeInput, ResendCodeWrapper, ResendCodeTextWrapper } from './style';
 
@@ -55,8 +55,9 @@ function VerificationCodeScreen({
   };
 
   return (
-    <Layout goBack={goToPreviousStep} title={t('auth.verificationCodeScreen.title')}>
+    <Layout goBack={goToPreviousStep}>
       <Container>
+        <Title>{t('auth.verificationCodeScreen.title')}</Title>
         <InputWrapper>
           <InputTitle>{t('auth.verificationCodeScreen.inputTitle')}</InputTitle>
           <CodeInput

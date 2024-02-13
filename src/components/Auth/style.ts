@@ -29,3 +29,12 @@ export const InputWrapper = styled.View`
   padding: 0 20px;
   width: 100%;
 `;
+
+export const Title = styled.Text`
+  font-family: ${(p) => p.theme.fonts.bold};
+  font-size: ${(p) => p.theme.fontSizes.medium};
+  color: ${(p) => p.theme.colors.black};
+  align-self: flex-start;
+  margin-left: 20px;
+  margin-bottom: 20px;
+`;

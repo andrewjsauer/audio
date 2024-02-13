@@ -6,7 +6,7 @@ import Button from '@components/shared/Button';
 import PhoneNumberInput from '@components/shared/PhoneNumberInput';
 
 import Layout from '../Layout';
-import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
+import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper, Title } from '../style';
 
 type Props = {
   goToPreviousStep: () => void;
@@ -28,8 +28,9 @@ function PhoneNumberScreen({
   const { t } = useTranslation();
 
   return (
-    <Layout goBack={goToPreviousStep} title={t('auth.phoneNumberScreen.title')}>
+    <Layout goBack={goToPreviousStep}>
       <Container>
+        <Title>{t('auth.phoneNumberScreen.title')}</Title>
         <InputWrapper>
           <InputTitle>{t('auth.phoneNumberScreen.inputTitle')}</InputTitle>
           <PhoneNumberInput

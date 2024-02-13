@@ -1,49 +1,29 @@
 import React from 'react';
 import { Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ChevronLeft from '@assets/icons/chevron-left.svg';
-
-import {
-  KeyboardAvoidingView,
-  Header,
-  Title,
-  LayoutContainer,
-  BackButtonWrapper,
-  View,
-} from './style';
+import { KeyboardAvoidingView, Header, LayoutContainer, BackButtonWrapper, View } from './style';
 
 type LayoutProps = {
   children: React.ReactNode;
   goBack?: () => void;
   isBackButtonEnabled?: boolean;
-  isHeaderEnabled?: boolean;
-  title?: string;
-  isBackgroundImage?: boolean;
+  isHeaderDisabled?: boolean;
 };
 
 function Layout({
   children,
   goBack,
   isBackButtonEnabled = true,
-  isBackgroundImage = false,
-  isHeaderEnabled = true,
-  title,
+  isHeaderDisabled = false,
 }: LayoutProps) {
-  const insets = useSafeAreaInsets();
-
-  const bottomPadding = Platform.OS !== 'ios' ? 2 : 28;
-  const paddingBottomValue = isBackgroundImage ? 0 : bottomPadding;
   return (
-    <LayoutContainer style={{ paddingBottom: Math.max(insets.bottom, paddingBottomValue) }}>
-      {isHeaderEnabled && (
+    <LayoutContainer>
+      {isHeaderDisabled && (
         <Header isAddedPadding={!isBackButtonEnabled} isAndroidMarginTop={Platform.OS !== 'ios'}>
-          {isBackButtonEnabled && (
-            <BackButtonWrapper onPress={goBack}>
-              <ChevronLeft width={30} height={30} />
-            </BackButtonWrapper>
-          )}
-          <Title isLeftMargin={isBackButtonEnabled}>{title}</Title>
+          <BackButtonWrapper onPress={goBack}>
+            <ChevronLeft width={30} height={30} />
+          </BackButtonWrapper>
         </Header>
       )}
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>

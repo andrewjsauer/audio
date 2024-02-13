@@ -40,7 +40,7 @@ const theme = {
     xlarge: '24px',
     xxlarge: '28px',
     question: '30px',
-    logo: '50px',
+    logo: '52px',
   },
 };
 

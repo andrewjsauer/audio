@@ -14,15 +14,6 @@ export const Header = styled.View<{ isAddedPadding: boolean; isAndroidMarginTop:
   padding: ${(p) => (p.isAddedPadding ? '0 20px' : '0 10px')};
 `;
 
-export const Title = styled.Text<{ isLeftMargin: boolean }>`
-  font-family: ${(p) => p.theme.fonts.bold};
-  font-size: ${(p) => p.theme.fontSizes.medium};
-  color: ${(p) => p.theme.colors.black};
-  padding-right: 12px;
-
-  ${(p) => p.isLeftMargin && 'margin-left: 20px;'}
-`;
-
 export const KeyboardAvoidingView = styled.KeyboardAvoidingView`
   flex: 1;
 `;
