@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Platform } from 'react-native';
 
 import { trackEvent } from '@lib/analytics';
 
@@ -32,7 +32,9 @@ function NonSubscriberNotification() {
 
   const handleUpdatePayment = () => {
     trackEvent('Subscribe Button Tapped');
-    dispatch(purchaseProduct({ user, partnerData, productIdentifier: 'dq_999_1m_1m0' }));
+
+    const productIdentifier = Platform.OS === 'ios' ? 'dq_999_1m_1m0' : 'dq_999_1m_1m0:dq-999-1m';
+    dispatch(purchaseProduct({ user, partnerData, productIdentifier }));
   };
 
   return (
