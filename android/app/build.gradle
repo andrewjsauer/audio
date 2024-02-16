@@ -83,8 +83,8 @@ android {
         applicationId "com.sauerapple.audio"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.5.6"
+        versionCode 1
+        versionName "1.5.7"
     }
     signingConfigs {
         release {
