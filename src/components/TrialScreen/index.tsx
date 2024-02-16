@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment-timezone';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 
 import { trackEvent } from '@lib/analytics';
 
@@ -61,7 +61,9 @@ function TrialScreen() {
 
   const handlePurchase = () => {
     trackEvent('Start Trail Button Tapped');
-    dispatch(purchaseProduct({ user, partnerData, productIdentifier: 'dq_999_1m_1m0' }));
+
+    const productIdentifier = Platform.OS === 'ios' ? 'dq_999_1m_1m0' : 'dq_999_1m_1m0:dq-999-1m';
+    dispatch(purchaseProduct({ user, partnerData, productIdentifier }));
   };
 
   const handleRestorePurchases = () => {

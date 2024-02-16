@@ -5,7 +5,7 @@
   "eslint.lintTask.enable": true,
   "eslint.enable": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.lightbulb.enabled": false,
+  "editor.lightbulb.enabled": "off",
   "editor.formatOnSave": true,
   "i18n-ally.localesPaths": [
     "src/locales",
