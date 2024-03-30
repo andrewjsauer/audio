@@ -1,11 +1,5 @@
 import styled from 'styled-components/native';
 
-export const RelationshipPickerContainer = styled.View`
-  padding: 0 30px;
-  margin-bottom: 20px;
-  width: 100%;
-`;
-
 export const TitleContainer = styled.View`
   align-self: flex-start;
   padding: 0 20px;

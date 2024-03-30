@@ -13,6 +13,7 @@ import { selectIsLoading } from '@store/auth/selectors';
 import { trackEvent } from '@lib/analytics';
 
 import Layout from '../Layout';
+import { TitleContainer, Wrapper } from './style';
 import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper, Title } from '../style';
 
 function InviteScreen() {
@@ -55,9 +56,11 @@ function InviteScreen() {
   };
 
   return (
-    <Layout goBack={goToPreviousStep} isHeaderDisabled={false}>
+    <Layout goBack={goToPreviousStep} isBackArrowDisabled={false} isPartnershipComplete>
       <Container>
-        <Title>{t('auth.partnerDetails.invitePartnerScreen.title')}</Title>
+        <TitleContainer>
+          <Title>{t('auth.partnerDetails.invitePartnerScreen.title')}</Title>
+        </TitleContainer>
         <InputWrapper>
           <InputTitle>{t('auth.partnerDetails.invitePartnerScreen.inputTitle')}</InputTitle>
           <PhoneNumberInput

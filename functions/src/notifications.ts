@@ -496,7 +496,7 @@ export const sendNotification = functions.https.onCall(async (data, context) => 
     await admin.messaging().sendEachForMulticast({
       tokens,
       notification: {
-        title: `Daily Q’s - ${title}`,
+        title,
         body,
       },
     });

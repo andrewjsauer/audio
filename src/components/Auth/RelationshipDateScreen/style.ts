@@ -6,6 +6,14 @@ export const StyledDatePicker = styled(DatePicker)`
 `;
 
 export const TitleContainer = styled.View`
+  align-self: flex-start;
+  padding: 0 20px;
+  margin-bottom: 20px;
+`;
+
+export const Wrapper = styled.View`
   flex: 1;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 `;

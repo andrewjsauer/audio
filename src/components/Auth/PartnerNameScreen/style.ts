@@ -5,12 +5,10 @@ export const TextInput = styled.TextInput`
   font-family: ${(p) => p.theme.fonts.regular};
   border: 1px solid ${(p) => p.theme.colors.lightGray};
   padding: 10px;
-  margin: 8px 0;
   border-radius: 4px;
   background-color: ${(p) => p.theme.colors.white};
 `;
 
 export const TitleContainer = styled.View`
-  flex: 1;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `;

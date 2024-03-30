@@ -270,6 +270,7 @@ function PlayUserModal() {
           recordingId,
           listeningId: `${recordingId}-${userId}`,
           questionId,
+          partnerData,
         }),
       );
     }

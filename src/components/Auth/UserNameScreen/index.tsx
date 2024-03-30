@@ -13,7 +13,6 @@ import ColorPicker from '@components/shared/ColorPicker';
 import Layout from '../Layout';
 
 import { Container, ButtonWrapper, InputSubtitle, InputWrapper, Title } from '../style';
-
 import { TextInput, TitleContainer } from './style';
 
 function UserNameScreen() {
@@ -59,7 +58,7 @@ function UserNameScreen() {
   };
 
   return (
-    <Layout isBackButtonEnabled={false}>
+    <Layout isBackArrowDisabled>
       <Container>
         <TitleContainer>
           <Title>{t('auth.userDetails.userNameScreen.title')}</Title>

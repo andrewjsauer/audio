@@ -19,6 +19,7 @@ export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
   background-color: ${({ mode, disabled, theme }) => {
     if (disabled) {
       if (mode === 'hidden') return theme.colors.transparentGray;
+      if (mode === 'green') return theme.colors.lightGreen;
       return theme.colors.gray;
     }
 
@@ -31,6 +32,8 @@ export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
         return theme.colors.gray;
       case 'error':
         return theme.colors.burntOrange;
+      case 'green':
+        return theme.colors.lightGreen;
       default:
         return theme.colors.gray;
     }
@@ -51,6 +54,7 @@ export const ButtonText = styled.Text<ButtonProps>`
         return theme.colors.black;
       case 'hidden':
         return theme.colors.gray;
+      case 'green':
       case 'dark':
         return theme.colors.white;
       case 'error':

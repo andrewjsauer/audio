@@ -7,6 +7,7 @@ import PhoneNumberInput from '@components/shared/PhoneNumberInput';
 
 import Layout from '../Layout';
 import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper, Title } from '../style';
+import { TitleContainer } from './style';
 
 type Props = {
   goToPreviousStep: () => void;
@@ -28,9 +29,11 @@ function PhoneNumberScreen({
   const { t } = useTranslation();
 
   return (
-    <Layout goBack={goToPreviousStep}>
+    <Layout goBack={goToPreviousStep} isHeaderEnabled={false}>
       <Container>
-        <Title>{t('auth.phoneNumberScreen.title')}</Title>
+        <TitleContainer>
+          <Title>{t('auth.phoneNumberScreen.title')}</Title>
+        </TitleContainer>
         <InputWrapper>
           <InputTitle>{t('auth.phoneNumberScreen.inputTitle')}</InputTitle>
           <PhoneNumberInput

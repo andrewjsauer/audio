@@ -10,6 +10,6 @@ export const TextInput = styled.TextInput`
 `;
 
 export const TitleContainer = styled.View`
-  flex: 1;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  padding: 0 20px;
 `;

@@ -1,0 +1,25 @@
+[debug] [2024-03-30T17:14:05.791Z] ----------------------------------------------------------------------
+[debug] [2024-03-30T17:14:05.793Z] Command:       /Users/andrewsauer/.nvm/versions/node/v18.17.0/bin/node /Users/andrewsauer/.nvm/versions/node/v18.17.0/bin/firebase functions:shell
+[debug] [2024-03-30T17:14:05.793Z] CLI Version:   13.1.0
+[debug] [2024-03-30T17:14:05.794Z] Platform:      darwin
+[debug] [2024-03-30T17:14:05.795Z] Node Version:  v18.17.0
+[debug] [2024-03-30T17:14:05.801Z] Time:          Sat Mar 30 2024 10:14:05 GMT-0700 (Pacific Daylight Time)
+[debug] [2024-03-30T17:14:05.801Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-03-30T17:14:05.899Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-03-30T17:14:05.901Z] > authorizing via signed-in user (andrew@sauerapple.com)
+[debug] [2024-03-30T17:14:05.902Z] [iam] checking project audio-20f30 for permissions ["firebase.projects.get"]
+[debug] [2024-03-30T17:14:05.904Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/audio-20f30:testIamPermissions [none]
+[debug] [2024-03-30T17:14:05.904Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/audio-20f30:testIamPermissions x-goog-quota-user=projects/audio-20f30
+[debug] [2024-03-30T17:14:05.905Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/audio-20f30:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-03-30T17:14:06.283Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/audio-20f30:testIamPermissions 200
+[debug] [2024-03-30T17:14:06.287Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/audio-20f30:testIamPermissions {"permissions":["firebase.projects.get"]}
+[warn] ⚠  functions: Functions Emulator unable to start on port 5000, starting on 5001 instead. {"metadata":{"emulator":{"name":"functions"},"message":"Functions Emulator unable to start on port 5000, starting on 5001 instead."}}
+[debug] [2024-03-30T17:14:06.642Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-03-30T17:14:06.646Z] defaultcredentials: writing to file /Users/andrewsauer/.config/firebase/andrew_sauerapple_com_application_default_credentials.json
+[debug] [2024-03-30T17:14:06.648Z] DEBUG: Setting GAC to /Users/andrewsauer/.config/firebase/andrew_sauerapple_com_application_default_credentials.json
+[debug] [2024-03-30T17:14:06.649Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/audio-20f30/adminSdkConfig [none]
+[debug] [2024-03-30T17:14:07.203Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/audio-20f30/adminSdkConfig 200
+[debug] [2024-03-30T17:14:07.204Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/audio-20f30/adminSdkConfig {"projectId":"audio-20f30","storageBucket":"audio-20f30.appspot.com","locationId":"us-central"}
+[debug] [2024-03-30T17:14:07.223Z] [functions] Watching "/Users/andrewsauer/Documents/SAUERAPPLE/AUDIO/app/functions" for Cloud Functions...
+[debug] [2024-03-30T17:14:07.232Z] Validating nodejs source

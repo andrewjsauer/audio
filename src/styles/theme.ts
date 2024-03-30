@@ -6,6 +6,7 @@ const theme = {
     darkGray: '#6A6A6A',
     gray: '#404040',
     green: '#358A57',
+    lightGreen: '#62BE8D',
     lighterGray: '#D9D9D9',
     lightGray: '#909090',
     red: '#D32F2F',
@@ -32,6 +33,7 @@ const theme = {
     semiBoldItalic: 'Nunito-SemiBoldItalic',
   },
   fontSizes: {
+    xxsmall: '8px',
     xsmall: '12px',
     small: '14px',
     regular: '16px',

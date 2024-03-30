@@ -7,7 +7,7 @@ import Button from '@components/shared/Button';
 import Layout from '../Layout';
 import { Title, Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
 
-import { CodeInput, ResendCodeWrapper, ResendCodeTextWrapper } from './style';
+import { TitleContainer, CodeInput, ResendCodeWrapper, ResendCodeTextWrapper } from './style';
 
 type Props = {
   code: string;
@@ -55,9 +55,11 @@ function VerificationCodeScreen({
   };
 
   return (
-    <Layout goBack={goToPreviousStep}>
+    <Layout goBack={goToPreviousStep} isHeaderEnabled={false}>
       <Container>
-        <Title>{t('auth.verificationCodeScreen.title')}</Title>
+        <TitleContainer>
+          <Title>{t('auth.verificationCodeScreen.title')}</Title>
+        </TitleContainer>
         <InputWrapper>
           <InputTitle>{t('auth.verificationCodeScreen.inputTitle')}</InputTitle>
           <CodeInput

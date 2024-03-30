@@ -14,7 +14,7 @@ import { trackEvent } from '@lib/analytics';
 import Layout from '../Layout';
 import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper, Title } from '../style';
 
-import { StyledDatePicker, TitleContainer } from './style';
+import { StyledDatePicker, TitleContainer, Wrapper } from './style';
 
 function BirthdayScreen() {
   const { t } = useTranslation();
@@ -42,31 +42,32 @@ function BirthdayScreen() {
       return;
     }
 
-    trackEvent('Birthdate Submitted');
+    trackEvent('Birthday Submitted');
     goToNextStep();
   };
 
   return (
-    <Layout goBack={goToPreviousStep} isHeaderDisabled={false}>
+    <Layout goBack={goToPreviousStep} isBackArrowDisabled={false}>
       <Container>
-        <TitleContainer>
-          <Title>{t('auth.userDetails.birthdayScreen.title')}</Title>
-        </TitleContainer>
-        <InputWrapper>
-          <InputTitle>{t('auth.userDetails.birthdayScreen.inputTitle')}</InputTitle>
-          <StyledDatePicker
-            date={birthday || currentDate}
-            maximumDate={currentDate}
-            mode="date"
-            onDateChange={(date) => handleUserDetails({ birthDate: date })}
-            textColor="#000"
-            locale={i18n.language}
-          />
-          <InputSubtitle>{t('auth.userDetails.birthdayScreen.inputDescription')}</InputSubtitle>
-        </InputWrapper>
-        <ButtonWrapper>
-          <Button isLoading={isLoading} onPress={handleSubmit} text={t('next')} />
-        </ButtonWrapper>
+        <Wrapper>
+          <TitleContainer>
+            <Title>{t('auth.userDetails.birthdayScreen.title')}</Title>
+          </TitleContainer>
+          <InputWrapper>
+            <StyledDatePicker
+              date={birthday || currentDate}
+              maximumDate={currentDate}
+              mode="date"
+              onDateChange={(date) => handleUserDetails({ birthDate: date })}
+              textColor="#000"
+              locale={i18n.language}
+            />
+            <InputSubtitle>{t('auth.userDetails.birthdayScreen.inputDescription')}</InputSubtitle>
+          </InputWrapper>
+          <ButtonWrapper>
+            <Button isLoading={isLoading} onPress={handleSubmit} text={t('next')} />
+          </ButtonWrapper>
+        </Wrapper>
       </Container>
     </Layout>
   );
