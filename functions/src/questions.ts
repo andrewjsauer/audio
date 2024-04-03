@@ -60,28 +60,28 @@ const relationshipTypeMap: { [key in RelationshipType]: string } = {
   married: 'Married',
 };
 
-// async function getPreviousPartnershipQuestions(partnershipId: string) {
-//   const db = admin.firestore();
-//   const questionsRef = db.collection('questions');
-//   const snapshot = await questionsRef
-//     .where('partnershipId', '==', partnershipId)
-//     .orderBy('createdAt', 'desc')
-//     .limit(10)
-//     .get();
+async function getPreviousPartnershipQuestions(partnershipId: string) {
+  const db = admin.firestore();
+  const questionsRef = db.collection('questions');
+  const snapshot = await questionsRef
+    .where('partnershipId', '==', partnershipId)
+    .orderBy('createdAt', 'desc')
+    .limit(10)
+    .get();
 
-//   if (snapshot.empty) {
-//     functions.logger.info('No questions found for this partnership.');
-//     return [];
-//   }
+  if (snapshot.empty) {
+    functions.logger.info('No questions found for this partnership.');
+    return [];
+  }
 
-//   const lastTenQuestions: string[] = [];
-//   snapshot.forEach((doc) => {
-//     const questionData = doc.data();
-//     lastTenQuestions.push(questionData.text);
-//   });
+  const lastTenQuestions: string[] = [];
+  snapshot.forEach((doc) => {
+    const questionData = doc.data();
+    lastTenQuestions.push(questionData.text);
+  });
 
-//   return lastTenQuestions;
-// }
+  return lastTenQuestions;
+}
 
 type generatePersonalizedQuestionParams = {
   partnership: {
@@ -110,12 +110,12 @@ const generatePersonalizedQuestion = async ({
     const promptLanguage =
       usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
-    // const pastQuestions = await getPreviousPartnershipQuestions(partnership.id);
-    const promptBase = `Create a 90-character ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} that is inspired by couple card games like 'Talking Hearts.'`;
+    const pastQuestions = await getPreviousPartnershipQuestions(partnership.id);
+    let promptBase = `Create a 90-character ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} that is inspired by couple card games like 'Talking Hearts' and 'We're Not Really Strangers.'`;
 
-    // if (pastQuestions.length > 0) {
-    //   promptBase += ` Avoid repetition from these past questions: ${pastQuestions.join(', ')}.`;
-    // }
+    if (pastQuestions.length > 0) {
+      promptBase += ` Avoid repetition from these past questions: ${pastQuestions.join(', ')}.`;
+    }
 
     const prompt = promptBase;
 
