@@ -93,7 +93,7 @@ function QuestionView({
       ) : (
         <TimerText> </TimerText>
       )}
-      {relationshipTimeZone !== localTimeZone && (
+      {areBothRecordingsAvailable && relationshipTimeZone !== localTimeZone && (
         <TimerText>
           {t('questionScreen.subscriberScreen.timeRemainingExplained', {
             timeZone: relationshipTimeZone,

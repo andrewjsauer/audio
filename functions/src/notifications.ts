@@ -3,8 +3,6 @@ import * as admin from 'firebase-admin';
 
 import moment from 'moment-timezone';
 
-import { formatCreatedAt } from './utils/dateUtils';
-
 function getTimeZonesForReminder() {
   const timeZones = moment.tz.names();
 
@@ -77,25 +75,20 @@ async function sendAfternoonReminderNotificationIfNeeded(
           const questionSnapshot = queriedDescQuestionSnapshot.docs[0];
           const questionData = questionSnapshot.data();
 
-          const today = startOfToday.toDate();
-          const questionCreatedAtLocal = formatCreatedAt(questionData.createdAt, timeZone);
-
-          if (questionCreatedAtLocal >= today) {
-            body = questionData.text || 'Today’s question is ready!';
-            apnsPayload = questionData.text
-              ? {
-                  apns: {
-                    payload: {
-                      aps: {
-                        alert: {
-                          subtitle: '✨ Question of the Day ✨',
-                        },
+          body = questionData.text || 'Today’s question is ready!';
+          apnsPayload = questionData.text
+            ? {
+                apns: {
+                  payload: {
+                    aps: {
+                      alert: {
+                        subtitle: '✨ Question of the Day ✨',
                       },
                     },
                   },
-                }
-              : undefined;
-          }
+                },
+              }
+            : undefined;
         }
       }
 
@@ -121,7 +114,7 @@ async function sendAfternoonReminderNotificationIfNeeded(
   }
 }
 
-async function sendEveningReminderNotification(userData: any, timeZone: string) {
+async function sendEveningReminderNotification(userData: any) {
   if (
     (!userData && !userData.deviceIds) ||
     userData.deviceIds.length === 0 ||
@@ -130,8 +123,6 @@ async function sendEveningReminderNotification(userData: any, timeZone: string) 
     return;
 
   const db = admin.firestore();
-
-  const startOfToday = moment().tz(timeZone).startOf('day');
   const { id: userId, partnershipId, deviceIds } = userData;
 
   let body = 'Don’t forget to answer!';
@@ -149,25 +140,20 @@ async function sendEveningReminderNotification(userData: any, timeZone: string) 
       const questionSnapshot = queriedDescQuestionSnapshot.docs[0];
       const questionData = questionSnapshot.data();
 
-      const today = startOfToday.toDate();
-      const questionCreatedAtLocal = formatCreatedAt(questionData.createdAt, timeZone);
-
-      if (questionCreatedAtLocal >= today) {
-        body = questionData.text || '✨ Don’t forget to answer! ✨';
-        apnsPayload = questionData.text
-          ? {
-              apns: {
-                payload: {
-                  aps: {
-                    alert: {
-                      subtitle: '✨ Don’t forget to answer! ✨',
-                    },
+      body = questionData.text || '✨ Don’t forget to answer! ✨';
+      apnsPayload = questionData.text
+        ? {
+            apns: {
+              payload: {
+                aps: {
+                  alert: {
+                    subtitle: '✨ Don’t forget to answer! ✨',
                   },
                 },
               },
-            }
-          : undefined;
-      }
+            },
+          }
+        : undefined;
     }
   }
 
@@ -295,8 +281,8 @@ async function sendInactivePartnerReminder(
   if (recordingSnapshot.empty) {
     functions.logger.info('No recordings found');
     await Promise.all([
-      sendEveningReminderNotification(inactiveUserData, timeZone),
-      sendEveningReminderNotification(activeUserData, timeZone),
+      sendEveningReminderNotification(inactiveUserData),
+      sendEveningReminderNotification(activeUserData),
     ]);
 
     return;
@@ -312,7 +298,7 @@ async function sendInactivePartnerReminder(
 
   if (!hasActiveUserRecorded) {
     functions.logger.info('Active user has not recorded');
-    await sendEveningReminderNotification(activeUserData, timeZone);
+    await sendEveningReminderNotification(activeUserData);
   }
 
   await Promise.all(
@@ -326,11 +312,7 @@ async function sendInactivePartnerReminder(
   );
 }
 
-async function checkAndSendRecordingReminders(
-  activeUsers: any,
-  latestQuestionId: string,
-  timeZone: string,
-) {
+async function checkAndSendRecordingReminders(activeUsers: any, latestQuestionId: string) {
   try {
     const db = admin.firestore();
     const recordingsSnapshot = await db
@@ -342,7 +324,7 @@ async function checkAndSendRecordingReminders(
       functions.logger.info('No recordings found');
 
       await Promise.all(
-        activeUsers.map((user: any) => sendEveningReminderNotification(user.userData, timeZone)),
+        activeUsers.map((user: any) => sendEveningReminderNotification(user.userData)),
       );
 
       return;
@@ -396,7 +378,7 @@ async function handleEveningLogic(
     await Promise.all(
       inactiveUsers.map(({ userData }) => {
         if (userData) {
-          sendEveningReminderNotification(userData, timeZone);
+          sendEveningReminderNotification(userData);
           return null;
         }
 
@@ -413,7 +395,7 @@ async function handleEveningLogic(
     );
   } else if (inactiveUsers.length === 0) {
     functions.logger.info('Both users are active');
-    await checkAndSendRecordingReminders(activeUsers, latestQuestionId, timeZone);
+    await checkAndSendRecordingReminders(activeUsers, latestQuestionId);
   }
 }
 

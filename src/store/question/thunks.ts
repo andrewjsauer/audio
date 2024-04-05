@@ -11,7 +11,6 @@ import {
   differenceInYears,
   formatCreatedAt,
   startOfDayInTimeZone,
-  endOfDayInTimeZone,
 } from '@lib/dateUtils';
 
 import { selectCurrentQuestion } from '@store/question/selectors';
@@ -98,8 +97,8 @@ export const fetchLatestQuestion = createAsyncThunk<
   async ({ partnershipData }: FetchLatestQuestionArgs, { rejectWithValue, getState }): any => {
     try {
       const state = getState();
+      const now = moment().tz(partnershipData.timeZone);
       const today = startOfDayInTimeZone(new Date(), partnershipData.timeZone);
-      const endOfToday = endOfDayInTimeZone(new Date(), partnershipData.timeZone);
 
       const userData = selectUserData(state);
       const areBothRecordingsAvailable = selectAreBothRecordingsAvailable(state);
@@ -109,6 +108,9 @@ export const fetchLatestQuestion = createAsyncThunk<
       const currentLanguage = i18n.language;
 
       if (currentQuestion) {
+        const currentQuestionLocalCreatedAt = moment(currentQuestion.createdAt).tz(timeZone);
+        const isSameDay = now.isSame(currentQuestionLocalCreatedAt, 'day');
+
         if (!areBothRecordingsAvailable) {
           trackEvent('No Recordings Available Persist Question', {
             currentQuestion,
@@ -124,27 +126,19 @@ export const fetchLatestQuestion = createAsyncThunk<
           };
         }
 
-        const currentQuestionLocalCreatedAt = moment(currentQuestion.createdAt).tz(timeZone);
-        if (currentQuestionLocalCreatedAt < endOfToday) {
-          trackEvent('Recordings Available But Before Midnight Persist Question', {
+        if (areBothRecordingsAvailable && isSameDay) {
+          trackEvent('Recordings Available Same Day Persist Question', {
             currentQuestion,
             today,
           });
-
           return {
             question: currentQuestion,
             isNewQuestion: false,
-          } as {
-            question: QuestionType;
-            isNewQuestion: boolean;
           };
         }
       }
 
-      trackEvent('Requesting Question', {
-        currentQuestion,
-        today,
-      });
+      trackEvent('Requesting Question');
 
       const newQuestion = await generateQuestion({
         partnerData,

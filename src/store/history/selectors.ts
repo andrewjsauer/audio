@@ -1,7 +1,5 @@
 import { createSelector } from 'reselect';
 import moment from 'moment-timezone';
-
-import { QuestionType } from '@lib/types';
 import { selectPartnershipTimeZone } from '@store/partnership/selectors';
 
 export const selectError = (state) => state.history.error;
@@ -38,71 +36,79 @@ const getMostRecentColor = (questions: any[], colorType: string) => {
   return lastQuestion ? lastQuestion[colorType] : null;
 };
 
-const createDefaultQuestion = (date: Date, partnerColor: string, userColor: string) => {
+const getRandomDefaultQuestion = () => {
   const questionIndex = Math.floor(Math.random() * defaultQuestions.length);
-  const question = defaultQuestions[questionIndex];
-
-  return {
-    createdAt: date,
-    id: Math.random().toString(),
-    partnerAudioUrl: null,
-    partnerColor: partnerColor || '#82A326',
-    partnerDuration: null,
-    partnerReactionToUser: null,
-    partnerRecordingId: null,
-    partnershipTextKey: 'bothDidNotAnswer',
-    partnerStatus: 'Lock',
-    text: question,
-    userAudioUrl: null,
-    userColor: userColor || '#175419',
-    userDuration: null,
-    userReactionToPartner: null,
-    userRecordingId: null,
-    userStatus: 'Lock',
-    isItemBlurred: true,
-  };
+  return defaultQuestions[questionIndex];
 };
 
-const findMissingDates = (questions: QuestionType[], timeZone: string) => {
-  if (questions.length === 0) return [];
+const createDefaultQuestion = (date, partnerColor = '#82A326', userColor = '#175419') => ({
+  createdAt: date.toISOString(),
+  id: Math.random().toString(),
+  partnerAudioUrl: null,
+  partnerColor,
+  partnerDuration: null,
+  partnerReactionToUser: null,
+  partnerRecordingId: null,
+  partnershipTextKey: 'bothDidNotAnswer',
+  partnerStatus: 'Lock',
+  text: getRandomDefaultQuestion(),
+  userAudioUrl: null,
+  userColor,
+  userDuration: null,
+  userReactionToPartner: null,
+  userRecordingId: null,
+  userStatus: 'Lock',
+  isItemBlurred: true,
+});
 
-  const datesSet = new Set(
-    questions.map((q) => moment.tz(q.createdAt, timeZone).startOf('day').format('YYYY-MM-DD')),
-  );
+// Determines if a question is considered "answered"
+const isQuestionAnswered = (question) =>
+  question.partnerStatus === 'Play' && question.userStatus === 'Play';
 
-  const firstDate = moment.tz(questions[0].createdAt, timeZone).startOf('day');
-  const lastDate = moment.tz(timeZone).endOf('day');
-  const dateRange = [];
-
-  for (let m = moment(firstDate); m.isBefore(lastDate); m.add(1, 'days')) {
-    dateRange.push(m.clone());
+// Finds dates without questions or with unanswered questions
+const findDatesForDefaultQuestions = (questions, timeZone) => {
+  if (questions.length === 0) {
+    return [moment.tz(timeZone).startOf('day')]; // Return today if no questions
   }
 
-  return dateRange.filter((date) => !datesSet.has(date.format('YYYY-MM-DD')));
+  const datesWithUnansweredQuestions = questions
+    .filter((q) => !isQuestionAnswered(q))
+    .map((q) => moment.tz(q.createdAt, timeZone).startOf('day'));
+
+  const uniqueDates = new Set(
+    datesWithUnansweredQuestions.map((date) => date.format('YYYY-MM-DD')),
+  );
+
+  return Array.from(uniqueDates).map((dateStr) => moment(dateStr, 'YYYY-MM-DD'));
 };
 
 export const selectFormattedQuestions = createSelector(
   selectQuestions,
   selectPartnershipTimeZone,
   (questions, timeZone) => {
-    const formattedQuestions = questions.map((question) => {
-      const isBlurred = question.partnerStatus !== 'Play' && question.userStatus !== 'Play';
+    // Mark questions as blurred based on their answer status
+    const formattedQuestions = questions.map((question) => ({
+      ...question,
+      isItemBlurred: !isQuestionAnswered(question),
+    }));
 
-      return {
-        ...question,
-        createdAt: question.createdAt,
-        isItemBlurred: isBlurred,
-      };
+    // Identify dates that require a default question
+    const datesForDefaultQuestions = findDatesForDefaultQuestions(formattedQuestions, timeZone);
+    const mostRecentColors = {
+      partnerColor: getMostRecentColor(formattedQuestions, 'partnerColor'),
+      userColor: getMostRecentColor(formattedQuestions, 'userColor'),
+    };
+
+    // Add default questions for dates without an answered question
+    datesForDefaultQuestions.forEach((date) => {
+      if (!formattedQuestions.some((q) => moment(q.createdAt).isSame(date, 'day'))) {
+        formattedQuestions.push(
+          createDefaultQuestion(date, mostRecentColors.partnerColor, mostRecentColors.userColor),
+        );
+      }
     });
 
-    const missingDates = findMissingDates(formattedQuestions, timeZone);
-    const partnerColor = getMostRecentColor(formattedQuestions, 'partnerColor');
-    const userColor = getMostRecentColor(formattedQuestions, 'userColor');
-
-    missingDates.forEach((date) => {
-      formattedQuestions.push(createDefaultQuestion(date.toDate(), partnerColor, userColor));
-    });
-
+    // Sort questions by date
     return formattedQuestions.sort((a, b) =>
       moment(b.createdAt).tz(timeZone).diff(moment(a.createdAt).tz(timeZone)),
     );

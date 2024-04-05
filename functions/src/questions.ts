@@ -54,6 +54,42 @@ const relationshipTypeMap: { [key in RelationshipType]: string } = {
   married: 'Married',
 };
 
+const hasPartnershipAnsweredLatestQuestion = async (partnershipId: string) => {
+  const db = admin.firestore();
+
+  const latestQuestion = await db
+    .collection('questions')
+    .where('partnershipId', '==', partnershipId)
+    .orderBy('createdAt', 'desc')
+    .limit(1)
+    .get();
+
+  if (latestQuestion.empty) {
+    functions.logger.info('No questions found for this partnership.');
+    return false;
+  }
+
+  const latestQuestionId = latestQuestion.docs[0].id;
+
+  const recordingsSnapshot = await db
+    .collection('recordings')
+    .where('questionId', '==', latestQuestionId)
+    .get();
+
+  if (recordingsSnapshot.empty) {
+    functions.logger.info('No recordings found for this question.');
+    return false;
+  }
+
+  let recordingCount = 0;
+
+  recordingsSnapshot.forEach(() => {
+    recordingCount += 1;
+  });
+
+  return recordingCount === 2;
+};
+
 async function getPreviousPartnershipQuestions(partnershipId: string) {
   const db = admin.firestore();
   const questionsRef = db.collection('questions');
@@ -98,14 +134,14 @@ const generatePersonalizedQuestion = async ({
   try {
     const relationshipType = relationshipTypeMap[partnership.type as RelationshipType];
 
-    const adjectives = ['thoughtful', 'playful', 'fun'];
+    const adjectives = ['thoughtful', 'fun'];
 
     const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
     const promptLanguage =
       usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
     const pastQuestions = await getPreviousPartnershipQuestions(partnership.id);
-    let promptBase = `Create a 90-character ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} that is inspired by the couple card games 'Talking Hearts' and 'We're Not Really Strangers. Avoid common questions, corny jokes, and questions that are too personal.'`;
+    let promptBase = `Create a 90-character ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} that is inspired by the couple card games 'Talking Hearts'. Avoid common questions, corny jokes, and questions that are too personal.'`;
 
     if (pastQuestions.length > 0) {
       promptBase += ` Avoid repeating these past questions: ${pastQuestions.join(', ')}.`;
@@ -155,11 +191,9 @@ export const fetchQuestion = functions
       const doc = queriedDescQuestionSnapshot.docs[0];
       const fetchedQuestionData = doc.data();
 
+      functions.logger.info(`Persisting question: ${JSON.stringify(fetchedQuestionData)}`);
       return fetchedQuestionData;
     }
-
-    functions.logger.log('Fetched Question Empty');
-    trackEvent('Fetched Question Empty', userData.id);
 
     functions.logger.log('Generating New Question');
     trackEvent('Generating New Question', userData.id);
@@ -284,7 +318,13 @@ export const generateQuestionModified = functions
       const doc = queriedDescQuestionSnapshot.docs[0];
       const fetchedQuestionData = doc.data();
 
-      return fetchedQuestionData;
+      const hasAnsweredLatestQuestion = await hasPartnershipAnsweredLatestQuestion(
+        partnershipData.id,
+      );
+
+      if (!hasAnsweredLatestQuestion) {
+        return fetchedQuestionData;
+      }
     }
 
     functions.logger.log('Generating New Question');
@@ -416,7 +456,7 @@ const areUsersSubscribed = async (partnershipId: string) => {
     .get();
 
   if (usersSnapshot.empty) {
-    functions.logger.info('No users found for this partnership.');
+    functions.logger.info(`No users found for this partnership ${partnershipId}`);
     return false;
   }
 
@@ -431,42 +471,6 @@ const areUsersSubscribed = async (partnershipId: string) => {
   });
 
   return allSubscribed;
-};
-
-const hasPartnershipAnsweredLatestQuestion = async (partnershipId: string) => {
-  const db = admin.firestore();
-
-  const latestQuestion = await db
-    .collection('questions')
-    .where('partnershipId', '==', partnershipId)
-    .orderBy('createdAt', 'desc')
-    .limit(1)
-    .get();
-
-  if (latestQuestion.empty) {
-    functions.logger.info('No questions found for this partnership.');
-    return false;
-  }
-
-  const latestQuestionId = latestQuestion.docs[0].id;
-
-  const recordingsSnapshot = await db
-    .collection('recordings')
-    .where('questionId', '==', latestQuestionId)
-    .get();
-
-  if (recordingsSnapshot.empty) {
-    functions.logger.info('No recordings found for this question.');
-    return false;
-  }
-
-  let recordingCount = 0;
-
-  recordingsSnapshot.forEach(() => {
-    recordingCount += 1;
-  });
-
-  return recordingCount === 2;
 };
 
 async function processPartnership(doc: any) {

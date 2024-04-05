@@ -146,7 +146,7 @@ function SettingsScreen() {
 
   const partnershipLanguage = languageMap[partnershipData?.language || 'en'];
   return (
-    <Layout titleKey="accountScreen.title" screen="Settings Screen">
+    <Layout titleKey="accountScreen.title" screen="Settings Screen" isLoading={isLoading}>
       {isLoading ? (
         <LoadingView />
       ) : (
