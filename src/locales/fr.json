@@ -122,7 +122,6 @@
     "subscriberScreen": {
       "redo": "Refaire",
       "submit": "Soumettre",
-      "timeRemaining": "{{ time }} restant...",
       "lock": {
         "title": "{{ name }} a répondu",
         "description": "Enregistrez votre réponse pour l'entendre !"
@@ -142,7 +141,8 @@
         "description": "Vous devez autoriser les permissions pour enregistrer votre réponse",
         "buttonText": "Autoriser"
       },
-      "timeRemainingExplained": "Réinitialise à minuit {{ timeZone }}"
+      "timeRemainingExplained": "Réinitialise à minuit {{ timeZone }}",
+      "timeRemaining": "{{ time }} jusqu'à votre prochaine question..."
     },
     "recordScreen": {
       "note": "Toutes les enregistrements sont privés et chiffrés.",
@@ -168,7 +168,18 @@
       "description": "Après l'essai gratuit, si vous ne l'annulez pas, vous serez facturé 9,99 $ par mois pour les deux personnes. {{ partnerName }} ne sera jamais facturé."
     },
     "benefitMonthly": "Mensuel par personne",
-    "perPersonPrice": "4,99 dollars"
+    "perPersonPrice": "4,99 dollars",
+    "subTitlePrice": "9,99 $ par mois (valeur par personne = 4,99 $)",
+    "subTitleHighPrice": "18,99 $",
+    "breakdown": {
+      "day1": "Jour 1",
+      "day1Description": "Obtenez un accès instantané et voyez à quel point cela vous rapproche de votre partenaire.",
+      "day25": "Jour 25",
+      "day25Description": "Recevez un rappel de la date de fin de votre essai.",
+      "enableNotifications": "Activer rappel",
+      "day30": "Jour 30",
+      "day30Description": "Vous serez facturé mensuellement à partir du {{ date }} et vous pouvez annuler à tout moment avant cette date."
+    }
   },
   "historyScreen": {
     "title": "Historique",
@@ -191,7 +202,8 @@
       "title": "Q’s Quotidiennes",
       "subtitle": "Édition Couple",
       "buttonText": "Obtenir le Code",
-      "terms": "En vous inscrivant, vous acceptez nos"
+      "terms": "En vous inscrivant, vous acceptez nos",
+      "description": "Rapprochez-vous davantage quand vous êtes séparés"
     },
     "phoneNumberScreen": {
       "title": "Bienvenue ! Connectez-vous pour commencer",

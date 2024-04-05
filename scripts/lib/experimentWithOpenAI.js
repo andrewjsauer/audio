@@ -28,7 +28,7 @@ if (!fs_1.default.existsSync(outputDir)) {
     fs_1.default.mkdirSync(outputDir, { recursive: true });
 }
 const pastQuestions = [];
-const categories = ['thoughtful', 'playful'];
+const categories = ['thoughtful', 'playful', 'fun'];
 const generateAndAppendPrompt = () => __awaiter(void 0, void 0, void 0, function* () {
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
     // const prompt = `Generate a conversation starter about "${randomCategory}" for team members to share insights and personal stories. The question should facilitate deep understanding and connection, suitable for team-building exercises. Ensure it's open-ended to encourage detailed responses and is appropriate for a professional setting. Exclude questions similar to previously discussed topics: ${pastQuestions.join(

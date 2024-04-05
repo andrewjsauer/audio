@@ -25,7 +25,7 @@ function QuestionScreen() {
 
   return (
     <Stack.Navigator>
-      {isSubscribed ? (
+      {true ? (
         <>
           <Stack.Group>
             <Stack.Screen

@@ -1,33 +1,25 @@
 {
   "appTitle": "Couples Edition",
   "keywords": "Couples,Relationship,Love,Questions,Daily,Q's,Partner,Intimacy,Fun,Communication,Married,Distance",
-  "appDescription": {
-    "title": "Spark Each Other's Days – Everyday with Daily Q's (Couples Edition) - Subscription Required!",
-    "howItWorks": {
-      "title": "How It Works:",
-      "point1": "Daily Questions (Premium Feature): Each day, receive a unique question tailored for you and your partner. Note: A premium subscription is required to access all questions.",
-      "point2": "Voice Your Thoughts (Premium Feature): Record your answers and look forward to your partner's response. Available exclusively with a premium subscription.",
-      "point3": "Unlock & Listen (Premium Feature): Listen to each other’s recordings, unlocking new levels of connection. This feature is accessible only with a premium subscription.",
-      "point4": "Privacy Focused: Ensuring a safe and private space for you and your partner to express yourselves freely."
+  "description": {
+    "title": "Daily Q’s is the essential app for couples, no matter the distance. Perfect for those near or far, Daily Q’s offers a new, loving way to connect daily through unique prompts that spark deep conversations and bring you closer than ever.",
+    "sub": "Whether you’re exploring a new connection, facing the hurdles of long-distance, aligning your paths, balancing hectic lives, or celebrating your deep bond, Daily Q’s is a fun way to ignite and maintain that special connection. Experience the joy of daily discoveries and heartfelt moments with your partner, turning every day into an opportunity for emotional closeness.",
+    "features": {
+      "title": "Features Designed to Connect Hearts:",
+      "1": "Engaging Daily Questions: Delve into each other’s minds and hearts with our carefully crafted questions, perfect for revealing hidden depths and strengthening your bond.",
+      "2": "Intimate Audio Responses: Elevate your exchanges beyond bland texting with personal audio messages, letting you feel the presence and emotions of your loved one, as if they were right there with you.",
+      "3": "Secure Private Moments: Cherish your private exchanges with peace of mind, knowing that all recordings are securely encrypted for your ears only.",
+      "4": "Perfectly Tailored: Customize reminders and settings to sync with your unique rhythms and time zones, ensuring those precious moments of connection are always a part of your day.",
+      "5": "Dynamic Interaction: Our AI-driven content evolves with your relationship, ensuring that every question remains engaging and pertinent to your journey together."
     },
-    "why": {
-      "title": "Why Download Daily Q’s – Couples Edition?",
-      "point1": "Every Day is a New Adventure: Engage in daily conversations, from fun banter to deep talks. Premium subscription required.",
-      "point2": "Learn, Laugh, Love: Uncover new things about each other, laugh together, and strengthen your bond. Exclusively for subscribers.",
-      "point3": "For All Couples: Perfect for all stages of relationships, from new to long-term."
+    "features2": {
+      "title": "More Than Just an App:",
+      "1": "Deepen Your Understanding: Break free from the mundane and dive into meaningful explorations of each other’s worlds, enriching your communication and connection.",
+      "2": "Embrace Emotional Intimacy: Share laughter, joy, surprises, and tender moments, while fostering a deeper, more resilient bond that transcends any distance.",
+      "3": "A Gesture of Love: Subscribing to Daily Q’s is a testament to your commitment to grow closer, with one partner gifting the subscription to the other as a sign of generosity and love."
     },
-    "perfectFor": {
-      "title": "Perfect For:",
-      "point1": "Couples desiring fun and meaningful conversations.",
-      "point2": "Relationships that value humor and affection.",
-      "point3": "Long-distance partners seeking daily engagement."
-    },
-    "footer": {
-      "title": "Join Daily Q's (Couples Edition) Today! Experience a world of delightful discovery. Download now and explore our free trial. For full access to all features, a premium subscription is required.",
-      "terms": "Terms of use:",
-      "privacy": "Privacy policy:"
-    }
+    "footer": "Daily Q’s is yours to explore free for 30 days, with the option to cancel anytime. A subscription unlocks all features, ensuring your connection continues to grow each day. Start your journey to closeness today!"
   },
-  "subTitle": "Fun Q&A Discovery",
+  "subTitle": "Grow Closer While Apart",
   "update": "Time zone integration, performance updates and bug fixes."
 }

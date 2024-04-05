@@ -62,8 +62,6 @@ function SubscriberScreen() {
     trackEvent('Home Screen Viewed');
   }, []);
 
-  useFetchQuestion();
-
   useNotificationPermissions();
 
   useRecordingSubscription({
@@ -78,6 +76,8 @@ function SubscriberScreen() {
     userData,
     userRecordingId: userRecording?.id,
   });
+
+  useFetchQuestion();
 
   const handleRetry = () => {
     trackEvent('Retry Button Tapped', {

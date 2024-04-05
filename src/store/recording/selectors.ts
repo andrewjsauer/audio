@@ -29,6 +29,14 @@ export const selectPartnerRecordingStatus = createSelector(
   },
 );
 
+export const selectAreBothRecordingsAvailable = createSelector(
+  selectUserRecording,
+  selectPartnerRecording,
+  (userRecording, partnerRecording) => {
+    return !!userRecording && !!partnerRecording;
+  },
+);
+
 export const selectPartnerReactionToUserType = createSelector(
   selectPartnerReactionToUser,
   (partnerReactionToUser) => {

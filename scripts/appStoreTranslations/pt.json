@@ -1,33 +1,25 @@
 {
   "appTitle": "Edição de Casais",
-  "appDescription": {
-    "title": "Iniciem os dias uns dos outros com brilho - todos os dias com Perguntas Diárias (Edição para Casais) - Assinatura Obrigatória!",
-    "howItWorks": {
-      "title": "Como funciona:",
-      "point1": "Perguntas Diárias (Recurso Premium): Todos os dias, receba uma pergunta única feita especialmente para você e seu parceiro. Observação: é necessária uma assinatura premium para acessar todas as perguntas.",
-      "point2": "Registre seus pensamentos (Recurso Premium): Grave suas respostas e aguarde a resposta do seu parceiro. Disponível exclusivamente com uma assinatura premium.",
-      "point3": "Desbloquear e Ouvir (Recurso Premium): Ouça as gravações um do outro, desbloqueando novos níveis de conexão. Este recurso está acessível apenas com uma assinatura premium.",
-      "point4": "Privacidade em foco: Garantindo um espaço seguro e privado para você e seu parceiro se expressarem livremente."
-    },
-    "why": {
-      "title": "Por que baixar um aplicativo de perguntas diárias – Edição para casais?",
-      "point1": "Todos os dias são uma nova aventura: participe de conversas diárias, desde brincadeiras divertidas até conversas profundas. Assinatura premium necessária.",
-      "point2": "Aprenda, ria, ame: Descubra coisas novas um sobre o outro, riam juntos e fortaleçam seu vínculo. Exclusivo para assinantes.",
-      "point3": "Para todos os casais: Perfeito para todas as fases dos relacionamentos, desde os mais recentes até os de longo prazo."
-    },
-    "perfectFor": {
-      "title": "Perfeito para:",
-      "point1": "Casais que desejam ter conversas divertidas e significativas.",
-      "point2": "Relacionamentos que valorizam o humor e o carinho.",
-      "point3": "Parceiros de longa distância em busca de envolvimento diário."
-    },
-    "footer": {
-      "title": "Junte-se às Perguntas Diárias (Edição para Casais) hoje! Viva uma experiência de descoberta encantadora. Baixe agora e explore nosso teste gratuito. Para ter acesso completo a todos os recursos, é necessário uma assinatura premium.",
-      "terms": "Termos de uso:",
-      "privacy": "Política de privacidade:\n\nEsta política de privacidade destina-se a informá-lo sobre como as informações pessoais são coletadas, usadas e protegidas ao usar este site.\n\nColeta de informações pessoais:\nQuando você utiliza nosso site, podemos coletar certas informações pessoais, como nome, endereço de e-mail e informações de contato. Essas informações são coletadas apenas quando você as fornece voluntariamente ao preencher formulários ou ao se inscrever em newsletters.\n\nUso das informações pessoais:\nAs informações pessoais coletadas são usadas para fornecer os serviços e informações solicitados por você. Também podemos usar essas informações para enviar e-mails promocionais ou boletins informativos, desde que você tenha dado consentimento para receber essas comunicações.\n\nProteção das informações pessoais:\nTomamos medidas razoáveis para proteger as informações pessoais coletadas contra acesso, uso ou divulgação não autorizados. No entanto, não podemos garantir a segurança absoluta dessas informações, pois a transmissão de dados pela Internet não é completamente segura.\n\nDivulgação de informações pessoais a terceiros:\nNão compartilhamos suas informações pessoais com terceiros, a menos que expressamente autorizado por você ou se exigido por lei.\n\nCookies:\nPodemos usar cookies para personalizar sua experiência de navegação e melhorar nosso site. Você pode optar por não aceitar cookies, ajustando as configurações do seu navegador.\n\nLinks para sites de terceiros:\nNosso site pode conter links para sites de terceiros. Não somos responsáveis ​​pela política de privacidade desses sites e recomendamos que você leia as políticas de privacidade deles antes de fornecer qualquer informação pessoal.\n\nAlterações na política de privacidade:\nPodemos atualizar esta política de privacidade periodicamente. É sua responsabilidade revisar esta página para estar ciente das alterações.\n\nAo usar nosso site, você concorda com a coleta e uso de suas informações pessoais conforme descrito nesta política de privacidade."
-    }
-  },
   "keywords": "Casais, Relacionamento, Amor, Perguntas, Diário, Parceiro, Intimidade, Diversão, Comunicação, Casados, Distância",
-  "subTitle": "Descoberta divertida de perguntas e respostas.",
-  "update": "Integração de fuso horário, atualizações de desempenho e correção de erros."
+  "update": "Integração de fuso horário, atualizações de desempenho e correção de erros.",
+  "description": {
+    "title": "Daily Q's é o aplicativo essencial para casais, não importa a distância. Perfeito para aqueles próximos ou distantes, o Daily Q's oferece uma nova forma amorosa de se conectar diariamente através de prompts únicos que iniciam conversas profundas e os aproximam mais do que nunca.",
+    "sub": "Quer esteja a explorar uma nova ligação, a enfrentar os obstáculos da distância, a alinhar os vossos caminhos, a equilibrar vidas agitadas, ou a celebrar o vosso vínculo profundo, o Daily Q's é uma forma divertida de acender e manter essa ligação especial. Experimente a alegria das descobertas diárias e dos momentos sinceros com o seu parceiro, transformando cada dia numa oportunidade para maior proximidade emocional.",
+    "features": {
+      "1": "Perguntas Diárias Envolvedoras: Mergulhe nas mentes e corações um do outro com nossas perguntas cuidadosamente elaboradas, perfeitas para revelar profundidades escondidas e fortalecer o seu vínculo.",
+      "2": "Respostas de áudio íntimas: Eleve suas conversas além das mensagens de texto sem graça com mensagens de áudio pessoais, permitindo que você sinta a presença e emoções do seu amado, como se estivessem bem ao seu lado.",
+      "3": "Momentos Privados Seguros: Aprecie suas trocas privadas com tranquilidade, sabendo que todas as gravações estão seguramente criptografadas apenas para os seus ouvidos.",
+      "4": "Personalizado perfeitamente: Personalize lembretes e configurações para sincronizar com seus ritmos e fusos horários únicos, garantindo que esses preciosos momentos de conexão estejam sempre presentes em seu dia.",
+      "5": "Interação dinâmica: Nosso conteúdo impulsionado por IA evolui com seu relacionamento, garantindo que cada pergunta continue sendo envolvente e pertinente para a jornada de vocês juntos.",
+      "title": "Recursos projetados para conectar corações:"
+    },
+    "features2": {
+      "1": "Aprofunde o seu entendimento: Liberte-se do cotidiano e mergulhe em explorações significativas dos mundos um do outro, enriquecendo a comunicação e a conexão.",
+      "2": "Abrace a Intimidade Emocional: Compartilhe risos, alegria, surpresas e momentos ternos, promovendo um vínculo mais profundo e resiliente que transcende qualquer distância.",
+      "3": "Um gesto de amor: Assinar as Daily Q’s diárias é um testemunho do seu compromisso em se aproximar mais, com um parceiro presenteando a assinatura ao outro como um sinal de generosidade e amor.",
+      "title": "Mais do que apenas um aplicativo:"
+    },
+    "footer": "O Daily Q's é seu para explorar de graça por 30 dias, com a opção de cancelar a qualquer momento. Uma assinatura desbloqueia todos os recursos, garantindo que a sua conexão continue a crescer a cada dia. Comece hoje a sua jornada rumo a uma maior proximidade!"
+  },
+  "subTitle": "Fiquem mais próximos mesmo estando distantes."
 }

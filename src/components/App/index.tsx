@@ -86,7 +86,7 @@ function App(): JSX.Element {
 
   return (
     <Stack.Navigator>
-      {hasPreviouslySubscribed ? (
+      {true ? (
         <>
           <Stack.Screen
             component={QuestionScreen}

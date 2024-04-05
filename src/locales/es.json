@@ -122,7 +122,6 @@
     "subscriberScreen": {
       "redo": "Rehacer",
       "submit": "Enviar",
-      "timeRemaining": "Queda {{ time }}...",
       "lock": {
         "title": "{{ name }} ha respondido",
         "description": "¡Graba tu respuesta para escucharla!"
@@ -142,7 +141,8 @@
         "description": "Debes permitir permisos para grabar tu respuesta",
         "buttonText": "Permitir"
       },
-      "timeRemainingExplained": "Reseteo a medianoche {{ timeZone }}"
+      "timeRemainingExplained": "Reseteo a medianoche {{ timeZone }}",
+      "timeRemaining": "{{ tiempo }} hasta tu próxima pregunta..."
     },
     "recordScreen": {
       "note": "Todas las grabaciones son privadas y encriptadas",
@@ -168,7 +168,18 @@
       "description": "Después de la prueba gratuita, si no cancelas, se te cobrará $9.99 al mes por ambos. {{ partnerName }} nunca será cobrado."
     },
     "benefitMonthly": "Mensual por persona",
-    "perPersonPrice": "$4.99 se traduce al español como \"4,99 dólares\"."
+    "perPersonPrice": "$4.99 se traduce al español como \"4,99 dólares\".",
+    "subTitlePrice": "$9.99 al mes (valor por persona = $4.99)",
+    "subTitleHighPrice": "$18.99",
+    "breakdown": {
+      "day1": "Día 1",
+      "day1Description": "Obtén acceso instantáneo y descubre cuánto te acerca a tu pareja.",
+      "day25": "Día 25",
+      "day25Description": "Recibe un recordatorio sobre cuándo finalizará tu prueba gratuita.",
+      "enableNotifications": "Habilitar recordatorio",
+      "day30": "Día 30",
+      "day30Description": "Se te cobrará mensualmente a partir del {{ date }} y puedes cancelar en cualquier momento antes de esa fecha."
+    }
   },
   "historyScreen": {
     "title": "Historial",
@@ -191,7 +202,8 @@
       "title": "Preguntas diarias",
       "subtitle": "Edición para Parejas",
       "buttonText": "Obtener Código",
-      "terms": "Al registrarte, aceptas nuestros"
+      "terms": "Al registrarte, aceptas nuestros",
+      "description": "Acércate más cada vez que estén separados."
     },
     "phoneNumberScreen": {
       "title": "¡Bienvenido! Inicia sesión para comenzar",

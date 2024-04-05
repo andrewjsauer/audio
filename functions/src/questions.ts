@@ -9,13 +9,7 @@ import moment from 'moment-timezone';
 import defaultQuestions from './utils/questions';
 import { trackEvent } from './analytics';
 
-import {
-  differenceInDays,
-  differenceInMonths,
-  differenceInYears,
-  startOfDayInTimeZone,
-  formatCreatedAt,
-} from './utils/dateUtils';
+import { startOfDayInTimeZone, formatCreatedAt } from './utils/dateUtils';
 
 const openApiKey = defineSecret('OPEN_AI_API_KEY');
 
@@ -111,15 +105,15 @@ const generatePersonalizedQuestion = async ({
       usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
     const pastQuestions = await getPreviousPartnershipQuestions(partnership.id);
-    let promptBase = `Create a 90-character ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} that is inspired by couple card games like 'Talking Hearts' and 'We're Not Really Strangers.'`;
+    let promptBase = `Create a 90-character ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} that is inspired by the couple card games 'Talking Hearts' and 'We're Not Really Strangers. Avoid common questions, corny jokes, and questions that are too personal.'`;
 
     if (pastQuestions.length > 0) {
-      promptBase += ` Avoid repetition from these past questions: ${pastQuestions.join(', ')}.`;
+      promptBase += ` Avoid repeating these past questions: ${pastQuestions.join(', ')}.`;
     }
 
     const prompt = promptBase;
 
-    functions.logger.info(`Prompt: ${prompt}`);
+    functions.logger.info(`Personalized Prompt: ${prompt}`);
 
     const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
@@ -137,6 +131,135 @@ const generatePersonalizedQuestion = async ({
 
   return questionText as string;
 };
+
+export const fetchQuestion = functions
+  .runWith({ secrets: [openApiKey] })
+  .https.onCall(async (data, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+    }
+
+    const { questionIndex, partnershipData, userData, usersLanguage } = data;
+    functions.logger.info(`Data: ${JSON.stringify(data)}`);
+
+    const db = admin.firestore();
+
+    const queriedDescQuestionSnapshot = await db
+      .collection('questions')
+      .where('partnershipId', '==', partnershipData.id)
+      .orderBy('createdAt', 'desc')
+      .limit(1)
+      .get();
+
+    if (!queriedDescQuestionSnapshot.empty) {
+      const doc = queriedDescQuestionSnapshot.docs[0];
+      const fetchedQuestionData = doc.data();
+
+      return fetchedQuestionData;
+    }
+
+    functions.logger.log('Fetched Question Empty');
+    trackEvent('Fetched Question Empty', userData.id);
+
+    functions.logger.log('Generating New Question');
+    trackEvent('Generating New Question', userData.id);
+
+    let questionText;
+
+    const apiKey = openApiKey.value();
+    const openai = new OpenAI({ apiKey });
+
+    if (
+      partnershipData.id === '538e11b4-061e-489f-ae52-3bddb0cafe1d' ||
+      partnershipData.id === 'f12665bc-b969-4877-9c6d-54ef5c23d86f'
+    ) {
+      questionText = await generatePersonalizedQuestion({
+        partnership: partnershipData,
+        usersLanguage,
+        openai,
+      });
+    } else if (questionIndex >= 0 && questionIndex < defaultQuestions.length) {
+      const englishQuestion = defaultQuestions[questionIndex];
+
+      if (usersLanguage !== 'en') {
+        try {
+          const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
+            messages: [
+              {
+                role: 'system',
+                content: `Convert the following question prompt into ${languageMap[usersLanguage]}`,
+              },
+              { role: 'user', content: englishQuestion },
+            ],
+            model: 'gpt-3.5-turbo',
+          });
+
+          const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
+          questionText = openAIQuestion?.replace(/^["']|["']$/g, '');
+        } catch (error) {
+          functions.logger.error(`Error translating with OpenAI request: ${JSON.stringify(error)}`);
+
+          const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
+          questionText = defaultQuestions[backupIndex];
+        }
+      } else {
+        questionText = englishQuestion;
+      }
+    } else {
+      const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
+      questionText = defaultQuestions[backupIndex];
+    }
+
+    const questionId = uuidv4();
+    const question = {
+      id: questionId,
+      partnershipId: partnershipData.id,
+      text: questionText,
+      createdAt: admin.firestore.Timestamp.now(),
+    };
+
+    try {
+      const batch = db.batch();
+      batch.set(
+        db.collection('partnership').doc(partnershipData.id),
+        {
+          latestQuestionId: questionId,
+        },
+        { merge: true },
+      );
+
+      batch.set(db.collection('questions').doc(questionId), question, {
+        merge: true,
+      });
+
+      await batch.commit();
+    } catch (error) {
+      const e = error as {
+        response?: { status?: string; data?: object };
+        message?: string;
+      };
+
+      if (e.response) {
+        functions.logger.error(`Error status ${e.response.status}`);
+        functions.logger.error(`Error data ${JSON.stringify(e.response.data)}`);
+
+        throw new functions.https.HttpsError(
+          'unknown',
+          `Error saving generated question: ${e.response.data}`,
+          e.response.data,
+        );
+      } else {
+        functions.logger.error(`Error message ${error}`);
+        throw new functions.https.HttpsError(
+          'unknown',
+          `Error saving generated question: ${error}`,
+          error,
+        );
+      }
+    }
+
+    return question;
+  });
 
 export const generateQuestionModified = functions
   .runWith({ secrets: [openApiKey] })
@@ -161,31 +284,7 @@ export const generateQuestionModified = functions
       const doc = queriedDescQuestionSnapshot.docs[0];
       const fetchedQuestionData = doc.data();
 
-      const today = startOfDayInTimeZone(new Date(), partnershipData.timeZone).toDate();
-      const fetchedQuestionCreatedAtLocal = formatCreatedAt(
-        fetchedQuestionData.createdAt,
-        partnershipData.timeZone,
-      );
-
-      if (fetchedQuestionCreatedAtLocal >= today) {
-        functions.logger.log('Fetched Question Current');
-        trackEvent('Fetched Question Current', userData.id, {
-          fetchedQuestionData,
-          today,
-        });
-
-        return fetchedQuestionData;
-      }
-
-      functions.logger.log('Fetched Question Expired');
-      trackEvent('Fetched Question Expired', userData.id, {
-        fetchedQuestionCreatedAtLocal,
-        fetchedQuestionData,
-        today,
-      });
-    } else {
-      functions.logger.log('Fetched Question Empty');
-      trackEvent('Fetched Question Empty', userData.id);
+      return fetchedQuestionData;
     }
 
     functions.logger.log('Generating New Question');
@@ -309,22 +408,65 @@ export const calculateQuestionIndex = (createdAt: Date, timeZone: string) => {
   return index;
 };
 
-export const calculateDuration = (startDate: Date, timeZone: string) => {
-  if (!startDate) return 'some amount of time';
+const areUsersSubscribed = async (partnershipId: string) => {
+  const db = admin.firestore();
+  const usersSnapshot = await db
+    .collection('users')
+    .where('partnershipId', '==', partnershipId)
+    .get();
 
-  const start = moment(startDate);
-  const now = moment().tz(timeZone);
+  if (usersSnapshot.empty) {
+    functions.logger.info('No users found for this partnership.');
+    return false;
+  }
 
-  const years = differenceInYears(now, start);
-  if (years > 0) return `${years} year${years > 1 ? 's' : ''}`;
+  let allSubscribed = true;
+  usersSnapshot.forEach((userSnapshot) => {
+    const user = userSnapshot.data();
 
-  const months = differenceInMonths(now, start);
-  if (months > 0) return `${months} month${months !== 1 ? 's' : ''}`;
+    if (!user?.isSubscribed) {
+      allSubscribed = false;
+      functions.logger.info(`User ${user.id} is not subscribed.`);
+    }
+  });
 
-  const days = differenceInDays(now, start);
-  if (days > 0) return `${days} day${days !== 1 ? 's' : ''}`;
+  return allSubscribed;
+};
 
-  return 'same day';
+const hasPartnershipAnsweredLatestQuestion = async (partnershipId: string) => {
+  const db = admin.firestore();
+
+  const latestQuestion = await db
+    .collection('questions')
+    .where('partnershipId', '==', partnershipId)
+    .orderBy('createdAt', 'desc')
+    .limit(1)
+    .get();
+
+  if (latestQuestion.empty) {
+    functions.logger.info('No questions found for this partnership.');
+    return false;
+  }
+
+  const latestQuestionId = latestQuestion.docs[0].id;
+
+  const recordingsSnapshot = await db
+    .collection('recordings')
+    .where('questionId', '==', latestQuestionId)
+    .get();
+
+  if (recordingsSnapshot.empty) {
+    functions.logger.info('No recordings found for this question.');
+    return false;
+  }
+
+  let recordingCount = 0;
+
+  recordingsSnapshot.forEach(() => {
+    recordingCount += 1;
+  });
+
+  return recordingCount === 2;
 };
 
 async function processPartnership(doc: any) {
@@ -332,23 +474,30 @@ async function processPartnership(doc: any) {
     functions.logger.info('No partnership document!');
     return;
   }
+  const db = admin.firestore();
 
   const partnership = doc.data();
-  const usersLanguage = 'en'; // Need to resolve
+  const usersLanguage = partnership?.language || 'en';
 
-  functions.logger.info(
-    `Processing partnership ${partnership.id} at time ${moment()
-      .tz(partnership.timeZone)
-      .format('YYYY-MM-DD HH:mm:ss')})}`,
-  );
+  functions.logger.info(`Processing partnership ${partnership.id}`);
 
-  // const startDate = formatCreatedAt(partnership.startDate, partnership.timeZone);
+  const areSubscribed = await areUsersSubscribed(partnership.id);
+  if (!areSubscribed) {
+    functions.logger.info(`Skipping over partnership since they are not subscribed`);
+    return;
+  }
+
+  const hasAnsweredLatestQuestion = await hasPartnershipAnsweredLatestQuestion(partnership.id);
+  if (!hasAnsweredLatestQuestion) {
+    functions.logger.info(
+      `Skipping over partnership since they have not answered the latest question`,
+    );
+    return;
+  }
+
   const createdAt = formatCreatedAt(partnership.createdAt, partnership.timeZone);
-
   const questionIndex = calculateQuestionIndex(createdAt, partnership.timeZone);
-  // const duration = calculateDuration(startDate, partnership.timeZone);
 
-  const db = admin.firestore();
   let questionText;
 
   const apiKey = openApiKey.value();
@@ -397,37 +546,6 @@ async function processPartnership(doc: any) {
     questionText = defaultQuestions[backupIndex];
   }
 
-  try {
-    const usersSnapshot = await db
-      .collection('users')
-      .where('partnershipId', '==', partnership.id)
-      .get();
-
-    if (usersSnapshot.empty) {
-      functions.logger.info('No users found for this partnership.');
-      return;
-    }
-
-    let allSubscribed = true;
-    usersSnapshot.forEach((userSnapshot) => {
-      const user = userSnapshot.data();
-
-      if (!user?.isSubscribed) {
-        allSubscribed = false;
-        functions.logger.info(`User ${user.id} is not subscribed.`);
-      }
-    });
-
-    if (!allSubscribed) {
-      functions.logger.info(
-        `One or both users are not subscribed. Exiting the process for partnership ${partnership.id}`,
-      );
-      return;
-    }
-  } catch (error) {
-    throw new functions.https.HttpsError('unknown', `Error fetching users: ${error}`, error);
-  }
-
   const questionId = uuidv4();
   const createdAtInTimeZone = moment.tz(new Date(), partnership.timeZone).toDate();
   const firestoreTimestamp = admin.firestore.Timestamp.fromDate(createdAtInTimeZone);
@@ -440,7 +558,7 @@ async function processPartnership(doc: any) {
   };
 
   functions.logger.info(
-    `Saving question ${questionId} for partnership ${partnership.id}. Question is ${question.text} for time created at ${createdAtInTimeZone}`,
+    `Saving question (${questionId}) for partnership (${partnership.id}). Question is ${question.text} for time created at ${createdAtInTimeZone}`,
   );
 
   try {
