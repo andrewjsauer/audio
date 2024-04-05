@@ -19,6 +19,7 @@
 		1D1782AE2B2A822300080B6E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D1782AD2B2A822300080B6E /* StoreKit.framework */; };
 		1D2174982B226B0000C58B9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1D2174972B226B0000C58B9D /* GoogleService-Info.plist */; };
 		1D44E1EA2B321E0400FBF39C /* Required-Swift-File-For-Bridging-Header-File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D44E1E92B321E0400FBF39C /* Required-Swift-File-For-Bridging-Header-File.swift */; };
+		1D94C7392BC0A93500364649 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1D94C7382BC0A93500364649 /* PrivacyInfo.xcprivacy */; };
 		2DD11872D4F248A29BF6F7A2 /* Nunito-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0931FB3AE19C49928A60D4A2 /* Nunito-SemiBoldItalic.ttf */; };
 		313577EDCF1240F4890C1B56 /* Nunito-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D156C0C749E14C55924EF72B /* Nunito-Black.ttf */; };
 		373D557AC8F84F5F89592822 /* Nunito-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20FC379891994D208D0E375E /* Nunito-Medium.ttf */; };
@@ -62,6 +63,7 @@
 		1D44E1E62B321D9200FBF39C /* Audio-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Audio-Bridging-Header.h"; sourceTree = "<group>"; };
 		1D44E1E92B321E0400FBF39C /* Required-Swift-File-For-Bridging-Header-File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Required-Swift-File-For-Bridging-Header-File.swift"; sourceTree = "<group>"; };
 		1D7AC8F52B1EC7DC005A028B /* audio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = audio.entitlements; path = audio/audio.entitlements; sourceTree = "<group>"; };
+		1D94C7382BC0A93500364649 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		20FC379891994D208D0E375E /* Nunito-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Medium.ttf"; path = "../src/assets/fonts/Nunito-Medium.ttf"; sourceTree = "<group>"; };
 		37A43CE2F903DAE64B395859 /* Pods_audio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_audio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-audio.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-audio.debug.xcconfig"; path = "Target Support Files/Pods-audio/Pods-audio.debug.xcconfig"; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				1D94C7382BC0A93500364649 /* PrivacyInfo.xcprivacy */,
 				1D44E1E92B321E0400FBF39C /* Required-Swift-File-For-Bridging-Header-File.swift */,
 				1D44E1E62B321D9200FBF39C /* Audio-Bridging-Header.h */,
 				1D2174972B226B0000C58B9D /* GoogleService-Info.plist */,
@@ -333,6 +336,7 @@
 				154F3955FBD24D25A8B85F49 /* Nunito-MediumItalic.ttf in Resources */,
 				4E917D4978CD456BA282E556 /* Nunito-Regular.ttf in Resources */,
 				9178285973F24F2AA88F94A1 /* Nunito-SemiBold.ttf in Resources */,
+				1D94C7392BC0A93500364649 /* PrivacyInfo.xcprivacy in Resources */,
 				2DD11872D4F248A29BF6F7A2 /* Nunito-SemiBoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
