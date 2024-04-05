@@ -141,7 +141,7 @@ const generatePersonalizedQuestion = async ({
       usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
     const pastQuestions = await getPreviousPartnershipQuestions(partnership.id);
-    let promptBase = `Create a 90-character ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} that is inspired by the couple card games 'Talking Hearts'. Avoid common questions, corny jokes, and questions that are too personal.'`;
+    let promptBase = `Create a 90-character ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} that is inspired by the couple card games 'Talking Hearts'. Avoid common and trite questions.'`;
 
     if (pastQuestions.length > 0) {
       promptBase += ` Avoid repeating these past questions: ${pastQuestions.join(', ')}.`;
