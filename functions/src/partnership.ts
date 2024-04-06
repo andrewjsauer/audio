@@ -272,8 +272,7 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
       to: partnerDetails.phoneNumber,
       body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join Daily Q’s. Have fun 😊!
         
-      iOS: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822
-      Android: https://play.google.com/store/apps/details?id=com.sauerapple.audio
+      Link: https://www.daily-qs.com
       `,
     });
 

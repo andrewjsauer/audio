@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import moment from 'moment-timezone';
+
 import { selectPartnershipTimeZone } from '@store/partnership/selectors';
 
 export const selectError = (state) => state.history.error;
@@ -61,56 +62,63 @@ const createDefaultQuestion = (date, partnerColor = '#82A326', userColor = '#175
   isItemBlurred: true,
 });
 
-// Determines if a question is considered "answered"
 const isQuestionAnswered = (question) =>
   question.partnerStatus === 'Play' && question.userStatus === 'Play';
 
-// Finds dates without questions or with unanswered questions
 const findDatesForDefaultQuestions = (questions, timeZone) => {
-  if (questions.length === 0) {
-    return [moment.tz(timeZone).startOf('day')]; // Return today if no questions
-  }
+  const today = moment.tz(timeZone).startOf('day');
+  const dates = [];
 
-  const datesWithUnansweredQuestions = questions
-    .filter((q) => !isQuestionAnswered(q))
-    .map((q) => moment.tz(q.createdAt, timeZone).startOf('day'));
+  // Process questions, starting from the second one
+  questions.slice(1).forEach((q) => {
+    const questionDate = moment.tz(q.createdAt, timeZone).startOf('day');
+    if (!dates.some((date) => date.isSame(questionDate, 'day')) && !isQuestionAnswered(q)) {
+      dates.push(questionDate);
+    }
+  });
 
-  const uniqueDates = new Set(
-    datesWithUnansweredQuestions.map((date) => date.format('YYYY-MM-DD')),
-  );
-
-  return Array.from(uniqueDates).map((dateStr) => moment(dateStr, 'YYYY-MM-DD'));
+  // Always include today's date first
+  return [today].concat(dates.sort((a, b) => a.diff(b)));
 };
 
 export const selectFormattedQuestions = createSelector(
   selectQuestions,
   selectPartnershipTimeZone,
   (questions, timeZone) => {
-    // Mark questions as blurred based on their answer status
-    const formattedQuestions = questions.map((question) => ({
+    const today = moment.tz(timeZone).startOf('day');
+
+    const formattedQuestions = questions.map((question, index) => ({
       ...question,
+      createdAt: index === 0 ? moment.tz(timeZone).toISOString() : question.createdAt,
       isItemBlurred: !isQuestionAnswered(question),
     }));
 
-    // Identify dates that require a default question
     const datesForDefaultQuestions = findDatesForDefaultQuestions(formattedQuestions, timeZone);
     const mostRecentColors = {
       partnerColor: getMostRecentColor(formattedQuestions, 'partnerColor'),
       userColor: getMostRecentColor(formattedQuestions, 'userColor'),
     };
 
-    // Add default questions for dates without an answered question
-    datesForDefaultQuestions.forEach((date) => {
-      if (!formattedQuestions.some((q) => moment(q.createdAt).isSame(date, 'day'))) {
+    datesForDefaultQuestions.forEach((date, index) => {
+      if (
+        index > 0 &&
+        !formattedQuestions.some((q) => moment.tz(q.createdAt, timeZone).isSame(date, 'day'))
+      ) {
         formattedQuestions.push(
           createDefaultQuestion(date, mostRecentColors.partnerColor, mostRecentColors.userColor),
         );
       }
     });
 
-    // Sort questions by date
-    return formattedQuestions.sort((a, b) =>
-      moment(b.createdAt).tz(timeZone).diff(moment(a.createdAt).tz(timeZone)),
-    );
+    // Sort questions to keep today's question at the top and order the rest by date
+    const sortedQuestions = formattedQuestions.sort((a, b) => {
+      const dateA = moment.tz(a.createdAt, timeZone);
+      const dateB = moment.tz(b.createdAt, timeZone);
+      if (dateA.isSame(today, 'day')) return -1; // Always bring today's question to the top
+      if (dateB.isSame(today, 'day')) return 1; // Push any other question for today down if encountered (should not happen with logic above)
+      return dateA.diff(dateB); // Sort the rest by their dates
+    });
+
+    return sortedQuestions;
   },
 );

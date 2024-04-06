@@ -106,8 +106,7 @@ export const testSMS = functions.firestore.document('cleanUp/{docId}').onCreate(
     to: '+16262552193',
     body: `Hey, Andrew! Linda has invited you to join Daily Q’s. Have fun 😊!
     
-        iOS: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822
-        Android: https://play.google.com/store/apps/details?id=com.sauerapple.audio
+        Link: https://www.daily-qs.com
       `,
   };
 
