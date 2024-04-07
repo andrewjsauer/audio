@@ -8,3 +8,8 @@ export const TextInput = styled.TextInput`
   border-radius: 4px;
   background-color: ${(p) => p.theme.colors.white};
 `;
+
+export const TitleContainer = styled.View`
+  justify-content: flex-start;
+  padding: 0 20px;
+`;

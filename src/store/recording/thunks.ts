@@ -5,8 +5,9 @@ import functions from '@react-native-firebase/functions';
 import RNFS from 'react-native-fs';
 
 import { selectPartnershipTimeZone } from '@store/partnership/selectors';
+import { selectUserData } from '@store/auth/selectors';
 
-import { UserDataType } from '@lib/types';
+import { UserDataType, ReactionTypeIcons } from '@lib/types';
 import { trackEvent } from '@lib/analytics';
 import { formatCreatedAt } from '@lib/dateUtils';
 
@@ -67,15 +68,20 @@ export const saveListeningReaction = createAsyncThunk(
       userId,
       listeningId,
       questionId,
+      partnerData,
     }: {
       listeningId: string;
       recordingId: string;
       userId: string;
       reaction: string;
       questionId: string;
+      partnerData: UserDataType;
     },
-    { rejectWithValue },
+    { rejectWithValue, getState },
   ) => {
+    const state = getState();
+    const userData = selectUserData(state);
+
     try {
       await firestore().collection('listenings').doc(listeningId).set(
         {
@@ -87,6 +93,12 @@ export const saveListeningReaction = createAsyncThunk(
         },
         { merge: true },
       );
+
+      await functions().httpsCallable('sendNotification')({
+        tokens: partnerData.deviceIds,
+        title: 'Daily Q’s',
+        body: `${userData.name} reacted with ${ReactionTypeIcons[reaction]} to your answer!`,
+      });
 
       trackEvent('Reaction Sent');
       return { reaction, questionId };

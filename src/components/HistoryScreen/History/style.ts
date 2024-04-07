@@ -79,9 +79,7 @@ export const ItemIconContainer = styled.View`
   align-items: center;
 `;
 
-export const IconButton = styled.TouchableOpacity.attrs((props) => ({
-  activeOpacity: props.disabled ? 1 : 0.2,
-}))<{ color: string; disabled?: boolean }>`
+export const IconButton = styled.TouchableOpacity<{ color: string; disabled?: boolean }>`
   align-items: center;
   justify-content: center;
   width: 45px;

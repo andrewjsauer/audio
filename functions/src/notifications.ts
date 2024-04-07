@@ -16,7 +16,11 @@ function getTimeZonesForReminder() {
   });
 }
 
-async function sendAfternoonReminderNotificationIfNeeded(userDoc: any, timeZone: string) {
+async function sendAfternoonReminderNotificationIfNeeded(
+  userDoc: any,
+  timeZone: string,
+  questionId: string,
+) {
   const db = admin.firestore();
 
   const userId = userDoc.data()?.userId;
@@ -42,22 +46,63 @@ async function sendAfternoonReminderNotificationIfNeeded(userDoc: any, timeZone:
   }
 
   try {
-    const usersLastActiveAt = userData.lastActiveAt?._seconds || userData.lastActiveAt?.seconds;
+    const recordingsSnapshot = await db
+      .collection('recordings')
+      .where('questionId', '==', questionId)
+      .get();
 
+    const areRecordingsEmpty = recordingsSnapshot.empty;
+    const recordings = !areRecordingsEmpty ? recordingsSnapshot.docs.map((doc) => doc.data()) : [];
+    const hasUserRecorded = recordings.some((recording) => recording.userId === userId);
+
+    const usersLastActiveAt = userData.lastActiveAt?._seconds || userData.lastActiveAt?.seconds;
     const lastActiveAt = moment(usersLastActiveAt * 1000).tz(timeZone);
     const startOfToday = moment().tz(timeZone).startOf('day');
 
-    if (lastActiveAt.isBefore(startOfToday)) {
+    if (lastActiveAt.isBefore(startOfToday) || !hasUserRecorded) {
+      let body = 'Today’s question is ready!';
+      let apnsPayload;
+
+      if (userData.partnershipId) {
+        const queriedDescQuestionSnapshot = await db
+          .collection('questions')
+          .where('partnershipId', '==', userData.partnershipId)
+          .orderBy('createdAt', 'desc')
+          .limit(1)
+          .get();
+
+        if (!queriedDescQuestionSnapshot.empty) {
+          const questionSnapshot = queriedDescQuestionSnapshot.docs[0];
+          const questionData = questionSnapshot.data();
+
+          body = questionData.text || 'Today’s question is ready!';
+          apnsPayload = questionData.text
+            ? {
+                apns: {
+                  payload: {
+                    aps: {
+                      alert: {
+                        subtitle: '✨ Question of the Day ✨',
+                      },
+                    },
+                  },
+                },
+              }
+            : undefined;
+        }
+      }
+
       const response = await admin.messaging().sendEachForMulticast({
         tokens: userData.deviceIds,
         notification: {
           title: 'Daily Q’s',
-          body: 'Today’s question is ready!',
+          body,
         },
+        ...apnsPayload,
       });
 
       functions.logger.info(
-        `Afternoon reminder sent successfully for user: ${userId}, response: ${JSON.stringify(
+        `Afternoon reminder sent successfully for user: ${userId}, body: ${body}, response: ${JSON.stringify(
           response,
         )}`,
       );
@@ -70,17 +115,62 @@ async function sendAfternoonReminderNotificationIfNeeded(userDoc: any, timeZone:
 }
 
 async function sendEveningReminderNotification(userData: any) {
-  if ((!userData && !userData.deviceIds) || userData.deviceIds.length === 0) return;
+  if (
+    (!userData && !userData.deviceIds) ||
+    userData.deviceIds.length === 0 ||
+    !userData.isRegistered
+  )
+    return;
 
-  await admin.messaging().sendEachForMulticast({
-    tokens: userData.deviceIds,
+  const db = admin.firestore();
+  const { id: userId, partnershipId, deviceIds } = userData;
+
+  let body = 'Don’t forget to answer!';
+  let apnsPayload;
+
+  if (partnershipId) {
+    const queriedDescQuestionSnapshot = await db
+      .collection('questions')
+      .where('partnershipId', '==', partnershipId)
+      .orderBy('createdAt', 'desc')
+      .limit(1)
+      .get();
+
+    if (!queriedDescQuestionSnapshot.empty) {
+      const questionSnapshot = queriedDescQuestionSnapshot.docs[0];
+      const questionData = questionSnapshot.data();
+
+      body = questionData.text || '✨ Don’t forget to answer! ✨';
+      apnsPayload = questionData.text
+        ? {
+            apns: {
+              payload: {
+                aps: {
+                  alert: {
+                    subtitle: '✨ Don’t forget to answer! ✨',
+                  },
+                },
+              },
+            },
+          }
+        : undefined;
+    }
+  }
+
+  const response = await admin.messaging().sendEachForMulticast({
+    tokens: deviceIds,
     notification: {
       title: 'Daily Q’s',
-      body: `Don't forget to answer today's question!`,
+      body,
     },
+    ...apnsPayload,
   });
 
-  functions.logger.info(`Evening reminder notification sent for user: ${userData.id}`);
+  functions.logger.info(
+    `Evening reminder sent successfully for user: ${userId}, body: ${body}, response: ${JSON.stringify(
+      response,
+    )}`,
+  );
 }
 
 async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
@@ -91,7 +181,7 @@ async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
     if (!partnerSnapshot.exists) return;
 
     const partnerData = partnerSnapshot.data();
-    partnerName = partnerData?.name || 'Your partner';
+    partnerName = partnerData?.name ?? 'Your partner';
 
     functions.logger.info(`Partner name: ${partnerName}`);
   } catch (error) {
@@ -99,7 +189,7 @@ async function sendPartnerRecordingReminder(userData: any, partnerId: string) {
     return;
   }
 
-  if (!userData.deviceIds || userData.deviceIds.length === 0) return;
+  if (!userData.deviceIds || userData.deviceIds?.length === 0) return;
 
   await admin.messaging().sendEachForMulticast({
     tokens: userData.deviceIds,
@@ -196,6 +286,19 @@ async function sendInactivePartnerReminder(
     ]);
 
     return;
+  }
+
+  const recordings = !recordingSnapshot.empty
+    ? recordingSnapshot.docs.map((doc) => doc.data())
+    : [];
+
+  const hasActiveUserRecorded = recordings.some(
+    (recording) => recording.userId === activeUserData.id,
+  );
+
+  if (!hasActiveUserRecorded) {
+    functions.logger.info('Active user has not recorded');
+    await sendEveningReminderNotification(activeUserData);
   }
 
   await Promise.all(
@@ -296,9 +399,13 @@ async function handleEveningLogic(
   }
 }
 
-async function handleAfternoonLogic(partnershipUsers: any, timeZone: string) {
+async function handleAfternoonLogic(
+  partnershipUsers: any,
+  timeZone: string,
+  latestQuestionId: string,
+) {
   const notificationPromises = partnershipUsers.docs.map((userDoc: any) =>
-    sendAfternoonReminderNotificationIfNeeded(userDoc, timeZone),
+    sendAfternoonReminderNotificationIfNeeded(userDoc, timeZone, latestQuestionId),
   );
 
   await Promise.all(notificationPromises);
@@ -331,7 +438,7 @@ async function processPartnership(partnershipDoc: any) {
     const isEvening = currentTime.hour() === 20 && currentTime.minute() <= 5;
 
     if (isAfternoon) {
-      await handleAfternoonLogic(partnershipUsers, timeZone);
+      await handleAfternoonLogic(partnershipUsers, timeZone, latestQuestionId);
     } else if (isEvening) {
       await handleEveningLogic(partnershipUsers, timeZone, latestQuestionId);
     }
@@ -371,7 +478,7 @@ export const sendNotification = functions.https.onCall(async (data, context) => 
     await admin.messaging().sendEachForMulticast({
       tokens,
       notification: {
-        title: `Daily Q’s - ${title}`,
+        title,
         body,
       },
     });

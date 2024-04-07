@@ -53,7 +53,8 @@
       "description": "请更新到最新版本的每日问题来继续使用该应用。",
       "buttonText": "更新"
     },
-    "recordingSaveMemoryLimitExceeded": "您的录音超过了最大存储限制。"
+    "recordingSaveMemoryLimitExceeded": "您的录音超过了最大存储限制。",
+    "offline": "您处于离线状态，请检查您的网络连接并重试。"
   },
   "browserScreen": {
     "title": "浏览器"
@@ -103,7 +104,8 @@
       "title": "调整你的关系时区",
       "success": "您的关系时区已经更新！"
     },
-    "partnershipUpdateSuccess": "您的关系细节已更新！"
+    "partnershipUpdateSuccess": "您的关系细节已更新！",
+    "relationshipLanguage": "关系语言"
   },
   "questionScreen": {
     "nonSubscriberScreen": {
@@ -120,7 +122,6 @@
     "subscriberScreen": {
       "redo": "重做",
       "submit": "提交",
-      "timeRemaining": "{{ time }} 剩余...",
       "lock": {
         "title": "{{ name }} 已回答",
         "description": "录下你的回答以听取！"
@@ -140,7 +141,8 @@
         "description": "你必须允许录音权限以录下你的回答",
         "buttonText": "允许"
       },
-      "timeRemainingExplained": "午夜{{ timeZone }}重置"
+      "timeRemainingExplained": "午夜{{ timeZone }}重置",
+      "timeRemaining": "{{ 时间 }} 直到你下一个问题..."
     },
     "recordScreen": {
       "note": "所有录音是私密且经过加密的。",
@@ -166,7 +168,18 @@
       "description": "试用期结束后，如果您不取消订阅，您将每月支付9.99美元费用。{{ partnerName }} 永远不会被收费。"
     },
     "benefitMonthly": "每人每月",
-    "perPersonPrice": "现价为4.99美元。"
+    "perPersonPrice": "现价为4.99美元。",
+    "subTitlePrice": "每月9.99美元（每人价值=4.99美元）",
+    "subTitleHighPrice": "18.99美元",
+    "breakdown": {
+      "day1": "第一天",
+      "day1Description": "立即获得访问并查看它与您的伴侣有多近",
+      "day25": "第25天",
+      "day25Description": "提醒您试用期结束的时间",
+      "enableNotifications": "启用提醒",
+      "day30": "第30天",
+      "day30Description": "您将自{{ date }}开始每月收费，您可以在此之前随时取消。"
+    }
   },
   "historyScreen": {
     "title": "历史",
@@ -190,7 +203,7 @@
       "subtitle": "情侣版",
       "buttonText": "获取验证码",
       "terms": "通过注册，你同意我们的",
-      "description": "发现彼此每天的个性化问题的答案"
+      "description": "即使你们分开时距离拉远，也会让彼此更加亲密。"
     },
     "phoneNumberScreen": {
       "title": "欢迎！登录以开始",

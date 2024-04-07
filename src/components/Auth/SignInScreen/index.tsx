@@ -14,12 +14,16 @@ import { AppDispatch } from '@store/index';
 
 import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 import ButtonURL from '@components/shared/ButtonUrl';
+import Image from '@assets/images/background.png';
+import Logo from '@assets/icons/logo-screen.svg';
 
 import {
   ButtonWrapper,
   Container,
+  BackgroundImage,
   FooterContainer,
   Header,
+  LogoContainer,
   LegalButtonContainer,
   LegalContainer,
   LegalText,
@@ -56,24 +60,34 @@ function SignInScreen() {
 
   return (
     <Layout isHeaderEnabled={false}>
+      <BackgroundImage source={Image} resizeMode="cover" />
       <Container>
         <Header>
           <Title>{t('auth.signInScreen.title')}</Title>
           <Subtitle>{t('auth.signInScreen.subtitle')}</Subtitle>
+          <LogoContainer>
+            <Logo width={250} height={180} />
+          </LogoContainer>
           <SubtitleDescription>{t('auth.signInScreen.description')}</SubtitleDescription>
         </Header>
         <FooterContainer>
           <LegalContainer>
             <ButtonWrapper>
-              <Button mode="dark" text={t('auth.signIn')} onPress={handleSubmit} />
+              <Button mode="light" text={t('auth.signIn')} onPress={handleSubmit} />
             </ButtonWrapper>
             <LegalText>{t('auth.signInScreen.terms')}</LegalText>
             <LegalButtonContainer>
-              <ButtonURL url="https://docs.google.com/document/d/1vvfIdHnZnoNj_hTTqNFcRme5IsuN5DQC6WEHU4wAqA4/edit?usp=sharing">
+              <ButtonURL
+                isLightText
+                url="https://docs.google.com/document/d/1vvfIdHnZnoNj_hTTqNFcRme5IsuN5DQC6WEHU4wAqA4/edit?usp=sharing"
+              >
                 {t('accountScreen.privacy')}
               </ButtonURL>
               <LegalText>{t('accountScreen.and')}</LegalText>
-              <ButtonURL url="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">
+              <ButtonURL
+                isLightText
+                url="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
+              >
                 {t('accountScreen.terms')}
               </ButtonURL>
             </LegalButtonContainer>

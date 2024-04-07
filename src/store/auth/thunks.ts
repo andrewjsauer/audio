@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getTimeZone } from 'react-native-localize';
+import i18n from 'i18next';
 
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -118,6 +119,7 @@ export const generatePartnership = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
+      const { language } = i18n;
       const timeZone = getTimeZone();
       const birthDate = firestore.Timestamp.fromDate(userDetails.birthDate as Date);
       const startDate = firestore.Timestamp.fromDate(partnershipDetails.startDate as Date);
@@ -138,6 +140,7 @@ export const generatePartnership = createAsyncThunk(
           ...partnershipDetails,
           startDate,
           timeZone,
+          language,
         },
       });
 

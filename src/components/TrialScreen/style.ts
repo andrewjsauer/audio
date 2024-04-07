@@ -2,31 +2,43 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   flex: 1;
-  background-color: ${(p) => p.theme.colors.transparentGray};
   justify-content: space-between;
   padding: 0 20px;
 `;
 
 export const Header = styled.View`
-  align-items: center;
-  margin-top: 20%;
+  margin-top: 20px;
 `;
 
 export const Footer = styled.View`
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 `;
 
 export const Title = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.xxlarge};
-  font-family: ${(p) => p.theme.fonts.black};
+  font-size: ${(p) => p.theme.fontSizes.large};
+  font-family: ${(p) => p.theme.fonts.extraBold};
 `;
 
+export const SubTitleContainer = styled.Text``;
+
 export const SubTitle = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.regular};
-  font-family: ${(p) => p.theme.fonts.black};
-  margin-bottom: 40px;
-  margin-top: 4px;
+  font-size: ${(p) => p.theme.fontSizes.small};
+  font-family: ${(p) => p.theme.fonts.regular};
+  color: ${(p) => p.theme.colors.darkGray};
+`;
+
+export const SubTitlePrice = styled.Text`
+  font-size: ${(p) => p.theme.fontSizes.small};
+  font-family: ${(p) => p.theme.fonts.extraBold};
+  color: ${(p) => p.theme.colors.lightGreen};
+`;
+
+export const SubTitleHighPrice = styled.Text`
+  font-size: ${(p) => p.theme.fontSizes.small};
+  font-family: ${(p) => p.theme.fonts.regular};
+  text-decoration: line-through;
+  color: ${(p) => p.theme.colors.darkGray};
 `;
 
 export const FooterTitle = styled.Text`
@@ -42,69 +54,6 @@ export const FooterSubTitle = styled.Text`
   text-align: center;
 `;
 
-export const BenefitContainer = styled.View<{ noTopBorder: boolean }>`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  width: 100%;
-  height: 68px;
-  border-bottom-width: 1px;
-  border-bottom-color: ${(p) => p.theme.colors.lighterGray};
-
-  ${(p) =>
-    !p.noTopBorder &&
-    `
-    border-top-width: 1px;
-    border-top-color: ${p.theme.colors.lighterGray};
-  `}
-`;
-
-export const Benefit1Description = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.regular};
-  font-family: ${(p) => p.theme.fonts.black};
-  margin-left: 6px;
-`;
-
-export const Benefit1Item = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.xlarge};
-  font-family: ${(p) => p.theme.fonts.black};
-  text-transform: uppercase;
-`;
-
-export const MonthlyText = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.small};
-  font-family: ${(p) => p.theme.fonts.bold};
-  margin-left: 6px;
-`;
-
-export const MonthlyPrice = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.regular};
-  font-family: ${(p) => p.theme.fonts.bold};
-  color: ${(p) => p.theme.colors.gray};
-`;
-
-export const Benefit2Container = styled.View`
-  flex-direction: column;
-`;
-
-export const Benefit2Item = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.medium};
-  font-family: ${(p) => p.theme.fonts.black};
-`;
-
-export const Benefit2Description = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.regular};
-  font-family: ${(p) => p.theme.fonts.black};
-  margin-left: 6px;
-`;
-
-export const Benefit2SubDescription = styled.Text`
-  font-size: ${(p) => p.theme.fontSizes.xsmall};
-  font-family: ${(p) => p.theme.fonts.regular};
-  margin-left: 6px;
-`;
-
 export const RestoreButton = styled.TouchableOpacity`
   border-bottom-width: 1px;
   border-bottom-color: ${(p) => p.theme.colors.black};
@@ -114,27 +63,42 @@ export const RestoreButton = styled.TouchableOpacity`
 
 export const RestoreButtonText = styled.Text`
   font-size: ${(p) => p.theme.fontSizes.regular};
-  font-family: ${(p) => p.theme.fonts.bold};
+  font-family: ${(p) => p.theme.fonts.black};
 `;
 
-export const ColorCircle = styled.View<{ color: string; isSecond?: boolean }>`
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  background-color: ${(props) => props.color || '#BC5252'};
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${(p) =>
-    p.isSecond &&
-    `
-    margin-left: -14px;
-  `}
-`;
-
-export const ColorTextContainer = styled.View`
+export const TrailBreakdownContainer = styled.View`
+  margin-top: 20px;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
+  padding-right: 20px;
+`;
+
+export const Pill = styled.View`
+  background-color: ${(p) => p.theme.colors.lightGreen};
+  border-radius: 20px;
+  height: 225px;
+  width: 20px;
+`;
+
+export const BreakdownContainer = styled.View`
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+`;
+
+export const DayContainer = styled.View<{ isMarginBottom?: boolean }>`
+  ${(p) => p.isMarginBottom && 'margin-bottom: 24px;'}
+  margin-left: 10px;
+`;
+
+export const DayText = styled.Text`
+  font-size: ${(p) => p.theme.fontSizes.regular};
+  font-family: ${(p) => p.theme.fonts.extraBold};
+`;
+
+export const DayDescriptionText = styled.Text`
+  font-size: ${(p) => p.theme.fontSizes.small};
+  font-family: ${(p) => p.theme.fonts.regular};
 `;

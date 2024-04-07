@@ -16,6 +16,10 @@ export const startOfDayInTimeZone = (date: Date, timeZone: string) => {
   return moment(date).tz(timeZone).startOf('day');
 };
 
+export const endOfDayInTimeZone = (date: Date, timeZone: string) => {
+  return moment(date).tz(timeZone).endOf('day');
+};
+
 export const formatCreatedAt = (createdAt: string, timeZone: string) => {
   return moment(createdAt._seconds * 1000)
     .tz(timeZone)

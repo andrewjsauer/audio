@@ -53,7 +53,8 @@
       "description": "Please update to the latest version of Daily Q's to continue using the app.",
       "buttonText": "Update"
     },
-    "recordingSaveMemoryLimitExceeded": "Your recording exceeded the maximum memory limit."
+    "recordingSaveMemoryLimitExceeded": "Your recording exceeded the maximum memory limit.",
+    "offline": "You are offline. Please check your internet connection and try again."
   },
   "browserScreen": {
     "title": "Browser"
@@ -70,7 +71,7 @@
     "legal": "Daily Q’s from SAUERAPPLE LLC",
     "terms": "Terms & Conditions",
     "privacy": "Privacy Policy",
-    "language": "Preferred Language",
+    "relationshipLanguage": "Relationship Language",
     "relationshipStatus": "Relationship Status",
     "relationshipTimeZone": "Relationship Time Zone",
     "deleteAccountModal": {
@@ -114,7 +115,7 @@
       },
       "notification": {
         "title": "Oops! Your subscription has expired...",
-        "description": "Renew for $9.99/month to continue Daily Q's with your partner. Cancel anytime. Full access to all features!",
+        "description": "Renew for $9.99/month to continue Daily Q’s with your partner. Cancel anytime. Full access to all features!",
         "restoreButtonText": "Restore Purchases",
         "updatePaymentButtonText": "Subscribe Now"
       }
@@ -122,7 +123,7 @@
     "subscriberScreen": {
       "redo": "Redo",
       "submit": "Submit",
-      "timeRemaining": "{{ time }} remaining...",
+      "timeRemaining": "{{ time }} until your next question...",
       "timeRemainingExplained": "Resets at midnight {{ timeZone }}",
       "lock": {
         "title": "{{ name }} answered",
@@ -150,15 +151,19 @@
     }
   },
   "trialScreen": {
-    "title": "Okay, you're all set!",
-    "subTitle": "Start your 30-day trial",
-    "benefit1": "First 30 days",
-    "free": "free!",
-    "benefitMonthly": "Monthly per person",
-    "benefit2": "Monthly per couple",
-    "benefit2Description": "Starting {{ date }}",
-    "price": "$9.99",
-    "perPersonPrice": "$4.99",
+    "title": "How your free trial works!",
+    "subTitle": "One partnership, one subscription 💖\nThis is your gift, so Linda will never be charged.",
+    "subTitlePrice": " $9.99 monthly (value per person = $4.99)",
+    "subTitleHighPrice": "$18.99",
+    "breakdown": {
+      "day1": "Day 1",
+      "day1Description": "Get instant access and see how much close it bring you to your partner",
+      "day25": "Day 25",
+      "day25Description": "Get a reminder about when your trial will end",
+      "enableNotifications": "Enable Reminder",
+      "day30": "Day 30",
+      "day30Description": "You'll be charged monthly starting {{ date }} and you can cancel anytime before then"
+    },
     "footer": {
       "title": "Cancel Anytime. Try it out!",
       "description": "After the free trial, if you don't cancel, you'll be charged $9.99/month for both of your. {{ partnerName }} will never be charged.",
@@ -186,7 +191,7 @@
     "signInScreen": {
       "title": "Daily Q’s",
       "subtitle": "Couples Edition",
-      "description": "Discover each other’s answers to\n daily personalized questions",
+      "description": "Grow closer whenever you’re apart",
       "buttonText": "Get Code",
       "terms": "By signing up, you agree to our"
     },
@@ -209,7 +214,7 @@
         "title": "Okay, time to invite your partner! What’s your partner’s name?",
         "inputTitle": "Your Partner's Name *",
         "inputPlaceholder": "Partner's First Name",
-        "inputDescription": "Enter your partner's first name or a nickname you both use."
+        "inputDescription": "Enter the name you call your partner"
       },
       "relationshipTypeScreen": {
         "title": "What's your relationship status with your partner?",

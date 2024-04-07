@@ -19,8 +19,21 @@ export const SubTitle = styled.Text`
 export const PlayBackContainer = styled.View`
   align-items: center;
   justify-content: space-around;
-  flex: 1;
   flex-direction: row;
+  width: 100%;
+`;
+
+export const PlayContainer = styled.View`
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+`;
+
+export const SliderContainer = styled.View`
+  height: 40px;
+  width: 80%;
+  margin-top: 20px;
 `;
 
 export const PlayBackButton = styled.TouchableOpacity<{ color: string }>`

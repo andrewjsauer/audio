@@ -53,7 +53,8 @@
       "description": "앱을 계속 사용하려면 최신 버전의 Daily Q's로 업데이트해주세요.",
       "buttonText": "업데이트하다"
     },
-    "recordingSaveMemoryLimitExceeded": "녹음이 최대 메모리 제한을 초과했습니다."
+    "recordingSaveMemoryLimitExceeded": "녹음이 최대 메모리 제한을 초과했습니다.",
+    "offline": "인터넷이 연결되지 않았습니다. 인터넷 연결 상태를 확인한 후 다시 시도해주세요."
   },
   "browserScreen": {
     "title": "브라우저"
@@ -103,7 +104,8 @@
       "title": "당신의 관계 시간대를 변경하세요.",
       "success": "당신의 관계 시간대가 업데이트되었습니다!"
     },
-    "partnershipUpdateSuccess": "당신의 관계 세부 사항이 업데이트되었습니다!"
+    "partnershipUpdateSuccess": "당신의 관계 세부 사항이 업데이트되었습니다!",
+    "relationshipLanguage": "관계 언어"
   },
   "questionScreen": {
     "nonSubscriberScreen": {
@@ -120,7 +122,6 @@
     "subscriberScreen": {
       "redo": "다시하기",
       "submit": "제출하기",
-      "timeRemaining": "{{ time }} 남음...",
       "lock": {
         "title": "{{ name }}님이 답변했습니다",
         "description": "듣기 위해 답변을 녹음하세요!"
@@ -140,7 +141,8 @@
         "description": "답변을 녹음하려면 권한을 허용해야 합니다",
         "buttonText": "허용"
       },
-      "timeRemainingExplained": "자정에 재설정됩니다. {{ timeZone }}"
+      "timeRemainingExplained": "자정에 재설정됩니다. {{ timeZone }}",
+      "timeRemaining": "다음 질문까지 {{ time }} 남음..."
     },
     "recordScreen": {
       "note": "모든 녹음은 개인적이며 암호화되어 있습니다.",
@@ -166,7 +168,18 @@
       "description": "무료 체험 기간 이후에 취소하지 않으면 매달 9.99달러가 청구됩니다. {{ partnerName }}에게는 요금이 청구되지 않습니다."
     },
     "benefitMonthly": "월 평균 개인당",
-    "perPersonPrice": "$4.99를 한국어로 번역하면 \"4,990원\"입니다."
+    "perPersonPrice": "$4.99를 한국어로 번역하면 \"4,990원\"입니다.",
+    "subTitlePrice": "매월 $9.99 (1인당 가치 = $4.99)",
+    "subTitleHighPrice": "18.99 달러",
+    "breakdown": {
+      "day1": "첫째 날",
+      "day1Description": "즉각적인 접근을 통해 파트너와 얼마나 가까워지는지 확인하세요.",
+      "day25": "25일째",
+      "day25Description": "당신의 체험이 끝나는 시기에 대한 알림을 받으세요",
+      "enableNotifications": "알림 활성화",
+      "day30": "30일째",
+      "day30Description": "{{ date }}부터 매달 요금이 청구됩니다. 해당 날짜 이전에 언제든지 취소할 수 있습니다."
+    }
   },
   "historyScreen": {
     "title": "기록",
@@ -190,7 +203,7 @@
       "subtitle": "커플용",
       "buttonText": "코드 받기",
       "terms": "가입함으로써 당사의 이용 약관에 동의합니다",
-      "description": "매일 개인화된 질문에 대한 각자의 답을 알아보세요."
+      "description": "떨어져 있을 때 더 가까워져요."
     },
     "phoneNumberScreen": {
       "title": "환영합니다! 시작하기 위해 로그인하세요",

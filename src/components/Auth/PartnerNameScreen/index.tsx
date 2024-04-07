@@ -11,14 +11,15 @@ import { useAuthFlow } from '@components/Auth/AuthFlowContext';
 import ColorPicker from '@components/shared/ColorPicker';
 import Layout from '../Layout';
 
-import { Container, ButtonWrapper, InputSubtitle, InputWrapper } from '../style';
-import { TextInput } from './style';
+import { Container, Title, ButtonWrapper, InputSubtitle, InputWrapper } from '../style';
+import { TextInput, TitleContainer } from './style';
 
 function PartnerNameScreen() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const { goToNextStep, partnerDetails, userDetails, handlePartnerDetails } = useAuthFlow();
+  const { goToPreviousStep, goToNextStep, partnerDetails, userDetails, handlePartnerDetails } =
+    useAuthFlow();
   const { name, color } = partnerDetails;
   const { color: colorOffLimits } = userDetails;
 
@@ -36,7 +37,7 @@ function PartnerNameScreen() {
         }),
       );
 
-      trackEvent('Color Submitted User Error');
+      trackEvent('Partner Color Submitted User Error');
       return;
     }
 
@@ -49,17 +50,20 @@ function PartnerNameScreen() {
         }),
       );
 
-      trackEvent('Name Submitted Error');
+      trackEvent('Partner Name Submitted Error');
       return;
     }
 
-    trackEvent('Name of Partner User Submitted');
+    trackEvent('Partner Name and Color Submitted');
     goToNextStep();
   };
 
   return (
-    <Layout isBackButtonEnabled={false} title={t('auth.partnerDetails.nameScreen.title')}>
+    <Layout goBack={goToPreviousStep} isBackArrowDisabled={false}>
       <Container>
+        <TitleContainer>
+          <Title>{t('auth.partnerDetails.nameScreen.title')}</Title>
+        </TitleContainer>
         <ColorPicker
           color={color}
           colorOffLimits={colorOffLimits}

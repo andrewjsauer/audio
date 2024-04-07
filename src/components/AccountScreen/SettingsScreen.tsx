@@ -80,7 +80,7 @@ function SettingsScreen() {
   };
 
   const handleLanguageChange = () => {
-    trackEvent('Account Language Button Tapped');
+    trackEvent('Account Relationship Language Button Tapped');
     navigation.navigate(AccountScreens.LanguageScreen);
   };
 
@@ -144,17 +144,18 @@ function SettingsScreen() {
     }, '');
   }, [types, partnershipData]);
 
+  const partnershipLanguage = languageMap[partnershipData?.language || 'en'];
   return (
-    <Layout titleKey="accountScreen.title" screen="Settings Screen">
+    <Layout titleKey="accountScreen.title" screen="Settings Screen" isLoading={isLoading}>
       {isLoading ? (
         <LoadingView />
       ) : (
         <>
           <Container>
             <OptionContainer>
-              <OptionTitle>{t('accountScreen.language')}</OptionTitle>
+              <OptionTitle>{t('accountScreen.relationshipLanguage')}</OptionTitle>
               <OptionButton onPress={handleLanguageChange}>
-                <OptionName>{languageMap[i18n.language]}</OptionName>
+                <OptionName>{partnershipLanguage}</OptionName>
                 <ChevronRight width={24} height={24} />
               </OptionButton>
             </OptionContainer>

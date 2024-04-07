@@ -53,7 +53,8 @@
       "description": "アプリを使用するには、Daily Q'sの最新バージョンにアップデートしてください。",
       "buttonText": "アップデート"
     },
-    "recordingSaveMemoryLimitExceeded": "録音が最大メモリ制限を超えました。"
+    "recordingSaveMemoryLimitExceeded": "録音が最大メモリ制限を超えました。",
+    "offline": "オフラインです。インターネット接続を確認して、もう一度試してください。"
   },
   "browserScreen": {
     "title": "ブラウザ"
@@ -103,7 +104,8 @@
       "title": "あなたの関係の時差を変更してください。",
       "success": "あなたの関係のタイムゾーンが更新されました！"
     },
-    "partnershipUpdateSuccess": "あなたの関係の詳細が更新されました！"
+    "partnershipUpdateSuccess": "あなたの関係の詳細が更新されました！",
+    "relationshipLanguage": "関係言語"
   },
   "questionScreen": {
     "nonSubscriberScreen": {
@@ -120,7 +122,6 @@
     "subscriberScreen": {
       "redo": "やり直す",
       "submit": "送信",
-      "timeRemaining": "{{ time }} 残り...",
       "lock": {
         "title": "{{ name }}が答えました",
         "description": "回答を録音して聞くためにあなたの回答を記録してください！"
@@ -140,7 +141,8 @@
         "description": "回答を録音するためには、許可を与えなければなりません",
         "buttonText": "許可"
       },
-      "timeRemainingExplained": "深夜にリセットします。{{ timeZone }}でのリセットです。"
+      "timeRemainingExplained": "深夜にリセットします。{{ timeZone }}でのリセットです。",
+      "timeRemaining": "次の質問まで{{ time }}経過します..."
     },
     "recordScreen": {
       "note": "すべての録音はプライベートで暗号化されています。",
@@ -166,7 +168,18 @@
       "description": "無料トライアル終了後、キャンセルされない場合、{{ partnerName }} の料金は発生しませんが、あなた自身には月額9.99ドルが請求されます。"
     },
     "benefitMonthly": "月額1人あたり",
-    "perPersonPrice": "4.99ドル"
+    "perPersonPrice": "4.99ドル",
+    "subTitlePrice": "1か月9.99ドル（1人当たりの価値=4.99ドル）",
+    "subTitleHighPrice": "$18.99円",
+    "breakdown": {
+      "day1": "１日目",
+      "day1Description": "直ちにアクセスし、パートナーとの距離がどれだけ縮まっているかを確認してください。",
+      "day25": "25日",
+      "day25Description": "無料トライアルが終了する予定をリマインドします",
+      "enableNotifications": "リマインダーを有効にする",
+      "day30": "30日",
+      "day30Description": "{{ date }}から毎月料金が請求されます。その前にいつでもキャンセルすることができます。"
+    }
   },
   "historyScreen": {
     "title": "履歴",
@@ -190,7 +203,7 @@
       "subtitle": "カップルエディション",
       "buttonText": "コードを取得",
       "terms": "サインアップすることで、当社の",
-      "description": "日々の個人的な質問の答えを、お互いに探り合いましょう。"
+      "description": "離れていても、より一層近づいていく"
     },
     "phoneNumberScreen": {
       "title": "ようこそ！サインインして始めましょう",

@@ -23,3 +23,9 @@ export const ResendCodeWrapper = styled.View`
   flex-direction: row;
   align-items: center;
 `;
+
+export const TitleContainer = styled.View`
+  align-self: flex-start;
+  padding: 0 20px;
+  margin-bottom: 20px;
+`;

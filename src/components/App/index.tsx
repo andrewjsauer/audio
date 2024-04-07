@@ -7,10 +7,11 @@ import { Alert } from 'react-native';
 import { selectHasSubscribed } from '@store/auth/selectors';
 import {
   selectError,
+  selectIsConnected,
   selectIsLoading,
   selectLastFailedAction,
-  selectTransactionError,
   selectShouldUpdateApp,
+  selectTransactionError,
 } from '@store/app/selectors';
 
 import { initializeSession } from '@store/app/thunks';
@@ -50,6 +51,7 @@ function App(): JSX.Element {
   const transactionError = useSelector(selectTransactionError);
   const lastFailedAction = useSelector(selectLastFailedAction);
   const shouldUpdateApp = useSelector(selectShouldUpdateApp);
+  const isConnected = useSelector(selectIsConnected);
 
   useInitializeSession();
 
@@ -69,6 +71,10 @@ function App(): JSX.Element {
       dispatch(initializeSession(lastFailedAction.payload));
     }
   };
+
+  if (!isConnected) {
+    return <ErrorView error="errors.offline" />;
+  }
 
   if (isLoading || shouldUpdateApp) {
     return <LoadingView />;

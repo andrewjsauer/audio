@@ -15,6 +15,7 @@ import {
 
 import { selectCurrentQuestion } from '@store/question/selectors';
 import { selectUserData } from '@store/auth/selectors';
+import { selectAreBothRecordingsAvailable } from '@store/recording/selectors';
 import { selectPartnerData, selectPartnershipTimeZone } from '@store/partnership/selectors';
 
 interface FetchLatestQuestionArgs {
@@ -72,14 +73,14 @@ const generateQuestion = async ({
     usersLanguage,
     partnershipData: {
       ...partnershipData,
-      startDate: calculateDuration(partnershipData?.startDate, timeZone),
+      startDate: calculateDuration(partnershipData.startDate, timeZone),
     },
   };
 
   let data = null;
 
   try {
-    ({ data } = await functions().httpsCallable('generateQuestionModified')(payload));
+    ({ data } = await functions().httpsCallable('fetchQuestion')(payload));
     return formatQuestion(data, timeZone);
   } catch (error) {
     trackEvent('Generate Question Failed', { error });
@@ -96,9 +97,11 @@ export const fetchLatestQuestion = createAsyncThunk<
   async ({ partnershipData }: FetchLatestQuestionArgs, { rejectWithValue, getState }): any => {
     try {
       const state = getState();
+      const now = moment().tz(partnershipData.timeZone);
       const today = startOfDayInTimeZone(new Date(), partnershipData.timeZone);
 
       const userData = selectUserData(state);
+      const areBothRecordingsAvailable = selectAreBothRecordingsAvailable(state);
       const currentQuestion = selectCurrentQuestion(state);
       const partnerData = selectPartnerData(state);
       const timeZone = selectPartnershipTimeZone(state);
@@ -106,11 +109,11 @@ export const fetchLatestQuestion = createAsyncThunk<
 
       if (currentQuestion) {
         const currentQuestionLocalCreatedAt = moment(currentQuestion.createdAt).tz(timeZone);
+        const isSameDay = now.isSame(currentQuestionLocalCreatedAt, 'day');
 
-        if (currentQuestionLocalCreatedAt >= today) {
-          trackEvent('Question Current', {
+        if (!areBothRecordingsAvailable) {
+          trackEvent('No Recordings Available Persist Question', {
             currentQuestion,
-            currentQuestionLocalCreatedAt,
             today,
           });
 
@@ -123,12 +126,19 @@ export const fetchLatestQuestion = createAsyncThunk<
           };
         }
 
-        trackEvent('Current Question Expired', {
-          currentQuestion,
-          currentQuestionLocalCreatedAt,
-          today,
-        });
+        if (areBothRecordingsAvailable && isSameDay) {
+          trackEvent('Recordings Available Same Day Persist Question', {
+            currentQuestion,
+            today,
+          });
+          return {
+            question: currentQuestion,
+            isNewQuestion: false,
+          };
+        }
       }
+
+      trackEvent('Requesting Question');
 
       const newQuestion = await generateQuestion({
         partnerData,
@@ -138,7 +148,7 @@ export const fetchLatestQuestion = createAsyncThunk<
         usersLanguage: currentLanguage,
       });
 
-      trackEvent('Question Viewed', { ...newQuestion });
+      trackEvent('Viewing Question', { ...newQuestion });
 
       return {
         question: newQuestion,

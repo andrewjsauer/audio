@@ -53,7 +53,8 @@
       "description": "يرجى تحديث تطبيق \"Daily Q's\" إلى أحدث إصدار للاستمرار في استخدام التطبيق.",
       "buttonText": "تحديث"
     },
-    "recordingSaveMemoryLimitExceeded": "تجاوز تسجيلك الحد الأقصى للذاكرة."
+    "recordingSaveMemoryLimitExceeded": "تجاوز تسجيلك الحد الأقصى للذاكرة.",
+    "offline": "أنت غير متصل بالإنترنت. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى."
   },
   "browserScreen": {
     "title": "المتصفح"
@@ -103,7 +104,8 @@
       "title": "قم بتغيير المنطقة الزمنية لعلاقتك",
       "success": "تم تحديث منطقة زمن علاقتك!"
     },
-    "partnershipUpdateSuccess": "تم تحديث تفاصيل علاقتك!"
+    "partnershipUpdateSuccess": "تم تحديث تفاصيل علاقتك!",
+    "relationshipLanguage": "لغة العلاقات"
   },
   "questionScreen": {
     "nonSubscriberScreen": {
@@ -120,7 +122,6 @@
     "subscriberScreen": {
       "redo": "إعادة",
       "submit": "إرسال",
-      "timeRemaining": "{{ time }} متبقية...",
       "lock": {
         "title": "أجاب {{ name }}",
         "description": "سجل إجابتك للاستماع إليها!"
@@ -140,7 +141,8 @@
         "description": "يجب السماح بالأذونات لتسجيل إجابتك",
         "buttonText": "السماح"
       },
-      "timeRemainingExplained": "يتم إعادة الضبط في منتصف الليل {{ timeZone }}"
+      "timeRemainingExplained": "يتم إعادة الضبط في منتصف الليل {{ timeZone }}",
+      "timeRemaining": "{{ time }} حتى سؤالك القادم..."
     },
     "recordScreen": {
       "note": "جميع التسجيلات خاصة ومشفرة.",
@@ -166,7 +168,18 @@
       "description": "بعد انتهاء فترة الاشتراك المجانية، إذا لم تقم بإلغاء الاشتراك، سيتم خصم 9.99 دولار شهريًا من حسابك. لن يتم خصم أي رسوم من حساب {{ partnerName }}."
     },
     "benefitMonthly": "شهريًا لكل شخص",
-    "perPersonPrice": "4.99 دولار"
+    "perPersonPrice": "4.99 دولار",
+    "subTitlePrice": "$9.99 شهريًا (القيمة لكل شخص = $4.99)",
+    "subTitleHighPrice": "١٨.٩٩ دولار",
+    "breakdown": {
+      "day1": "اليوم الأول",
+      "day1Description": "احصل على وصول فوري وانظر إلى مدى قربه من شريكك",
+      "day25": "اليوم 25",
+      "day25Description": "احصل على تذكير حول موعد انتهاء فترة التجربة الخاصة بك",
+      "enableNotifications": "تمكين التذكير",
+      "day30": "اليوم 30",
+      "day30Description": "سوف يتم خصم الرسوم شهرياً ابتداءً من {{ date }}، ويمكنك إلغاء الاشتراك في أي وقت قبل ذلك."
+    }
   },
   "historyScreen": {
     "title": "السجل",
@@ -190,7 +203,7 @@
       "subtitle": "نسخة الأزواج",
       "buttonText": "احصل على الرمز",
       "terms": "من خلال التسجيل، فإنك توافق على",
-      "description": "اكتشف إجابات بعضنا البعض على أسئلة يومية شخصية"
+      "description": "تقربوا أكثر كلما كنتما بعيدين عن بعضكما البعض"
     },
     "phoneNumberScreen": {
       "title": "أهلا بك! سجل دخولك للبدء",

@@ -54,15 +54,16 @@ export type UserDataType = {
   birthDate?: Date;
   color?: string;
   createdAt?: FirebaseFirestoreTypes.Timestamp;
-  deviceIds?: FirebaseFirestoreTypes.Timestamp;
+  deviceIds?: FirebaseFirestoreTypes.FieldValue;
   hasSubscribed?: boolean;
   id?: string;
   isRegistered?: boolean;
   isSubscribed?: boolean;
-  lastActiveAt?: FirebaseFirestoreTypes.Timestamp;
+  lastActiveAt?: FirebaseFirestoreTypes.Timestamp | FirebaseFirestoreTypes.FieldValue;
   name?: string;
   partnershipId?: string;
   phoneNumber?: string;
+  deviceLanguage?: string;
 };
 
 export type PartnershipDataType = {
@@ -72,6 +73,7 @@ export type PartnershipDataType = {
   createdAt?: FirebaseFirestoreTypes.Timestamp | Date;
   latestQuestionId?: string;
   timeZone?: string;
+  language?: string;
 };
 
 export type PartnershipUserDataType = {

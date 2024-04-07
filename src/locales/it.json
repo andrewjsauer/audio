@@ -53,7 +53,8 @@
       "description": "Per favore, aggiorna all'ultima versione di Daily Q's per continuare a utilizzare l'app.",
       "buttonText": "Aggiornamento"
     },
-    "recordingSaveMemoryLimitExceeded": "La tua registrazione ha superato il limite massimo di memoria."
+    "recordingSaveMemoryLimitExceeded": "La tua registrazione ha superato il limite massimo di memoria.",
+    "offline": "Sei offline. Controlla la tua connessione a internet e riprova."
   },
   "browserScreen": {
     "title": "Browser"
@@ -103,7 +104,8 @@
       "title": "Cambia il fuso orario della tua relazione",
       "success": "Il fuso orario della tua relazione è stato aggiornato!"
     },
-    "partnershipUpdateSuccess": "I dettagli della tua relazione sono stati aggiornati!"
+    "partnershipUpdateSuccess": "I dettagli della tua relazione sono stati aggiornati!",
+    "relationshipLanguage": "Linguaggio delle relazioni"
   },
   "questionScreen": {
     "nonSubscriberScreen": {
@@ -120,7 +122,6 @@
     "subscriberScreen": {
       "redo": "Rifai",
       "submit": "Invia",
-      "timeRemaining": "{{ time }} rimanenti...",
       "lock": {
         "title": "{{ name }} ha risposto",
         "description": "Registra la tua risposta per ascoltarla!"
@@ -140,7 +141,8 @@
         "description": "Devi permettere l'autorizzazione per registrare la tua risposta",
         "buttonText": "Permetti"
       },
-      "timeRemainingExplained": "Resetta a mezzanotte {{ timeZone }}"
+      "timeRemainingExplained": "Resetta a mezzanotte {{ timeZone }}",
+      "timeRemaining": "{{time}} fino alla tua prossima domanda..."
     },
     "recordScreen": {
       "note": "Tutte le registrazioni sono private e criptate.",
@@ -166,7 +168,18 @@
       "description": "Dopo la prova gratuita, se non annulli, ti verranno addebitati $9.99 al mese per entrambi. {{ partnerName }} non verrà mai addebitato."
     },
     "benefitMonthly": "Mensile per persona",
-    "perPersonPrice": "$4.99, sarà un dollaro statunitense con novantanove centesimi."
+    "perPersonPrice": "$4.99, sarà un dollaro statunitense con novantanove centesimi.",
+    "subTitlePrice": "$9,99 al mese (valore per persona = $4,99)",
+    "subTitleHighPrice": "$18.99",
+    "breakdown": {
+      "day1": "Giorno 1",
+      "day1Description": "Ottieni accesso immediato e scopri quanto ti avvicina al tuo partner.",
+      "day25": "Giorno 25",
+      "day25Description": "Ricevi un promemoria sulla data di scadenza del tuo periodo di prova.",
+      "enableNotifications": "Abilita Promemoria",
+      "day30": "Giorno 30",
+      "day30Description": "Verrai addebitato mensilmente a partire dal {{ data }} e puoi cancellare in qualsiasi momento prima di quella data"
+    }
   },
   "historyScreen": {
     "title": "Cronologia",
@@ -190,7 +203,7 @@
       "subtitle": "Edizione Coppie",
       "buttonText": "Ottieni Codice",
       "terms": "Iscrivendoti, accetti i nostri",
-      "description": "Scoprite le risposte personalizzate l'uno dell'altro alle domande giornaliere."
+      "description": "Stringiti sempre di più ogni volta che siete lontani"
     },
     "phoneNumberScreen": {
       "title": "Benvenuto! Accedi per iniziare",

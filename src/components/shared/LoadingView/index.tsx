@@ -6,7 +6,7 @@ import { StyledView } from './style';
 function LoadingView() {
   return (
     <StyledView>
-      <ActivityIndicator size="small" />
+      <ActivityIndicator size="large" />
     </StyledView>
   );
 }

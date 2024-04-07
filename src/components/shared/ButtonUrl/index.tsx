@@ -9,16 +9,17 @@ import { ButtonText } from './style';
 type ButtonURLProps = {
   url: string;
   children: string;
+  isLightText?: boolean;
 };
 
-function ButtonURL({ url, children }: ButtonURLProps) {
+function ButtonURL({ url, children, isLightText = false }: ButtonURLProps) {
   const navigation = useNavigation();
 
   const handlePress = () => navigation.navigate(AppScreens.BrowserScreen, { url });
 
   return (
     <TouchableOpacity onPress={handlePress}>
-      <ButtonText>{children}</ButtonText>
+      <ButtonText isLight={isLightText}>{children}</ButtonText>
     </TouchableOpacity>
   );
 }

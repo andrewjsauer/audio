@@ -10,8 +10,8 @@ import { trackEvent } from '@lib/analytics';
 import { showNotification } from '@store/ui/slice';
 
 import Layout from '../Layout';
-import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
-import { StyledDatePicker } from './style';
+import { Container, Title, ButtonWrapper, InputSubtitle, InputWrapper } from '../style';
+import { Wrapper, StyledDatePicker, TitleContainer } from './style';
 
 function RelationshipDateScreen() {
   const { t } = useTranslation();
@@ -42,29 +42,29 @@ function RelationshipDateScreen() {
   };
 
   return (
-    <Layout
-      goBack={goToPreviousStep}
-      isBackButtonEnabled
-      title={t('auth.partnerDetails.relationshipDateScreen.title')}
-    >
+    <Layout goBack={goToPreviousStep} isBackArrowDisabled={false} isPartnershipComplete>
       <Container>
-        <InputWrapper>
-          <InputTitle>{t('auth.partnerDetails.relationshipDateScreen.inputTitle')}</InputTitle>
-          <StyledDatePicker
-            date={relationshipDate || currentDate}
-            maximumDate={currentDate}
-            mode="date"
-            onDateChange={(date) => handlePartnershipDetails({ startDate: date })}
-            textColor="#000"
-            locale={i18n.language}
-          />
-          <InputSubtitle>
-            {t('auth.partnerDetails.relationshipDateScreen.inputDescription')}
-          </InputSubtitle>
-        </InputWrapper>
-        <ButtonWrapper>
-          <Button onPress={handleSubmit} text={t('next')} />
-        </ButtonWrapper>
+        <Wrapper>
+          <TitleContainer>
+            <Title>{t('auth.partnerDetails.relationshipDateScreen.title')}</Title>
+          </TitleContainer>
+          <InputWrapper>
+            <StyledDatePicker
+              date={relationshipDate || currentDate}
+              maximumDate={currentDate}
+              mode="date"
+              onDateChange={(date) => handlePartnershipDetails({ startDate: date })}
+              textColor="#000"
+              locale={i18n.language}
+            />
+            <InputSubtitle>
+              {t('auth.partnerDetails.relationshipDateScreen.inputDescription')}
+            </InputSubtitle>
+          </InputWrapper>
+          <ButtonWrapper>
+            <Button onPress={handleSubmit} text={t('next')} />
+          </ButtonWrapper>
+        </Wrapper>
       </Container>
     </Layout>
   );

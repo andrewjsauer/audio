@@ -4,11 +4,11 @@ export const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: flex-end;
-  margin-bottom: 14px;
 `;
 
 export const ButtonWrapper = styled.View`
-  margin-top: 20px;
+  justify-content: flex-end;
+  margin: 10px 0;
 `;
 
 export const InputTitle = styled.Text`
@@ -28,4 +28,10 @@ export const InputSubtitle = styled.Text`
 export const InputWrapper = styled.View`
   padding: 0 20px;
   width: 100%;
+`;
+
+export const Title = styled.Text`
+  font-family: ${(p) => p.theme.fonts.bold};
+  font-size: ${(p) => p.theme.fontSizes.medium};
+  color: ${(p) => p.theme.colors.black};
 `;

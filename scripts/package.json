@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "translateApp": "yarn build && node lib/appTranslations.js",
-    "translateAppStore": "yarn build && node lib/appStoreTranslations.js"
+    "translateAppStore": "yarn build && node lib/appStoreTranslations.js",
+    "runExperiment": "yarn build && node lib/experimentWithOpenAI.js"
   },
   "devDependencies": {
     "@types/node": "^20.10.7",

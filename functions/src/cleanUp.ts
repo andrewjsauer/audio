@@ -99,3 +99,23 @@ export const updateAllRecordingUrls = functions.firestore
       return null;
     }
   });
+
+export const testSMS = functions.firestore.document('cleanUp/{docId}').onCreate(async () => {
+  const smsRef = admin.firestore().collection('sms').doc();
+  const sms = {
+    to: '+16262552193',
+    body: `Hey, Andrew! Linda has invited you to join Daily Q’s. Have fun 😊!
+    
+        Link: https://www.daily-qs.com
+      `,
+  };
+
+  try {
+    await smsRef.set(sms);
+    functions.logger.log('SMS successfully sent');
+    return null;
+  } catch (error) {
+    functions.logger.error('Error sending SMS:', error);
+    return null;
+  }
+});

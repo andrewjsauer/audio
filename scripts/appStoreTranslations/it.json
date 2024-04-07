@@ -1,33 +1,25 @@
 {
   "appTitle": "Edizione per coppie",
-  "appDescription": {
-    "title": "Accendete le vostre giornate reciprocamente - ogni giorno con le Domande Quotidiane (edizione per coppie) - Abbonamento necessario!",
-    "howItWorks": {
-      "title": "Come funziona:",
-      "point1": "Domande quotidiane (funzionalità Premium): Ogni giorno ricevi una domanda unica personalizzata per te e il tuo partner. Nota: È richiesta una sottoscrizione Premium per accedere a tutte le domande.",
-      "point2": "Esprimi i tuoi pensieri (funzione premium): Registrata le tue risposte e aspetta con ansia la risposta del tuo partner. Disponibile esclusivamente con un abbonamento premium.",
-      "point3": "Sblocca & Ascolta (Funzione Premium): Ascolta le registrazioni degli altri, sbloccando nuovi livelli di connessione. Questa funzione è accessibile solo con un abbonamento premium.",
-      "point4": "Privacy Orientata: Garantire uno spazio sicuro e privato per te e il tuo partner in cui poter esprimervi liberamente."
-    },
-    "why": {
-      "title": "Perché scaricare le domande quotidiane - Edizione Coppie?",
-      "point1": "Ogni giorno è una nuova avventura: Partecipa a conversazioni quotidiane, dallo scherzo divertente alle discussioni profonde. È richiesta una sottoscrizione premium.",
-      "point2": "Impara, Ridete, Amate: Scoprite nuove cose l'uno dell'altro, ridete insieme e rafforzate il vostro legame. Esclusivamente per gli abbonati.",
-      "point3": "Per tutte le coppie: Perfetto per tutte le fasi delle relazioni, dalle nuove alle a lungo termine."
-    },
-    "perfectFor": {
-      "title": "Perfetto per:",
-      "point1": "Coppie che desiderano conversazioni divertenti e significative.",
-      "point2": "Relazioni che valorizzano l'umorismo e l'affetto.",
-      "point3": "Partner a lunga distanza che cerca un coinvolgimento quotidiano."
-    },
-    "footer": {
-      "title": "Unisciti oggi a Daily Q's (Edizione Coppie)! Vivi un mondo di deliziosa scoperta. Scarica ora e esplora la nostra prova gratuita. Per accedere a tutte le funzioni, è richiesta una sottoscrizione premium.",
-      "terms": "Termini d'uso:",
-      "privacy": "Informativa sulla privacy:"
-    }
-  },
   "keywords": "Coppia, Relazione, Amore, Domande, Quotidiano, Compagno, Intimità, Divertimento, Comunicazione, Sposato, Distanza",
-  "subTitle": "Divertente Q&A Discovery",
-  "update": "Integrazione dei fusi orari, aggiornamenti delle prestazioni e correzioni di bug."
+  "update": "Integrazione dei fusi orari, aggiornamenti delle prestazioni e correzioni di bug.",
+  "description": {
+    "title": "Daily Q’s è l'app essenziale per coppie, indipendentemente dalla distanza. Perfetta per chi è vicino o lontano, Daily Q’s offre un nuovo e affettuoso modo di connettersi quotidianamente attraverso prompt unici che scatenano conversazioni profonde e ti avvicinano più che mai.",
+    "sub": "Che tu stia esplorando una nuova connessione, affrontando gli ostacoli della distanza, allineando i vostri percorsi, bilanciando le vite frenetiche o celebrando il vostro profondo legame, Daily Q's è un modo divertente per accendere e mantenere quella connessione speciale. Vivete la gioia delle scoperte quotidiane e dei momenti sinceri con il vostro partner, trasformando ogni giorno in un'opportunità per la vicinanza emotiva.",
+    "features": {
+      "1": "Domande quotidiane coinvolgenti: Approfondisci le menti e i cuori l'uno dell'altro con le nostre domande attentamente studiate, perfette per rivelare profondità nascoste e rafforzare il vostro legame.",
+      "2": "Risposte audio intime: Eleva i tuoi scambi oltre ai semplici messaggi di testo con messaggi audio personali, permettendoti di percepire la presenza e le emozioni della persona cara, come se fossero lì con te.",
+      "3": "Momenti Privati Sicuri: Apprezza i tuoi scambi privati con la tranquillità, sapendo che tutte le registrazioni sono criptate in modo sicuro solo per le tue orecchie.",
+      "4": "Su Misura: Personalizza promemoria e impostazioni per sincronizzarli con i tuoi ritmi unici e fusi orari, garantendo che quei preziosi momenti di connessione siano sempre parte della tua giornata.",
+      "5": "Interazione dinamica: Il nostro contenuto guidato dall'IA evolve con il vostro rapporto, garantendo che ogni domanda rimanga coinvolgente e pertinente al vostro percorso insieme.",
+      "title": "Caratteristiche progettate per connettere i cuori:"
+    },
+    "features2": {
+      "1": "Approfondisci la tua comprensione: Liberati dalla routine e immergiti in esplorazioni significative dei mondi dell'altro, arricchendo la tua comunicazione e connessione.",
+      "2": "Abbracciare l'intimità emotiva: condividere risate, gioia, sorprese e momenti teneri, mentre si favorisce un legame più profondo e resiliente che supera qualsiasi distanza.",
+      "3": "Un gesto d'amore: iscriversi a Daily Q's è una testimonianza del vostro impegno a crescere più vicini, con un partner che regala l'abbonamento all'altro come segno di generosità e amore.",
+      "title": "Più di una semplice app:"
+    },
+    "footer": "Daily Q's è tuo da esplorare gratuitamente per 30 giorni, con la possibilità di annullare in qualsiasi momento. Un abbonamento sblocca tutte le funzionalità, garantendo che la tua connessione continui a crescere ogni giorno. Inizia oggi il tuo viaggio verso la vicinanza!"
+  },
+  "subTitle": "Stare più vicini anche quando si è lontani"
 }

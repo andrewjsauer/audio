@@ -32,6 +32,15 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
   const userId = context.auth.uid;
 
   try {
+    if (userDetails.phoneNumber === partnerDetails.phoneNumber) {
+      functions.logger.error('Phone numbers are the same');
+      throw new functions.https.HttpsError(
+        'invalid-argument',
+        'Phone numbers are the same',
+        userDetails.phoneNumber,
+      );
+    }
+
     const { partnerId, partnerData } = await getPartnerIdByPhoneNumber(partnerDetails.phoneNumber);
 
     if (partnerData) {
@@ -175,12 +184,18 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
     const batch = admin.firestore().batch();
     const partnershipId = uuidv4();
 
-    const { type, startDate, timeZone = 'America/Los_Angeles' } = partnershipDetails;
+    const {
+      language = 'en',
+      startDate,
+      timeZone = 'America/Los_Angeles',
+      type,
+    } = partnershipDetails;
 
     const partnershipRef = admin.firestore().collection('partnership').doc(partnershipId);
     const partnershipData = {
       createdAt: admin.firestore.Timestamp.now(),
       id: partnershipId,
+      language,
       latestQuestionId: null,
       startDate,
       timeZone,
@@ -255,7 +270,10 @@ export const generatePartnership = functions.https.onCall(async (data, context) 
     const smsRef = admin.firestore().collection('sms').doc();
     batch.set(smsRef, {
       to: partnerDetails.phoneNumber,
-      body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join Daily Q’s. Starting today, both of you can enjoy a free 30-day trial. Have fun! Here's the download link: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822 😊`,
+      body: `Hey, ${partnerDetails.name}! ${userDetails.name} has invited you to join Daily Q’s. Have fun 😊!
+        
+      Link: https://www.daily-qs.com
+      `,
     });
 
     await batch.commit();

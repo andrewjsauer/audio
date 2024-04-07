@@ -13,8 +13,8 @@ import { showNotification } from '@store/ui/slice';
 import RelationshipTypePicker from '@components/shared/RelationshipTypePicker';
 
 import Layout from '../Layout';
-import { Container, ButtonWrapper } from '../style';
-import { RelationshipPickerContainer } from './style';
+import { Container, ButtonWrapper, Title } from '../style';
+import { Wrapper, RelationshipPickerContainer, TitleContainer } from './style';
 
 function RelationshipTypeScreen() {
   const { t } = useTranslation();
@@ -44,21 +44,22 @@ function RelationshipTypeScreen() {
   };
 
   return (
-    <Layout
-      goBack={goToPreviousStep}
-      isBackButtonEnabled
-      title={t('auth.partnerDetails.relationshipTypeScreen.title')}
-    >
+    <Layout goBack={goToPreviousStep} isPartnershipComplete isBackArrowDisabled={false}>
       <Container>
-        <RelationshipPickerContainer>
-          <RelationshipTypePicker
-            onChange={(type) => handlePartnershipDetails({ type })}
-            value={relationshipType}
-          />
-        </RelationshipPickerContainer>
-        <ButtonWrapper>
-          <Button onPress={handleSubmit} text={t('next')} />
-        </ButtonWrapper>
+        <Wrapper>
+          <TitleContainer>
+            <Title>{t('auth.partnerDetails.relationshipTypeScreen.title')}</Title>
+          </TitleContainer>
+          <RelationshipPickerContainer>
+            <RelationshipTypePicker
+              onChange={(type) => handlePartnershipDetails({ type })}
+              value={relationshipType}
+            />
+          </RelationshipPickerContainer>
+          <ButtonWrapper>
+            <Button onPress={handleSubmit} text={t('next')} />
+          </ButtonWrapper>
+        </Wrapper>
       </Container>
     </Layout>
   );

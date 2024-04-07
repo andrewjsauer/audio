@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import moment from 'moment-timezone';
 
-import { QuestionType } from '@lib/types';
 import { selectPartnershipTimeZone } from '@store/partnership/selectors';
 
 export const selectError = (state) => state.history.error;
@@ -38,73 +37,88 @@ const getMostRecentColor = (questions: any[], colorType: string) => {
   return lastQuestion ? lastQuestion[colorType] : null;
 };
 
-const createDefaultQuestion = (date: Date, partnerColor: string, userColor: string) => {
+const getRandomDefaultQuestion = () => {
   const questionIndex = Math.floor(Math.random() * defaultQuestions.length);
-  const question = defaultQuestions[questionIndex];
-
-  return {
-    createdAt: date,
-    id: Math.random().toString(),
-    partnerAudioUrl: null,
-    partnerColor: partnerColor || '#82A326',
-    partnerDuration: null,
-    partnerReactionToUser: null,
-    partnerRecordingId: null,
-    partnershipTextKey: 'bothDidNotAnswer',
-    partnerStatus: 'Lock',
-    text: question,
-    userAudioUrl: null,
-    userColor: userColor || '#175419',
-    userDuration: null,
-    userReactionToPartner: null,
-    userRecordingId: null,
-    userStatus: 'Lock',
-    isItemBlurred: true,
-  };
+  return defaultQuestions[questionIndex];
 };
 
-const findMissingDates = (questions: QuestionType[], timeZone: string) => {
-  if (questions.length === 0) return [];
+const createDefaultQuestion = (date, partnerColor = '#82A326', userColor = '#175419') => ({
+  createdAt: date.toISOString(),
+  id: Math.random().toString(),
+  partnerAudioUrl: null,
+  partnerColor,
+  partnerDuration: null,
+  partnerReactionToUser: null,
+  partnerRecordingId: null,
+  partnershipTextKey: 'bothDidNotAnswer',
+  partnerStatus: 'Lock',
+  text: getRandomDefaultQuestion(),
+  userAudioUrl: null,
+  userColor,
+  userDuration: null,
+  userReactionToPartner: null,
+  userRecordingId: null,
+  userStatus: 'Lock',
+  isItemBlurred: true,
+});
 
-  const datesSet = new Set(
-    questions.map((q) => moment.tz(q.createdAt, timeZone).startOf('day').format('YYYY-MM-DD')),
-  );
+const isQuestionAnswered = (question) =>
+  question.partnerStatus === 'Play' && question.userStatus === 'Play';
 
-  const firstDate = moment.tz(questions[0].createdAt, timeZone).startOf('day');
-  const lastDate = moment.tz(timeZone).endOf('day');
-  const dateRange = [];
+const findDatesForDefaultQuestions = (questions, timeZone) => {
+  const today = moment.tz(timeZone).startOf('day');
+  const dates = [];
 
-  for (let m = moment(firstDate); m.isBefore(lastDate); m.add(1, 'days')) {
-    dateRange.push(m.clone());
-  }
+  // Process questions, starting from the second one
+  questions.slice(1).forEach((q) => {
+    const questionDate = moment.tz(q.createdAt, timeZone).startOf('day');
+    if (!dates.some((date) => date.isSame(questionDate, 'day')) && !isQuestionAnswered(q)) {
+      dates.push(questionDate);
+    }
+  });
 
-  return dateRange.filter((date) => !datesSet.has(date.format('YYYY-MM-DD')));
+  // Always include today's date first
+  return [today].concat(dates.sort((a, b) => a.diff(b)));
 };
 
 export const selectFormattedQuestions = createSelector(
   selectQuestions,
   selectPartnershipTimeZone,
   (questions, timeZone) => {
-    const formattedQuestions = questions.map((question) => {
-      const isBlurred = question.partnerStatus !== 'Play' && question.userStatus !== 'Play';
+    const today = moment.tz(timeZone).startOf('day');
 
-      return {
-        ...question,
-        createdAt: question.createdAt,
-        isItemBlurred: isBlurred,
-      };
+    const formattedQuestions = questions.map((question, index) => ({
+      ...question,
+      createdAt: index === 0 ? moment.tz(timeZone).toISOString() : question.createdAt,
+      isItemBlurred: !isQuestionAnswered(question),
+    }));
+
+    const datesForDefaultQuestions = findDatesForDefaultQuestions(formattedQuestions, timeZone);
+    const mostRecentColors = {
+      partnerColor: getMostRecentColor(formattedQuestions, 'partnerColor'),
+      userColor: getMostRecentColor(formattedQuestions, 'userColor'),
+    };
+
+    datesForDefaultQuestions.forEach((date, index) => {
+      if (
+        index > 0 &&
+        !formattedQuestions.some((q) => moment.tz(q.createdAt, timeZone).isSame(date, 'day'))
+      ) {
+        formattedQuestions.push(
+          createDefaultQuestion(date, mostRecentColors.partnerColor, mostRecentColors.userColor),
+        );
+      }
     });
 
-    const missingDates = findMissingDates(formattedQuestions, timeZone);
-    const partnerColor = getMostRecentColor(formattedQuestions, 'partnerColor');
-    const userColor = getMostRecentColor(formattedQuestions, 'userColor');
-
-    missingDates.forEach((date) => {
-      formattedQuestions.push(createDefaultQuestion(date.toDate(), partnerColor, userColor));
+    // Sort questions to keep today's question at the top and order the rest by date
+    const sortedQuestions = formattedQuestions.sort((a, b) => {
+      const dateA = moment.tz(a.createdAt, timeZone);
+      const dateB = moment.tz(b.createdAt, timeZone);
+      if (dateA.isSame(today, 'day')) return -1; // Always bring today's question to the top
+      if (dateB.isSame(today, 'day')) return 1; // Push any other question for today down if encountered (should not happen with logic above)
+      return dateA.diff(dateB); // Sort the rest by their dates
     });
 
-    return formattedQuestions.sort((a, b) =>
-      moment(b.createdAt).tz(timeZone).diff(moment(a.createdAt).tz(timeZone)),
-    );
+    return sortedQuestions;
   },
 );

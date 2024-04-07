@@ -40,7 +40,7 @@ export const fetchPartnership = createAsyncThunk(
       const partnershipSnapshot = await firestore()
         .collection('partnership')
         .doc(partnershipId)
-        .get();
+        .get({ source: 'server' });
 
       if (partnershipSnapshot.exists) {
         const partnershipData = partnershipSnapshot.data();
@@ -69,7 +69,7 @@ export const fetchPartnershipUser = createAsyncThunk(
       const partnershipUserSnapshot = await firestore()
         .collection('partnershipUser')
         .where('userId', '==', userId)
-        .get();
+        .get({ source: 'server' });
 
       if (!partnershipUserSnapshot.empty) {
         const partnershipUserData = partnershipUserSnapshot.docs[0].data();
@@ -95,7 +95,10 @@ export const fetchPartnerData = createAsyncThunk(
         const partnershipUserData = partnershipUserResponse.payload as PartnershipUserDataType;
         const partnerId = partnershipUserData.otherUserId;
 
-        const partnerSnapshot = await firestore().collection('users').doc(partnerId).get();
+        const partnerSnapshot = await firestore()
+          .collection('users')
+          .doc(partnerId)
+          .get({ source: 'server' });
 
         if (partnerSnapshot.exists) {
           return partnerSnapshot.data() as UserDataType;

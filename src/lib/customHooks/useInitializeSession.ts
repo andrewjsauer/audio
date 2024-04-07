@@ -20,6 +20,7 @@ import { trackEvent, trackIdentify } from '@lib/analytics';
 import usePartnerSubscription from '@lib/customHooks/usePartnerSubscription';
 import usePartnershipSubscription from '@lib/customHooks/usePartnershipSubscription';
 import useAppVersionCheck from '@lib/customHooks/useAppVersionCheck';
+import useNetworkConnection from '@lib/customHooks/useNetworkConnection';
 
 const useInitializeSession = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,6 +29,8 @@ const useInitializeSession = () => {
   const userId = useSelector(selectUserId);
   const hasUserSubscribed = useSelector(selectHasSubscribed);
   const isUserRegistered = useSelector(selectIsUserRegistered);
+
+  useNetworkConnection();
 
   useAuthSubscription();
 

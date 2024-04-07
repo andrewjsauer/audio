@@ -53,7 +53,8 @@
       "description": "Por favor, atualize para a versão mais recente do Daily Q's para continuar usando o aplicativo.",
       "buttonText": "Atualização"
     },
-    "recordingSaveMemoryLimitExceeded": "A sua gravação excedeu o limite máximo de memória."
+    "recordingSaveMemoryLimitExceeded": "A sua gravação excedeu o limite máximo de memória.",
+    "offline": "Você está offline. Por favor, verifique sua conexão com a internet e tente novamente."
   },
   "browserScreen": {
     "title": "Navegador"
@@ -103,7 +104,8 @@
       "title": "Altere o fuso horário do seu relacionamento.",
       "success": "O fuso horário do seu relacionamento foi atualizado!"
     },
-    "partnershipUpdateSuccess": "Os detalhes do seu relacionamento foram atualizados!"
+    "partnershipUpdateSuccess": "Os detalhes do seu relacionamento foram atualizados!",
+    "relationshipLanguage": "Linguagem do relacionamento"
   },
   "questionScreen": {
     "nonSubscriberScreen": {
@@ -120,7 +122,6 @@
     "subscriberScreen": {
       "redo": "Refazer",
       "submit": "Enviar",
-      "timeRemaining": "Restam {{ time }}...",
       "lock": {
         "title": "{{ name }} respondeu",
         "description": "Grave sua resposta para ouvi-la!"
@@ -140,7 +141,8 @@
         "description": "Você deve permitir as permissões para gravar sua resposta",
         "buttonText": "Permitir"
       },
-      "timeRemainingExplained": "Reseta à meia-noite {{ timeZone }}"
+      "timeRemainingExplained": "Reseta à meia-noite {{ timeZone }}",
+      "timeRemaining": "{{ tempo }} até a sua próxima pergunta..."
     },
     "recordScreen": {
       "note": "Todas as gravações são privadas e criptografadas.",
@@ -166,7 +168,18 @@
       "description": "Após o período de teste gratuito, se você não cancelar, será cobrado $9.99 por mês para ambos. {{ partnerName }} nunca será cobrado."
     },
     "benefitMonthly": "Mensal por pessoa",
-    "perPersonPrice": "$4.99"
+    "perPersonPrice": "$4.99",
+    "subTitlePrice": "$9,99 mensais (valor por pessoa = $4,99)",
+    "subTitleHighPrice": "$18,99",
+    "breakdown": {
+      "day1": "Dia 1",
+      "day1Description": "Tenha acesso instantâneo e veja o quanto isso te aproxima do seu parceiro.",
+      "day25": "Dia 25",
+      "day25Description": "Receba um lembrete sobre quando sua avaliação terminará.",
+      "enableNotifications": "Ativar lembrete",
+      "day30": "Dia 30",
+      "day30Description": "Você será cobrado mensalmente a partir de {{ date }} e pode cancelar a qualquer momento antes disso."
+    }
   },
   "historyScreen": {
     "title": "Histórico",
@@ -190,7 +203,7 @@
       "subtitle": "Edição para Casais",
       "buttonText": "Obter Código",
       "terms": "Ao se registrar, você concorda com os nossos",
-      "description": "Descubra as respostas um do outro para perguntas personalizadas diárias"
+      "description": "Aproxime-se ainda mais quando estiverem separados."
     },
     "phoneNumberScreen": {
       "title": "Bem-vindo! Entre para começar",

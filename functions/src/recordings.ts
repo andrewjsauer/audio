@@ -108,7 +108,7 @@ export const saveRecording = functions
           .collection('sms')
           .add({
             phoneNumber: partnerData.phoneNumber,
-            body: `${userData.name} answered today's question on Daily Q’s! Download the app to listen to their answer. Link: https://apps.apple.com/us/app/daily-qs-couples-edition/id6474273822`,
+            body: `${userData.name} answered today's question on Daily Q’s! Download the app to listen to their answer. Link: https://www.daily-qs.com`,
           });
       }
 

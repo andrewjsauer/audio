@@ -8,7 +8,7 @@ export interface ButtonProps extends Omit<TouchableOpacityProps, 'children'> {
   hasNotification?: boolean;
   isDisabled?: boolean;
   isLoading?: boolean;
-  mode?: 'light' | 'dark' | 'error' | 'hidden';
+  mode?: 'light' | 'dark' | 'error' | 'hidden' | 'green';
   size?: 'small' | 'medium';
   text?: string;
 }

@@ -13,7 +13,8 @@ import { selectIsLoading } from '@store/auth/selectors';
 import { trackEvent } from '@lib/analytics';
 
 import Layout from '../Layout';
-import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper } from '../style';
+import { TitleContainer, Wrapper } from './style';
+import { Container, ButtonWrapper, InputTitle, InputSubtitle, InputWrapper, Title } from '../style';
 
 function InviteScreen() {
   const { t } = useTranslation();
@@ -55,12 +56,11 @@ function InviteScreen() {
   };
 
   return (
-    <Layout
-      goBack={goToPreviousStep}
-      isBackButtonEnabled
-      title={t('auth.partnerDetails.invitePartnerScreen.title')}
-    >
+    <Layout goBack={goToPreviousStep} isBackArrowDisabled={false} isPartnershipComplete>
       <Container>
+        <TitleContainer>
+          <Title>{t('auth.partnerDetails.invitePartnerScreen.title')}</Title>
+        </TitleContainer>
         <InputWrapper>
           <InputTitle>{t('auth.partnerDetails.invitePartnerScreen.inputTitle')}</InputTitle>
           <PhoneNumberInput

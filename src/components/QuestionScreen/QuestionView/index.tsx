@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { selectPartnershipTimeZone } from '@store/partnership/selectors';
+import { selectAreBothRecordingsAvailable } from '@store/recording/selectors';
 
 import { trackEvent } from '@lib/analytics';
 import useTimeRemainingToMidnight from '@lib/customHooks/useTimeRemainingToMidnight';
@@ -46,6 +47,7 @@ function QuestionView({
   const navigation = useNavigation();
 
   const timeZone = useSelector(selectPartnershipTimeZone);
+  const areBothRecordingsAvailable = useSelector(selectAreBothRecordingsAvailable);
 
   const { time, relationshipTimeZone, localTimeZone } = useTimeRemainingToMidnight(timeZone);
 
@@ -86,12 +88,12 @@ function QuestionView({
 
   return (
     <Container>
-      {time ? (
+      {areBothRecordingsAvailable && time ? (
         <TimerText>{t('questionScreen.subscriberScreen.timeRemaining', { time })}</TimerText>
       ) : (
         <TimerText> </TimerText>
       )}
-      {relationshipTimeZone !== localTimeZone && (
+      {areBothRecordingsAvailable && relationshipTimeZone !== localTimeZone && (
         <TimerText>
           {t('questionScreen.subscriberScreen.timeRemainingExplained', {
             timeZone: relationshipTimeZone,
