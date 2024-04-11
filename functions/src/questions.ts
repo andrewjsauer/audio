@@ -96,7 +96,7 @@ async function getPreviousPartnershipQuestions(partnershipId: string) {
   const snapshot = await questionsRef
     .where('partnershipId', '==', partnershipId)
     .orderBy('createdAt', 'desc')
-    .limit(10)
+    .limit(5)
     .get();
 
   if (snapshot.empty) {
@@ -134,17 +134,17 @@ const generatePersonalizedQuestion = async ({
   try {
     const relationshipType = relationshipTypeMap[partnership.type as RelationshipType];
 
-    const adjectives = ['thoughtful', 'fun'];
+    const adjectives = ['thoughtful', 'playful'];
 
     const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
     const promptLanguage =
       usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
     const pastQuestions = await getPreviousPartnershipQuestions(partnership.id);
-    let promptBase = `Create a 90-character ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} that is inspired by the couple card games 'Talking Hearts'. Avoid common and trite questions.'`;
+    let promptBase = `Create a 90-character ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} that is inspired by the couple card games 'Talking Hearts for Couples'. An example of a 'thoughtful' question would be 'What's something you don't miss about being single?' or 'What's a big risk you've taken in the past?' whereas a 'playful' question could be 'How did you try to impress me at the beginning of our relationship?' or 'If you were offered a free trip to space, would you take it?'`;
 
     if (pastQuestions.length > 0) {
-      promptBase += ` Avoid repeating these past questions: ${pastQuestions.join(', ')}.`;
+      promptBase += ` Avoid repeating past questions such as: ${pastQuestions.join(', ')}.`;
     }
 
     const prompt = promptBase;
