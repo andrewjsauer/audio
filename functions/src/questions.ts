@@ -295,7 +295,7 @@ export const fetchQuestion = functions
     return question;
   });
 
-export const generateQuestionModified = functions
+export const fetchQuestionModified = functions
   .runWith({ secrets: [openApiKey] })
   .https.onCall(async (data, context) => {
     if (!context.auth) {
@@ -318,13 +318,11 @@ export const generateQuestionModified = functions
       const doc = queriedDescQuestionSnapshot.docs[0];
       const fetchedQuestionData = doc.data();
 
-      const hasAnsweredLatestQuestion = await hasPartnershipAnsweredLatestQuestion(
-        partnershipData.id,
-      );
-
-      if (!hasAnsweredLatestQuestion) {
-        return fetchedQuestionData;
-      }
+      functions.logger.info(`Persisting question: ${JSON.stringify(fetchedQuestionData)}`);
+      return {
+        question: fetchedQuestionData,
+        isNewQuestion: false,
+      };
     }
 
     functions.logger.log('Generating New Question');
@@ -424,7 +422,10 @@ export const generateQuestionModified = functions
       }
     }
 
-    return question;
+    return {
+      question,
+      isNewQuestion: true,
+    };
   });
 
 function getTimeZonesForMidnight() {
