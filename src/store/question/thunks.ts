@@ -52,11 +52,6 @@ export const calculateDuration = (startDate: Date, timeZone: string) => {
   return 'same day';
 };
 
-const formatQuestion = (data: QuestionType, timeZone: string) => ({
-  ...data,
-  createdAt: formatCreatedAt(data.createdAt, timeZone),
-});
-
 const generateQuestion = async ({
   partnerData,
   partnershipData,
@@ -77,11 +72,15 @@ const generateQuestion = async ({
     },
   };
 
-  let data = null;
-
   try {
-    ({ data } = await functions().httpsCallable('fetchQuestion')(payload));
-    return formatQuestion(data, timeZone);
+    const { data } = await functions().httpsCallable('fetchQuestionModified')(payload);
+    return {
+      question: {
+        ...data.question,
+        createdAt: formatCreatedAt(data.question.createdAt, timeZone),
+      },
+      isNewQuestion: data.isNewQuestion,
+    };
   } catch (error) {
     trackEvent('Generate Question Failed', { error });
 
@@ -140,7 +139,7 @@ export const fetchLatestQuestion = createAsyncThunk<
 
       trackEvent('Requesting Question');
 
-      const newQuestion = await generateQuestion({
+      const payload = await generateQuestion({
         partnerData,
         partnershipData,
         timeZone,
@@ -148,11 +147,17 @@ export const fetchLatestQuestion = createAsyncThunk<
         usersLanguage: currentLanguage,
       });
 
-      trackEvent('Viewing Question', { ...newQuestion });
+      if (!payload) {
+        trackEvent('Generate Question Failed');
+        return rejectWithValue('Generate Question Failed');
+      }
+
+      const { question, isNewQuestion }: any = payload;
+      trackEvent('Viewing Question', { ...question });
 
       return {
-        question: newQuestion,
-        isNewQuestion: true,
+        question,
+        isNewQuestion,
       } as {
         question: QuestionType;
         isNewQuestion: boolean;
