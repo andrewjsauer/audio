@@ -142,7 +142,8 @@
         "buttonText": "允许"
       },
       "timeRemainingExplained": "午夜{{ timeZone }}重置",
-      "timeRemaining": "{{ 时间 }} 直到你下一个问题..."
+      "timeRemaining": "{{ 时间 }} 直到你下一个问题...",
+      "skipQuestion": "跳过问题？"
     },
     "recordScreen": {
       "note": "所有录音是私密且经过加密的。",

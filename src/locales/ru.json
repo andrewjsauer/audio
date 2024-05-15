@@ -142,7 +142,8 @@
         "buttonText": "Разрешить"
       },
       "timeRemainingExplained": "Сброс в полночь {{ timeZone }}",
-      "timeRemaining": "{{ время }} до следующего вопроса..."
+      "timeRemaining": "{{ время }} до следующего вопроса...",
+      "skipQuestion": "Пропустить вопрос?"
     },
     "recordScreen": {
       "note": "Все записи являются частными и зашифрованными.",

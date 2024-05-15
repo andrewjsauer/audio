@@ -142,7 +142,8 @@
         "buttonText": "Erlauben"
       },
       "timeRemainingExplained": "Zurücksetzen um Mitternacht {{ timeZone }}",
-      "timeRemaining": "{{Zeit}} bis zu Ihrer nächsten Frage..."
+      "timeRemaining": "{{Zeit}} bis zu Ihrer nächsten Frage...",
+      "skipQuestion": "Frage überspringen?"
     },
     "recordScreen": {
       "note": "Alle Aufnahmen sind privat und verschlüsselt.",

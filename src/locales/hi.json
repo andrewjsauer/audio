@@ -142,7 +142,8 @@
         "buttonText": "अनुमति दें"
       },
       "timeRemainingExplained": "रात {{ timeZone }} में रीसेट हो जाता है।",
-      "timeRemaining": "अगले सवाल तक {{ time }} बचे हैं..."
+      "timeRemaining": "अगले सवाल तक {{ time }} बचे हैं...",
+      "skipQuestion": "क्या आप सवाल को छोड़ना चाहेंगे?"
     },
     "recordScreen": {
       "note": "सभी रिकॉर्डिंग प्राइवेट और एन्क्रिप्टेड होती हैं।",

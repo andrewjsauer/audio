@@ -142,7 +142,8 @@
         "buttonText": "Permitir"
       },
       "timeRemainingExplained": "Reseteo a medianoche {{ timeZone }}",
-      "timeRemaining": "{{ tiempo }} hasta tu próxima pregunta..."
+      "timeRemaining": "{{ tiempo }} hasta tu próxima pregunta...",
+      "skipQuestion": "¿Saltar la pregunta?"
     },
     "recordScreen": {
       "note": "Todas las grabaciones son privadas y encriptadas",

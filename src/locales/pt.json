@@ -142,7 +142,8 @@
         "buttonText": "Permitir"
       },
       "timeRemainingExplained": "Reseta à meia-noite {{ timeZone }}",
-      "timeRemaining": "{{ tempo }} até a sua próxima pergunta..."
+      "timeRemaining": "{{ tempo }} até a sua próxima pergunta...",
+      "skipQuestion": "Pular a pergunta?"
     },
     "recordScreen": {
       "note": "Todas as gravações são privadas e criptografadas.",

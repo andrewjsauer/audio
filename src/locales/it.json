@@ -142,7 +142,8 @@
         "buttonText": "Permetti"
       },
       "timeRemainingExplained": "Resetta a mezzanotte {{ timeZone }}",
-      "timeRemaining": "{{time}} fino alla tua prossima domanda..."
+      "timeRemaining": "{{time}} fino alla tua prossima domanda...",
+      "skipQuestion": "Saltare la domanda?"
     },
     "recordScreen": {
       "note": "Tutte le registrazioni sono private e criptate.",

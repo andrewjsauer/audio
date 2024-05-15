@@ -142,7 +142,8 @@
         "buttonText": "허용"
       },
       "timeRemainingExplained": "자정에 재설정됩니다. {{ timeZone }}",
-      "timeRemaining": "다음 질문까지 {{ time }} 남음..."
+      "timeRemaining": "다음 질문까지 {{ time }} 남음...",
+      "skipQuestion": "질문을 건너뛰시겠습니까?"
     },
     "recordScreen": {
       "note": "모든 녹음은 개인적이며 암호화되어 있습니다.",

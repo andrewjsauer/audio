@@ -44,7 +44,7 @@ const categories = ['thoughtful', 'playful', 'fun'];
 const relationship = relationshipTypeMap[relationshipType];
 const generateAndAppendPrompt = () => __awaiter(void 0, void 0, void 0, function* () {
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-    const prompt = `Create a daily question for a ${relationship} couple that is engaging, thoughtful, and roughly 90 characters long.`;
+    const prompt = `Create a daily question for ${relationship} that is engaging, thoughtful, and roughly 90 characters long.`;
     const systemPrompt = `You are an AI designed to generate ${randomCategory} and engaging daily questions for couples. Your questions should encourage meaningful conversations and help couples learn more about each other. Ensure that each question is clear, concise, and roughly 90 characters in length. Avoid previous questions: ${pastQuestions.join(', ')}.`;
     try {
         console.log(`Prompt: ${prompt}`);

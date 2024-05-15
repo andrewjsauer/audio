@@ -142,7 +142,8 @@
         "buttonText": "السماح"
       },
       "timeRemainingExplained": "يتم إعادة الضبط في منتصف الليل {{ timeZone }}",
-      "timeRemaining": "{{ time }} حتى سؤالك القادم..."
+      "timeRemaining": "{{ time }} حتى سؤالك القادم...",
+      "skipQuestion": "التخطي السؤال؟"
     },
     "recordScreen": {
       "note": "جميع التسجيلات خاصة ومشفرة.",

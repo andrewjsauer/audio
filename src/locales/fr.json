@@ -142,7 +142,8 @@
         "buttonText": "Autoriser"
       },
       "timeRemainingExplained": "Réinitialise à minuit {{ timeZone }}",
-      "timeRemaining": "{{ time }} jusqu'à votre prochaine question..."
+      "timeRemaining": "{{ time }} jusqu'à votre prochaine question...",
+      "skipQuestion": "Passer la question ?"
     },
     "recordScreen": {
       "note": "Toutes les enregistrements sont privés et chiffrés.",

@@ -142,7 +142,8 @@
         "buttonText": "許可"
       },
       "timeRemainingExplained": "深夜にリセットします。{{ timeZone }}でのリセットです。",
-      "timeRemaining": "次の質問まで{{ time }}経過します..."
+      "timeRemaining": "次の質問まで{{ time }}経過します...",
+      "skipQuestion": "質問をスキップしますか？"
     },
     "recordScreen": {
       "note": "すべての録音はプライベートで暗号化されています。",
