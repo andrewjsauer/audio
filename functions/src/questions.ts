@@ -42,16 +42,16 @@ const languageMap: { [key: string]: string } = {
 };
 
 const relationshipTypeMap: { [key in RelationshipType]: string } = {
-  stillGettingToKnowEachOther: 'Still Getting to Know Each Other',
-  dating: 'Dating',
-  inARelationship: 'In a Relationship',
-  engaged: 'Engaged',
-  domesticPartnership: 'Domestic Partnership',
-  cohabiting: 'Cohabiting',
-  longDistanceRelationship: 'Long Distance Relationship',
-  consensualNonMonogamousRelationship: 'Consensual Non-monogamous Relationship',
-  inAnOpenRelationship: 'Open Relationship',
-  married: 'Married',
+  stillGettingToKnowEachOther: 'a couple who are still getting to know each other',
+  dating: 'a couple who are just dating',
+  inARelationship: 'a couple who is in relationship',
+  engaged: 'a couple who is engaged',
+  domesticPartnership: 'a domestic partnership couple',
+  cohabiting: 'a cohabiting couple',
+  longDistanceRelationship: 'a long distance couple',
+  consensualNonMonogamousRelationship: 'a consensual non-monogamous relationship',
+  inAnOpenRelationship: 'a couple in an open relationship',
+  married: 'a married couple',
 };
 
 const hasPartnershipAnsweredLatestQuestion = async (partnershipId: string) => {
@@ -134,26 +134,29 @@ const generatePersonalizedQuestion = async ({
   try {
     const relationshipType = relationshipTypeMap[partnership.type as RelationshipType];
 
-    const adjectives = ['thoughtful', 'playful'];
+    const adjectives = ['thoughtful', 'playful', 'fun'];
 
     const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
     const promptLanguage =
       usersLanguage === 'en' ? '' : ` in ${languageMap[usersLanguage] || 'English'}`;
 
     const pastQuestions = await getPreviousPartnershipQuestions(partnership.id);
-    let promptBase = `Create a 90-character ${randomAdjective} question${promptLanguage} for a couple who are ${relationshipType} that is inspired by the couple card games 'Talking Hearts for Couples'. An example of a 'thoughtful' question would be 'What's something you don't miss about being single?' or 'What's a big risk you've taken in the past?' whereas a 'playful' question could be 'How did you try to impress me at the beginning of our relationship?' or 'If you were offered a free trip to space, would you take it?'`;
+
+    let systemPrompt = `You are an AI designed to generate ${randomAdjective} and engaging daily questions for couples. Your questions should encourage meaningful conversations and help couples learn more about each other. Ensure that each question is clear, concise, and roughly 90 characters in length.`;
+    const prompt = `Create a daily question${promptLanguage} for ${relationshipType} that is engaging, thoughtful, and roughly 90 characters long.`;
 
     if (pastQuestions.length > 0) {
-      promptBase += ` Avoid repeating past questions such as: ${pastQuestions.join(', ')}.`;
+      systemPrompt += ` Avoid previous questions: ${pastQuestions.join(', ')}.`;
     }
-
-    const prompt = promptBase;
 
     functions.logger.info(`Personalized Prompt: ${prompt}`);
 
     const chatCompletion: OpenAI.Chat.ChatCompletion = await openai.chat.completions.create({
-      messages: [{ role: 'user', content: prompt }],
-      model: 'gpt-4',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: prompt },
+      ],
+      model: 'gpt-4o',
     });
 
     const openAIQuestion: string | null = chatCompletion.choices[0].message.content;
