@@ -92,7 +92,7 @@ function SubscriberScreen() {
   };
 
   const handleSkipQuestion = () => {
-    trackEvent('Skip Question Button Tapped', { action: 'skip_question' });
+    trackEvent('Skip Question Button Tapped');
     dispatch(updateQuestionSkipped(currentQuestion.id));
   };
 
