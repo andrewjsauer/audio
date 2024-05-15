@@ -10,8 +10,9 @@ import {
 } from '@store/partnership/selectors';
 import {
   selectCurrentQuestion,
-  selectIsLoadingQuestion,
   selectIsInitializing,
+  selectIsLoadingQuestion,
+  selectIsUpdatingSkipped,
 } from '@store/question/selectors';
 import {
   selectPartnerRecording,
@@ -24,7 +25,7 @@ import {
 
 import { AppDispatch } from '@store/index';
 
-import { fetchLatestQuestion } from '@store/question/thunks';
+import { fetchLatestQuestion, updateQuestionSkipped } from '@store/question/thunks';
 
 import { trackEvent } from '@lib/analytics';
 import useNotificationPermissions from '@lib/customHooks/useNotificationPermissions';
@@ -57,6 +58,7 @@ function SubscriberScreen() {
   const userRecording = useSelector(selectUserRecording);
   const userStatus = useSelector(selectUserRecordingStatus);
   const hasSeenPrivacyReminder = useSelector(selectHasSeenPrivacyReminder);
+  const isUpdatingSkipped = useSelector(selectIsUpdatingSkipped);
 
   useEffect(() => {
     trackEvent('Home Screen Viewed');
@@ -89,6 +91,11 @@ function SubscriberScreen() {
     }
   };
 
+  const handleSkipQuestion = () => {
+    trackEvent('Skip Question Button Tapped', { action: 'skip_question' });
+    dispatch(updateQuestionSkipped(currentQuestion.id));
+  };
+
   let content = null;
 
   if (error) {
@@ -99,6 +106,9 @@ function SubscriberScreen() {
     content = (
       <>
         <Question
+          isQuestionSkipped={currentQuestion.isSkipped || false}
+          isUpdatingSkipped={isUpdatingSkipped}
+          onQuestionSkip={handleSkipQuestion}
           partner={partnerData}
           partnerReactionToUser={partnerReactionToUser}
           partnerRecording={partnerRecording}

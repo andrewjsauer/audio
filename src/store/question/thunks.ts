@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import functions from '@react-native-firebase/functions';
+import firestore from '@react-native-firebase/firestore';
 import i18n from 'i18next';
 import moment from 'moment-timezone';
 
@@ -164,6 +165,30 @@ export const fetchLatestQuestion = createAsyncThunk<
       };
     } catch (error) {
       trackEvent('Fetch Latest Question Failed', { error });
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const updateQuestionSkipped = createAsyncThunk(
+  'question/updateQuestionSkipped',
+  async (
+    {
+      questionId,
+    }: {
+      questionId: string;
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      await firestore()
+        .collection('questions')
+        .doc(questionId)
+        .set({ isSkipped: true }, { merge: true });
+
+      return null;
+    } catch (error) {
+      trackEvent('Update Question Skipped Failed', { error });
       return rejectWithValue(error);
     }
   },

@@ -23,3 +23,19 @@ export const QuestionText = styled.Text`
 export const QuestionRowContainers = styled.View`
   margin-top: 20px;
 `;
+
+export const SkipQuestionText = styled.Text`
+  font-family: ${(p) => p.theme.fonts.regular};
+  font-size: ${(p) => p.theme.fontSizes.small};
+  color: ${(p) => p.theme.colors.lightGray};
+`;
+
+export const SkipQuestionButton = styled.TouchableOpacity`
+  margin-top: 12px;
+`;
+
+export const LoadingSkippedContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: 12px;
+`;

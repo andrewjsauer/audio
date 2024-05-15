@@ -10,6 +10,7 @@ import {
 import { signOut } from '@store/app/thunks';
 import { saveUserRecording } from '@store/recording/thunks';
 import { updatePartnership } from '@store/partnership/thunks';
+import { updateQuestionSkipped } from '@store/question/thunks';
 
 interface UIState {
   notification: {
@@ -102,6 +103,13 @@ export const uiSlice = createSlice({
         state.notification = {
           title: 'accountScreen.partnershipUpdateSuccess',
           type: 'success',
+        };
+      })
+      .addCase(updateQuestionSkipped.rejected, (state) => {
+        state.notification = {
+          title: 'errors.pleaseTryAgain',
+          description: 'errors.updateQuestionSkippedFailed',
+          type: 'error',
         };
       })
       .addCase(updatePartnership.rejected, (state) => {

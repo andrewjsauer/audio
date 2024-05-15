@@ -1,7 +1,10 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native';
 
 import { selectPartnershipTimeZone } from '@store/partnership/selectors';
 import { selectAreBothRecordingsAvailable } from '@store/recording/selectors';
@@ -18,21 +21,35 @@ import {
 } from '@lib/types';
 
 import QuestionRowView from './QuestionRow';
-import { QuestionRowContainers, Container, QuestionText, TimerText } from './style';
+import {
+  QuestionRowContainers,
+  Container,
+  SkipQuestionButton,
+  LoadingSkippedContainer,
+  QuestionText,
+  TimerText,
+  SkipQuestionText,
+} from './style';
 
 type QuestionViewProps = {
+  isQuestionSkipped: boolean;
+  isUpdatingSkipped: boolean;
+  onQuestionSkip: () => void;
   partner: UserDataType;
+  partnerReactionToUser: ReactionType | null;
   partnerRecording: RecordingType;
   partnerStatus: QuestionStatusType;
   text: string;
   user: UserDataType;
+  userReactionToPartner: ReactionType | null;
   userRecording: RecordingType;
   userStatus: QuestionStatusType;
-  partnerReactionToUser: ReactionType | null;
-  userReactionToPartner: ReactionType | null;
 };
 
 function QuestionView({
+  isQuestionSkipped,
+  isUpdatingSkipped,
+  onQuestionSkip,
   partner,
   partnerReactionToUser,
   partnerRecording,
@@ -88,19 +105,35 @@ function QuestionView({
 
   return (
     <Container>
-      {areBothRecordingsAvailable && time ? (
+      {(isQuestionSkipped || areBothRecordingsAvailable) && time ? (
         <TimerText>{t('questionScreen.subscriberScreen.timeRemaining', { time })}</TimerText>
       ) : (
         <TimerText> </TimerText>
       )}
-      {areBothRecordingsAvailable && relationshipTimeZone !== localTimeZone && (
-        <TimerText>
-          {t('questionScreen.subscriberScreen.timeRemainingExplained', {
-            timeZone: relationshipTimeZone,
-          })}
-        </TimerText>
-      )}
+      {(isQuestionSkipped || areBothRecordingsAvailable) &&
+        relationshipTimeZone !== localTimeZone && (
+          <TimerText>
+            {t('questionScreen.subscriberScreen.timeRemainingExplained', {
+              timeZone: relationshipTimeZone,
+            })}
+          </TimerText>
+        )}
       <QuestionText>{text}</QuestionText>
+      {!isQuestionSkipped && (
+        <>
+          {isUpdatingSkipped ? (
+            <LoadingSkippedContainer>
+              <ActivityIndicator size="small" color="#909090" />
+            </LoadingSkippedContainer>
+          ) : (
+            <SkipQuestionButton onPress={onQuestionSkip}>
+              <SkipQuestionText>
+                {t('questionScreen.subscriberScreen.skipQuestion')}
+              </SkipQuestionText>
+            </SkipQuestionButton>
+          )}
+        </>
+      )}
       <QuestionRowContainers>
         <QuestionRowView
           color={user?.color as string}

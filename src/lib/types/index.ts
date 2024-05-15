@@ -105,6 +105,7 @@ export type PartnershipDetailsType = {
 export type QuestionType = {
   createdAt: FirebaseFirestoreTypes.Timestamp | Date;
   id: string;
+  isSkipped?: boolean;
   partnershipId: string;
   text: string;
 };

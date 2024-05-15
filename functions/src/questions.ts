@@ -54,7 +54,7 @@ const relationshipTypeMap: { [key in RelationshipType]: string } = {
   married: 'a married couple',
 };
 
-const hasPartnershipAnsweredLatestQuestion = async (partnershipId: string) => {
+const shouldGenerateNewQuestion = async (partnershipId: string) => {
   const db = admin.firestore();
 
   const latestQuestion = await db
@@ -67,6 +67,12 @@ const hasPartnershipAnsweredLatestQuestion = async (partnershipId: string) => {
   if (latestQuestion.empty) {
     functions.logger.info('No questions found for this partnership.');
     return false;
+  }
+
+  const didUserSkipLatestQuestion = latestQuestion.docs[0].data().isSkipped || false;
+  if (didUserSkipLatestQuestion) {
+    functions.logger.info('User skipped the latest question.');
+    return true;
   }
 
   const latestQuestionId = latestQuestion.docs[0].id;
@@ -501,8 +507,8 @@ async function processPartnership(doc: any) {
     return;
   }
 
-  const hasAnsweredLatestQuestion = await hasPartnershipAnsweredLatestQuestion(partnership.id);
-  if (!hasAnsweredLatestQuestion) {
+  const shouldGenerateQuestion = await shouldGenerateNewQuestion(partnership.id);
+  if (!shouldGenerateQuestion) {
     functions.logger.info(
       `Skipping over partnership since they have not answered the latest question`,
     );

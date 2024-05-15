@@ -143,7 +143,8 @@
         "title": "Allow permissions to record",
         "description": "You must allow permissions to record your answer",
         "buttonText": "Allow"
-      }
+      },
+      "skipQuestion": "Skip question?"
     },
     "recordScreen": {
       "note": "All recordings are private and encrypted",
