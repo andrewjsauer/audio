@@ -243,8 +243,11 @@ export const fetchQuestion = functions
         questionText = englishQuestion;
       }
     } else {
-      const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
-      questionText = defaultQuestions[backupIndex];
+      questionText = await generatePersonalizedQuestion({
+        partnership: partnershipData,
+        usersLanguage,
+        openai,
+      });
     }
 
     const questionId = uuidv4();
@@ -373,8 +376,11 @@ export const fetchQuestionModified = functions
         questionText = englishQuestion;
       }
     } else {
-      const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
-      questionText = defaultQuestions[backupIndex];
+      questionText = await generatePersonalizedQuestion({
+        partnership: partnershipData,
+        usersLanguage,
+        openai,
+      });
     }
 
     const questionId = uuidv4();
@@ -550,8 +556,11 @@ async function processPartnership(doc: any) {
       questionText = englishQuestion;
     }
   } else {
-    const backupIndex = Math.floor(Math.random() * defaultQuestions.length);
-    questionText = defaultQuestions[backupIndex];
+    questionText = await generatePersonalizedQuestion({
+      partnership,
+      usersLanguage,
+      openai,
+    });
   }
 
   const questionId = uuidv4();
