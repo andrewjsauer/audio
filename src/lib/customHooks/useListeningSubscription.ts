@@ -37,6 +37,8 @@ const useListeningSubscription = ({
             dispatch(setUserReactionToPartner(null));
           }
         });
+    } else {
+      dispatch(setUserReactionToPartner(null));
     }
 
     if (partnerData && userRecordingId) {
@@ -52,6 +54,8 @@ const useListeningSubscription = ({
             dispatch(setPartnerReactionToUser(null));
           }
         });
+    } else {
+      dispatch(setPartnerReactionToUser(null));
     }
 
     return () => {

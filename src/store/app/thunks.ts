@@ -17,6 +17,7 @@ import { fetchPartnership, fetchPartnerData } from '@store/partnership/thunks';
 import { updateUser } from '@store/auth/thunks';
 
 import { selectUserData } from '@store/auth/selectors';
+import { selectCurrentQuestion } from '@store/question/selectors';
 import { selectPartnershipData, selectPartnerData } from '@store/partnership/selectors';
 
 export const initializeSubscriber = createAsyncThunk(
@@ -26,6 +27,7 @@ export const initializeSubscriber = createAsyncThunk(
     const partnershipData = selectPartnershipData(state);
     const storedUserData = selectUserData(state);
     const partnerData = selectPartnerData(state);
+    const currentQuestion = selectCurrentQuestion(state);
 
     let partnership = partnershipData;
     const userData = fetchedUserData || storedUserData;
@@ -42,15 +44,7 @@ export const initializeSubscriber = createAsyncThunk(
         await dispatch(fetchPartnerData(userData.id));
       }
 
-      const resultAction = await dispatch(fetchLatestQuestion({ partnershipData: partnership }));
-
-      if (fetchLatestQuestion.fulfilled.match(resultAction)) {
-        trackEvent('Initializing Subscriber Fetch Latest Question Success');
-      } else if (fetchLatestQuestion.rejected.match(resultAction)) {
-        trackEvent('Initializing Subscriber Fetch Latest Question Failed', {
-          error: resultAction.payload,
-        });
-      }
+      if (!currentQuestion) await dispatch(fetchLatestQuestion({ partnershipData: partnership }));
 
       return null;
     } catch (error) {

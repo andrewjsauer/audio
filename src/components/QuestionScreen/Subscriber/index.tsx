@@ -79,7 +79,7 @@ function SubscriberScreen() {
     userRecordingId: userRecording?.id,
   });
 
-  useFetchQuestion();
+  useFetchQuestion(userData?.partnershipId);
 
   const handleRetry = () => {
     trackEvent('Retry Button Tapped', {
@@ -93,7 +93,7 @@ function SubscriberScreen() {
 
   const handleSkipQuestion = () => {
     trackEvent('Skip Question Button Tapped');
-    dispatch(updateQuestionSkipped(currentQuestion.id));
+    dispatch(updateQuestionSkipped({ questionId: currentQuestion.id }));
   };
 
   let content = null;

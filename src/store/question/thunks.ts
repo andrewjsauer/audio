@@ -111,7 +111,12 @@ export const fetchLatestQuestion = createAsyncThunk<
         const currentQuestionLocalCreatedAt = moment(currentQuestion.createdAt).tz(timeZone);
         const isSameDay = now.isSame(currentQuestionLocalCreatedAt, 'day');
 
-        if (!areBothRecordingsAvailable) {
+        if (currentQuestion.isSkipped && !isSameDay) {
+          trackEvent('Skipped Question Fetch New Question', {
+            currentQuestion,
+            today,
+          });
+        } else if (!areBothRecordingsAvailable) {
           trackEvent('No Recordings Available Persist Question', {
             currentQuestion,
             today,
@@ -124,16 +129,18 @@ export const fetchLatestQuestion = createAsyncThunk<
             question: QuestionType;
             isNewQuestion: boolean;
           };
-        }
-
-        if (areBothRecordingsAvailable && isSameDay) {
+        } else if (areBothRecordingsAvailable && isSameDay) {
           trackEvent('Recordings Available Same Day Persist Question', {
             currentQuestion,
             today,
           });
+
           return {
             question: currentQuestion,
             isNewQuestion: false,
+          } as {
+            question: QuestionType;
+            isNewQuestion: boolean;
           };
         }
       }
@@ -180,6 +187,8 @@ export const updateQuestionSkipped = createAsyncThunk(
     },
     { rejectWithValue },
   ) => {
+    console.log('question id', questionId);
+
     try {
       await firestore()
         .collection('questions')

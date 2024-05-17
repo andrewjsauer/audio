@@ -40,6 +40,8 @@ const useRecordingSubscription = ({
             };
 
             dispatch(setUserRecording(payload));
+          } else {
+            dispatch(setUserRecording(null));
           }
         });
     }
@@ -58,6 +60,8 @@ const useRecordingSubscription = ({
             };
 
             dispatch(setPartnerRecording(payload));
+          } else {
+            dispatch(setPartnerRecording(null));
           }
         });
     }
